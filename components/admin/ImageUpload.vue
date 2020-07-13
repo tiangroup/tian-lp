@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" max-width="290" persistent>
+    <v-dialog v-model="dialog" max-width="400" persistent>
       <v-card>
         <v-card-title>
           <span class="headline">Вставить картинку</span>
