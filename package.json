@@ -1,0 +1,25 @@
+{
+  "name": "tian-lp",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "export": "nuxt export",
+    "serve": "nuxt serve"
+  },
+  "dependencies": {
+    "@nuxtjs/auth": "^4.9.1",
+    "@nuxtjs/axios": "^5.11.0",
+    "@nuxtjs/vuetify": "^1.11.2",
+    "@reallifedigital/nuxt-image-loader-module": "^1.4.2",
+    "cross-env": "^7.0.2",
+    "express-fileupload": "^1.1.7-alpha.3",
+    "gm": "^1.23.1",
+    "node-uuid": "^1.4.8",
+    "nuxt": "^2.13.0",
+    "vue2-medium-editor": "^1.1.6"
+  },
+  "devDependencies": {}
+}
