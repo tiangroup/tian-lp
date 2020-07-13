@@ -9,9 +9,9 @@ import { mapGetters } from "vuex";
 export default {
   layout: "landing",
   async fetch({ store, req }) {
-    const hostname = req.hostname;
+    //const hostname = req.hostname;
 
-    await store.dispatch("sites/loadSites", hostname);
+    //await store.dispatch("sites/loadSites", hostname);
 
     const rootSite = store.getters["sites/root"];
 
