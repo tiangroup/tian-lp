@@ -89,7 +89,7 @@ export default {
   },
   proxy: {
     "/api/data/": {
-      target: process.env.API_BACKEND || "http://localhost:1337",
+      target: process.env.API_BACKEND || "https://api.tian-lp.ru:443",
       pathRewrite: { "^/api/data/": "" }
     }
   },
