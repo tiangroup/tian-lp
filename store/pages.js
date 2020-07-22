@@ -1,5 +1,5 @@
 export const state = () => ({
-  page: {},
+  page: null,
   change: false,
   saveLoading: false
 });
@@ -96,7 +96,7 @@ export const mutations = {
 };
 
 export const actions = {
-  async loadPage({ commit, state }, id) {
+  async loadPage({ commit }, id) {
     try {
       const page = await this.$axios.$get(`/api/data/pages/${id}`);
       //const page = pages.shift() || {};

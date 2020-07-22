@@ -41,7 +41,14 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
+  async fetch({ store, error }) {
+    const site = store.getters["sites/site"];
+    if (!site) {
+      error({ statusCode: 404, message: "Сайт не найден" });
+    }
+  },
   data: () => ({
     username: "",
     password: "",
@@ -49,7 +56,7 @@ export default {
     process: false
   }),
   methods: {
-    async login() {
+    login() {
       this.error = null;
       this.process = true;
       return this.$auth
@@ -57,6 +64,15 @@ export default {
           data: {
             identifier: this.username,
             password: this.password
+          }
+        })
+        .then(() => {
+          if (this.$auth.user.id !== this.site.admin) {
+            this.$auth.logout();
+            this.error = true;
+            this.process = false;
+          } else {
+            this.$router.push("/");
           }
         })
         .catch(e => {
@@ -69,6 +85,11 @@ export default {
     return {
       title: "Авторизация"
     };
+  },
+  computed: {
+    ...mapGetters({
+      site: "sites/site"
+    })
   }
 };
 </script>

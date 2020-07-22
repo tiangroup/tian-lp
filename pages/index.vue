@@ -3,32 +3,32 @@
 </template>
 
 <script>
-import Landing from "~/components/Landing";
 import { mapGetters } from "vuex";
 
 export default {
   layout: "landing",
-  async fetch({ store, req }) {
-    //const hostname = req.hostname;
-
-    //await store.dispatch("sites/loadSites", hostname);
-
-    const rootSite = store.getters["sites/root"];
-
-    if (rootSite) {
-      await store.dispatch("pages/loadPage", rootSite.page);
+  async fetch({ store, error }) {
+    const site = store.getters["sites/site"];
+    if (site) {
+      const page = site.pages.find(p => p.slug == "/");
+      if (page) {
+        await store.dispatch("pages/loadPage", page.page);
+      }
+    } else {
+      error({ statusCode: 404, message: "Сайт не найден" });
     }
   },
   components: {
-    Landing
+    Landing: () => import("~/components/Landing")
   },
   head() {
     return {
-      title: this.head.title
+      title: this.page ? this.head.title : null
     };
   },
   computed: {
     ...mapGetters({
+      page: "pages/page",
       head: "pages/head"
     })
   }

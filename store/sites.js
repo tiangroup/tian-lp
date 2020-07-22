@@ -1,20 +1,22 @@
 export const state = () => ({
-  sites: []
+  site: null
 });
 
 export const mutations = {
-  SET_SITES(state, sites) {
-    state.sites = sites;
+  SET_SITE(state, site) {
+    state.site = site;
   }
 };
 
 export const actions = {
-  async loadSites({ commit, state }, name) {
+  async loadSite({ commit, state }, name) {
     try {
       const sites = await this.$axios.$get("/api/data/sites", {
         params: { name: name }
       });
-      commit("SET_SITES", sites);
+      if (sites.length > 0) {
+        commit("SET_SITE", sites[0]);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -22,5 +24,5 @@ export const actions = {
 };
 
 export const getters = {
-  root: state => state.sites.find(s => s.slug == "/")
+  site: state => state.site
 };

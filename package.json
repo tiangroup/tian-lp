@@ -12,6 +12,7 @@
   "dependencies": {
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.11.0",
+    "@nuxtjs/robots": "^2.4.2",
     "@reallifedigital/nuxt-image-loader-module": "^1.4.2",
     "express-fileupload": "^1.1.7-alpha.3",
     "gm": "^1.23.1",

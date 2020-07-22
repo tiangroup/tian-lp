@@ -54,8 +54,9 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     "@nuxtjs/axios",
     "@nuxtjs/auth",
+    "@nuxtjs/robots",
     [
-      "@reallifedigital/nuxt-image-loader-module",
+      ("@reallifedigital/nuxt-image-loader-module",
       {
         imagesBaseDir: "content",
         imageStyles: {
@@ -77,7 +78,7 @@ export default {
             sizes: "(min-width: 1280px) 100vw, 50vw"
           }
         }
-      }
+      })
     ]
   ],
   /*
@@ -106,7 +107,8 @@ export default {
           logout: false
         }
       }
-    }
+    },
+    redirect: false
   },
   bootstrapVue: {
     icons: true // Install the IconsPlugin (in addition to BootStrapVue plugin
