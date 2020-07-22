@@ -1,11 +1,13 @@
 export const actions = {
   async nuxtServerInit({ commit }, { req }) {
     try {
-      const hostname = req.hostname;
+      const hostname = req.headers.host.split(":")[0];
       const sites = await this.$axios.$get("/api/data/sites", {
         params: { name: hostname }
       });
-      commit("sites/SET_SITES", sites);
+      if (sites.length > 0) {
+        commit("sites/SET_SITE", sites[0]);
+      }
     } catch (error) {
       console.error(error);
     }
