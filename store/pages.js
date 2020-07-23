@@ -92,6 +92,13 @@ export const mutations = {
     const object = section[payload.objectField];
     object[payload.field] = payload.value;
     state.change = true;
+  },
+  ADD_SECTION(state, payload) {
+    if (payload.sectionId) {
+    } else {
+      state.page.sections.push(payload.section);
+    }
+    state.change = true;
   }
 };
 

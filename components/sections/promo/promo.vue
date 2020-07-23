@@ -98,8 +98,7 @@ export default {
     BaseForm: () => import("@/components/forms/BaseForm")
   },
   props: {
-    section: Object,
-    type: String
+    section: Object
   },
   data: () => ({
     dialogImageUpload: false,

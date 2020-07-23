@@ -31,8 +31,7 @@ export default {
     View6: () => import("./views/view6")
   },
   props: {
-    section: Object,
-    type: String
+    section: Object
   },
   data: () => ({
     showMenuEditor: false

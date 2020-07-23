@@ -1,12 +1,11 @@
 <template>
-  <component :is="comp" :section="section" :type="type" v-if="isShow" />
+  <component :is="comp" :section="section" v-if="isShow" />
 </template>
 
 <script>
 export default {
   props: {
-    section: Object,
-    type: String
+    section: Object
   },
   components: {
     sections_header: () => import("~/components/sections/header/header"),

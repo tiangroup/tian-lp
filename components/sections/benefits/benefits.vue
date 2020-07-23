@@ -17,8 +17,7 @@
 import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
-    section: Object,
-    type: String
+    section: Object
   },
   components: {
     ButtonsSection: () => import("@/components/admin/ButtonsSection"),

@@ -56,7 +56,7 @@ export default {
     "@nuxtjs/auth",
     "@nuxtjs/robots",
     [
-      ("@reallifedigital/nuxt-image-loader-module",
+      "@reallifedigital/nuxt-image-loader-module",
       {
         imagesBaseDir: "content",
         imageStyles: {
@@ -78,7 +78,7 @@ export default {
             sizes: "(min-width: 1280px) 100vw, 50vw"
           }
         }
-      })
+      }
     ]
   ],
   /*
