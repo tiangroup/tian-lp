@@ -1,7 +1,7 @@
 export const state = () => ({
   sections: [
     {
-      name: "Шапка сайта",
+      name: "Шапка страницы",
       component: "sections.header",
       settings: {
         background: [
@@ -48,6 +48,19 @@ export const state = () => ({
             image: "/tuning/sections/header/header-6.jpg"
           }
         ]
+      },
+      template: {
+        __component: "sections.header",
+        show: false,
+        settings: {
+          background: "light",
+          view: "view1"
+        },
+        menu: [],
+        logo_slogan: "Название организации",
+        logo_text: "Логотип",
+        address: "Адрес организации",
+        phone: '<a href="tel:+79002000700">+7 (900) 2000 700</a>'
       }
     },
     {
@@ -125,12 +138,12 @@ export const state = () => ({
           {
             title: "В цифрах",
             value: "view2",
-            image: "/tuning/sections/benefits/benefits-1.png"
+            image: "/tuning/sections/benefits/benefits-2.png"
           },
           {
             title: "С одной картинкой",
             value: "view3",
-            image: "/tuning/sections/benefits/benefits-1.png"
+            image: "/tuning/sections/benefits/benefits-3.png"
           }
         ]
       }

@@ -60,8 +60,7 @@
 import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
-    section: Object,
-    type: String
+    section: Object
   },
   components: {
     Editor: () => import("@/components/admin/Editor"),

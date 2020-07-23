@@ -87,8 +87,7 @@ export default {
     ImageSvg: () => import("@/components/admin/ImageSvg")
   },
   props: {
-    section: Object,
-    type: String
+    section: Object
   },
   data: () => ({
     dialogImageSvg: false,
