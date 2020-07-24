@@ -38,6 +38,9 @@ app.post("/image", checkAuth, async (req, res) => {
         uuid.v4() +
         path.extname(image.name).toLowerCase();
         image.mv("./static/uploads/" + filename);*/
+
+        const catalog = req.body.catalog;
+
         const filename = uuid.v4() + path.extname(image.name).toLowerCase();
         image.mv("./content/" + filename);
 

@@ -93,6 +93,18 @@ export const state = () => ({
             field: "button"
           }
         ]
+      },
+      template: {
+        __component: "sections.promo",
+        show: false,
+        settings: {
+          background: "light",
+          form: true,
+          image: false,
+          button: false
+        },
+        title: "Заголовок блока",
+        description: "Описание блока"
       }
     },
     {
@@ -111,6 +123,13 @@ export const state = () => ({
             class: "tuning-bg__color2"
           }
         ]
+      },
+      template: {
+        __component: "sections.highlights",
+        show: false,
+        settings: {
+          background: "light"
+        }
       }
     },
     {

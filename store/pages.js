@@ -95,8 +95,39 @@ export const mutations = {
   },
   ADD_SECTION(state, payload) {
     if (payload.sectionId) {
+      const section = state.page.sections.find(s => s.id === payload.sectionId);
+      const index = state.page.sections.indexOf(section);
+      if (index > -1) {
+        state.page.sections.splice(index + 1, 0, payload.section);
+      }
     } else {
       state.page.sections.push(payload.section);
+    }
+    state.change = true;
+  },
+  DOWN_SECTION(state, payload) {
+    const section = state.page.sections.find(s => s.id === payload.sectionId);
+    const index = state.page.sections.indexOf(section);
+    if (index > -1 && index + 1 < state.page.sections.length) {
+      const itemUp = state.page.sections.splice(index, 1).shift();
+      state.page.sections.splice(index + 1, 0, itemUp);
+      state.change = true;
+    }
+  },
+  UP_SECTION(state, payload) {
+    const section = state.page.sections.find(s => s.id === payload.sectionId);
+    const index = state.page.sections.indexOf(section);
+    if (index > -1 && index - 1 >= 0) {
+      const itemUp = state.page.sections.splice(index, 1).shift();
+      state.page.sections.splice(index - 1, 0, itemUp);
+      state.change = true;
+    }
+  },
+  DELETE_SECTION(state, payload) {
+    const section = state.page.sections.find(s => s.id === payload.sectionId);
+    const index = state.page.sections.indexOf(section);
+    if (index > -1) {
+      state.page.sections.splice(index, 1);
     }
     state.change = true;
   }

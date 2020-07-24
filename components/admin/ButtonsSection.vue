@@ -68,19 +68,33 @@
         <span>Скрытый на сайте</span>
       </v-tooltip>
 
-      <slot></slot>
-
-      <!--
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             fab
             dark
-            small
+            x-small
             color="green"
             v-bind="attrs"
             v-on="on"
-            @click="downSection"
+            @click="showNewSectionEditor = true"
+          >
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </template>
+        <span>Добавить новый блок после текущего</span>
+      </v-tooltip>
+
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            fab
+            dark
+            x-small
+            color="green"
+            v-bind="attrs"
+            v-on="on"
+            @click="onDownClick"
           >
             <v-icon>mdi-arrow-down</v-icon>
           </v-btn>
@@ -93,11 +107,11 @@
           <v-btn
             fab
             dark
-            small
+            x-small
             color="green"
             v-bind="attrs"
             v-on="on"
-            @click="upSection"
+            @click="onUpClick"
           >
             <v-icon>mdi-arrow-up</v-icon>
           </v-btn>
@@ -110,39 +124,20 @@
           <v-btn
             fab
             dark
-            small
+            x-small
             color="red"
             v-bind="attrs"
             v-on="on"
-            @click="dialog = true"
+            @click="deleteDialog = true"
           >
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </template>
         <span>Удалить блок</span>
       </v-tooltip>
-      -->
+
+      <slot></slot>
     </v-speed-dial>
-
-    <v-dialog v-model="dialog" persistent max-width="400px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">Удалить блок</span>
-        </v-card-title>
-
-        <v-card-text>Вы действительно хотите удалить блок?</v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false"
-            >Отмена</v-btn
-          >
-          <v-btn color="blue darken-1" text @click="dialog = false"
-            >Удалить</v-btn
-          >
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
 
     <v-navigation-drawer
       app
@@ -158,6 +153,36 @@
         :settings="section.settings"
       />
     </v-navigation-drawer>
+    <new-section-editor
+      :show="showNewSectionEditor"
+      @onClose="showNewSectionEditor = false"
+      :sectionId="section.id"
+    />
+    <v-dialog v-model="deleteDialog" persistent max-width="400px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Удалить блок</span>
+        </v-card-title>
+
+        <v-card-text>
+          Вы действительно хотите удалить данный блок?
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="deleteDialog = false">
+            Отмена
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="onDelete">
+            Удалить
+          </v-btn>
+        </v-card-actions>
+
+        <v-overlay :value="overlay_delete" :absolute="true">
+          <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -193,17 +218,37 @@ export default {
   data: () => ({
     settingsDrawer: false,
     fab: false,
-    dialog: false
+    showNewSectionEditor: false,
+    deleteDialog: false,
+    overlay_delete: false
   }),
   methods: {
     ...mapMutations({
-      setSectionField: "pages/SET_SECTION_FIELD"
+      setSectionField: "pages/SET_SECTION_FIELD",
+      downSection: "pages/DOWN_SECTION",
+      upSection: "pages/UP_SECTION",
+      deleteSection: "pages/DELETE_SECTION"
     }),
     setShowSection(show) {
       this.setSectionField({
         id: this.section.id,
         field: "show",
         value: show
+      });
+    },
+    onDownClick() {
+      this.downSection({
+        sectionId: this.section.id
+      });
+    },
+    onUpClick() {
+      this.upSection({
+        sectionId: this.section.id
+      });
+    },
+    async onDelete() {
+      this.deleteSection({
+        sectionId: this.section.id
       });
     }
   }

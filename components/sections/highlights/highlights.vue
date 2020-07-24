@@ -42,6 +42,12 @@
             </div>
             <div class="highlights__text" v-else>{{ item.title }}</div>
           </div>
+          <div
+            class="highlights__item cell cell-12 cell-sm-6 cell-lg-3"
+            v-if="isEdit && (!section.items || !section.items.length)"
+          >
+            <buttons-item-add :sectionId="section.id" />
+          </div>
         </div>
       </div>
     </div>

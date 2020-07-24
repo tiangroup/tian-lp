@@ -14,7 +14,11 @@
 import { mapMutations, mapActions } from "vuex";
 export default {
   props: {
-    section: Object
+    section: Object,
+    sectionId: {
+      type: String,
+      default: null
+    }
   },
   methods: {
     ...mapMutations({
@@ -25,6 +29,7 @@ export default {
     }),
     add() {
       this.addSection({
+        sectionId: this.sectionId,
         section: this.section.template
       });
       this.savePage();
