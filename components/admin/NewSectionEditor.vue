@@ -19,6 +19,7 @@
           v-for="section in sections"
           :key="section.component"
           :section="section"
+          :sectionId="sectionId"
         />
       </v-container>
     </v-navigation-drawer>
@@ -29,7 +30,11 @@
 import { mapGetters } from "vuex";
 export default {
   props: {
-    show: Boolean
+    show: Boolean,
+    sectionId: {
+      type: String,
+      default: null
+    }
   },
   computed: {
     drawer: {
