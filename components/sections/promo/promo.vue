@@ -26,7 +26,9 @@
     <div
       class="hero"
       :style="
-        section.bg_img ? `background-image:url(\'${section.bg_img}\');` : ''
+        section.bg_img
+          ? `background-image:url(\'${$site_img(section.bg_img)}\');`
+          : ''
       "
       :class="{
         mDark: section.settings.background === 'dark',
@@ -67,6 +69,9 @@
             class="hero__image"
             v-if="image && !form"
             :title="isEdit ? 'Двойной клик - изменить картинку' : ''"
+            :class="{
+              'no-image': !section.img
+            }"
             @dblclick="
               itemImageSelect({
                 field: 'img',
@@ -74,7 +79,7 @@
               })
             "
           >
-            <img v-if="section.img" :src="section.img" />
+            <img v-if="section.img" :src="`/${siteId}${section.img}`" />
           </div>
         </div>
       </div>
