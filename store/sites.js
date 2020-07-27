@@ -24,5 +24,7 @@ export const actions = {
 };
 
 export const getters = {
-  site: state => state.site
+  site: state => state.site,
+  name: state => state.site.name,
+  id: state => state.site.id
 };

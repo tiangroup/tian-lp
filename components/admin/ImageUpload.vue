@@ -7,7 +7,7 @@
         </v-card-title>
 
         <v-card-text v-if="orig">
-          <nuxt-img :src="origImage" v-if="!inputLink" />
+          <nuxt-img :src="$site_img(origImage)" v-if="!inputLink" />
           <v-text-field v-else label="Cсылка на картинку" v-model="imageLink" />
         </v-card-text>
         <v-card-text v-else>
