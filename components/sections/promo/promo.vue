@@ -62,7 +62,15 @@
           </div>
 
           <div class="cell cell-12 cell-sm-6 cell-lg-4" v-if="form">
-            <base-form :formId="section.promo_form"></base-form>
+            <base-form :formId="section.promo_form" v-if="section.promo_form" />
+            <v-tooltip bottom v-else-if="isEdit">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn fab dark x-small color="green" v-bind="attrs" v-on="on">
+                  <v-icon>mdi-plus</v-icon>
+                </v-btn>
+              </template>
+              <span>Добавить форму</span>
+            </v-tooltip>
           </div>
 
           <div
@@ -79,12 +87,13 @@
               })
             "
           >
-            <img v-if="section.img" :src="`/${siteId}${section.img}`" />
+            <img v-if="section.img" :src="$site_img(section.img)" />
           </div>
         </div>
       </div>
     </div>
     <image-upload
+      v-if="isEdit"
       :dialog="dialogImageUpload"
       @close="dialogImageUpload = false"
       :itemImageEdit="itemImageEdit"
