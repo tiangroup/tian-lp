@@ -127,7 +127,9 @@ export default {
   build: {},
   serverMiddleware: ["~/api/upload"],
   generate: {
-    dir: process.env.EXPORT_DIR || "dist"
+    dir: process.env.EXPORT_DIR || "dist",
+    fallback: true,
+    exclude: ["/login"]
   },
   robots: {
     UserAgent: "*",
