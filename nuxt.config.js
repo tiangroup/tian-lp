@@ -8,7 +8,7 @@ export default {
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
    */
-  target: "server",
+  target: process.env.TARGET || "server",
   /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
@@ -89,7 +89,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    proxy: true
+    proxy: false
   },
   proxy: {
     "/api/data/": {
@@ -102,11 +102,15 @@ export default {
       local: {
         endpoints: {
           login: {
-            url: "/api/data/auth/local",
+            url: process.env.API_BACKEND + "/auth/local",
             method: "post",
             propertyName: "jwt"
           },
-          user: { url: "/api/data/users/me", method: "get", propertyName: "" },
+          user: {
+            url: process.env.API_BACKEND + "/users/me",
+            method: "get",
+            propertyName: ""
+          },
           logout: false
         }
       }
@@ -121,5 +125,8 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {},
-  serverMiddleware: ["~/api/upload"]
+  serverMiddleware: ["~/api/upload"],
+  generate: {
+    dir: process.env.EXPORT_DIR || "dist"
+  }
 };

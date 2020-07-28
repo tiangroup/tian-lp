@@ -5,4 +5,10 @@ export default (context, inject) => {
   inject("site_img", site_img);
   // For Nuxt <= 2.12, also add 👇
   context.$site_img = site_img;
+
+  const url_api = process.env.API_BACKEND || "https://api.tian-lp.ru:443";
+  inject("url_api", url_api);
+
+  /*const site_name = process.env.SITE_NAME;
+  inject("site_name", site_name);*/
 };

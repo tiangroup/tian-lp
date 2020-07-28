@@ -104,7 +104,7 @@ export const mutations = {
 export const actions = {
   async loadForm({ commit, state }, payload) {
     try {
-      const form = await this.$axios.$get(`/api/data/forms/${payload}`);
+      const form = await this.$axios.$get(`${this.$url_api}/forms/${payload}`);
       commit("SET_FORM", form);
       commit("SET_CHANGE", false);
     } catch (error) {

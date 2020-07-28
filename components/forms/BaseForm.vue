@@ -66,7 +66,7 @@ export default {
   components: {
     ButtonsFormEditor: () => import("@/components/forms/ButtonsFormEditor")
   },
-  mounted: async function() {
+  async fetch() {
     if (this.formId) {
       await this.$store.dispatch("forms/loadForm", this.formId);
     }

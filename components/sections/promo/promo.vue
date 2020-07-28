@@ -65,7 +65,15 @@
             <base-form :formId="section.promo_form" v-if="section.promo_form" />
             <v-tooltip bottom v-else-if="isEdit">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn fab dark x-small color="green" v-bind="attrs" v-on="on">
+                <v-btn
+                  fab
+                  dark
+                  x-small
+                  color="green"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="createPromoForm"
+                >
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </template>
@@ -103,7 +111,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 export default {
   components: {
     Editor: () => import("@/components/admin/Editor"),
@@ -139,6 +147,9 @@ export default {
     ...mapMutations({
       setSectionField: "pages/SET_SECTION_FIELD"
     }),
+    ...mapActions({
+      savePage: "pages/savePage"
+    }),
     itemImageSelect(item) {
       this.itemImageEdit = item;
       this.dialogImageUpload = true;
@@ -151,7 +162,36 @@ export default {
         value: payload.value
       });
       this.$store.dispatch("pages/savePage");
+    },
+    async createPromoForm() {
+      if (!this.section.promo_form && this.isEdit) {
+        const data = await this.$axios.$post("/api/data/forms", {
+          form: {
+            title: "Заголовок формы",
+            button: "Отправить"
+          },
+          fields: [
+            {
+              label: "Имя",
+              type: "text"
+            },
+            {
+              label: "Телефон",
+              type: "tel",
+              required: true
+            }
+          ],
+          admin: this.$auth.user.id
+        });
+        this.setSectionField({
+          id: this.section.id,
+          field: "promo_form",
+          value: data.id
+        });
+        this.savePage();
+      }
     }
-  }
+  },
+  async mounted() {}
 };
 </script>
