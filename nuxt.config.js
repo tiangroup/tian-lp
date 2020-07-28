@@ -128,5 +128,9 @@ export default {
   serverMiddleware: ["~/api/upload"],
   generate: {
     dir: process.env.EXPORT_DIR || "dist"
+  },
+  robots: {
+    UserAgent: "*",
+    Disallow: "/"
   }
 };
