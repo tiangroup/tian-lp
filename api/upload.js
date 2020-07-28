@@ -155,6 +155,8 @@ module.exports = {
   path: "/api/upload",
   handler: app
 };
+
+// получение папки сайта для загрузок
 async function getCatalog(req) {
   const token = req.header("Authorization");
   const { data } = await axios.get(`${api_backend}/sites`, {
