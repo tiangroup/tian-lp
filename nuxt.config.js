@@ -8,7 +8,7 @@ export default {
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
    */
-  target: process.env.TARGET || "server",
+  target: "server",
   /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
@@ -127,7 +127,7 @@ export default {
   build: {},
   serverMiddleware: ["~/api/upload"],
   generate: {
-    dir: process.env.EXPORT_DIR || "dist",
+    //dir: process.env.EXPORT_DIR || "dist",
     fallback: true,
     exclude: ["/login"]
   },
