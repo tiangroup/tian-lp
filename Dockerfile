@@ -24,4 +24,7 @@ VOLUME /app/content /app/static
 ENV HOST 0.0.0.0
 EXPOSE 3000
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+COPY docker-entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
