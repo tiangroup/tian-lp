@@ -1,3 +1,13 @@
+export const state = () => ({
+  isApp: false
+});
+
+export const mutations = {
+  SET_IS_APP(state, isApp) {
+    state.isApp = isApp;
+  }
+};
+
 export const actions = {
   async nuxtServerInit({ commit }, { req }) {
     try {
@@ -9,6 +19,9 @@ export const actions = {
         hostname = req.headers.host.split(":")[0];
         const result = regexp.exec(hostname);
         hostname = result ? result[1] : null;
+        if (hostname) {
+          commit("SET_IS_APP", true);
+        }
       }
       const sites = await this.$axios.$get(`${this.$url_api}/sites`, {
         params: { name: hostname }
@@ -20,4 +33,8 @@ export const actions = {
       console.error(error);
     }
   }
+};
+
+export const getters = {
+  isApp: state => state.isApp
 };
