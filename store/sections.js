@@ -1,5 +1,7 @@
 export const state = () => ({
-  sections: [
+  sections: [],
+
+  sections2: [
     {
       name: "Шапка страницы",
       component: "sections.header",
@@ -20,32 +22,32 @@ export const state = () => ({
           {
             title: "1",
             value: "view1",
-            image: "/tuning/sections/header/header-1.jpg"
+            image: "/admin/tuning/sections/header/header-1.jpg"
           },
           {
             title: "2",
             value: "view2",
-            image: "/tuning/sections/header/header-2.jpg"
+            image: "/admin/tuning/sections/header/header-2.jpg"
           },
           {
             title: "3",
             value: "view3",
-            image: "/tuning/sections/header/header-3.jpg"
+            image: "/admin/tuning/sections/header/header-3.jpg"
           },
           {
             title: "4",
             value: "view4",
-            image: "/tuning/sections/header/header-4.jpg"
+            image: "/admin/tuning/sections/header/header-4.jpg"
           },
           {
             title: "5",
             value: "view5",
-            image: "/tuning/sections/header/header-5.jpg"
+            image: "/admin/tuning/sections/header/header-5.jpg"
           },
           {
             title: "6",
             value: "view6",
-            image: "/tuning/sections/header/header-6.jpg"
+            image: "/admin/tuning/sections/header/header-6.jpg"
           }
         ]
       },
@@ -152,17 +154,17 @@ export const state = () => ({
           {
             title: "С картинками",
             value: "view1",
-            image: "/tuning/sections/benefits/benefits-1.png"
+            image: "/admin/tuning/sections/benefits/benefits-1.png"
           },
           {
             title: "В цифрах",
             value: "view2",
-            image: "/tuning/sections/benefits/benefits-2.png"
+            image: "/admin/tuning/sections/benefits/benefits-2.png"
           },
           {
             title: "С одной картинкой",
             value: "view3",
-            image: "/tuning/sections/benefits/benefits-3.png"
+            image: "/admin/tuning/sections/benefits/benefits-3.png"
           }
         ]
       }
@@ -187,6 +189,23 @@ export const state = () => ({
     }
   ]
 });
+
+export const mutations = {
+  SET_SECTIONS(state, sections) {
+    state.sections = sections;
+  }
+};
+
+export const actions = {
+  async loadSections({ commit }) {
+    try {
+      const sections = await this.$axios.$get(`${this.$url_api}/sections`);
+      commit("SET_SECTIONS", sections);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
 
 export const getters = {
   sections: state => state.sections

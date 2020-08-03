@@ -147,6 +147,12 @@
       temporary
       width="400"
     >
+      <v-list-item>
+        <v-btn icon @click="settingsDrawer = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <span>Настройки блока</span>
+      </v-list-item>
       <settings
         :component="section.__component"
         :sectionId="section.id"

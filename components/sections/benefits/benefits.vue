@@ -33,7 +33,6 @@ export default {
       return this.isEdit ? { position: "relative" } : null;
     },
     ...mapGetters({
-      sections: "sections/sections",
       change: "pages/change"
     }),
     view() {
