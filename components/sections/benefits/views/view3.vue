@@ -75,6 +75,12 @@
           </div>
         </div>
         <div
+          class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
+          v-if="isEdit && (!section.items || !section.items.length)"
+        >
+          <buttons-item-add :sectionId="section.id" />
+        </div>
+        <div
           class="cell cell-12 benefits__illustration-wrap cell-lg-4 cell-xl-6"
         >
           <div

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="ma-4">
+    <v-row class="ml-4 mr-4" v-if="sectionConfig">
       <div class="tuning-panel__block">
         <div class="tuning-panel__row mb-25">
           <div class="tuning-panel__cell">
@@ -33,12 +33,12 @@
 
         <div
           class="tuning-panel__row tuning-panel__settings"
-          v-if="sectionConfig.settings.view"
+          v-if="sectionConfig.settings.view_type == 1"
         >
           <div
             class="tuning-panel__cell tuning-setting-wrap"
-            v-for="(view, index) in sectionConfig.settings.view"
-            :key="index"
+            v-for="view in sectionConfig.settings.view"
+            :key="view.id"
           >
             <a
               href=""
@@ -58,12 +58,12 @@
 
         <div
           class="tuning-panel__settings tuning-panel__settings--column"
-          v-if="sectionConfig.settings.view2"
+          v-if="sectionConfig.settings.view_type == 2"
         >
           <div
             class="tuning-setting-wrap"
-            v-for="(view, index) in sectionConfig.settings.view2"
-            :key="index"
+            v-for="view in sectionConfig.settings.view"
+            :key="view.id"
           >
             <a
               href=""
@@ -120,7 +120,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      sections: "sections/sections"
+      sections: "sections/sections",
+      isApp: "isApp"
     }),
     sectionConfig: function() {
       return this.sections.find(item => item.component === this.component);

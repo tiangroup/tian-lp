@@ -1,18 +1,21 @@
 <template>
-  <div class="landing">
-    <sections
-      v-for="section in page.sections.filter(s => s.id)"
-      :key="section.id"
-      :section="section"
-    />
-    <div class="add-section" v-if="page.sections.length === 0 && isEdit">
-      <new-section-button />
+  <div>
+    <Login v-if="isLogin"></Login>
+    <div class="landing" v-else>
+      <sections
+        v-for="section in page.sections.filter(s => s.id)"
+        :key="section.id"
+        :section="section"
+      />
+      <div class="add-section" v-if="page.sections.length === 0 && isEdit">
+        <new-section-button />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
@@ -20,10 +23,24 @@ export default {
   },
   computed: {
     ...mapGetters({
-      page: "pages/page"
+      page: "pages/page",
+      isApp: "isApp"
     }),
     isEdit() {
       return this.$auth.loggedIn;
+    },
+    isLogin() {
+      return this.isApp && !this.$auth.loggedIn;
+    }
+  },
+  methods: {
+    ...mapActions({
+      loadSections: "sections/loadSections"
+    })
+  },
+  mounted() {
+    if (this.isEdit) {
+      this.loadSections();
     }
   }
 };
