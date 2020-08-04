@@ -73,13 +73,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getForm: "forms/form"
+      getForm: "forms/form",
+      isEdit: "isEdit"
     }),
     loading() {
       return this.form ? false : true;
-    },
-    isEdit() {
-      return this.$auth.loggedIn && this.form;
     },
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;

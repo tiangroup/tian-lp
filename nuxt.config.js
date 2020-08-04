@@ -89,13 +89,13 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    proxy: false
+    proxy: true
   },
   proxy: {
-    "/api/data/": {
+    /*"/api/data/": {
       target: process.env.API_BACKEND || "https://api.tian-lp.ru:443",
       pathRewrite: { "^/api/data/": "" }
-    }
+    }*/
   },
   auth: {
     strategies: {

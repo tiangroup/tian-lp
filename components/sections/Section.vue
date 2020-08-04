@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   props: {
     section: Object
@@ -15,10 +16,12 @@ export default {
     sections_process: () => import("~/components/sections/process/process"),
     sections_promo: () => import("~/components/sections/promo/promo")
   },
-  data: () => ({}),
   computed: {
+    ...mapGetters({
+      isEdit: "isEdit"
+    }),
     isShow() {
-      return this.$auth.loggedIn || this.section.show === true;
+      return this.isEdit || this.section.show === true;
     },
     comp() {
       return this.section.__component.replace(".", "_");

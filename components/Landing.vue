@@ -16,7 +16,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-
 export default {
   components: {
     Sections: () => import("~/components/sections/Section")
@@ -24,11 +23,9 @@ export default {
   computed: {
     ...mapGetters({
       page: "pages/page",
-      isApp: "isApp"
+      isApp: "isApp",
+      isEdit: "isEdit"
     }),
-    isEdit() {
-      return this.$auth.loggedIn;
-    },
     isLogin() {
       return this.isApp && !this.$auth.loggedIn;
     }

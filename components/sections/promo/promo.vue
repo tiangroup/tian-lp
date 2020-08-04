@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
   components: {
     Editor: () => import("@/components/admin/Editor"),
@@ -127,9 +127,9 @@ export default {
     itemImageEdit: {}
   }),
   computed: {
-    isEdit() {
-      return this.$auth.loggedIn;
-    },
+    ...mapGetters({
+      isEdit: "isEdit"
+    }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
     },

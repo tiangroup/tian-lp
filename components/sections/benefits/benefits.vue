@@ -26,9 +26,9 @@ export default {
     View3: () => import("./views/view3")
   },
   computed: {
-    isEdit() {
-      return this.$auth.loggedIn;
-    },
+    ...mapGetters({
+      isEdit: "isEdit"
+    }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
     },

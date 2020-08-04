@@ -37,9 +37,9 @@ export default {
     showMenuEditor: false
   }),
   computed: {
-    isEdit() {
-      return this.$auth.loggedIn;
-    },
+    ...mapGetters({
+      isEdit: "isEdit"
+    }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
     },

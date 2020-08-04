@@ -1,7 +1,7 @@
 <template>
   <v-list-item link @click="dialog = true">
     <v-list-item-icon>
-      <v-icon>mdi-web</v-icon>
+      <v-icon>mdi-search-web</v-icon>
     </v-list-item-icon>
     <v-list-item-title>SEO</v-list-item-title>
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -11,9 +11,12 @@
         </v-card-title>
 
         <v-card-text>
-          <v-text-field label="Заголовок страницы (title)" v-model="title" />
-          <v-text-field label="keywords" v-model="keywords" />
-          <v-text-field label="description" v-model="description" />
+          <v-text-field
+            label="Заголовок страницы (title)"
+            v-model="headObj.title"
+          />
+          <v-text-field label="keywords" v-model="headObj.keywords" />
+          <v-text-field label="description" v-model="headObj.description" />
         </v-card-text>
 
         <v-card-actions>
@@ -35,36 +38,12 @@ import { mapGetters, mapMutations } from "vuex";
 export default {
   data: () => ({
     dialog: false,
-    _title: null,
-    _keywords: null,
-    _description: null
+    headObj: {}
   }),
   computed: {
     ...mapGetters({
       head: "pages/head"
-    }),
-    title: {
-      get: function() {
-        return this.head.title;
-      },
-      set: function(value) {
-        this._title = value;
-      }
-    },
-    keywords: {
-      get: function() {
-        return this.head.keywords;
-      },
-      set: function(value) {
-        this._keywords = value;
-      }
-    },
-    description: {
-      get: function() {
-        return this.head.description;
-      },
-      set: function(value) {}
-    }
+    })
   },
   methods: {
     ...mapMutations({
@@ -72,16 +51,20 @@ export default {
     }),
     save: function() {
       this.setHead({
-        title: this._title,
-        keywords: this._keywords,
-        description: this._description
+        title: this.headObj.title,
+        keywords: this.headObj.keywords,
+        description: this.headObj.description
       });
       this.$store.dispatch("pages/savePage");
       this.dialog = false;
     },
     cancel: function() {
+      this.headObj = Object.assign({}, this.head);
       this.dialog = false;
     }
+  },
+  mounted() {
+    this.headObj = Object.assign({}, this.head);
   }
 };
 </script>

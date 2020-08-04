@@ -1,10 +1,14 @@
 export const state = () => ({
-  isApp: false
+  isApp: false,
+  isPreview: false
 });
 
 export const mutations = {
   SET_IS_APP(state, isApp) {
     state.isApp = isApp;
+  },
+  SET_IS_PREVIEW(state, isPreview) {
+    state.isPreview = isPreview;
   }
 };
 
@@ -14,9 +18,7 @@ export const actions = {
       let hostname = null;
       if (process.static) {
         hostname = process.env.SITE_NAME;
-      }
-      // todo: поставить проверку сервера req
-      else if (process.server) {
+      } else if (process.server) {
         const reg = "(.*).app.tian-lp.ru";
         const regexp = new RegExp(reg, "ig");
         hostname = req.headers.host.split(":")[0];
@@ -41,5 +43,9 @@ export const actions = {
 };
 
 export const getters = {
-  isApp: state => state.isApp
+  isApp: state => state.isApp,
+  isPreview: state => state.isPreview,
+  isEdit: state => {
+    return state.auth.loggedIn && !state.isPreview;
+  }
 };
