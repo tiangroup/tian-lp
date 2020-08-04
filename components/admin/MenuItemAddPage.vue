@@ -1,9 +1,9 @@
 <template>
   <v-list-item link @click="dialog = true">
     <v-list-item-icon>
-      <v-icon>mdi-application</v-icon>
+      <v-icon>mdi-plus</v-icon>
     </v-list-item-icon>
-    <v-list-item-title>Настройки</v-list-item-title>
+    <v-list-item-title>Добавить</v-list-item-title>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>

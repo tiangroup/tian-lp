@@ -22,7 +22,7 @@
                   }"
                   v-html="
                     section.logo_img
-                      ? `<img src='${section.logo_img}'/>`
+                      ? `<img src='${$site_img(section.logo_img)}'/>`
                       : section.logo_svg
                   "
                   v-bind="attrs"
@@ -57,10 +57,14 @@
               </v-list>
             </v-menu>
             <div
+              v-else
               class="logo__image"
               :class="{ 'no-image': !section.logo_svg }"
-              v-html="section.logo_svg"
-              v-else
+              v-html="
+                section.logo_img
+                  ? `<img src='${$site_img(section.logo_img)}'/>`
+                  : section.logo_svg
+              "
             ></div>
             <div v-if="isEdit" class="logo__text">
               <editor

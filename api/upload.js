@@ -150,6 +150,17 @@ app.post("/image-remove", checkAuth, async (req, res) => {
   });
 });
 
+app.options("*", (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  //res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.set(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.send("ok");
+});
+
 // -- export app --
 module.exports = {
   path: "/api/upload",

@@ -47,7 +47,7 @@
                 })
               "
             >
-              <img v-if="item.img" :src="item.img" />
+              <img v-if="item.img" :src="$site_img(item.img)" />
             </div>
 
             <div class="benefits__body">

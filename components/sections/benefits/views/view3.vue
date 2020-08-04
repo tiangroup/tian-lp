@@ -94,7 +94,7 @@
               })
             "
           >
-            <img v-if="section.img" :src="section.img" />
+            <img v-if="section.img" :src="$site_img(section.img)" />
           </div>
         </div>
         <div class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3">
