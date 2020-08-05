@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export default {
   /*
    ** Nuxt rendering mode
@@ -125,11 +127,23 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {},
-  serverMiddleware: ["~/api/upload"],
+  serverMiddleware: ["~/api/upload", "~/api/sites"],
   generate: {
     //dir: process.env.EXPORT_DIR || "dist",
     fallback: true,
-    exclude: ["/login"]
+    routes() {
+      return axios
+        .get(`${process.env.API_BACKEND}/sites`, {
+          params: { name: process.env.SITE_NAME }
+        })
+        .then(({ data }) => {
+          if (data.length) {
+            return data[0].pages
+              .filter(page => page.slug != "/")
+              .map(page => page.slug);
+          }
+        });
+    }
   },
   robots: {
     UserAgent: "*",
