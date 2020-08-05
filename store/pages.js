@@ -137,7 +137,6 @@ export const actions = {
   async loadPage({ commit }, id) {
     try {
       const page = await this.$axios.$get(`${this.$url_api}/pages/${id}`);
-      //const page = pages.shift() || {};
       commit("SET_PAGE", page);
       commit("SET_CHANGE", false);
     } catch (error) {

@@ -1,5 +1,5 @@
 <template>
-  <v-list-item link @click="dialog = true">
+  <v-list-item link @click="openForm">
     <v-list-item-icon>
       <v-icon>mdi-search-web</v-icon>
     </v-list-item-icon>
@@ -59,12 +59,12 @@ export default {
       this.dialog = false;
     },
     cancel: function() {
-      this.headObj = Object.assign({}, this.head);
       this.dialog = false;
+    },
+    openForm() {
+      this.headObj = Object.assign({}, this.head);
+      this.dialog = true;
     }
-  },
-  mounted() {
-    this.headObj = Object.assign({}, this.head);
   }
 };
 </script>

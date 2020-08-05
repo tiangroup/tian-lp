@@ -1,6 +1,7 @@
 export const state = () => ({
   isApp: false,
-  isPreview: false
+  isPreview: false,
+  overlay: false
 });
 
 export const mutations = {
@@ -9,6 +10,9 @@ export const mutations = {
   },
   SET_IS_PREVIEW(state, isPreview) {
     state.isPreview = isPreview;
+  },
+  SET_OVERLAY(state, overlay) {
+    state.overlay = overlay;
   }
 };
 
@@ -47,5 +51,6 @@ export const getters = {
   isPreview: state => state.isPreview,
   isEdit: state => {
     return state.auth.loggedIn && !state.isPreview;
-  }
+  },
+  overlay: state => state.overlay
 };

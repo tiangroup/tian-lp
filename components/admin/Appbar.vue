@@ -39,7 +39,7 @@
         </template>
         <span>Редактировать</span>
       </v-tooltip>
-      <v-divider vertical></v-divider>
+      <v-divider vertical inset class="ml-4"></v-divider>
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon @click="$auth.logout()" v-bind="attrs" v-on="on">
@@ -53,7 +53,7 @@
     <v-navigation-drawer app class="over" v-model="drawer" temporary>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="title">/</v-list-item-title>
+          <v-list-item-title class="title" v-text="slug"></v-list-item-title>
           <!--
           <v-list-item-subtitle>v 2.0</v-list-item-subtitle>
           -->
@@ -75,7 +75,7 @@
         <menu-item-pages />
         <menu-item-add-page />
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer>    
   </div>
 </template>
 
@@ -89,7 +89,8 @@ export default {
     MenuItemSettings
   },
   data: () => ({
-    drawer: false
+    drawer: false,
+    overlay: false
   }),
   computed: {
     ...mapGetters({
@@ -97,13 +98,19 @@ export default {
       saveLoadingPage: "pages/saveLoading",
       changeForm: "forms/change",
       saveLoadingForm: "forms/saveLoading",
-      isPreview: "isPreview"
+      isPreview: "isPreview",
+      page: "pages/page",
+      site: "sites/site"
     }),
     change() {
       return this.changePage || this.changeForm;
     },
     saveLoading() {
       return this.saveLoadingPage || this.saveLoadingForm;
+    },
+    slug() {
+      const page = this.site.pages.find(p => p.page == this.page.id);
+      return page ? page.slug : null;
     }
   },
   methods: {

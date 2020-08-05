@@ -11,6 +11,9 @@
         <new-section-button />
       </div>
     </div>
+    <v-overlay :value="overlay" v-if="isEdit" z-index="10000">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
   </div>
 </template>
 
@@ -24,7 +27,8 @@ export default {
     ...mapGetters({
       page: "pages/page",
       isApp: "isApp",
-      isEdit: "isEdit"
+      isEdit: "isEdit",
+      overlay: "overlay"
     }),
     isLogin() {
       return this.isApp && !this.$auth.loggedIn;
