@@ -17,6 +17,7 @@
               prefix="/"
               v-model="newPage.slug"
               :error-messages="errorMessages"
+              @keypress.enter.prevent
             />
           </v-card-text>
 
@@ -60,7 +61,6 @@ export default {
         site_id: this.site.id,
         slug: slug
       });
-      console.log(data);
       this.resetAddPage();
       this.loadSite(this.site.id);
     },

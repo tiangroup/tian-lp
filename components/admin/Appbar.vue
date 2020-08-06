@@ -63,19 +63,17 @@
       <v-divider></v-divider>
 
       <v-list nav dense>
-        <!--
-        <menu-item-settings />
-        -->
-
-        <menu-item-settings />
-
+        <menu-item-export v-if="slug == '/'" />
+        <menu-item-settings v-else />
         <menu-item-seo />
-
         <v-subheader>Страницы</v-subheader>
         <menu-item-pages />
         <menu-item-add-page />
+        <!--
+        <menu-item-robots />
+        -->
       </v-list>
-    </v-navigation-drawer>    
+    </v-navigation-drawer>
   </div>
 </template>
 
