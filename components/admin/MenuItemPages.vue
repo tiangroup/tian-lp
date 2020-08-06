@@ -30,7 +30,9 @@ export default {
         this.loadPage(id).then(() => {
           this.overlay(false);
         });*/
-        this.$router.push(this.pages[value].slug);
+        if (value > -1) {
+          this.$router.push(this.pages[value].slug);
+        }
       }
     }
   },
