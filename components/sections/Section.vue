@@ -14,7 +14,8 @@ export default {
     sections_highlights: () =>
       import("~/components/sections/highlights/highlights"),
     sections_process: () => import("~/components/sections/process/process"),
-    sections_promo: () => import("~/components/sections/promo/promo")
+    sections_promo: () => import("~/components/sections/promo/promo"),
+    sections_partners: () => import("~/components/sections/partners/partners")
   },
   computed: {
     ...mapGetters({
