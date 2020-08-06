@@ -20,8 +20,9 @@ export default {
     section: Object
   },
   components: {
-    ButtonsSection: () => import("@/components/admin/ButtonsSection"),
-    View1: () => import("./views/view1"),
+    //ButtonsSection: () => import("@/components/admin/ButtonsSection"),
+    //View1: () => import("./views/view1"),
+    View1: () => import("./BenefitsView1"),
     View2: () => import("./views/view2"),
     View3: () => import("./views/view3")
   },
