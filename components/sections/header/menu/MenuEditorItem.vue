@@ -34,6 +34,7 @@
           item-value="value"
           label="Блок"
           v-model="itemLink"
+          v-if="menuItem.type == 'anchor'"
         ></v-select>
         <v-row class="mr-1">
           <v-spacer></v-spacer>
@@ -121,9 +122,12 @@ export default {
         .map(s => ({
           name:
             s.title ||
-            this.sections.find(i => i.component == s.__component).name,
+            (this.sections.find(i => i.component == s.__component)
+              ? this.sections.find(i => i.component == s.__component).name
+              : "-"),
           value: s.slug ? `#${s.slug}` : `#${s.id}`
-        }));
+        }))
+        .filter(item => item.name != "-");
 
       return sections;
     }

@@ -23,12 +23,12 @@ export default {
     ButtonsSection: () => import("@/components/admin/ButtonsSection"),
     MenuEditor: () => import("./menu/MenuEditor"),
     MenuEditorButton: () => import("./menu/MenuEditorButton"),
-    View1: () => import("./views/view1"),
-    View2: () => import("./views/view2"),
-    View3: () => import("./views/view3"),
-    View4: () => import("./views/view4"),
-    View5: () => import("./views/view5"),
-    View6: () => import("./views/view6")
+    View1: () => import("./HeaderView1"),
+    View2: () => import("./HeaderView2"),
+    View3: () => import("./HeaderView3"),
+    View4: () => import("./HeaderView4"),
+    View5: () => import("./HeaderView5"),
+    View6: () => import("./HeaderView6")
   },
   props: {
     section: Object
