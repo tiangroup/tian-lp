@@ -82,6 +82,7 @@
         </template>
         <span>Удалить элемент</span>
       </v-tooltip>
+      <slot></slot>
     </v-speed-dial>
     <v-dialog v-model="deleteDialog" persistent max-width="400px">
       <v-card>
