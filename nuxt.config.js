@@ -41,7 +41,8 @@ export default {
    */
   plugins: [
     { src: "~/plugins/medium-editor", ssr: false },
-    { src: "~/plugins/sites" }
+    { src: "~/plugins/sites" },
+    { src: "~/plugins/slick", ssr: false  }
   ],
   /*
    ** Auto import components
