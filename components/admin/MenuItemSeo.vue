@@ -11,12 +11,27 @@
         </v-card-title>
 
         <v-card-text>
-          <v-text-field
-            label="Заголовок страницы (title)"
-            v-model="headObj.title"
-          />
-          <v-text-field label="keywords" v-model="headObj.keywords" />
-          <v-text-field label="description" v-model="headObj.description" />
+          <v-row>
+            <v-col>
+              <v-text-field
+                label="Заголовок страницы (title)"
+                v-model="headObj.title"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-card-subtitle class="text-subtitle-1">
+              Мета теги
+            </v-card-subtitle>
+          </v-row>
+          <v-row>
+            <v-col cols="6" sm="4">
+              <v-text-field label="name" />
+            </v-col>
+            <v-col cols="18" sm="8">
+              <v-text-field label="content" />
+            </v-col>
+          </v-row>
         </v-card-text>
 
         <v-card-actions>
