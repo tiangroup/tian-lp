@@ -1,11 +1,11 @@
 <template>
-  <view2 :showTopBlock="false" :section="section" :isEdit="isEdit" />
+  <view1 view="view3" :section="section" :isEdit="isEdit" />
 </template>
 
 <script>
 export default {
   components: {
-    View2: () => import("./view2")
+    View1: () => import("./HeaderView1")
   },
   props: {
     section: Object,
