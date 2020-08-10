@@ -81,10 +81,8 @@ export const mutations = {
       state.change = true;
     }
   },
-  SET_HEAD(state, data) {
-    state.page.head.title = data.title;
-    state.page.head.keywords = data.keywords;
-    state.page.head.description = data.description;
+  SET_HEAD(state, payload) {
+    state.page.head = payload;
     state.change = true;
   },
   SET_OBJECT_FIELD(state, payload) {
@@ -164,5 +162,5 @@ export const getters = {
   page: state => state.page,
   change: state => state.change,
   saveLoading: state => state.saveLoading,
-  head: state => state.page.head
+  head: state => (state.page ? state.page.head : null)
 };
