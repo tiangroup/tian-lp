@@ -20,20 +20,12 @@
             </v-col>
           </v-row>
           <div class="text-h6 mt-4">Мета теги</div>
-          <v-row v-for="(metatag, index) in metatags" :key="index">
+          <v-row v-for="(metatag, index) in headObj.meta" :key="index">
             <v-col cols="6" sm="4">
               <v-text-field label="name" v-model="metatag.name" />
             </v-col>
             <v-col cols="18" sm="8">
               <v-text-field label="content" v-model="metatag.content" />
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="6" sm="4">
-              <v-text-field label="name" v-model="new_metatag.name" />
-            </v-col>
-            <v-col cols="18" sm="8">
-              <v-text-field label="content" v-model="new_metatag.content" />
             </v-col>
           </v-row>
         </v-card-text>
@@ -57,17 +49,19 @@ import { mapGetters, mapMutations } from "vuex";
 export default {
   data: () => ({
     dialog: false,
-    headObj: {},
-    metatags: [],
-    new_metatag: {
-      name: "",
-      content: ""
-    }
+    headObj: {}
   }),
   computed: {
     ...mapGetters({
       head: "pages/head"
-    })
+    }),
+    lastTag() {
+      const len =
+        this.headObj && this.headObj.meta ? this.headObj.meta.length : 0;
+      return len
+        ? this.headObj.meta[len - 1].name || this.headObj.meta[len - 1].content
+        : false;
+    }
   },
   methods: {
     ...mapMutations({
@@ -76,8 +70,7 @@ export default {
     save: function() {
       this.setHead({
         title: this.headObj.title,
-        keywords: this.headObj.keywords,
-        description: this.headObj.description
+        meta: this.headObj.meta.filter(item => item.name && item.content)
       });
       this.$store.dispatch("pages/savePage");
       this.dialog = false;
@@ -86,21 +79,24 @@ export default {
       this.dialog = false;
     },
     openForm() {
-      this.headObj = Object.assign({}, this.head);
+      //this.headObj = Object.assign({}, this.head);
+      this.headObj = JSON.parse(JSON.stringify(this.head));
+      if (this.headObj.meta.length === 0) {
+        this.headObj.meta.push({
+          name: "",
+          content: ""
+        });
+      }
       this.dialog = true;
     }
   },
   watch: {
-    "new_metatag.name": function(value, newValue) {
-      if (value) {
-        this.metatags.push(this.new_metatag);
-        this.new_metatag = Object.assign(
-          {},
-          {
-            name: "",
-            content: ""
-          }
-        );
+    lastTag(newValue, oldValue) {
+      if (newValue && !oldValue) {
+        this.headObj.meta.push({
+          name: "",
+          content: ""
+        });
       }
     }
   }
