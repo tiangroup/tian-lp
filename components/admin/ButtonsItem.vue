@@ -127,6 +127,7 @@ export default {
     onDeleteItem() {
       this.itemDelete();
       this.deleteDialog = false;
+      this.$emit("onDelete", {});
     },
     async itemAdd() {
       this.addItem({
@@ -145,8 +146,7 @@ export default {
         itemId: this.itemId,
         items: "items"
       });
-      await this.$store.dispatch("pages/savePage");
-      this.$emit("onDelete", {});
+      await this.$store.dispatch("pages/savePage");      
     },
     itemDown() {
       this.downItem({
