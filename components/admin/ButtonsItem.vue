@@ -136,7 +136,7 @@ export default {
         itemNew: {}
       });
       await this.$store.dispatch("pages/savePage");
-      this.$emit("onItemAdd", {});
+      this.$emit("onAdd", {});
     },
     async itemDelete() {
       this.$emit("onItemDelete", { itemId: this.itemId });
@@ -146,6 +146,7 @@ export default {
         items: "items"
       });
       await this.$store.dispatch("pages/savePage");
+      this.$emit("onDelete", {});
     },
     itemDown() {
       this.downItem({
@@ -153,6 +154,7 @@ export default {
         itemId: this.itemId,
         items: "items"
       });
+      this.$emit("onDown", {});
     },
     itemUp() {
       this.upItem({
@@ -160,6 +162,7 @@ export default {
         itemId: this.itemId,
         items: "items"
       });
+      this.$emit("onUp", {});
     }
   }
 };
