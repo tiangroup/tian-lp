@@ -33,7 +33,8 @@ export default {
    */
   css: [
     "medium-editor/dist/css/medium-editor.min.css",
-    "medium-editor/dist/css/themes/beagle.min.css"
+    "medium-editor/dist/css/themes/beagle.min.css",
+    "slick-carousel/slick/slick.css"
   ],
   /*
    ** Plugins to load before mounting the App
@@ -42,7 +43,8 @@ export default {
   plugins: [
     { src: "~/plugins/medium-editor", ssr: false },
     { src: "~/plugins/sites" },
-    { src: "~/plugins/slick", ssr: false  }
+    { src: "~/plugins/slick", ssr: false  },
+    { src: "~plugins/vue-gallery.client.js" }
   ],
   /*
    ** Auto import components
