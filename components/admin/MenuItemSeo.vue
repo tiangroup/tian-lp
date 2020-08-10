@@ -19,17 +19,21 @@
               />
             </v-col>
           </v-row>
-          <v-row>
-            <v-card-subtitle class="text-subtitle-1">
-              Мета теги
-            </v-card-subtitle>
+          <div class="text-h6 mt-4">Мета теги</div>
+          <v-row v-for="(metatag, index) in metatags" :key="index">
+            <v-col cols="6" sm="4">
+              <v-text-field label="name" v-model="metatag.name" />
+            </v-col>
+            <v-col cols="18" sm="8">
+              <v-text-field label="content" v-model="metatag.content" />
+            </v-col>
           </v-row>
           <v-row>
             <v-col cols="6" sm="4">
-              <v-text-field label="name" />
+              <v-text-field label="name" v-model="new_metatag.name" />
             </v-col>
             <v-col cols="18" sm="8">
-              <v-text-field label="content" />
+              <v-text-field label="content" v-model="new_metatag.content" />
             </v-col>
           </v-row>
         </v-card-text>
@@ -53,7 +57,12 @@ import { mapGetters, mapMutations } from "vuex";
 export default {
   data: () => ({
     dialog: false,
-    headObj: {}
+    headObj: {},
+    metatags: [],
+    new_metatag: {
+      name: "",
+      content: ""
+    }
   }),
   computed: {
     ...mapGetters({
@@ -79,6 +88,20 @@ export default {
     openForm() {
       this.headObj = Object.assign({}, this.head);
       this.dialog = true;
+    }
+  },
+  watch: {
+    "new_metatag.name": function(value, newValue) {
+      if (value) {
+        this.metatags.push(this.new_metatag);
+        this.new_metatag = Object.assign(
+          {},
+          {
+            name: "",
+            content: ""
+          }
+        );
+      }
     }
   }
 };

@@ -136,6 +136,7 @@ export default {
         itemNew: {}
       });
       await this.$store.dispatch("pages/savePage");
+      this.$emit("onItemAdd", {});
     },
     async itemDelete() {
       this.$emit("onItemDelete", { itemId: this.itemId });
