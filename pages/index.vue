@@ -21,8 +21,17 @@ export default {
     Landing: () => import("~/components/Landing")
   },
   head() {
+    const meta = this.head
+      ? this.head.meta.map(item => ({
+          hid: item.name,
+          name: item.name,
+          content: item.content
+        }))
+      : null;
+    const title = this.head ? this.head.title : null;
     return {
-      title: this.page ? this.head.title : null
+      title,
+      meta
     };
   },
   computed: {
