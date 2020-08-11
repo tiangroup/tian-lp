@@ -16,7 +16,7 @@
         <h2 v-else>{{ section.title }}</h2>
         <slick
           ref="slick"
-          :options="slickOptions"
+          :options="updatedSlickOptions"
           class="staff__list"
           v-if="section.items && isSlick"
         >
@@ -186,8 +186,15 @@ export default {
       });
       this.$store.dispatch("pages/savePage");
     },
+    isValidEmail(emailString) {
+      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return pattern.test(emailString);
+    },
     onItemsChange(event) {
       console.log(event);
+      this.restartSlick();
+    },
+    restartSlick() {
       this.isSlick = false;
       const _this = this;
       setTimeout(function() {

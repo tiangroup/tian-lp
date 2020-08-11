@@ -24,10 +24,7 @@
               v-if="isEdit"
               :itemId="item.id"
               :sectionId="section.id"
-              @onDelete="onItemsChange('delete')"
-              @onAdd="onItemsChange('add')"
-              @onDown="onItemsChange('down')"
-              @onUp="onItemsChange('up')"
+              @onAction="onItemsChange"
             />
             <div class="partners__item">
               <a v-if="item.link && !isEdit" :href="item.link" class="partners__link"></a>
@@ -80,10 +77,7 @@
               v-if="isEdit"
               :itemId="item.id"
               :sectionId="section.id"
-              @onDelete="onItemsChange('delete')"
-              @onAdd="onItemsChange('add')"
-              @onDown="onItemsChange('down')"
-              @onUp="onItemsChange('up')"
+              @onAction="onItemsChange"
             />
             <div class="partners__item">
               <a v-if="item.link && !isEdit" :href="item.link" class="partners__link"></a>
