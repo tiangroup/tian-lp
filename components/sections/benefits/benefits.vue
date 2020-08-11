@@ -26,14 +26,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      isEdit: "isEdit",
+      change: "pages/change"
     }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
     },
-    ...mapGetters({
-      change: "pages/change"
-    }),
     view() {
       return this.section.settings.view;
     }
