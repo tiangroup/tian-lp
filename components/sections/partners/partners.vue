@@ -217,6 +217,3 @@ export default {
   },
 };
 </script>
-<style>
-@import "node_modules/slick-carousel/slick/slick.css";
-</style>

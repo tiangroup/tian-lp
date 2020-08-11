@@ -34,7 +34,7 @@
             <div class="benefits__body">
               <div v-if="isEdit" class="benefits__title">
                 <editor
-                  data-placeholder="Название преимущества"
+                  data-placeholder="1 000"
                   :text="item.numeral || ''"
                   :sectionId="section.id"
                   field="numeral"
@@ -45,7 +45,7 @@
 
               <div v-if="isEdit" class="benefits__description">
                 <editor
-                  data-placeholder="Краткое описание преимущества"
+                  data-placeholder="Преимуществ у компании"
                   :text="item.title2 || ''"
                   :sectionId="section.id"
                   field="title2"

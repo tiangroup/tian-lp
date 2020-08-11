@@ -9,7 +9,12 @@
       </h2>
       <h2 v-else>{{ section.title }}</h2>
       <div class="benefits__intro" v-if="isEdit">
-        <editor :text="section.description || ''" :sectionId="section.id" field="description" />
+        <editor
+          :text="section.description || ''"
+          :sectionId="section.id"
+          field="description"
+          data-placeholder="Небольшой текст, который раскрывает основное преимущество компании"
+        />
       </div>
       <div class="benefits__intro" v-else v-html="section.description"></div>
       <!-- benefits__list--style3 -->
@@ -40,6 +45,7 @@
             <div class="benefits__body">
               <div v-if="isEdit" class="benefits__title">
                 <editor
+                  data-placeholder="Преимущество"
                   :text="item.title || ''"
                   :sectionId="section.id"
                   field="title"
@@ -50,6 +56,7 @@
 
               <div v-if="isEdit" class="benefits__description">
                 <editor
+                  data-placeholder="Краткое описание преимущества"
                   :text="item.description || ''"
                   :sectionId="section.id"
                   field="description"
@@ -112,6 +119,7 @@
             <div class="benefits__body">
               <div v-if="isEdit" class="benefits__title">
                 <editor
+                  data-placeholder="Преимущество"
                   :text="item.title || ''"
                   :sectionId="section.id"
                   field="title"
@@ -122,6 +130,7 @@
 
               <div v-if="isEdit" class="benefits__description">
                 <editor
+                  data-placeholder="Краткое описание преимущества"
                   :text="item.description || ''"
                   :sectionId="section.id"
                   field="description"
