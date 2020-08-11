@@ -10,7 +10,7 @@
           <editor :text="section.title || ''" :sectionId="section.id" field="title" />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
-        <slick ref="slick" :options="slickOptions" class="staff__list" v-if="section.items && isSlick">
+        <slick ref="slick" :options="updatedSlickOptions" class="staff__list" v-if="section.items && isSlick">
           <div
             class="staff__item-wrap cell"
             v-for="item in section.items.filter(i => i.id)"
@@ -113,13 +113,14 @@ export default {
   data: () => ({
     dialogImageUpload: false,
     itemImageEdit: {},
+    isSlick: true,
     slickOptions: {
       arrows: true,
       dots: true,
       slidesToShow: 3,
       slidesToScroll: 1,
-      adaptiveHeight: false,
       draggable: false,
+      infinite: false,
       prevArrow:
         '<button type="button" class="slick-arrow slick-prev"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 1L2 13.9706L15.966 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
       nextArrow:
@@ -142,8 +143,7 @@ export default {
           },
         },
       ],
-    },
-    isSlick: true
+    }
   }),
   computed: {
     ...mapGetters({
@@ -152,6 +152,9 @@ export default {
     }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
+    },
+    updatedSlickOptions() {
+      return Object.assign(this.slickOptions, {infinite: !this.isEdit});
     }
   },
   methods: {
@@ -174,15 +177,25 @@ export default {
       this.$store.dispatch("pages/savePage");
     },
     onItemsChange(event) {
+      this.restartSlick();
+    },
+    isValidEmail(emailString) {
+      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return pattern.test(emailString);
+    },
+    restartSlick() {
       this.isSlick = false;
       const _this = this;
       setTimeout(function(){
         _this.isSlick = true;
       }, 100);
-    },
-    isValidEmail(emailString) {
-      var re = /\S+@\S+\.\S+/;
-      return re.test(emailString);
+    }
+  },
+  watch: {
+    isEdit: function() {
+      this.updatedSlickOptions.infinite = !this.isEdit;
+      this.updatedSlickOptions.draggable = !this.isEdit;
+      this.restartSlick();
     }
   }
 };
