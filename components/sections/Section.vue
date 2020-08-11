@@ -6,7 +6,7 @@
 import { mapGetters } from "vuex";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   components: {
     sections_header: () => import("~/components/sections/header/header"),
@@ -16,18 +16,19 @@ export default {
     sections_process: () => import("~/components/sections/process/process"),
     sections_promo: () => import("~/components/sections/promo/promo"),
     sections_partners: () => import("~/components/sections/partners/partners"),
-    sections_staff: () => import("~/components/sections/staff/staff")
+    sections_staff: () => import("~/components/sections/staff/staff"),
+    sections_tarifs: () => import("~/components/sections/tarifs/tarifs"),
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      isEdit: "isEdit",
     }),
     isShow() {
       return this.isEdit || this.section.show === true;
     },
     comp() {
       return this.section.__component.replace(".", "_");
-    }
-  }
+    },
+  },
 };
 </script>
