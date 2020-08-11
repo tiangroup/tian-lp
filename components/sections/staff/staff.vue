@@ -7,10 +7,19 @@
     >
       <div class="landing__container">
         <h2 v-if="isEdit">
-          <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+          <editor
+            :text="section.title || ''"
+            :sectionId="section.id"
+            field="title"
+          />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
-        <slick ref="slick" :options="slickOptions" class="staff__list" v-if="section.items && isSlick">
+        <slick
+          ref="slick"
+          :options="slickOptions"
+          class="staff__list"
+          v-if="section.items && isSlick"
+        >
           <div
             class="staff__item-wrap cell"
             v-for="item in section.items.filter(i => i.id)"
@@ -21,15 +30,12 @@
               v-if="isEdit"
               :itemId="item.id"
               :sectionId="section.id"
-              @onDelete="onItemsChange('delete')"
-              @onAdd="onItemsChange('add')"
-              @onDown="onItemsChange('down')"
-              @onUp="onItemsChange('up')"
+              @onAction="onItemsChange"
             />
             <div class="staff__item">
               <div
                 class="staff__image"
-                :class="{ 'no-image': !item.img, 'clickable': isEdit }"
+                :class="{ 'no-image': !item.img, clickable: isEdit }"
                 :title="isEdit ? 'Двойной клик - изменить картинку' : ''"
                 @dblclick="
                   itemImageSelect({
@@ -79,7 +85,11 @@
                     :itemId="item.id"
                     v-if="isEdit"
                   />
-                  <a v-else-if="isValidEmail(item.email)" :href="`mailto:${item.email}`">{{ item.email }}</a>
+                  <a
+                    v-else-if="isValidEmail(item.email)"
+                    :href="`mailto:${item.email}`"
+                    >{{ item.email }}</a
+                  >
                   <span v-else>{{ item.email }}</span>
                 </div>
               </div>
@@ -108,7 +118,7 @@
 import { mapMutations, mapGetters } from "vuex";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   data: () => ({
     dialogImageUpload: false,
@@ -130,25 +140,24 @@ export default {
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false,
-          },
+            arrows: false
+          }
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false,
-          },
-        },
-      ],
+            arrows: false
+          }
+        }
+      ]
     },
     isSlick: true
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
-      saveLoading: "pages/saveLoading",
+      isEdit: "isEdit"
     }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
@@ -156,7 +165,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD",
+      setItemField: "pages/SET_ITEM_FIELD"
     }),
     itemImageSelect(item) {
       this.itemImageEdit = item;
@@ -169,14 +178,15 @@ export default {
         itemId: payload.itemId,
         items: "items",
         field: payload.field,
-        value: payload.value,
+        value: payload.value
       });
       this.$store.dispatch("pages/savePage");
     },
     onItemsChange(event) {
+      console.log(event);
       this.isSlick = false;
       const _this = this;
-      setTimeout(function(){
+      setTimeout(function() {
         _this.isSlick = true;
       }, 100);
     },
