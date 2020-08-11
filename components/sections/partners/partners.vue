@@ -16,6 +16,7 @@
         >
           <div
             class="partners__item-wrap cell cell-6 cell-sm-4 cell-md-3 cell-xl-2"
+            :class="{'position-relative': isEdit}"
             v-for="item in section.items.filter(i => i.id)"
             :key="item.id"
             :style="styleDiv"
@@ -45,7 +46,7 @@
               <div class="partners__text" v-if="isEdit">
                 <editor
                   :text="item.title || ''"
-                  :options="{placeholder: {text: 'Type your text'}}"
+                  data-placeholder="Название компании"
                   :sectionId="section.id"
                   field="title"
                   :itemId="item.id"
@@ -61,14 +62,15 @@
             <buttons-item-add :sectionId="section.id" />
           </div>
         </div>
-        <slick 
-          ref="slick" 
-          :options="updatedSlickOptions" 
+        <slick
+          ref="slick"
+          :options="updatedSlickOptions"
           class="partners__list"
           v-if="section.items && isSlick && section.settings.view === 'slider'"
         >
           <div
             class="partners__item-wrap"
+            :class="{'position-relative': isEdit}"
             v-for="item in section.items.filter(i => i.id)"
             :key="item.id"
             :style="styleDiv"
@@ -102,6 +104,7 @@
                   field="title"
                   :itemId="item.id"
                   v-if="isEdit"
+                  data-placeholder="Название компании"
                 />
                 <span v-else>{{ item.title }}</span>
               </div>
@@ -137,26 +140,28 @@ export default {
       draggable: false,
       slidesToShow: 6,
       slidesToScroll: 1,
-      prevArrow: '<button type="button" class="slick-arrow slick-prev"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 1L2 13.9706L15.966 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
-      nextArrow: '<button type="button" class="slick-arrow slick-next"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L15 13.9706L1.03398 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
+      prevArrow:
+        '<button type="button" class="slick-arrow slick-prev"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 1L2 13.9706L15.966 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
+      nextArrow:
+        '<button type="button" class="slick-arrow slick-next"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L15 13.9706L1.03398 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
       responsive: [
         {
-          breakpoint: 1024,
+          breakpoint: 1280,
           settings: {
             slidesToShow: 4,
             slidesToScroll: 1,
-            arrows: false
-          }
+            arrows: false,
+          },
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false
-          }
-        }
-      ]
+            arrows: false,
+          },
+        },
+      ],
     },
   }),
   computed: {
@@ -167,8 +172,11 @@ export default {
       return this.isEdit ? { position: "relative" } : null;
     },
     updatedSlickOptions() {
-      return Object.assign(this.slickOptions, {infinite: !this.isEdit});
-    }
+      return Object.assign(this.slickOptions, {
+        infinite: !this.isEdit,
+        draggable: !this.isEdit,
+      });
+    },
   },
   methods: {
     ...mapMutations({
@@ -195,20 +203,20 @@ export default {
     restartSlick() {
       this.isSlick = false;
       const _this = this;
-      setTimeout(function(){
+      setTimeout(function () {
         _this.isSlick = true;
       }, 100);
-    }
+    },
   },
   watch: {
-    isEdit: function() {
+    isEdit: function () {
       this.updatedSlickOptions.infinite = !this.isEdit;
       this.updatedSlickOptions.draggable = !this.isEdit;
       this.restartSlick();
-    }
-  }
+    },
+  },
 };
 </script>
 <style>
-  @import 'node_modules/slick-carousel/slick/slick.css'
+@import "node_modules/slick-carousel/slick/slick.css";
 </style>

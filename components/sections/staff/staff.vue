@@ -7,11 +7,7 @@
     >
       <div class="landing__container">
         <h2 v-if="isEdit">
-          <editor
-            :text="section.title || ''"
-            :sectionId="section.id"
-            field="title"
-          />
+          <editor :text="section.title || ''" :sectionId="section.id" field="title" />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
         <slick
@@ -22,6 +18,7 @@
         >
           <div
             class="staff__item-wrap cell"
+            :class="{'position-relative': isEdit}"
             v-for="item in section.items.filter(i => i.id)"
             :key="item.id"
             :style="styleDiv"
@@ -50,6 +47,7 @@
               <div class="staff__info">
                 <div class="staff__name" v-if="isEdit">
                   <editor
+                    data-placeholder="Имя Фамилия"
                     :text="item.name || ''"
                     :sectionId="section.id"
                     field="name"
@@ -59,6 +57,7 @@
                 <div v-else class="staff__name">{{ item.name }}</div>
                 <div class="staff__position" v-if="isEdit">
                   <editor
+                    data-placeholder="должность"
                     :text="item.position || ''"
                     :sectionId="section.id"
                     field="position"
@@ -70,6 +69,7 @@
               <div class="staff__contacts">
                 <div class="staff__phone" v-if="isEdit">
                   <editor
+                    data-placeholder="+7 351 111-22-33"
                     :text="item.phone || ''"
                     :sectionId="section.id"
                     field="phone"
@@ -79,6 +79,7 @@
                 <div v-else class="staff__phone">{{ item.phone }}</div>
                 <div class="staff__email">
                   <editor
+                    data-placeholder="mail@mail.ru"
                     :text="item.email || ''"
                     :sectionId="section.id"
                     field="email"
@@ -88,8 +89,7 @@
                   <a
                     v-else-if="isValidEmail(item.email)"
                     :href="`mailto:${item.email}`"
-                    >{{ item.email }}</a
-                  >
+                  >{{ item.email }}</a>
                   <span v-else>{{ item.email }}</span>
                 </div>
               </div>
@@ -118,7 +118,7 @@
 import { mapMutations, mapGetters } from "vuex";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   data: () => ({
     dialogImageUpload: false,
@@ -137,39 +137,42 @@ export default {
         '<button type="button" class="slick-arrow slick-next"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L15 13.9706L1.03398 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
       responsive: [
         {
-          breakpoint: 1024,
+          breakpoint: 1280,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false
-          }
+            arrows: false,
+          },
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false
-          }
-        }
-      ]
+            arrows: false,
+          },
+        },
+      ],
     },
-    isSlick: true
+    isSlick: true,
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      isEdit: "isEdit",
     }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
     },
     updatedSlickOptions() {
-      return Object.assign(this.slickOptions, {infinite: !this.isEdit});
-    }
+      return Object.assign(this.slickOptions, {
+        infinite: !this.isEdit,
+        draggable: !this.isEdit,
+      });
+    },
   },
   methods: {
     ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD"
+      setItemField: "pages/SET_ITEM_FIELD",
     }),
     itemImageSelect(item) {
       this.itemImageEdit = item;
@@ -182,7 +185,7 @@ export default {
         itemId: payload.itemId,
         items: "items",
         field: payload.field,
-        value: payload.value
+        value: payload.value,
       });
       this.$store.dispatch("pages/savePage");
     },
@@ -197,17 +200,17 @@ export default {
     restartSlick() {
       this.isSlick = false;
       const _this = this;
-      setTimeout(function() {
+      setTimeout(function () {
         _this.isSlick = true;
       }, 100);
-    }
+    },
   },
   watch: {
-    isEdit: function() {
+    isEdit: function () {
       this.updatedSlickOptions.infinite = !this.isEdit;
       this.updatedSlickOptions.draggable = !this.isEdit;
       this.restartSlick();
-    }
-  }
+    },
+  },
 };
 </script>

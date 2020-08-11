@@ -5,19 +5,11 @@
   >
     <div class="landing__container">
       <h2 v-if="isEdit">
-        <editor
-          :text="section.title || ''"
-          :sectionId="section.id"
-          field="title"
-        />
+        <editor :text="section.title || ''" :sectionId="section.id" field="title" />
       </h2>
       <h2 v-else>{{ section.title }}</h2>
       <div class="benefits__intro" v-if="isEdit">
-        <editor
-          :text="section.description || ''"
-          :sectionId="section.id"
-          field="description"
-        />
+        <editor :text="section.description || ''" :sectionId="section.id" field="description" />
       </div>
       <div class="benefits__intro" v-else v-html="section.description"></div>
       <!-- benefits__list--style3 -->
@@ -29,11 +21,7 @@
             :key="item.id"
             :style="styleDiv"
           >
-            <buttons-item
-              v-if="isEdit"
-              :itemId="item.id"
-              :sectionId="section.id"
-            />
+            <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="section.id" />
             <div class="benefits__icon">
               <svg
                 width="9"
@@ -68,9 +56,7 @@
                   :itemId="item.id"
                 />
               </div>
-              <div v-else class="benefits__description">
-                {{ item.description }}
-              </div>
+              <div v-else class="benefits__description">{{ item.description }}</div>
             </div>
           </div>
         </div>
@@ -80,9 +66,7 @@
         >
           <buttons-item-add :sectionId="section.id" />
         </div>
-        <div
-          class="cell cell-12 benefits__illustration-wrap cell-lg-4 cell-xl-6"
-        >
+        <div class="cell cell-12 benefits__illustration-wrap cell-lg-4 cell-xl-6">
           <div
             class="benefits__illustration"
             :class="{ 'no-image': !section.img }"
@@ -144,9 +128,7 @@
                   :itemId="item.id"
                 />
               </div>
-              <div v-else class="benefits__description">
-                {{ item.description }}
-              </div>
+              <div v-else class="benefits__description">{{ item.description }}</div>
             </div>
           </div>
         </div>
@@ -166,16 +148,16 @@
 export default {
   props: {
     section: Object,
-    isEdit: Boolean
+    isEdit: Boolean,
   },
   components: {
     Editor: () => import("@/components/admin/Editor"),
     ButtonsItem: () => import("@/components/admin/ButtonsItem"),
-    ImageUpload: () => import("@/components/admin/ImageUpload")
+    ImageUpload: () => import("@/components/admin/ImageUpload"),
   },
   data: () => ({
     dialogImageUpload: false,
-    itemImageEdit: {}
+    itemImageEdit: {},
   }),
   computed: {
     styleDiv() {
@@ -188,7 +170,7 @@ export default {
     items2() {
       const len = Math.ceil(this.section.items.length / 2);
       return this.section.items.filter((item, index) => index >= len);
-    }
+    },
   },
   methods: {
     itemImageSelect(item) {
@@ -201,7 +183,7 @@ export default {
     },
     onDeleteItem(payload) {
       this.$emit("onItemDelete", payload);
-    }
-  }
+    },
+  },
 };
 </script>
