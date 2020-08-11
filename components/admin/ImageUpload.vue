@@ -88,7 +88,7 @@
       <input type="file" @change="getImage" ref="file" />
     </v-dialog>
 
-    <v-snackbar v-model="snackbar" color="error">
+    <v-snackbar v-model="snackbar" top color="error">
       {{ shackbarText }}
       <template v-slot:action="{ attrs }">
         <v-btn icon v-bind="attrs" @click="snackbar = false">
@@ -100,6 +100,7 @@
 </template>
 
 <script>
+import { mapMutations, mapActions } from "vuex";
 export default {
   props: {
     dialog: Boolean,
@@ -123,6 +124,13 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      setSectionField: "pages/SET_SECTION_FIELD",
+      setItemField: "pages/SET_ITEM_FIELD"
+    }),
+    ...mapActions({
+      savePage: "pages/savePage"
+    }),
     selectFile() {
       this.$refs.file.click();
     },
@@ -151,10 +159,22 @@ export default {
         formData.append("image", this.selectedFile, this.selectedFile.name);
         formData.append("old_image", this.itemImageEdit.value);
         const { data } = await this.$axios.post("/api/upload/image", formData);
-        this.itemImageEdit.value = data.data.path;
+        const itemImageEdit = JSON.parse(JSON.stringify(this.itemImageEdit));
+        itemImageEdit.value = data.data.path;
+        if (itemImageEdit.sectionId) {
+          console.log("savePage");
+          this.setItemField({
+            sectionId: itemImageEdit.sectionId,
+            itemId: itemImageEdit.id,
+            items: itemImageEdit.items,
+            field: itemImageEdit.field,
+            value: itemImageEdit.value
+          });
+          await this.savePage();
+        }
+        await this.$emit("onUpload", itemImageEdit);
         this.image = null;
         this.loading = false;
-        await this.$emit("onUpload", this.itemImageEdit);
       } catch (err) {
         console.error(err);
         this.loading = false;
@@ -170,11 +190,22 @@ export default {
           "/api/upload/image-link",
           formData
         );
-        this.itemImageEdit.value = data.data.path;
+        const itemImageEdit = JSON.parse(JSON.stringify(this.itemImageEdit));
+        itemImageEdit.value = data.data.path;
+        if (itemImageEdit.sectionId) {
+          this.setItemField({
+            sectionId: itemImageEdit.sectionId,
+            itemId: itemImageEdit.id,
+            items: itemImageEdit.items,
+            field: itemImageEdit.field,
+            value: itemImageEdit.value
+          });
+          await this.savePage();
+        }
+        this.$emit("onUpload", itemImageEdit);
         this.image = null;
         this.loading = false;
         this.imageLink = null;
-        await this.$emit("onUpload", this.itemImageEdit);
       } catch (err) {
         console.error(err);
         this.loading = false;

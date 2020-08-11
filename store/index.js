@@ -1,7 +1,9 @@
 export const state = () => ({
   isApp: false,
   isPreview: false,
-  overlay: false
+  overlay: false,
+  dialogImageUpload: false,
+  imageUpload: {}
 });
 
 export const mutations = {
@@ -13,6 +15,15 @@ export const mutations = {
   },
   SET_OVERLAY(state, overlay) {
     state.overlay = overlay;
+  },
+  SET_DIALOG_IMAGE_UPLOAD(state, dialog) {
+    state.dialogImageUpload = dialog;
+    if (!dialog) {
+      state.imageUpload = {};
+    }
+  },
+  SET_IMAGE_UPLOAD(state, payload) {
+    state.imageUpload = payload;
   }
 };
 
@@ -52,5 +63,7 @@ export const getters = {
   isEdit: state => {
     return state.auth.loggedIn && !state.isPreview;
   },
-  overlay: state => state.overlay
+  overlay: state => state.overlay,
+  dialogImageUpload: state => state.dialogImageUpload,
+  imageUpload: state => state.imageUpload
 };

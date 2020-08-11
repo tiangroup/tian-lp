@@ -34,21 +34,12 @@
             @onItemDelete="onDeleteItem"
           />
           <div class="benefits__item">
-            <div
-              class="benefits__image"
-              :class="{ 'no-image': !item.img }"
-              :title="isEdit ? 'Двойной клик - изменить картинку' : ''"
-              @dblclick="
-                itemImageSelect({
-                  id: item.id,
-                  field: 'img',
-                  items: 'items',
-                  value: item.img
-                })
-              "
-            >
-              <img v-if="item.img" :src="$site_img(item.img)" />
-            </div>
+            <image-item
+              divClass="benefits__image"
+              :img="item.img"
+              :itemId="item.id"
+              :sectionId="section.id"
+            />
 
             <div class="benefits__body">
               <div v-if="isEdit" class="benefits__title">
@@ -83,14 +74,6 @@
         </div>
       </div>
     </div>
-
-    <image-upload
-      v-if="isEdit"
-      :dialog="dialogImageUpload"
-      @close="dialogImageUpload = false"
-      :itemImageEdit="itemImageEdit"
-      @onUpload="onUploadImage"
-    />
   </div>
 </template>
 
@@ -115,14 +98,6 @@ export default {
     itemImageEdit: {}
   }),
   methods: {
-    itemImageSelect(item) {
-      this.itemImageEdit = item;
-      this.dialogImageUpload = true;
-    },
-    async onUploadImage(data) {
-      await this.$emit("itemFieldEdit", data);
-      this.dialogImageUpload = false;
-    },
     onDeleteItem(payload) {
       this.$emit("onItemDelete", payload);
     }
