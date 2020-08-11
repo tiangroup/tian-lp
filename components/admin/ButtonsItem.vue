@@ -126,8 +126,8 @@ export default {
     }),
     onDeleteItem() {
       this.itemDelete();
+      this.$emit("onAction", { action: "delete" });
       this.deleteDialog = false;
-      this.$emit("onDelete", {});
     },
     async itemAdd() {
       this.addItem({
@@ -137,7 +137,7 @@ export default {
         itemNew: {}
       });
       await this.$store.dispatch("pages/savePage");
-      this.$emit("onAdd", {});
+      this.$emit("onAction", { action: "add" });
     },
     async itemDelete() {
       this.$emit("onItemDelete", { itemId: this.itemId });
@@ -146,7 +146,7 @@ export default {
         itemId: this.itemId,
         items: "items"
       });
-      await this.$store.dispatch("pages/savePage");      
+      await this.$store.dispatch("pages/savePage");
     },
     itemDown() {
       this.downItem({
@@ -154,7 +154,7 @@ export default {
         itemId: this.itemId,
         items: "items"
       });
-      this.$emit("onDown", {});
+      this.$emit("onAction", { action: "down" });
     },
     itemUp() {
       this.upItem({
@@ -162,7 +162,7 @@ export default {
         itemId: this.itemId,
         items: "items"
       });
-      this.$emit("onUp", {});
+      this.$emit("onAction", { action: "up" });
     }
   }
 };
