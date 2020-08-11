@@ -5,15 +5,12 @@
   >
     <div class="landing__container">
       <h2 v-if="isEdit">
-        <editor
-          :text="section.title || ''"
-          :sectionId="section.id"
-          field="title"
-        />
+        <editor :text="section.title || ''" :sectionId="section.id" field="title" />
       </h2>
       <h2 v-else>{{ section.title }}</h2>
       <div class="benefits__intro" v-if="isEdit">
         <editor
+          data-placeholder="Небольшой текст, который раскрывает основное преимущество компании"
           :text="section.description || ''"
           :sectionId="section.id"
           field="description"
@@ -44,6 +41,7 @@
             <div class="benefits__body">
               <div v-if="isEdit" class="benefits__title">
                 <editor
+                  data-placeholder="Название преимущества"
                   :text="item.title || ''"
                   :sectionId="section.id"
                   field="title"
@@ -54,15 +52,14 @@
 
               <div v-if="isEdit" class="benefits__description">
                 <editor
+                  data-placeholder="Краткое описание преимущества"
                   :text="item.description || ''"
                   :sectionId="section.id"
                   field="description"
                   :itemId="item.id"
                 />
               </div>
-              <div v-else class="benefits__description">
-                {{ item.description }}
-              </div>
+              <div v-else class="benefits__description">{{ item.description }}</div>
             </div>
           </div>
         </div>
@@ -81,26 +78,26 @@
 export default {
   props: {
     section: Object,
-    isEdit: Boolean
+    isEdit: Boolean,
   },
   components: {
     Editor: () => import("@/components/admin/Editor"),
     ButtonsItem: () => import("@/components/admin/ButtonsItem"),
-    ImageUpload: () => import("@/components/admin/ImageUpload")
+    ImageUpload: () => import("@/components/admin/ImageUpload"),
   },
   computed: {
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
-    }
+    },
   },
   data: () => ({
     dialogImageUpload: false,
-    itemImageEdit: {}
+    itemImageEdit: {},
   }),
   methods: {
     onDeleteItem(payload) {
       this.$emit("onItemDelete", payload);
-    }
-  }
+    },
+  },
 };
 </script>
