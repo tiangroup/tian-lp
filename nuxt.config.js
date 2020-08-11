@@ -43,8 +43,8 @@ export default {
   plugins: [
     { src: "~/plugins/medium-editor", ssr: false },
     { src: "~/plugins/sites" },
-    { src: "~/plugins/slick", ssr: false  },
-    { src: "~plugins/vue-gallery.client.js" }
+    { src: "~/plugins/slick", ssr: false },
+    { src: "~/plugins/vue-gallery.client.js" }
   ],
   /*
    ** Auto import components
