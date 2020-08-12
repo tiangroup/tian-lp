@@ -71,12 +71,13 @@
                 <editor
                   :text="item.description || ''"
                   data-placeholder="Описание тарифа"
+                  editContent="html"
                   :sectionId="section.id"
                   field="description"
                   :itemId="item.id"
                   v-if="isEdit"
                 />
-                <div v-else>{{ item.description }}</div>
+                <div v-else v-html="item.description"></div>
               </div>
               <div class="tarifs__price">
                 <editor
