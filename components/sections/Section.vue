@@ -18,6 +18,7 @@ export default {
     sections_partners: () => import("~/components/sections/partners/partners"),
     sections_staff: () => import("~/components/sections/staff/staff"),
     sections_tarifs: () => import("~/components/sections/tarifs/tarifs"),
+    sections_video: () => import("~/components/sections/video/video"),
   },
   computed: {
     ...mapGetters({
