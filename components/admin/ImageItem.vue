@@ -52,8 +52,8 @@ export default {
     img: String,
     itemId: String,
     sectionId: String,
-    fieldName: { type: String, default: "img" },
-    fieldItems: { type: String, default: "items" }
+    field: { type: String, default: "img" },
+    items: { type: String, default: "items" }
   },
   data: () => ({
     deleteDialog: false
@@ -78,8 +78,8 @@ export default {
       this.setImageUpload({
         sectionId: this.sectionId,
         id: this.itemId,
-        field: this.fieldName,
-        items: this.fieldItems,
+        field: this.field,
+        items: this.items,
         value: this.img
       });
       this.showImageUpload(true);
@@ -92,8 +92,8 @@ export default {
       this.setItemField({
         sectionId: this.sectionId,
         itemId: this.itemId,
-        items: this.fieldItems,
-        field: this.fieldName,
+        items: this.items,
+        field: this.field,
         value: null
       });
       await this.savePage();
