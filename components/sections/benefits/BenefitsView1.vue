@@ -83,17 +83,12 @@ export default {
   components: {
     Editor: () => import("@/components/admin/Editor"),
     ButtonsItem: () => import("@/components/admin/ButtonsItem"),
-    ImageUpload: () => import("@/components/admin/ImageUpload"),
   },
   computed: {
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
     },
   },
-  data: () => ({
-    dialogImageUpload: false,
-    itemImageEdit: {},
-  }),
   methods: {
     onDeleteItem(payload) {
       this.$emit("onItemDelete", payload);

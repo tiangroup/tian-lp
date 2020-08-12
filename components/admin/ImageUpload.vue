@@ -162,14 +162,21 @@ export default {
         const itemImageEdit = JSON.parse(JSON.stringify(this.itemImageEdit));
         itemImageEdit.value = data.data.path;
         if (itemImageEdit.sectionId) {
-          console.log("savePage");
-          this.setItemField({
-            sectionId: itemImageEdit.sectionId,
-            itemId: itemImageEdit.id,
-            items: itemImageEdit.items,
-            field: itemImageEdit.field,
-            value: itemImageEdit.value
-          });
+          if (itemImageEdit.items) {
+            this.setItemField({
+              sectionId: itemImageEdit.sectionId,
+              itemId: itemImageEdit.id,
+              items: itemImageEdit.items,
+              field: itemImageEdit.field,
+              value: itemImageEdit.value
+            });
+          } else {
+            this.setSectionField({
+              id: itemImageEdit.sectionId,
+              field: itemImageEdit.field,
+              value: itemImageEdit.value
+            });
+          }
           await this.savePage();
         }
         await this.$emit("onUpload", itemImageEdit);
@@ -193,13 +200,21 @@ export default {
         const itemImageEdit = JSON.parse(JSON.stringify(this.itemImageEdit));
         itemImageEdit.value = data.data.path;
         if (itemImageEdit.sectionId) {
-          this.setItemField({
-            sectionId: itemImageEdit.sectionId,
-            itemId: itemImageEdit.id,
-            items: itemImageEdit.items,
-            field: itemImageEdit.field,
-            value: itemImageEdit.value
-          });
+          if (itemImageEdit.items) {
+            this.setItemField({
+              sectionId: itemImageEdit.sectionId,
+              itemId: itemImageEdit.id,
+              items: itemImageEdit.items,
+              field: itemImageEdit.field,
+              value: itemImageEdit.value
+            });
+          } else {
+            this.setSectionField({
+              id: itemImageEdit.sectionId,
+              field: itemImageEdit.field,
+              value: itemImageEdit.value
+            });
+          }
           await this.savePage();
         }
         this.$emit("onUpload", itemImageEdit);
