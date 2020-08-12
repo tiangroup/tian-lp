@@ -116,7 +116,7 @@ export const actions = {
       commit("SET_SAVE_LOADING", true);
       const form = state.forms.find(f => f.id == payload);
       const response = await this.$axios.$put(
-        `/api/data/forms/${form.id}`,
+        `${this.$url_api}/forms/${form.id}`,
         form
       );
       commit("SET_FORM", response);
@@ -132,7 +132,7 @@ export const actions = {
       try {
         const form = state.forms.find(f => f.id == id);
         const response = await this.$axios.$put(
-          `/api/data/forms/${form.id}`,
+          `${this.$url_api}/forms/${form.id}`,
           form
         );
         commit("SET_FORM", response);
@@ -143,6 +143,30 @@ export const actions = {
     commit("SET_SAVE_LOADING", false);
     commit("SET_CHANGE", false);
     commit("RESET_CHANGE_FORMS");
+  },
+  async addForm({ commit, state }, payload) {
+    try {
+      const form = await this.$axios.$post(`${this.$url_api}/forms`, {
+        form: {
+          title: "Заголовок формы",
+          button: "Отправить"
+        },
+        admin: this.$auth.user.id
+      });
+      if (payload.sectionId && payload.field) {
+        commit(
+          "pages/SET_SECTION_FIELD",
+          {
+            id: payload.sectionId,
+            field: payload.field,
+            value: form.id
+          },
+          { root: true }
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 };
 
