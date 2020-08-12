@@ -12,14 +12,22 @@
         <h2 v-else>{{ section.title }}</h2>
         <div class="video__intro">
           <editor
-          :text="section.description || ''"
-          :sectionId="section.id"
-          field="description"
-           v-if="isEdit"
-           editContent="html"
-        />
-        <div v-else v-html="section.description"></div>
-          </div>
+            :text="section.description || ''"
+            :sectionId="section.id"
+            field="description"
+            v-if="isEdit"
+            editContent="html"
+          />
+          <div v-else v-html="section.description"></div>
+        </div>
+        <v-gallery
+          :images="images"
+          :index="index"
+          @close="index = null"
+          v-if="!isEdit"
+          :options="{youTubeVideoIdProperty: 'youtube', youTubePlayerVars: undefined, youTubeClickToPlay: true}"
+          :id="'video-gallery-' + section.id"
+        ></v-gallery>
         <slick
           ref="slick"
           :options="updatedSlickOptions"
@@ -29,9 +37,8 @@
           <div
             class="video__item-wrap cell"
             :class="{'position-relative': isEdit}"
-            v-for="item in section.items.filter(i => i.id)"
+            v-for="(item, itemIndex) in section.items.filter(i => i.id)"
             :key="item.id"
-            :style="styleDiv"
           >
             <buttons-item
               v-if="isEdit"
@@ -39,13 +46,18 @@
               :sectionId="section.id"
               @onAction="onItemsChange"
             />
-            <component class="staff__item" :is=elem :href="item.link">
+            <component
+              class="video__item"
+              :is="elem"
+              :href="item.link"
+              @click="callGallery(itemIndex)"
+            >
               <div
                 class="video__cover"
-                :class="{ clickable: isEdit }"
+                :class="{ 'video__cover--editable': isEdit }"
                 :title="isEdit ? 'Клик - изменить ссылку на видео' : ''"
-                @click="
-                  itemVideoSelect({
+                @click.stop="
+                  itemVideoInput({
                     itemId: item.id,
                     field: 'link',
                     value: item.link
@@ -54,58 +66,44 @@
               >
                 <img v-if="item.link" :src="videoCover(item.link)" />
               </div>
-              <div class="staff__info">
-                <div class="staff__name" v-if="isEdit">
-                  <editor
-                    data-placeholder="Имя Фамилия"
-                    :text="item.name || ''"
-                    :sectionId="section.id"
-                    field="name"
-                    :itemId="item.id"
-                  />
-                </div>
-                <div v-else class="staff__name">{{ item.name }}</div>
-                <div class="staff__position" v-if="isEdit">
-                  <editor
-                    data-placeholder="должность"
-                    :text="item.position || ''"
-                    :sectionId="section.id"
-                    field="position"
-                    :itemId="item.id"
-                  />
-                </div>
-                <div v-else class="staff__position">{{ item.position }}</div>
+              <div class="video__title">
+                <editor
+                  data-placeholder="Название видео"
+                  :text="item.title || ''"
+                  :sectionId="section.id"
+                  field="title"
+                  :itemId="item.id"
+                  v-if="isEdit"
+                />
+                <span v-else>{{ item.title }}</span>
               </div>
-              <div class="staff__contacts">
-                <div class="staff__phone" v-if="isEdit">
-                  <editor
-                    data-placeholder="+7 351 111-22-33"
-                    :text="item.phone || ''"
-                    editContent="html"
-                    :sectionId="section.id"
-                    field="phone"
-                    :itemId="item.id"
-                  />
-                </div>
-                <div v-else class="staff__phone" v-html="item.phone"></div>
-              </div>
-            </div>
+            </component>
           </div>
           <div
-            class="staff__item-wrap cell cell-12 cell-sm-6 cell-lg-4"
+            class="video__item-wrap cell"
             v-if="isEdit && (!section.items || !section.items.length)"
           >
             <buttons-item-add :sectionId="section.id" />
           </div>
         </slick>
+        <v-dialog v-model="videoUrlDialog" max-width="33rem">
+          <v-card>
+            <v-card-title>Ссылка на Youtube-видео</v-card-title>
+            <v-spacer></v-spacer>
+            <v-btn icon @click="videoUrlDialog = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <v-card-text>
+              <v-text-field label="Ссылка" outlined v-model="userUrl"></v-text-field>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn depressed color="gray" @click="videoUrlDialog = false">Отменить</v-btn>
+              <v-btn depressed color="green" @click="setVideoUrl(userUrl)">Сохранить</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </div>
-      <image-upload
-        v-if="isEdit"
-        :dialog="dialogImageUpload"
-        :itemImageEdit="itemImageEdit"
-        @close="dialogImageUpload = false"
-        @onUpload="onUploadImage"
-      />
     </div>
   </div>
 </template>
@@ -117,11 +115,12 @@ export default {
     section: Object,
   },
   data: () => ({
+    index: null,
     isSlick: true,
     slickOptions: {
       arrows: true,
       dots: true,
-      slidesToShow: 3,
+      slidesToShow: 2,
       slidesToScroll: 1,
       draggable: false,
       infinite: false,
@@ -148,7 +147,9 @@ export default {
         },
       ],
     },
-    isSlick: true,
+    videoUrlDialog: false,
+    userUrl: "",
+    videoItem: {},
   }),
   computed: {
     ...mapGetters({
@@ -165,15 +166,30 @@ export default {
     },
     elem() {
       return this.isEdit ? "div" : "a";
-    }
+    },
+    images() {
+      let itemImages = [];
+      for (var i = 0; i < this.section.items.length; i++) {
+        let item = this.section.items[i];
+        let itemImage = {
+          title: item.title,
+          href: item.link,
+          type: "text/html",
+          poster: "https://img.youtube.com/vi/PiDB4L-m6FQ/maxresdefault.jpg",
+        };
+        itemImages.push(itemImage);
+      }
+      return itemImages;
+    },
   },
   methods: {
     ...mapMutations({
       setItemField: "pages/SET_ITEM_FIELD",
     }),
-    itemVideoSelect(item) {
-      this.itemImageEdit = item;
-      this.dialogImageUpload = true;
+    itemVideoInput(payload) {
+      this.videoItem = payload;
+      this.userUrl = payload.value;
+      this.videoUrlDialog = true;
     },
     onItemsChange(event) {
       this.restartSlick();
@@ -188,9 +204,26 @@ export default {
     videoCover(url) {
       const youtubeRegex = /^.*(youtu\.be\/|vi?\/|u\/\w\/|embed\/|\?vi?=|\&vi?=)([^#\&\?]*).*/;
       const youtubeId = url.match(youtubeRegex);
-      const coverUrl = "https://img.youtube.com/vi/" + youtubeId[2] + "/maxresdefault.jpg";
+      const coverUrl =
+        "https://img.youtube.com/vi/" + youtubeId[2] + "/maxresdefault.jpg";
       return coverUrl;
-    }
+    },
+    setVideoUrl(userUrl) {
+      this.setItemField({
+        sectionId: this.section.id,
+        itemId: this.videoItem.itemId,
+        items: "items",
+        field: this.videoItem.field,
+        value: userUrl,
+      });
+      this.$store.dispatch("pages/savePage");
+    },
+    callGallery(itemIndex) {
+      if (this.isEdit) {
+        return;
+      }
+      index = itemIndex;
+    },
   },
   watch: {
     isEdit: function () {

@@ -77,7 +77,7 @@
                   :itemId="item.id"
                   v-if="isEdit"
                 />
-                <div v-else v-html="item.description"></div>
+                <div v-else v-html="item.description" class="body-copy"></div>
               </div>
               <div class="tarifs__price">
                 <editor
@@ -106,7 +106,7 @@
         <v-dialog v-model="dialog" max-width="33rem">
           <div class="der-popup">
             <div class="der-popup__close">
-              <button class="button button-icon button-close" @click.stop="dialog = false">
+              <button class="button button-icon button-close" @click="dialog = false">
                 <span class="sr-only">Закрыть</span>
                 <svg
                   width="18"
