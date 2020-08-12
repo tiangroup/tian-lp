@@ -2,7 +2,7 @@
   <div :style="styleDiv" :id="section.id">
     <buttons-section v-if="isEdit" :section="section" />
     <div
-      class="staff custom-v-spacing custom-h-spacing bg-primary"
+      class="video custom-v-spacing-2 bg-secondary"
       :class="{ mDark: section.settings.background === 'dark' }"
     >
       <div class="landing__container">
@@ -10,14 +10,24 @@
           <editor :text="section.title || ''" :sectionId="section.id" field="title" />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
+        <div class="video__intro">
+          <editor
+          :text="section.description || ''"
+          :sectionId="section.id"
+          field="description"
+           v-if="isEdit"
+           editContent="html"
+        />
+        <div v-else v-html="section.description"></div>
+          </div>
         <slick
           ref="slick"
           :options="updatedSlickOptions"
-          class="staff__list"
+          class="video__list"
           v-if="section.items && isSlick"
         >
           <div
-            class="staff__item-wrap cell"
+            class="video__item-wrap cell"
             :class="{'position-relative': isEdit}"
             v-for="item in section.items.filter(i => i.id)"
             :key="item.id"
@@ -29,20 +39,20 @@
               :sectionId="section.id"
               @onAction="onItemsChange"
             />
-            <div class="staff__item">
+            <component class="staff__item" :is=elem :href="item.link">
               <div
-                class="staff__image"
-                :class="{ 'no-image': !item.img, clickable: isEdit }"
-                :title="isEdit ? 'Двойной клик - изменить картинку' : ''"
-                @dblclick="
-                  itemImageSelect({
+                class="video__cover"
+                :class="{ clickable: isEdit }"
+                :title="isEdit ? 'Клик - изменить ссылку на видео' : ''"
+                @click="
+                  itemVideoSelect({
                     itemId: item.id,
-                    field: 'img',
-                    value: item.img
+                    field: 'link',
+                    value: item.link
                   })
                 "
               >
-                <img v-if="item.img" :src="$site_img(item.img)" />
+                <img v-if="item.link" :src="videoCover(item.link)" />
               </div>
               <div class="staff__info">
                 <div class="staff__name" v-if="isEdit">
@@ -78,21 +88,6 @@
                   />
                 </div>
                 <div v-else class="staff__phone" v-html="item.phone"></div>
-                <div class="staff__email">
-                  <editor
-                    data-placeholder="mail@mail.ru"
-                    :text="item.email || ''"
-                    :sectionId="section.id"
-                    field="email"
-                    :itemId="item.id"
-                    v-if="isEdit"
-                  />
-                  <a
-                    v-else-if="isValidEmail(item.email)"
-                    :href="`mailto:${item.email}`"
-                  >{{ item.email }}</a>
-                  <span v-else>{{ item.email }}</span>
-                </div>
               </div>
             </div>
           </div>
@@ -122,8 +117,6 @@ export default {
     section: Object,
   },
   data: () => ({
-    dialogImageUpload: false,
-    itemImageEdit: {},
     isSlick: true,
     slickOptions: {
       arrows: true,
@@ -170,32 +163,19 @@ export default {
         draggable: !this.isEdit,
       });
     },
+    elem() {
+      return this.isEdit ? "div" : "a";
+    }
   },
   methods: {
     ...mapMutations({
       setItemField: "pages/SET_ITEM_FIELD",
     }),
-    itemImageSelect(item) {
+    itemVideoSelect(item) {
       this.itemImageEdit = item;
       this.dialogImageUpload = true;
     },
-    onUploadImage(payload) {
-      this.dialogImageUpload = false;
-      this.setItemField({
-        sectionId: this.section.id,
-        itemId: payload.itemId,
-        items: "items",
-        field: payload.field,
-        value: payload.value,
-      });
-      this.$store.dispatch("pages/savePage");
-    },
-    isValidEmail(emailString) {
-      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return pattern.test(emailString);
-    },
     onItemsChange(event) {
-      console.log(event);
       this.restartSlick();
     },
     restartSlick() {
@@ -205,6 +185,12 @@ export default {
         _this.isSlick = true;
       }, 100);
     },
+    videoCover(url) {
+      const youtubeRegex = /^.*(youtu\.be\/|vi?\/|u\/\w\/|embed\/|\?vi?=|\&vi?=)([^#\&\?]*).*/;
+      const youtubeId = url.match(youtubeRegex);
+      const coverUrl = "https://img.youtube.com/vi/" + youtubeId[2] + "/maxresdefault.jpg";
+      return coverUrl;
+    }
   },
   watch: {
     isEdit: function () {
