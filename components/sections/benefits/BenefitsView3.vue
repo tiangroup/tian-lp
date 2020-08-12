@@ -86,25 +86,11 @@
         <div
           class="cell cell-12 benefits__illustration-wrap cell-lg-4 cell-xl-6"
         >
-          <!--
-          <div
-            class="benefits__illustration"
-            :class="{ 'no-image': !section.img }"
-            :title="isEdit ? 'Двойной клик - изменить картинку' : ''"
-            @dblclick="
-              itemImageSelect({
-                field: 'img',
-                value: section.img
-              })
-            "
-          >
-            <img v-if="section.img" :src="$site_img(section.img)" />
-          </div>
-          -->
           <image-item
             divClass="benefits__illustration"
             :img="section.img"
-            :field="null"
+            :items="null"
+            field="img"
             :sectionId="section.id"
           />
         </div>
@@ -166,12 +152,6 @@
       </div>
       <!-- benefits__list--style3 -->
     </div>
-    <image-upload
-      :dialog="dialogImageUpload"
-      @close="dialogImageUpload = false"
-      :itemImageEdit="itemImageEdit"
-      @onUpload="onUploadImage"
-    />
   </div>
 </template>
 
@@ -183,13 +163,8 @@ export default {
   },
   components: {
     Editor: () => import("@/components/admin/Editor"),
-    ButtonsItem: () => import("@/components/admin/ButtonsItem"),
-    ImageUpload: () => import("@/components/admin/ImageUpload")
+    ButtonsItem: () => import("@/components/admin/ButtonsItem")
   },
-  data: () => ({
-    dialogImageUpload: false,
-    itemImageEdit: {}
-  }),
   computed: {
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
@@ -204,14 +179,6 @@ export default {
     }
   },
   methods: {
-    itemImageSelect(item) {
-      this.itemImageEdit = item;
-      this.dialogImageUpload = true;
-    },
-    async onUploadImage(data) {
-      await this.$emit("sectionFieldEdit", data);
-      this.dialogImageUpload = false;
-    },
     onDeleteItem(payload) {
       this.$emit("onItemDelete", payload);
     }
