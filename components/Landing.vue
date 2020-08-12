@@ -21,6 +21,7 @@
       @onUpload="showDialogImageUpload = false"
       :itemImageEdit="itemImageEdit"
     />
+    <vue-confirm-dialog v-if="isEdit"></vue-confirm-dialog>
   </div>
 </template>
 
