@@ -5,7 +5,11 @@
   >
     <div class="landing__container">
       <h2 v-if="isEdit">
-        <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+        <editor
+          :text="section.title || ''"
+          :sectionId="section.id"
+          field="title"
+        />
       </h2>
       <h2 v-else>{{ section.title }}</h2>
       <div class="benefits__intro" v-if="isEdit">
@@ -26,7 +30,11 @@
             :key="item.id"
             :style="styleDiv"
           >
-            <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="section.id" />
+            <buttons-item
+              v-if="isEdit"
+              :itemId="item.id"
+              :sectionId="section.id"
+            />
             <div class="benefits__icon">
               <svg
                 width="9"
@@ -63,7 +71,9 @@
                   :itemId="item.id"
                 />
               </div>
-              <div v-else class="benefits__description">{{ item.description }}</div>
+              <div v-else class="benefits__description">
+                {{ item.description }}
+              </div>
             </div>
           </div>
         </div>
@@ -73,20 +83,16 @@
         >
           <buttons-item-add :sectionId="section.id" />
         </div>
-        <div class="cell cell-12 benefits__illustration-wrap cell-lg-4 cell-xl-6">
-          <div
-            class="benefits__illustration"
-            :class="{ 'no-image': !section.img }"
-            :title="isEdit ? 'Двойной клик - изменить картинку' : ''"
-            @dblclick="
-              itemImageSelect({
-                field: 'img',
-                value: section.img
-              })
-            "
-          >
-            <img v-if="section.img" :src="$site_img(section.img)" />
-          </div>
+        <div
+          class="cell cell-12 benefits__illustration-wrap cell-lg-4 cell-xl-6"
+        >
+          <image-item
+            divClass="benefits__illustration"
+            :img="section.img"
+            :items="null"
+            field="img"
+            :sectionId="section.id"
+          />
         </div>
         <div class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3">
           <div
@@ -137,19 +143,15 @@
                   :itemId="item.id"
                 />
               </div>
-              <div v-else class="benefits__description">{{ item.description }}</div>
+              <div v-else class="benefits__description">
+                {{ item.description }}
+              </div>
             </div>
           </div>
         </div>
       </div>
       <!-- benefits__list--style3 -->
     </div>
-    <image-upload
-      :dialog="dialogImageUpload"
-      @close="dialogImageUpload = false"
-      :itemImageEdit="itemImageEdit"
-      @onUpload="onUploadImage"
-    />
   </div>
 </template>
 
@@ -157,17 +159,12 @@
 export default {
   props: {
     section: Object,
-    isEdit: Boolean,
+    isEdit: Boolean
   },
   components: {
     Editor: () => import("@/components/admin/Editor"),
-    ButtonsItem: () => import("@/components/admin/ButtonsItem"),
-    ImageUpload: () => import("@/components/admin/ImageUpload"),
+    ButtonsItem: () => import("@/components/admin/ButtonsItem")
   },
-  data: () => ({
-    dialogImageUpload: false,
-    itemImageEdit: {},
-  }),
   computed: {
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
@@ -179,20 +176,12 @@ export default {
     items2() {
       const len = Math.ceil(this.section.items.length / 2);
       return this.section.items.filter((item, index) => index >= len);
-    },
+    }
   },
   methods: {
-    itemImageSelect(item) {
-      this.itemImageEdit = item;
-      this.dialogImageUpload = true;
-    },
-    async onUploadImage(data) {
-      await this.$emit("sectionFieldEdit", data);
-      this.dialogImageUpload = false;
-    },
     onDeleteItem(payload) {
       this.$emit("onItemDelete", payload);
-    },
-  },
+    }
+  }
 };
 </script>

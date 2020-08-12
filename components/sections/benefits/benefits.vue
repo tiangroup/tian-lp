@@ -6,15 +6,13 @@
       :is="view"
       :section="section"
       :isEdit="isEdit"
-      @itemFieldEdit="itemFieldEdit"
-      @sectionFieldEdit="sectionFieldEdit"
       @onItemDelete="onItemDelete"
     />
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   props: {
     section: Object
@@ -36,36 +34,12 @@ export default {
       return this.section.settings.view;
     }
   },
-  data: () => ({}),
   methods: {
-    ...mapMutations({
-      setSection: "pages/SET_SECTION",
-      setSectionField: "pages/SET_SECTION_FIELD",
-      setItemField: "pages/SET_ITEM_FIELD"
-    }),
-    itemFieldEdit(item) {
-      this.setItemField({
-        sectionId: this.section.id,
-        itemId: item.id,
-        items: item.items,
-        field: item.field,
-        value: item.value
-      });
-      this.$store.dispatch("pages/savePage");
-    },
     async onItemDelete(payload) {
       const item = this.section.items.find(i => i.id == payload.itemId);
       const formData = new FormData();
       formData.append("image", item.img);
       await this.$axios.post("/api/upload/image-remove", formData);
-    },
-    sectionFieldEdit(data) {
-      this.setSectionField({
-        id: this.section.id,
-        field: data.field,
-        value: data.value
-      });
-      this.$store.dispatch("pages/savePage");
     }
   }
 };
