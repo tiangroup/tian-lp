@@ -32,9 +32,9 @@ export default {
    ** Global CSS
    */
   css: [
-    "medium-editor/dist/css/medium-editor.min.css",
-    "medium-editor/dist/css/themes/beagle.min.css",
-    "slick-carousel/slick/slick.css"
+    //"medium-editor/dist/css/medium-editor.min.css",
+    //"medium-editor/dist/css/themes/beagle.min.css",
+    //"slick-carousel/slick/slick.css"
   ],
   /*
    ** Plugins to load before mounting the App
@@ -45,7 +45,8 @@ export default {
     { src: "~/plugins/sites" },
     { src: "~/plugins/slick", ssr: false },
     { src: "~/plugins/vue-gallery.client.js" },
-    { src: "~/plugins/vue-confirm-dialog", ssr: false }
+    { src: "~/plugins/vue-confirm-dialog", ssr: false },
+    "~plugins/vue-js-modal.js"
   ],
   /*
    ** Auto import components
