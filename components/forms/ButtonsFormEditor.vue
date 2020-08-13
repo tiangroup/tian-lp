@@ -70,13 +70,14 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters, mapActions } from "vuex";
 export default {
-  components: {
-    FormsEditorField: () => import("@/components/forms/FormsEditorField")
-  },
   props: {
-    form: Object
+    section: Object,
+    field: {
+      type: String,
+      default: "form"
+    }
   },
   data: () => ({
     drawer: false,
@@ -96,6 +97,16 @@ export default {
     ]
   }),
   computed: {
+    ...mapGetters({
+      getForm: "forms/form",
+      isEdit: "isEdit"
+    }),
+    form() {
+      return this.formId ? this.getForm(this.formId) : null;
+    },
+    formId() {
+      return this.section[this.field];
+    },
     formTitle: {
       get: function() {
         return this.form.form.title;
@@ -151,11 +162,14 @@ export default {
       setMailField: "forms/SET_MAIL_FIELD",
       addFieds: "forms/ADD_FIELDS"
     }),
+    ...mapActions({
+      saveForms: "forms/saveForms"
+    }),
     async newField() {
       this.addFieds({
         formId: this.form.id
       });
-      await this.$store.dispatch("forms/saveForms");
+      await this.saveForms();
     }
   }
 };
