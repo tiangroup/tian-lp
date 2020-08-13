@@ -55,54 +55,54 @@
             <buttons-item-add :sectionId="section.id" />
           </div>
         </div>
-        <slick
-          ref="slick"
-          :options="updatedSlickOptions"
-          class="partners__list"
+        <div
+          class="partners__list mx-n15 mx-md-n1rem"
           v-if="section.items && isSlick && section.settings.view === 'slider'"
         >
-          <div
-            class="partners__item-wrap"
-            :class="{'position-relative': isEdit}"
-            v-for="item in section.items.filter(i => i.id)"
-            :key="item.id"
-            :style="styleDiv"
-          >
-            <buttons-item
-              v-if="isEdit"
-              :itemId="item.id"
-              :sectionId="section.id"
-              @onAction="onItemsChange"
-              @onItemDelete="onItemDelete"
-            />
-            <div class="partners__item">
-              <a v-if="item.link && !isEdit" :href="item.link" class="partners__link"></a>
-              <image-item
-                divClass="partners__image"
-                :img="item.img"
+          <slick ref="slick" :options="updatedSlickOptions">
+            <div
+              class="partners__item-wrap"
+              :class="{'position-relative': isEdit}"
+              v-for="item in section.items.filter(i => i.id)"
+              :key="item.id"
+              :style="styleDiv"
+            >
+              <buttons-item
+                v-if="isEdit"
                 :itemId="item.id"
                 :sectionId="section.id"
+                @onAction="onItemsChange"
+                @onItemDelete="onItemDelete"
               />
-              <div class="partners__text">
-                <editor
-                  :text="item.title || ''"
-                  :sectionId="section.id"
-                  field="title"
+              <div class="partners__item">
+                <a v-if="item.link && !isEdit" :href="item.link" class="partners__link"></a>
+                <image-item
+                  divClass="partners__image"
+                  :img="item.img"
                   :itemId="item.id"
-                  v-if="isEdit"
-                  data-placeholder="Название компании"
+                  :sectionId="section.id"
                 />
-                <span v-else>{{ item.title }}</span>
+                <div class="partners__text">
+                  <editor
+                    :text="item.title || ''"
+                    :sectionId="section.id"
+                    field="title"
+                    :itemId="item.id"
+                    v-if="isEdit"
+                    data-placeholder="Название компании"
+                  />
+                  <span v-else>{{ item.title }}</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div
-            class="partners__item-wrap cell"
-            v-if="isEdit && (!section.items || !section.items.length)"
-          >
-            <buttons-item-add :sectionId="section.id" />
-          </div>
-        </slick>
+            <div
+              class="partners__item-wrap cell"
+              v-if="isEdit && (!section.items || !section.items.length)"
+            >
+              <buttons-item-add :sectionId="section.id" />
+            </div>
+          </slick>
+        </div>
       </div>
     </div>
   </div>
