@@ -111,7 +111,11 @@ import { mapMutations } from "vuex";
 export default {
   props: {
     itemId: String,
-    sectionId: String
+    sectionId: String,
+    items: {
+      type: String,
+      default: "items"
+    }
   },
   data: () => ({
     fab: false,
@@ -133,7 +137,7 @@ export default {
       this.addItem({
         sectionId: this.sectionId,
         itemId: this.itemId,
-        items: "items",
+        items: this.items,
         itemNew: {}
       });
       await this.$store.dispatch("pages/savePage");
@@ -144,7 +148,7 @@ export default {
       this.deleteItem({
         sectionId: this.sectionId,
         itemId: this.itemId,
-        items: "items"
+        items: this.items
       });
       await this.$store.dispatch("pages/savePage");
     },
@@ -152,7 +156,7 @@ export default {
       this.downItem({
         sectionId: this.sectionId,
         itemId: this.itemId,
-        items: "items"
+        items: this.items
       });
       this.$emit("onAction", { action: "down" });
     },
@@ -160,7 +164,7 @@ export default {
       this.upItem({
         sectionId: this.sectionId,
         itemId: this.itemId,
-        items: "items"
+        items: this.items
       });
       this.$emit("onAction", { action: "up" });
     }

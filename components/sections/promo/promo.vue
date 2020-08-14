@@ -57,7 +57,7 @@
               {{ section.description }}
             </div>
             <div class="hero__action" v-if="button || form" :style="styleDiv">
-              <buttons-form-editor
+              <form-editor
                 v-if="isEdit && section.promo_form"
                 :section="section"
                 field="promo_form"
@@ -96,7 +96,6 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import MyComponent from "@/components/forms/BaseForm.vue";
 export default {
   props: {
     section: Object
