@@ -58,6 +58,18 @@ export default {
       {
         name: "Телефон",
         value: "tel"
+      },
+      {
+        name: "Многострочный текст",
+        value: "textarea"
+      },
+      {
+        name: "Чек-бокс",
+        value: "check"
+      },
+      {
+        name: "Радио-бокс",
+        value: "radio"
       }
     ]
   }),

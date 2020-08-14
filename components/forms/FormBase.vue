@@ -4,6 +4,14 @@
       <div class="form__title">
         {{ form.form.title }}
       </div>
+      <component
+        v-for="item in form.fields.filter(i => i.id)"
+        :key="item.id"
+        :is="`input_${item.type}`"
+        :item="item"
+        v-model="formData[item.id]"
+      />
+      <!--
       <label
         class="field field--text"
         v-for="item in form.fields.filter(i => i.id)"
@@ -35,7 +43,16 @@
           :name="item.id"
           :required="!!item.required"
         />
+        <textarea
+          v-if="item.type == 'textarea'"
+          rows="3"
+          cols="50"
+          class="field__input"
+          :name="item.id"
+          :required="!!item.required"
+        ></textarea>
       </label>
+      -->
 
       <div class="field field--submit">
         <button type="submit" class="button form__submit w-100 w-md-auto">
@@ -63,6 +80,14 @@ export default {
       type: String,
       default: "form"
     }
+  },
+  components: {
+    input_text: () => import("./inputs/FormInputText"),
+    input_tel: () => import("./inputs/FormInputTel"),
+    input_email: () => import("./inputs/FormInputEmail"),
+    input_textarea: () => import("./inputs/FormInputTextarea"),
+    input_check: () => import("./inputs/FormInputCheck"),
+    input_radio: () => import("./inputs/FormInputRadio")
   },
   data: () => ({
     formData: {}

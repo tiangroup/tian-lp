@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="form-wrap bg-theme" :style="styleDiv">
-      <buttons-form-editor
+      <form-editor
         v-if="isEdit && section[field]"
         :section="section"
         :field="field"
