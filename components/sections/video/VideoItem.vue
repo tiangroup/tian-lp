@@ -1,19 +1,33 @@
 <template>
   <div class="video__item-wrap cell">
-    <div class="video__item" @click.once="updateVideoShown()">
-      <div class="video__cover" v-if="!videoShown">
+    <div class="video__item" :class="{'position-relative': isEdit}">
+      <buttons-item
+        :itemId="item.id"
+        :sectionId="sectionId"
+        @onAction="$emit('iupdate')"
+        v-if="isEdit"
+      />
+      <div
+        v-if="isEdit"
+        class="video__cover video__cover--editable"
+        title="Клик - изменить ссылку на видео"
+        @click="$emit('change-link')"
+      >
         <img v-if="item.link" :src="videoCover" />
       </div>
-      <div class="video__title" v-if="!videoShown">{{ item.title }}</div>
-      <div class="video__container" v-if="videoShown">
-        <iframe
-          width="560"
-          height="315"
-          :src="item.link"
-          frameborder="0"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
+      <div v-else class="video__cover">
+        <img v-if="item.link" :src="videoCover" />
+      </div>
+      <div class="video__title">
+        <editor
+          data-placeholder="Название видео"
+          :text="item.title || ''"
+          :sectionId="sectionId"
+          field="title"
+          :itemId="item.id"
+          v-if="isEdit"
+        />
+        <span v-else>{{ videoCover}}</span>
       </div>
     </div>
   </div>
@@ -23,6 +37,7 @@ export default {
   props: {
     item: Object,
     sectionId: String,
+    isEdit: Boolean,
   },
   data: () => ({
     videoShown: false,
@@ -39,10 +54,6 @@ export default {
       );
     },
   },
-  methods: {
-    updateVideoShown() {
-      this.videoShown = true;
-    },
-  },
+  methods: {},
 };
 </script>
