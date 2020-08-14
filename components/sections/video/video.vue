@@ -23,37 +23,20 @@
         <div v-if="section.items">
           <div class="mx-ncell" v-if="isEdit">
             <slick ref="slick" :options="updatedSlickOptions" class="video__list" v-if="isSlick">
-              <div
-                class="video__item-wrap cell position-relative"
+              <video-item
                 v-for="item in section.items.filter(i => i.id)"
                 :key="item.id"
-              >
-                <buttons-item :itemId="item.id" :sectionId="section.id" @onAction="onItemsChange" />
-                <div class="video__item">
-                  <div
-                    class="video__cover video__cover--editable"
-                    title="Клик - изменить ссылку на видео"
-                    @click.stop="
-                  itemVideoInput({
-                    itemId: item.id,
-                    field: 'link',
-                    value: item.link
-                  })
-                "
-                  >
-                    <img v-if="item.link" :src="videoCover(getVideoId(item.link))" />
-                  </div>
-                  <div class="video__title">
-                    <editor
-                      data-placeholder="Название видео"
-                      :text="item.title || ''"
-                      :sectionId="section.id"
-                      field="title"
-                      :itemId="item.id"
-                    />
-                  </div>
-                </div>
-              </div>
+                :item="item"
+                :sectionId="section.id"
+                :isEdit="isEdit"
+                @iupdate="restartSlick()"
+                @change-link="itemVideoInput({
+                  sectionId:section.id,
+                  itemId:item.id,
+                  field:'link',
+                  value:item.link
+                })"
+              ></video-item>
               <div class="video__item-wrap cell" v-if="!section.items || !section.items.length">
                 <buttons-item-add :sectionId="section.id" />
               </div>
@@ -86,6 +69,7 @@
                 :key="item.id"
                 :item="item"
                 :sectionId="section.id"
+                :isEdit="isEdit"
               ></video-item>
             </slick>
           </div>
@@ -105,7 +89,8 @@ export default {
     //VideoItem: () => import("./VideoItem"),
   },
   data: () => ({
-    videoShown: false,
+    videoUrlDialog: false,
+    userUrl: "",
     isSlick: true,
     slickOptions: {
       arrows: true,
@@ -137,9 +122,6 @@ export default {
         },
       ],
     },
-    videoUrlDialog: false,
-    userUrl: "",
-    videoItem: {},
   }),
   computed: {
     ...mapGetters({
@@ -164,8 +146,15 @@ export default {
       this.userUrl = payload.value;
       this.videoUrlDialog = true;
     },
-    onItemsChange(event) {
-      this.restartSlick();
+    setVideoUrl(userUrl) {
+      this.setItemField({
+        sectionId: this.sectionId,
+        itemId: this.item.id,
+        items: "items",
+        field: this.field,
+        value: userUrl,
+      });
+      this.$store.dispatch("pages/savePage");
     },
     restartSlick() {
       this.isSlick = false;
@@ -173,26 +162,6 @@ export default {
       setTimeout(function () {
         _this.isSlick = true;
       }, 100);
-    },
-    getVideoId(url) {
-      const youtubeRegex = /^.*(youtu\.be\/|vi?\/|u\/\w\/|embed\/|\?vi?=|\&vi?=)([^#\&\?]*).*/;
-      const youtubeId = url.match(youtubeRegex);
-      return youtubeId[2];
-    },
-    videoCover(videoId) {
-      const coverUrl =
-        "https://img.youtube.com/vi/" + videoId + "/maxresdefault.jpg";
-      return coverUrl;
-    },
-    setVideoUrl(userUrl) {
-      this.setItemField({
-        sectionId: this.section.id,
-        itemId: this.videoItem.itemId,
-        items: "items",
-        field: this.videoItem.field,
-        value: userUrl,
-      });
-      this.$store.dispatch("pages/savePage");
     },
   },
   watch: {
