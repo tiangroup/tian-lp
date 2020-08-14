@@ -20,7 +20,7 @@
       </button>
     </div>
     <div class="der-popup__body">
-      <div class="popup-callback">
+      <div class="popup-callback">        
         <form-base :section="section" :field="field" />
       </div>
     </div>

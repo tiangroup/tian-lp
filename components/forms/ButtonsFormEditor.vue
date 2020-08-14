@@ -11,7 +11,7 @@
           v-on="on"
           absolute
           top
-          right
+          left
           @click="drawer = true"
         >
           <v-icon>mdi-pencil</v-icon>
@@ -96,6 +96,11 @@ export default {
       }
     ]
   }),
+  async fetch() {
+    if (!this.form) {
+      await this.$store.dispatch("forms/loadForm", this.formId);
+    }
+  },
   computed: {
     ...mapGetters({
       getForm: "forms/form",
@@ -177,6 +182,6 @@ export default {
 
 <style scoped>
 .over {
-  z-index: 10010;
+  z-index: 100100;
 }
 </style>
