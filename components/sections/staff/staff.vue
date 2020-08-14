@@ -10,119 +10,100 @@
           <editor :text="section.title || ''" :sectionId="section.id" field="title" />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
-        <slick
-          ref="slick"
-          :options="updatedSlickOptions"
-          class="staff__list"
-          v-if="section.items && isSlick"
-        >
-          <div
-            class="staff__item-wrap cell"
-            :class="{'position-relative': isEdit}"
-            v-for="item in section.items.filter(i => i.id)"
-            :key="item.id"
-            :style="styleDiv"
-          >
-            <buttons-item
-              v-if="isEdit"
-              :itemId="item.id"
-              :sectionId="section.id"
-              @onAction="onItemsChange"
-            />
-            <div class="staff__item">
-              <div
-                class="staff__image"
-                :class="{ 'no-image': !item.img, clickable: isEdit }"
-                :title="isEdit ? 'Двойной клик - изменить картинку' : ''"
-                @dblclick="
-                  itemImageSelect({
-                    itemId: item.id,
-                    field: 'img',
-                    value: item.img
-                  })
-                "
-              >
-                <img v-if="item.img" :src="$site_img(item.img)" />
-              </div>
-              <div class="staff__info">
-                <div class="staff__name" v-if="isEdit">
-                  <editor
-                    data-placeholder="Имя Фамилия"
-                    :text="item.name || ''"
-                    :sectionId="section.id"
-                    field="name"
-                    :itemId="item.id"
-                  />
+        <div class="staff__list mx-n15 mx-md-n1rem" v-if="section.items && isSlick">
+          <slick ref="slick" :options="updatedSlickOptions">
+            <div
+              class="staff__item-wrap cell"
+              :class="{'position-relative': isEdit}"
+              v-for="item in section.items.filter(i => i.id)"
+              :key="item.id"
+            >
+              <buttons-item
+                v-if="isEdit"
+                :itemId="item.id"
+                :sectionId="section.id"
+                @onAction="onItemsChange"
+                @onItemDelete="onItemDelete"
+              />
+              <div class="staff__item">
+                <image-item
+                  divClass="staff__image"
+                  :img="item.img"
+                  :itemId="item.id"
+                  :sectionId="section.id"
+                />
+                <div class="staff__info">
+                  <div class="staff__name" v-if="isEdit">
+                    <editor
+                      data-placeholder="Имя Фамилия"
+                      :text="item.name || ''"
+                      :sectionId="section.id"
+                      field="name"
+                      :itemId="item.id"
+                    />
+                  </div>
+                  <div v-else class="staff__name">{{ item.name }}</div>
+                  <div class="staff__position" v-if="isEdit">
+                    <editor
+                      data-placeholder="должность"
+                      :text="item.position || ''"
+                      :sectionId="section.id"
+                      field="position"
+                      :itemId="item.id"
+                    />
+                  </div>
+                  <div v-else class="staff__position">{{ item.position }}</div>
                 </div>
-                <div v-else class="staff__name">{{ item.name }}</div>
-                <div class="staff__position" v-if="isEdit">
-                  <editor
-                    data-placeholder="должность"
-                    :text="item.position || ''"
-                    :sectionId="section.id"
-                    field="position"
-                    :itemId="item.id"
-                  />
-                </div>
-                <div v-else class="staff__position">{{ item.position }}</div>
-              </div>
-              <div class="staff__contacts">
-                <div class="staff__phone" v-if="isEdit">
-                  <editor
-                    data-placeholder="+7 351 111-22-33"
-                    :text="item.phone || ''"
-                    :sectionId="section.id"
-                    field="phone"
-                    :itemId="item.id"
-                  />
-                </div>
-                <div v-else class="staff__phone">{{ item.phone }}</div>
-                <div class="staff__email">
-                  <editor
-                    data-placeholder="mail@mail.ru"
-                    :text="item.email || ''"
-                    :sectionId="section.id"
-                    field="email"
-                    :itemId="item.id"
-                    v-if="isEdit"
-                  />
-                  <a
-                    v-else-if="isValidEmail(item.email)"
-                    :href="`mailto:${item.email}`"
-                  >{{ item.email }}</a>
-                  <span v-else>{{ item.email }}</span>
+                <div class="staff__contacts">
+                  <div class="staff__phone" v-if="isEdit">
+                    <editor
+                      data-placeholder="+7 351 111-22-33"
+                      :text="item.phone || ''"
+                      editContent="html"
+                      :sectionId="section.id"
+                      field="phone"
+                      :itemId="item.id"
+                    />
+                  </div>
+                  <div v-else class="staff__phone" v-html="item.phone"></div>
+                  <div class="staff__email">
+                    <editor
+                      data-placeholder="mail@mail.ru"
+                      :text="item.email || ''"
+                      :sectionId="section.id"
+                      field="email"
+                      :itemId="item.id"
+                      v-if="isEdit"
+                    />
+                    <a
+                      v-else-if="isValidEmail(item.email)"
+                      :href="`mailto:${item.email}`"
+                    >{{ item.email }}</a>
+                    <span v-else>{{ item.email }}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="staff__item-wrap cell cell-12 cell-sm-6 cell-lg-4"
-            v-if="isEdit && (!section.items || !section.items.length)"
-          >
-            <buttons-item-add :sectionId="section.id" />
-          </div>
-        </slick>
+            <div
+              class="staff__item-wrap cell"
+              v-if="isEdit && (!section.items || !section.items.length)"
+            >
+              <buttons-item-add :sectionId="section.id" />
+            </div>
+          </slick>
+        </div>
       </div>
-      <image-upload
-        v-if="isEdit"
-        :dialog="dialogImageUpload"
-        :itemImageEdit="itemImageEdit"
-        @close="dialogImageUpload = false"
-        @onUpload="onUploadImage"
-      />
     </div>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   props: {
     section: Object,
   },
   data: () => ({
-    dialogImageUpload: false,
-    itemImageEdit: {},
     isSlick: true,
     slickOptions: {
       arrows: true,
@@ -154,7 +135,6 @@ export default {
         },
       ],
     },
-    isSlick: true,
   }),
   computed: {
     ...mapGetters({
@@ -171,24 +151,6 @@ export default {
     },
   },
   methods: {
-    ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD",
-    }),
-    itemImageSelect(item) {
-      this.itemImageEdit = item;
-      this.dialogImageUpload = true;
-    },
-    onUploadImage(payload) {
-      this.dialogImageUpload = false;
-      this.setItemField({
-        sectionId: this.section.id,
-        itemId: payload.itemId,
-        items: "items",
-        field: payload.field,
-        value: payload.value,
-      });
-      this.$store.dispatch("pages/savePage");
-    },
     isValidEmail(emailString) {
       const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return pattern.test(emailString);
@@ -203,6 +165,12 @@ export default {
       setTimeout(function () {
         _this.isSlick = true;
       }, 100);
+    },
+    async onItemDelete(payload) {
+      const item = this.section.items.find((i) => i.id == payload.itemId);
+      const formData = new FormData();
+      formData.append("image", item.img);
+      await this.$axios.post("/api/upload/image-remove", formData);
     },
   },
   watch: {

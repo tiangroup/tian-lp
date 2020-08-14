@@ -26,23 +26,16 @@
               :itemId="item.id"
               :sectionId="section.id"
               @onAction="onItemsChange"
+              @onItemDelete="onItemDelete"
             />
             <div class="partners__item">
               <a v-if="item.link && !isEdit" :href="item.link" class="partners__link"></a>
-              <div
-                class="partners__image"
-                :class="{ 'no-image': !item.img, 'clickable': isEdit }"
-                :title="isEdit ? 'Двойной клик - изменить картинку' : ''"
-                @dblclick="
-                  itemImageSelect({
-                    itemId: item.id,
-                    field: 'img',
-                    value: item.img
-                  })
-                "
-              >
-                <img v-if="item.img" :src="$site_img(item.img)" />
-              </div>
+              <image-item
+                divClass="partners__image"
+                :img="item.img"
+                :itemId="item.id"
+                :sectionId="section.id"
+              />
               <div class="partners__text" v-if="isEdit">
                 <editor
                   :text="item.title || ''"
@@ -62,63 +55,55 @@
             <buttons-item-add :sectionId="section.id" />
           </div>
         </div>
-        <slick
-          ref="slick"
-          :options="updatedSlickOptions"
-          class="partners__list"
+        <div
+          class="partners__list mx-n15 mx-md-n1rem"
           v-if="section.items && isSlick && section.settings.view === 'slider'"
         >
-          <div
-            class="partners__item-wrap"
-            :class="{'position-relative': isEdit}"
-            v-for="item in section.items.filter(i => i.id)"
-            :key="item.id"
-            :style="styleDiv"
-          >
-            <buttons-item
-              v-if="isEdit"
-              :itemId="item.id"
-              :sectionId="section.id"
-              @onAction="onItemsChange"
-            />
-            <div class="partners__item">
-              <a v-if="item.link && !isEdit" :href="item.link" class="partners__link"></a>
-              <div
-                class="partners__image"
-                :class="{ 'no-image': !item.img, 'clickable': isEdit }"
-                :title="isEdit ? 'Двойной клик - изменить картинку' : ''"
-                @dblclick="
-                  itemImageSelect({
-                    itemId: item.id,
-                    field: 'img',
-                    value: item.img
-                  })
-                "
-              >
-                <img v-if="item.img" :src="$site_img(item.img)" />
-              </div>
-              <div class="partners__text">
-                <editor
-                  :text="item.title || ''"
-                  :sectionId="section.id"
-                  field="title"
+          <slick ref="slick" :options="updatedSlickOptions">
+            <div
+              class="partners__item-wrap"
+              :class="{'position-relative': isEdit}"
+              v-for="item in section.items.filter(i => i.id)"
+              :key="item.id"
+              :style="styleDiv"
+            >
+              <buttons-item
+                v-if="isEdit"
+                :itemId="item.id"
+                :sectionId="section.id"
+                @onAction="onItemsChange"
+                @onItemDelete="onItemDelete"
+              />
+              <div class="partners__item">
+                <a v-if="item.link && !isEdit" :href="item.link" class="partners__link"></a>
+                <image-item
+                  divClass="partners__image"
+                  :img="item.img"
                   :itemId="item.id"
-                  v-if="isEdit"
-                  data-placeholder="Название компании"
+                  :sectionId="section.id"
                 />
-                <span v-else>{{ item.title }}</span>
+                <div class="partners__text">
+                  <editor
+                    :text="item.title || ''"
+                    :sectionId="section.id"
+                    field="title"
+                    :itemId="item.id"
+                    v-if="isEdit"
+                    data-placeholder="Название компании"
+                  />
+                  <span v-else>{{ item.title }}</span>
+                </div>
               </div>
             </div>
-          </div>
-        </slick>
+            <div
+              class="partners__item-wrap cell"
+              v-if="isEdit && (!section.items || !section.items.length)"
+            >
+              <buttons-item-add :sectionId="section.id" />
+            </div>
+          </slick>
+        </div>
       </div>
-      <image-upload
-        v-if="isEdit"
-        :dialog="dialogImageUpload"
-        :itemImageEdit="itemImageEdit"
-        @close="dialogImageUpload = false"
-        @onUpload="onUploadImage"
-      />
     </div>
   </div>
 </template>
@@ -130,8 +115,6 @@ export default {
     section: Object,
   },
   data: () => ({
-    dialogImageUpload: false,
-    itemImageEdit: {},
     isSlick: true,
     slickOptions: {
       arrows: true,
@@ -179,24 +162,6 @@ export default {
     },
   },
   methods: {
-    ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD",
-    }),
-    itemImageSelect(item) {
-      this.itemImageEdit = item;
-      this.dialogImageUpload = true;
-    },
-    onUploadImage(payload) {
-      this.dialogImageUpload = false;
-      this.setItemField({
-        sectionId: this.section.id,
-        itemId: payload.itemId,
-        items: "items",
-        field: payload.field,
-        value: payload.value,
-      });
-      this.$store.dispatch("pages/savePage");
-    },
     onItemsChange(event) {
       this.restartSlick();
     },
@@ -206,6 +171,12 @@ export default {
       setTimeout(function () {
         _this.isSlick = true;
       }, 100);
+    },
+    async onItemDelete(payload) {
+      const item = this.section.items.find((i) => i.id == payload.itemId);
+      const formData = new FormData();
+      formData.append("image", item.img);
+      await this.$axios.post("/api/upload/image-remove", formData);
     },
   },
   watch: {
