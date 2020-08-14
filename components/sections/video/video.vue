@@ -20,81 +20,75 @@
           />
           <div v-else v-html="section.description"></div>
         </div>
-        <div class="mx-ncell" v-if="section.items && isEdit">
-          <slick ref="slick" :options="updatedSlickOptions" class="video__list" v-if="isSlick">
-            <div
-              class="video__item-wrap cell position-relative"
-              v-for="item in section.items.filter(i => i.id)"
-              :key="item.id"
-            >
-              <buttons-item :itemId="item.id" :sectionId="section.id" @onAction="onItemsChange" />
-              <div class="video__item">
-                <div
-                  class="video__cover video__cover--editable"
-                  title="Клик - изменить ссылку на видео"
-                  @click.stop="
+        <div v-if="section.items">
+          <div class="mx-ncell" v-if="isEdit">
+            <slick ref="slick" :options="updatedSlickOptions" class="video__list" v-if="isSlick">
+              <div
+                class="video__item-wrap cell position-relative"
+                v-for="item in section.items.filter(i => i.id)"
+                :key="item.id"
+              >
+                <buttons-item :itemId="item.id" :sectionId="section.id" @onAction="onItemsChange" />
+                <div class="video__item">
+                  <div
+                    class="video__cover video__cover--editable"
+                    title="Клик - изменить ссылку на видео"
+                    @click.stop="
                   itemVideoInput({
                     itemId: item.id,
                     field: 'link',
                     value: item.link
                   })
                 "
-                >
-                  <img v-if="item.link" :src="videoCover(getVideoId(item.link))" />
-                </div>
-                <div class="video__title">
-                  <editor
-                    data-placeholder="Название видео"
-                    :text="item.title || ''"
-                    :sectionId="section.id"
-                    field="title"
-                    :itemId="item.id"
-                  />
+                  >
+                    <img v-if="item.link" :src="videoCover(getVideoId(item.link))" />
+                  </div>
+                  <div class="video__title">
+                    <editor
+                      data-placeholder="Название видео"
+                      :text="item.title || ''"
+                      :sectionId="section.id"
+                      field="title"
+                      :itemId="item.id"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="video__item-wrap cell" v-if="!section.items || !section.items.length">
-              <buttons-item-add :sectionId="section.id" />
-            </div>
-          </slick>
+              <div class="video__item-wrap cell" v-if="!section.items || !section.items.length">
+                <buttons-item-add :sectionId="section.id" />
+              </div>
+            </slick>
 
-          <v-dialog v-model="videoUrlDialog" max-width="33rem">
-            <v-card>
-              <v-card-title class="mb-10">
-                Ссылка на Youtube-видео
-                <v-spacer></v-spacer>
-                <v-btn icon @click="videoUrlDialog = false">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-              </v-card-title>
-              <v-card-text>
-                <v-text-field label="Ссылка" outlined v-model="userUrl"></v-text-field>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn depressed color="gray" @click="videoUrlDialog = false">Отменить</v-btn>
-                <v-btn depressed color="green" @click="setVideoUrl(userUrl)">Сохранить</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </div>
-        <div class="mx-ncell" v-else-if="section.items && !isEdit">
-          <slick ref="slick" :options="updatedSlickOptions" class="video__list" v-if="isSlick">
-            <div
-              class="video__item-wrap cell"
-              v-for="(item, itemIndex) in section.items.filter(i => i.id)"
-              :key="item.id"
-            >
-              <div class="video__item">
-                <div class="video__cover">
-                  <img v-if="item.link" :src="videoCover(getVideoId(item.link))" />
-                </div>
-                <div class="video__title">{{ item.title }}</div>
-                <div class="video__id display-none">{{ getVideoId(item.link) }}</div>
-                <div :id="'vid' + itemIndex"></div>
-              </div>
-            </div>
-          </slick>
+            <v-dialog v-model="videoUrlDialog" max-width="33rem">
+              <v-card>
+                <v-card-title class="mb-10">
+                  Ссылка на Youtube-видео
+                  <v-spacer></v-spacer>
+                  <v-btn icon @click="videoUrlDialog = false">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-card-title>
+                <v-card-text>
+                  <v-text-field label="Ссылка" outlined v-model="userUrl"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn depressed color="gray" @click="videoUrlDialog = false">Отменить</v-btn>
+                  <v-btn depressed color="green" @click="setVideoUrl(userUrl)">Сохранить</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </div>
+          <div class="mx-ncell" v-else>
+            <slick ref="slick" :options="updatedSlickOptions" class="video__list" v-if="isSlick">
+              <video-item
+                v-for="item in section.items.filter(i => i.id)"
+                :key="item.id"
+                :item="item"
+                :sectionId="section.id"
+              ></video-item>
+            </slick>
+          </div>
         </div>
       </div>
     </div>
@@ -107,7 +101,11 @@ export default {
   props: {
     section: Object,
   },
+  components: {
+    //VideoItem: () => import("./VideoItem"),
+  },
   data: () => ({
+    videoShown: false,
     isSlick: true,
     slickOptions: {
       arrows: true,
@@ -156,9 +154,6 @@ export default {
         draggable: !this.isEdit,
       });
     },
-    elem() {
-      return this.isEdit ? "div" : "a";
-    },
   },
   methods: {
     ...mapMutations({
@@ -199,7 +194,6 @@ export default {
       });
       this.$store.dispatch("pages/savePage");
     },
-    playVideo(itemIndex) {},
   },
   watch: {
     isEdit: function () {
@@ -207,44 +201,6 @@ export default {
       this.updatedSlickOptions.draggable = !this.isEdit;
       this.restartSlick();
     },
-  },
-  mounted() {
-    if (!this.isEdit) {
-      var tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.querySelector(".video").insertAdjacentElement("afterbegin", tag);
-
-      var videoItems = document.querySelectorAll(".video__item");
-      console.log(videoItems);
-
-      for (var i = 0; i < videoItems.length; i++) {
-        var videoItem = videoItems[i];
-        videoItem.addEventListener("click", function handler() {
-          this.classList.add("video__item--active");
-          this.querySelector(".video__cover").classList.add("display-none");
-          this.querySelector(".video__title").classList.add("display-none");
-          var videoId = this.querySelector(".video__id").innerHTML;
-          var videoUrl = "https://www.youtube.com/embed/" + videoId;
-
-          var player;
-          function onYouTubeIframeAPIReady() {
-            player = new YT.Player("vid" + i, {
-              height: "360",
-              width: "640",
-              videoId: videoId,
-              events: {
-                onReady: onPlayerReady,
-              },
-            });
-          }
-
-          function onPlayerReady(event) {
-            event.target.playVideo();
-          }
-          this.removeEventListener("click", handler);
-        });
-      }
-    }
   },
 };
 </script>
