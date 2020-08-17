@@ -57,7 +57,7 @@
               {{ section.description }}
             </div>
             <div class="hero__action" v-if="button || form">
-              <form-popup :section="section" field="promo_form" />
+              <form-popup :section="section" field="promo_form"></form-popup>
             </div>
           </div>
 
