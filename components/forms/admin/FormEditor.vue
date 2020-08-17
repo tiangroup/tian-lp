@@ -11,7 +11,7 @@
           v-on="on"
           absolute
           top
-          right
+          left
           @click="drawer = true"
         >
           <v-icon>mdi-pencil</v-icon>
@@ -45,14 +45,14 @@
             <v-text-field label="Подпись кнопки" v-model="formButton" />
           </v-tab-item>
           <v-tab-item class="mt-4">
-            <forms-editor-field
+            <form-editor-input
               v-for="(item, index) in form.fields.filter(i => i.id)"
               :key="item.id"
               :formField="item"
               :formId="form.id"
               :first="index == 0"
               :last="index + 1 == form.fields.length"
-            ></forms-editor-field>
+            ></form-editor-input>
             <v-row class="justify-center">
               <v-btn fab dark small color="green" @click="newField">
                 <v-icon>mdi-plus</v-icon>
@@ -96,6 +96,11 @@ export default {
       }
     ]
   }),
+  async fetch() {
+    if (!this.form) {
+      await this.$store.dispatch("forms/loadForm", this.formId);
+    }
+  },
   computed: {
     ...mapGetters({
       getForm: "forms/form",
@@ -177,6 +182,6 @@ export default {
 
 <style scoped>
 .over {
-  z-index: 10010;
+  z-index: 100100;
 }
 </style>

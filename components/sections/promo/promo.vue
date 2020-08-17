@@ -56,7 +56,12 @@
             <div class="hero__text" v-else>
               {{ section.description }}
             </div>
-            <div class="hero__action" v-if="button || form">
+            <div class="hero__action" v-if="button || form" :style="styleDiv">
+              <form-editor
+                v-if="isEdit && section.promo_form"
+                :section="section"
+                field="promo_form"
+              />
               <v-dialog v-model="dialogButton" max-width="400">
                 <template v-slot:activator="{ on, attrs }">
                   <a class="button button-primary" v-bind="attrs" v-on="on">
@@ -91,7 +96,6 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import MyComponent from "@/components/forms/BaseForm.vue";
 export default {
   props: {
     section: Object
