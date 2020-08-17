@@ -1,7 +1,7 @@
 <template>
   <div :style="styleDiv">
     <form-editor
-      v-if="isEdit && section.promo_form"
+      v-if="isEdit && section[field]"
       :section="section"
       :field="field"
       popup
