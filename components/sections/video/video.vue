@@ -21,15 +21,27 @@
           <div v-else v-html="section.description"></div>
         </div>
         <div v-if="section.items">
-          <div class="mx-ncell" v-if="isEdit">
+          <v-gallery
+            v-if="!isEdit"
+            :images="videos"
+            :index="index"
+            :options="{
+              youTubeVideoIdProperty: 'youtube',
+              youTubePlayerVars: undefined,
+              youTubeClickToPlay: false
+            }"
+            @close="index = null"
+          ></v-gallery>
+          <div class="mx-ncell">
             <slick ref="slick" :options="updatedSlickOptions" class="video__list" v-if="isSlick">
               <video-item
-                v-for="item in section.items.filter(i => i.id)"
+                v-for="(item, itemIndex) in section.items.filter(i => i.id)"
                 :key="item.id"
                 :item="item"
                 :sectionId="section.id"
                 :isEdit="isEdit"
-                @iupdate="restartSlick()"
+                @gallery-call="showGallery(itemIndex)"
+                @item-update="restartSlick()"
                 @change-link="itemVideoInput({
                   sectionId:section.id,
                   itemId:item.id,
@@ -37,12 +49,15 @@
                   value:item.link
                 })"
               ></video-item>
-              <div class="video__item-wrap cell" v-if="!section.items || !section.items.length">
+              <div
+                class="video__item-wrap cell"
+                v-if="isEdit && (!section.items || !section.items.length)"
+              >
                 <buttons-item-add :sectionId="section.id" />
               </div>
             </slick>
 
-            <v-dialog v-model="videoUrlDialog" max-width="33rem">
+            <v-dialog v-model="videoUrlDialog" max-width="33rem" v-if="isEdit">
               <v-card>
                 <v-card-title class="mb-10">
                   Ссылка на Youtube-видео
@@ -56,22 +71,11 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn depressed color="gray" @click="videoUrlDialog = false">Отменить</v-btn>
-                  <v-btn depressed color="green" @click="setVideoUrl(userUrl)">Сохранить</v-btn>
+                  <v-btn depressed color="gray" text @click="videoUrlDialog = false">Отменить</v-btn>
+                  <v-btn depressed color="green" dark @click="setVideoUrl(userUrl)">Сохранить</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
-          </div>
-          <div class="mx-ncell" v-else>
-            <slick ref="slick" :options="updatedSlickOptions" class="video__list" v-if="isSlick">
-              <video-item
-                v-for="item in section.items.filter(i => i.id)"
-                :key="item.id"
-                :item="item"
-                :sectionId="section.id"
-                :isEdit="isEdit"
-              ></video-item>
-            </slick>
           </div>
         </div>
       </div>
@@ -81,14 +85,16 @@
 
 <script>
 import { mapMutations, mapGetters } from "vuex";
+import VideoItem from "./VideoItem";
 export default {
   props: {
     section: Object,
   },
   components: {
-    //VideoItem: () => import("./VideoItem"),
+    VideoItem,
   },
   data: () => ({
+    index: null,
     videoUrlDialog: false,
     userUrl: "",
     isSlick: true,
@@ -136,6 +142,20 @@ export default {
         draggable: !this.isEdit,
       });
     },
+    videos() {
+      var videosArray = [];
+      for (let n = 0; n < this.section.items.length; n++) {
+        let vid = this.section.items[n];
+        let videoItem = {
+          title: vid.title,
+          href: vid.link,
+          type: "text/html",
+          youtube: this.videoId(vid.link),
+        };
+        videosArray.push(videoItem);
+      }
+      return videosArray;
+    },
   },
   methods: {
     ...mapMutations({
@@ -162,6 +182,20 @@ export default {
       setTimeout(function () {
         _this.isSlick = true;
       }, 100);
+    },
+    showGallery(itemIndex) {
+      if (this.isEdit) {
+        return;
+      }
+      this.index = itemIndex;
+    },
+    videoId(videoUrl) {
+      if (!videoUrl) {
+        return "";
+      }
+      const youtubeRegex = /^.*(youtu\.be\/|vi?\/|u\/\w\/|embed\/|\?vi?=|\&vi?=)([^#\&\?]*).*/;
+      const youtubeId = videoUrl.match(youtubeRegex);
+      return youtubeId[2];
     },
   },
   watch: {

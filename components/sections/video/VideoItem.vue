@@ -1,10 +1,10 @@
 <template>
   <div class="video__item-wrap cell">
-    <div class="video__item" :class="{'position-relative': isEdit}">
+    <div class="video__item" :class="{'position-relative': isEdit}" @click="$emit('gallery-call')">
       <buttons-item
         :itemId="item.id"
         :sectionId="sectionId"
-        @onAction="$emit('iupdate')"
+        @onAction="$emit('item-update')"
         v-if="isEdit"
       />
       <div
@@ -27,7 +27,7 @@
           :itemId="item.id"
           v-if="isEdit"
         />
-        <span v-else>{{ videoCover}}</span>
+        <span v-else>{{ item.title }}</span>
       </div>
     </div>
   </div>
@@ -44,11 +44,17 @@ export default {
   }),
   computed: {
     videoId() {
+      if (!this.item.link) {
+        return;
+      }
       const youtubeRegex = /^.*(youtu\.be\/|vi?\/|u\/\w\/|embed\/|\?vi?=|\&vi?=)([^#\&\?]*).*/;
       const youtubeId = this.item.link.match(youtubeRegex);
       return youtubeId[2];
     },
     videoCover() {
+      if (!this.item.link) {
+        return "";
+      }
       return (
         "https://img.youtube.com/vi/" + this.videoId + "/maxresdefault.jpg"
       );
