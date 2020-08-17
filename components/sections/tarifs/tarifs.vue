@@ -91,7 +91,8 @@
                 <span v-else>{{ item.price }}</span>
               </div>
               <div class="tarifs__action">
-                <button class="button button-secondary" @click.stop="orderPlan(item)">Заказать</button>
+                <!-- <button class="button button-secondary" @click.stop="orderPlan(item)">Заказать</button> -->
+                <form-popup :section="section" field="form" />
               </div>
             </div>
           </div>
