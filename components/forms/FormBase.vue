@@ -4,6 +4,7 @@
       <div class="form__title">
         {{ form.form.title }}
       </div>
+      <slot></slot>
       <component
         v-for="item in form.fields.filter(i => i.id)"
         :key="item.id"
