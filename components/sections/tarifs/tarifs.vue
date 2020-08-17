@@ -21,29 +21,29 @@
             :key="item.id"
             :style="styleDiv"
           >
-            <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="section.id" />
-            <button
-              class="button button-icon"
-              v-if="isEdit"
-              @click="setSelected({
-                    itemId: item.id,
-                    field: 'selected',
-                    value: !item.selected
-                  })"
-            >
-              <span class="sr-only">Значок Лучший выбор</span>
-              <svg
-                width="1rem"
-                height="1rem"
-                viewBox="0 0 32 32"
-                stroke="currentColor"
-                :fill="item.selected ? 'currentColor' : 'none'"
-              >
-                <path
-                  d="M32 12.408l-11.056-1.607-4.944-10.018-4.944 10.018-11.056 1.607 8 7.798-1.889 11.011 9.889-5.199 9.889 5.199-1.889-11.011 8-7.798z"
-                />
-              </svg>
-            </button>
+            <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="section.id">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    fab
+                    dark
+                    x-small
+                    color="green"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="setSelected({
+                      itemId: item.id,
+                      field: 'selected',
+                      value: !item.selected
+                    })"
+                  >
+                    <v-icon v-if="item.selected">mdi-star</v-icon>
+                    <v-icon v-else>mdi-star-outline</v-icon>
+                  </v-btn>
+                </template>
+                <span>Значок "Лучший выбор"</span>
+              </v-tooltip>
+            </buttons-item>
             <div class="tarifs__item" :class="{'tarifs__item--selected': item.selected}">
               <div class="tarifs__title">
                 <editor
