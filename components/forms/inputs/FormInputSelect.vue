@@ -1,20 +1,21 @@
 <template>
   <div>
-    <div class="field__label">{{ item.label }}</div>
     <label
-      class="field field--radio"
-      v-for="(value, index) in values"
-      :key="index"
+      class="field field--select"
+      :class="{ 'field--required': item.required }"
     >
-      <input
-        type="radio"
-        class="field__input"
-        :name="item.id"
+      <div class="field__label">{{ item.label }}</div>
+      <select
+        class="field__select field__input"
+        :required="!!item.required"
         :value="value"
         @input="$emit('input', $event.target.value)"
-      />
-      <div class="fake-radio"></div>
-      <div class="field__label">{{ value }}</div>
+        :name="item.id"
+      >
+        <option v-for="(val, index) in values" :key="index" :value="val">
+          {{ val }}
+        </option>
+      </select>
     </label>
   </div>
 </template>
