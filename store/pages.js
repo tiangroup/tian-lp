@@ -143,6 +143,7 @@ export const actions = {
   },
   async savePage({ commit, state }) {
     try {
+      debugger;
       commit("SET_SAVE_LOADING", true);
       const page = state.page;
       const response = await this.$axios.$put(
