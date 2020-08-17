@@ -57,23 +57,7 @@
               {{ section.description }}
             </div>
             <div class="hero__action" v-if="button || form" :style="styleDiv">
-              <form-editor
-                v-if="isEdit && section.promo_form"
-                :section="section"
-                field="promo_form"
-              />
-              <v-dialog v-model="dialogButton" max-width="400">
-                <template v-slot:activator="{ on, attrs }">
-                  <a class="button button-primary" v-bind="attrs" v-on="on">
-                    {{ buttonLabel }}
-                  </a>
-                </template>
-                <form-popup
-                  :section="section"
-                  field="promo_form"
-                  @close="dialogButton = false"
-                />
-              </v-dialog>
+              <form-popup :section="section" field="promo_form" />
             </div>
           </div>
 
@@ -100,9 +84,6 @@ export default {
   props: {
     section: Object
   },
-  data: () => ({
-    dialogButton: false
-  }),
   computed: {
     ...mapGetters({
       isEdit: "isEdit"
@@ -118,9 +99,6 @@ export default {
     },
     image() {
       return this.section.settings.image === true;
-    },
-    buttonLabel() {
-      return "Кнопка";
     }
   },
   methods: {
@@ -136,20 +114,6 @@ export default {
         value: this.section.bg_img
       });
       this.showImageUpload(true);
-    },
-    buttonClick() {
-      // this.$modal.show(
-      //   MyComponent,
-      //   {
-      //     section: this.section,
-      //     field: "promo_form"
-      //   },
-      //   {
-      //     height: "auto",
-      //     scrollable: true
-      //   }
-      // );
-      this.dialog = true;
     }
   }
 };
