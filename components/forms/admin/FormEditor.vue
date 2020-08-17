@@ -42,7 +42,15 @@
 
           <v-tab-item class="mt-4">
             <v-text-field label="Заголовок формы" v-model="formTitle" />
-            <v-text-field label="Подпись кнопки" v-model="formButton" />
+            <v-text-field
+              label="Подпись кнопки отправки"
+              v-model="formButton"
+            />
+            <v-text-field
+              v-if="popup"
+              label="Подпись кнопки открытия формы"
+              v-model="formOpenButton"
+            />
           </v-tab-item>
           <v-tab-item class="mt-4">
             <form-editor-input
@@ -77,6 +85,10 @@ export default {
     field: {
       type: String,
       default: "form"
+    },
+    popup: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -132,6 +144,18 @@ export default {
         this.setFormField({
           formId: this.form.id,
           field: "button",
+          value: value
+        });
+      }
+    },
+    formOpenButton: {
+      get: function() {
+        return this.form.form.openButton;
+      },
+      set: function(value) {
+        this.setFormField({
+          formId: this.form.id,
+          field: "openButton",
           value: value
         });
       }

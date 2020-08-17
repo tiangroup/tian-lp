@@ -132,7 +132,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {},
-  serverMiddleware: ["~/api/upload", "~/api/sites"],
+  serverMiddleware: ["~/api/upload", "~/api/sites", "~/api/forms"],
   generate: {
     //dir: process.env.EXPORT_DIR || "dist",
     fallback: true,
