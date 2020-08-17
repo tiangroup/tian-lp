@@ -56,7 +56,7 @@
             <div class="hero__text" v-else>
               {{ section.description }}
             </div>
-            <div class="hero__action" v-if="button || form" :style="styleDiv">
+            <div class="hero__action" v-if="button || form">
               <form-popup :section="section" field="promo_form" />
             </div>
           </div>

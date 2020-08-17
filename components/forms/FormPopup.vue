@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :style="styleDiv">
     <form-editor
       v-if="isEdit && section.promo_form"
       :section="section"
