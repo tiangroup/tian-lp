@@ -11,49 +11,6 @@
         :item="item"
         v-model="formData[item.id]"
       />
-      <!--
-      <label
-        class="field field--text"
-        v-for="item in form.fields.filter(i => i.id)"
-        :key="item.id"
-        :class="{ 'field--required': item.required }"
-      >
-        <div class="field__label">
-          {{ item.label }}
-        </div>
-        <input
-          v-if="item.type == 'text'"
-          type="text"
-          class="field__input"
-          :name="item.id"
-          :required="!!item.required"
-          v-model="formData[item.id]"
-        />
-        <input
-          v-if="item.type == 'tel'"
-          type="tel"
-          class="field__input"
-          :name="item.id"
-          :required="!!item.required"
-        />
-        <input
-          v-if="item.type == 'email'"
-          type="email"
-          class="field__input"
-          :name="item.id"
-          :required="!!item.required"
-        />
-        <textarea
-          v-if="item.type == 'textarea'"
-          rows="3"
-          cols="50"
-          class="field__input"
-          :name="item.id"
-          :required="!!item.required"
-        ></textarea>
-      </label>
-      -->
-
       <div class="field field--submit">
         <button type="submit" class="button form__submit w-100 w-md-auto">
           <div class="button__body">
@@ -87,7 +44,8 @@ export default {
     input_email: () => import("./inputs/FormInputEmail"),
     input_textarea: () => import("./inputs/FormInputTextarea"),
     input_check: () => import("./inputs/FormInputCheck"),
-    input_radio: () => import("./inputs/FormInputRadio")
+    input_radio: () => import("./inputs/FormInputRadio"),
+    input_select: () => import("./inputs/FormInputSelect")
   },
   data: () => ({
     formData: {}

@@ -23,6 +23,14 @@
           label="Тип поля"
           v-model="fieldType"
         ></v-select>
+        <v-textarea
+          v-if="fieldType == 'radio' || fieldType == 'select'"
+          outlined
+          label="Значения (одна линия на значение)"
+          auto-grow
+          rows="3"
+          v-model="fieldValues"
+        ></v-textarea>
         <v-checkbox label="Обязательное" v-model="fieldRequired"></v-checkbox>
         <v-row class="mr-1">
           <v-spacer></v-spacer>
@@ -62,6 +70,10 @@ export default {
       {
         name: "Многострочный текст",
         value: "textarea"
+      },
+      {
+        name: "Выпадающий список",
+        value: "select"
       },
       {
         name: "Чек-бокс",
@@ -109,6 +121,19 @@ export default {
           formId: this.formId,
           fieldId: this.formField.id,
           field: "type",
+          value: value
+        });
+      }
+    },
+    fieldValues: {
+      get: function() {
+        return this.formField.values;
+      },
+      set: function(value) {
+        this.setField({
+          formId: this.formId,
+          fieldId: this.formField.id,
+          field: "values",
           value: value
         });
       }

@@ -47,7 +47,7 @@
               @click.prevent="setViewSettings(view.value)"
             >
               <div class="tuning-setting__image">
-                <img :src="`${$url_api}${view.img ? view.img.url : ''}`" />
+                <img v-if="view.img" :src="`${$url_api}${view.img.url}`" />
               </div>
               <div class="tuning-setting__title">{{ view.title }}</div>
             </a>
@@ -72,7 +72,7 @@
               @click.prevent="setViewSettings(view.value)"
             >
               <div class="tuning-setting__image">
-                <img :src="`${$url_api}${view.img ? view.img.url : ''}`" />
+                <img v-if="view.img" :src="`${$url_api}${view.img.url}`" />
               </div>
               <div class="tuning-setting__title">{{ view.title }}</div>
             </a>
