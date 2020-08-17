@@ -37,7 +37,9 @@
         </div>
         <div class="der-popup__body">
           <div class="popup-callback">
-            <form-base :section="section" :field="field" />
+            <form-base :section="section" :field="field">
+              <slot></slot>
+            </form-base>
           </div>
         </div>
       </div>
@@ -57,7 +59,8 @@ export default {
     buttonClass: {
       type: String,
       default: "button-primary"
-    }
+    },
+    hiddenData: String
   },
   data: () => ({
     dialogButton: false
