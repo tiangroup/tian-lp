@@ -10,7 +10,7 @@
           <editor :text="section.title || ''" :sectionId="section.id" field="title" />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
-        <div class="staff__list mx-n15 mx-md-n1rem" v-if="section.items && isSlick">
+        <div class="staff__list mx-ncell" v-if="section.items && isSlick">
           <slick ref="slick" :options="updatedSlickOptions">
             <div
               class="staff__item-wrap cell"
