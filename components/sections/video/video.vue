@@ -26,11 +26,13 @@
             :images="videos"
             :index="index"
             :options="{
+              closeOnSlideClick: true,
               youTubeVideoIdProperty: 'youtube',
               youTubePlayerVars: undefined,
               youTubeClickToPlay: false
             }"
             @close="index = null"
+            :id="'gallery' + section.id"
           ></v-gallery>
           <div class="mx-ncell">
             <slick ref="slick" :options="updatedSlickOptions" class="video__list" v-if="isSlick">
