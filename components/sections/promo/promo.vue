@@ -58,6 +58,12 @@
             </div>
             <div class="hero__action" v-if="button || form">
               <form-popup :section="section" field="promo_form"></form-popup>
+              <a @click.prevent="formDialog = true">Открыть</a>
+              <form-dialog
+                :section="section"
+                field="promo_form"
+                v-model="formDialog"
+              ></form-dialog>
             </div>
           </div>
 
@@ -101,6 +107,9 @@ export default {
       return this.section.settings.image === true;
     }
   },
+  data: () => ({
+    formDialog: false
+  }),
   methods: {
     ...mapMutations({
       showImageUpload: "SET_DIALOG_IMAGE_UPLOAD",
