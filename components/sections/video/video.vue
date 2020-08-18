@@ -20,81 +20,63 @@
           />
           <div v-else v-html="section.description"></div>
         </div>
-        <div class="mx-ncell" v-if="section.items && isEdit">
-          <slick ref="slick" :options="updatedSlickOptions" class="video__list" v-if="isSlick">
-            <div
-              class="video__item-wrap cell position-relative"
-              v-for="item in section.items.filter(i => i.id)"
-              :key="item.id"
-            >
-              <buttons-item :itemId="item.id" :sectionId="section.id" @onAction="onItemsChange" />
-              <div class="video__item">
-                <div
-                  class="video__cover video__cover--editable"
-                  title="Клик - изменить ссылку на видео"
-                  @click.stop="
-                  itemVideoInput({
-                    itemId: item.id,
-                    field: 'link',
-                    value: item.link
-                  })
-                "
-                >
-                  <img v-if="item.link" :src="videoCover(getVideoId(item.link))" />
-                </div>
-                <div class="video__title">
-                  <editor
-                    data-placeholder="Название видео"
-                    :text="item.title || ''"
-                    :sectionId="section.id"
-                    field="title"
-                    :itemId="item.id"
-                  />
-                </div>
+        <div v-if="section.items">
+          <v-gallery
+            v-if="!isEdit"
+            :images="videos"
+            :index="index"
+            :options="{
+              youTubeVideoIdProperty: 'youtube',
+              youTubePlayerVars: undefined,
+              youTubeClickToPlay: false
+            }"
+            @close="index = null"
+          ></v-gallery>
+          <div class="mx-ncell">
+            <slick ref="slick" :options="updatedSlickOptions" class="video__list" v-if="isSlick">
+              <video-item
+                v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                :key="item.id"
+                :item="item"
+                :sectionId="section.id"
+                :isEdit="isEdit"
+                @gallery-call="showGallery(itemIndex)"
+                @item-update="restartSlick()"
+                @change-link="itemVideoInput({
+                  sectionId:section.id,
+                  itemId:item.id,
+                  field:'link',
+                  value:item.link
+                })"
+              ></video-item>
+              <div
+                class="video__item-wrap cell"
+                v-if="isEdit && (!section.items || !section.items.length)"
+              >
+                <buttons-item-add :sectionId="section.id" />
               </div>
-            </div>
-            <div class="video__item-wrap cell" v-if="!section.items || !section.items.length">
-              <buttons-item-add :sectionId="section.id" />
-            </div>
-          </slick>
+            </slick>
 
-          <v-dialog v-model="videoUrlDialog" max-width="33rem">
-            <v-card>
-              <v-card-title class="mb-10">
-                Ссылка на Youtube-видео
-                <v-spacer></v-spacer>
-                <v-btn icon @click="videoUrlDialog = false">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-              </v-card-title>
-              <v-card-text>
-                <v-text-field label="Ссылка" outlined v-model="userUrl"></v-text-field>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn depressed color="gray" @click="videoUrlDialog = false">Отменить</v-btn>
-                <v-btn depressed color="green" @click="setVideoUrl(userUrl)">Сохранить</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </div>
-        <div class="mx-ncell" v-else-if="section.items && !isEdit">
-          <slick ref="slick" :options="updatedSlickOptions" class="video__list" v-if="isSlick">
-            <div
-              class="video__item-wrap cell"
-              v-for="(item, itemIndex) in section.items.filter(i => i.id)"
-              :key="item.id"
-            >
-              <div class="video__item">
-                <div class="video__cover">
-                  <img v-if="item.link" :src="videoCover(getVideoId(item.link))" />
-                </div>
-                <div class="video__title">{{ item.title }}</div>
-                <div class="video__id display-none">{{ getVideoId(item.link) }}</div>
-                <div :id="'vid' + itemIndex"></div>
-              </div>
-            </div>
-          </slick>
+            <v-dialog v-model="videoUrlDialog" max-width="33rem" v-if="isEdit">
+              <v-card>
+                <v-card-title class="mb-10">
+                  Ссылка на Youtube-видео
+                  <v-spacer></v-spacer>
+                  <v-btn icon @click="videoUrlDialog = false">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-card-title>
+                <v-card-text>
+                  <v-text-field label="Ссылка" outlined v-model="userUrl"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn depressed color="gray" text @click="videoUrlDialog = false">Отменить</v-btn>
+                  <v-btn depressed color="green" dark @click="setVideoUrl(userUrl)">Сохранить</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </div>
         </div>
       </div>
     </div>
@@ -103,11 +85,18 @@
 
 <script>
 import { mapMutations, mapGetters } from "vuex";
+import VideoItem from "./VideoItem";
 export default {
   props: {
     section: Object,
   },
+  components: {
+    VideoItem,
+  },
   data: () => ({
+    index: null,
+    videoUrlDialog: false,
+    userUrl: "",
     isSlick: true,
     slickOptions: {
       arrows: true,
@@ -139,9 +128,6 @@ export default {
         },
       ],
     },
-    videoUrlDialog: false,
-    userUrl: "",
-    videoItem: {},
   }),
   computed: {
     ...mapGetters({
@@ -156,8 +142,19 @@ export default {
         draggable: !this.isEdit,
       });
     },
-    elem() {
-      return this.isEdit ? "div" : "a";
+    videos() {
+      var videosArray = [];
+      for (let n = 0; n < this.section.items.length; n++) {
+        let vid = this.section.items[n];
+        let videoItem = {
+          title: vid.title,
+          href: vid.link,
+          type: "text/html",
+          youtube: this.videoId(vid.link),
+        };
+        videosArray.push(videoItem);
+      }
+      return videosArray;
     },
   },
   methods: {
@@ -169,8 +166,15 @@ export default {
       this.userUrl = payload.value;
       this.videoUrlDialog = true;
     },
-    onItemsChange(event) {
-      this.restartSlick();
+    setVideoUrl(userUrl) {
+      this.setItemField({
+        sectionId: this.sectionId,
+        itemId: this.item.id,
+        items: "items",
+        field: this.field,
+        value: userUrl,
+      });
+      this.$store.dispatch("pages/savePage");
     },
     restartSlick() {
       this.isSlick = false;
@@ -179,27 +183,20 @@ export default {
         _this.isSlick = true;
       }, 100);
     },
-    getVideoId(url) {
+    showGallery(itemIndex) {
+      if (this.isEdit) {
+        return;
+      }
+      this.index = itemIndex;
+    },
+    videoId(videoUrl) {
+      if (!videoUrl) {
+        return "";
+      }
       const youtubeRegex = /^.*(youtu\.be\/|vi?\/|u\/\w\/|embed\/|\?vi?=|\&vi?=)([^#\&\?]*).*/;
-      const youtubeId = url.match(youtubeRegex);
+      const youtubeId = videoUrl.match(youtubeRegex);
       return youtubeId[2];
     },
-    videoCover(videoId) {
-      const coverUrl =
-        "https://img.youtube.com/vi/" + videoId + "/maxresdefault.jpg";
-      return coverUrl;
-    },
-    setVideoUrl(userUrl) {
-      this.setItemField({
-        sectionId: this.section.id,
-        itemId: this.videoItem.itemId,
-        items: "items",
-        field: this.videoItem.field,
-        value: userUrl,
-      });
-      this.$store.dispatch("pages/savePage");
-    },
-    playVideo(itemIndex) {},
   },
   watch: {
     isEdit: function () {
@@ -207,44 +204,6 @@ export default {
       this.updatedSlickOptions.draggable = !this.isEdit;
       this.restartSlick();
     },
-  },
-  mounted() {
-    if (!this.isEdit) {
-      var tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.querySelector(".video").insertAdjacentElement("afterbegin", tag);
-
-      var videoItems = document.querySelectorAll(".video__item");
-      console.log(videoItems);
-
-      for (var i = 0; i < videoItems.length; i++) {
-        var videoItem = videoItems[i];
-        videoItem.addEventListener("click", function handler() {
-          this.classList.add("video__item--active");
-          this.querySelector(".video__cover").classList.add("display-none");
-          this.querySelector(".video__title").classList.add("display-none");
-          var videoId = this.querySelector(".video__id").innerHTML;
-          var videoUrl = "https://www.youtube.com/embed/" + videoId;
-
-          var player;
-          function onYouTubeIframeAPIReady() {
-            player = new YT.Player("vid" + i, {
-              height: "360",
-              width: "640",
-              videoId: videoId,
-              events: {
-                onReady: onPlayerReady,
-              },
-            });
-          }
-
-          function onPlayerReady(event) {
-            event.target.playVideo();
-          }
-          this.removeEventListener("click", handler);
-        });
-      }
-    }
   },
 };
 </script>

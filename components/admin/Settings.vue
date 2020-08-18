@@ -2,11 +2,9 @@
   <div>
     <v-row class="ml-4 mr-4" v-if="sectionConfig">
       <div class="tuning-panel__block">
-        <div class="tuning-panel__row mb-25">
+        <div class="tuning-panel__row mb-25px">
           <div class="tuning-panel__cell">
-            <div class="tuning-panel__block__title">
-              «{{ sectionConfig.name }}»
-            </div>
+            <div class="tuning-panel__block__title">«{{ sectionConfig.name }}»</div>
           </div>
           <div class="tuning-panel__cell">
             <div class="tuning-panel__block__bg tuning-bg">
@@ -14,7 +12,7 @@
               <a
                 v-for="(background, index) in sectionConfig.settings.background"
                 :key="index"
-                href=""
+                href
                 class="tuning-bg__color"
                 :class="[
                   {
@@ -41,7 +39,7 @@
             :key="view.id"
           >
             <a
-              href=""
+              href
               class="tuning-panel__setting tuning-setting"
               :class="{
                 'tuning-setting--active': settings.view == view.value
@@ -66,7 +64,7 @@
             :key="view.id"
           >
             <a
-              href=""
+              href
               class="tuning-panel__setting tuning-setting"
               :class="{
                 'tuning-setting--active': settings.view == view.value
@@ -81,18 +79,13 @@
           </div>
         </div>
 
-        <div
-          class="tuning-panel__row tuning-panel__options"
-          v-if="sectionConfig.settings.options"
-        >
+        <div class="tuning-panel__row tuning-panel__options" v-if="sectionConfig.settings.options">
           <div
             class="tuning-panel__cell tuning-option-wrap"
             v-for="(option, index) in sectionConfig.settings.options"
             :key="index"
           >
-            <label
-              class="tuning-panel__option tuning-option field field--check"
-            >
+            <label class="tuning-panel__option tuning-option field field--check">
               <input
                 type="checkbox"
                 class="field__input"
@@ -116,33 +109,33 @@ export default {
   props: {
     component: String,
     sectionId: String,
-    settings: Object
+    settings: Object,
   },
   computed: {
     ...mapGetters({
       sections: "sections/sections",
-      isApp: "isApp"
+      isApp: "isApp",
     }),
-    sectionConfig: function() {
-      return this.sections.find(item => item.component === this.component);
-    }
+    sectionConfig: function () {
+      return this.sections.find((item) => item.component === this.component);
+    },
   },
   methods: {
     ...mapMutations({
-      setSettingsField: "pages/SET_SETTINGS_FIELD"
+      setSettingsField: "pages/SET_SETTINGS_FIELD",
     }),
     setBackroundSettings(bg) {
       this.setSettingsField({
         id: this.sectionId,
         field: "background",
-        value: bg
+        value: bg,
       });
     },
     setViewSettings(view) {
       this.setSettingsField({
         id: this.sectionId,
         field: "view",
-        value: view
+        value: view,
       });
     },
     setOptionsSettings(event) {
@@ -151,9 +144,9 @@ export default {
       this.setSettingsField({
         id: this.sectionId,
         field: name,
-        value: checked
+        value: checked,
       });
-    }
-  }
+    },
+  },
 };
 </script>
