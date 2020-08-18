@@ -81,11 +81,10 @@ export default {
     slickOptions: {
       arrows: true,
       dots: true,
-      slidesToShow: 2,
+      slidesToShow: 3,
       slidesToScroll: 1,
-      centerMode: true,
+      centerMode: false,
       centerPadding: "18.3333%",
-      initialSlide: 1,
       draggable: false,
       infinite: false,
       prevArrow:
@@ -101,7 +100,6 @@ export default {
             arrows: false,
             centerMode: false,
             centerPadding: 0,
-            initialSlide: 0,
           },
         },
         {
@@ -112,7 +110,6 @@ export default {
             arrows: false,
             centerMode: false,
             centerPadding: 0,
-            initialSlide: 0,
           },
         },
       ],
@@ -126,7 +123,10 @@ export default {
       return this.isEdit ? { position: "relative" } : null;
     },
     updatedSlickOptions() {
+      const slidesQty = this.isEdit ? 3 : 2;
       return Object.assign(this.slickOptions, {
+        slidesToShow: slidesQty,
+        centerMode: !this.isEdit,
         infinite: !this.isEdit,
         draggable: !this.isEdit,
       });
