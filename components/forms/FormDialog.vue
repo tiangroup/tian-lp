@@ -1,22 +1,16 @@
 <template>
   <div>
-    <v-dialog v-model="dialogButton" max-width="400">
-      <template v-slot:activator="{ on, attrs }">
-        <a class="button" :class="[buttonClass]" v-bind="attrs" v-on="on">
-          {{ button }}
-        </a>
-      </template>
+    <v-dialog v-model="value" max-width="400" @input="$emit('input', value)">
       <div class="der-popup" :style="styleDiv">
         <form-editor
           v-if="isEdit && section[field]"
           :section="section"
           :field="field"
-          popup
         />
         <div class="der-popup__close">
           <button
             class="button button-icon button-close"
-            @click="dialogButton = false"
+            @click="$emit('input', false)"
           >
             <span class="sr-only">Закрыть</span>
             <svg
@@ -37,7 +31,11 @@
         </div>
         <div class="der-popup__body">
           <div class="popup-callback">
-            <form-base :section="section" :field="field" :hiddenData="hiddenData">
+            <form-base
+              :section="section"
+              :field="field"
+              :hiddenData="hiddenData"
+            >
               <slot></slot>
             </form-base>
           </div>
@@ -60,7 +58,8 @@ export default {
       type: String,
       default: "button-primary"
     },
-    hiddenData: String
+    hiddenData: String,
+    value: false
   },
   data: () => ({
     dialogButton: false
@@ -72,14 +71,6 @@ export default {
     }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
-    },
-    button() {
-      const form_id = this.section[this.field];
-      return form_id &&
-        this.getForm(form_id) &&
-        this.getForm(form_id).form.openButton
-        ? this.getForm(form_id).form.openButton
-        : "Открыть";
     }
   }
 };

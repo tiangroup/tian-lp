@@ -13,6 +13,7 @@
           top
           left
           @click="drawer = true"
+          class="mt-8"
         >
           <v-icon>mdi-pencil</v-icon>
         </v-btn>

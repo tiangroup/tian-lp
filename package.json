@@ -9,7 +9,9 @@
     "export": "nuxt export",
     "serve": "nuxt serve",
     "generate": "nuxt build --target static && nuxt export",
-    "buildstatic": "nuxt build --target static"
+    "buildstatic": "nuxt build --target static",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "dependencies": {
     "@nuxtjs/auth": "^4.9.1",
@@ -30,6 +32,7 @@
     "vue2-medium-editor": "^1.1.6"
   },
   "devDependencies": {
-    "@nuxtjs/vuetify": "^1.11.2"
+    "@nuxtjs/vuetify": "^1.11.2",
+    "vuepress": "^1.5.3"
   }
 }
