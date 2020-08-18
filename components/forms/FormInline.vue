@@ -6,7 +6,7 @@
         :section="section"
         :field="field"
       />
-      <form-base :section="section" :field="field" />
+      <form-base :section="section" :field="field" :hiddenData="hiddenData" />
     </div>
   </div>
 </template>
@@ -19,7 +19,8 @@ export default {
     field: {
       type: String,
       default: "form"
-    }
+    },
+    hiddenData: String
   },
   computed: {
     ...mapGetters({

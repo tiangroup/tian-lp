@@ -37,7 +37,8 @@ export default {
     field: {
       type: String,
       default: "form"
-    }
+    },
+    hiddenData: String
   },
   components: {
     input_text: () => import("./inputs/FormInputText"),
