@@ -26,6 +26,7 @@
             :images="videos"
             :index="index"
             :options="{
+              closeOnSlideClick: true,
               youTubeVideoIdProperty: 'youtube',
               youTubePlayerVars: undefined,
               youTubeClickToPlay: false
