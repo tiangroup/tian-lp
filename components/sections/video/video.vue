@@ -35,7 +35,13 @@
             :id="'gallery' + section.id"
           ></v-gallery>
           <div class="mx-ncell">
-            <slick ref="slick" :options="updatedSlickOptions" class="video__list" v-if="isSlick">
+            <slick
+              :ref="'slick' + section.id"
+              :options="updatedSlickOptions"
+              class="video__list"
+              v-if="isSlick"
+              @init="handleInit"
+            >
               <video-item
                 v-for="(item, itemIndex) in section.items.filter(i => i.id)"
                 :key="item.id"
@@ -96,6 +102,7 @@ export default {
     VideoItem,
   },
   data: () => ({
+    currentVideo: {},
     index: null,
     videoUrlDialog: false,
     userUrl: "",
@@ -164,26 +171,27 @@ export default {
       setItemField: "pages/SET_ITEM_FIELD",
     }),
     itemVideoInput(payload) {
-      this.videoItem = payload;
+      this.currentVideo = payload;
       this.userUrl = payload.value;
       this.videoUrlDialog = true;
     },
     setVideoUrl(userUrl) {
       this.setItemField({
-        sectionId: this.sectionId,
-        itemId: this.item.id,
+        sectionId: this.currentVideo.sectionId,
+        itemId: this.currentVideo.itemId,
         items: "items",
-        field: this.field,
+        field: this.currentVideo.field,
         value: userUrl,
       });
       this.$store.dispatch("pages/savePage");
+      this.videoUrlDialog = false;
     },
     restartSlick() {
       this.isSlick = false;
       const _this = this;
       setTimeout(function () {
         _this.isSlick = true;
-      }, 100);
+      }, 200);
     },
     showGallery(itemIndex) {
       if (this.isEdit) {
@@ -199,11 +207,32 @@ export default {
       const youtubeId = videoUrl.match(youtubeRegex);
       return youtubeId[2];
     },
+    handleInit(event, slick) {
+      if (!this.isEdit) {
+        const _this = this;
+        const [slickTrack] = slick.$slideTrack;
+        let slidesCloned = slickTrack.querySelectorAll(".slick-cloned");
+        let slidesRealLength = slickTrack.querySelectorAll(
+          ".slick-slide:not(.slick-cloned)"
+        ).length;
+        for (let m = 0; m < slidesCloned.length; m++) {
+          let slideItem = slidesCloned[m];
+          let slideIndex = Number(slideItem.getAttribute("data-slick-index"));
+          let slideId = null;
+          if (slideIndex > 0) {
+            slideId = slideIndex % slidesRealLength;
+          } else {
+            slideId = slidesRealLength + slideIndex;
+          }
+          slideItem.addEventListener("click", function () {
+            _this.showGallery(slideId);
+          });
+        }
+      }
+    },
   },
   watch: {
     isEdit: function () {
-      this.updatedSlickOptions.infinite = !this.isEdit;
-      this.updatedSlickOptions.draggable = !this.isEdit;
       this.restartSlick();
     },
   },

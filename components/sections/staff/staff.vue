@@ -164,7 +164,7 @@ export default {
       const _this = this;
       setTimeout(function () {
         _this.isSlick = true;
-      }, 100);
+      }, 200);
     },
     async onItemDelete(payload) {
       const item = this.section.items.find((i) => i.id == payload.itemId);

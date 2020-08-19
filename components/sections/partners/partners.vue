@@ -161,7 +161,7 @@ export default {
       const _this = this;
       setTimeout(function () {
         _this.isSlick = true;
-      }, 100);
+      }, 200);
     },
     updatePartnerLink(payload) {
       this.currentItem = payload;
@@ -177,12 +177,11 @@ export default {
         value: value,
       });
       this.$store.dispatch("pages/savePage");
+      this.partnerLinkDialog = false;
     },
   },
   watch: {
     isEdit: function () {
-      this.updatedSlickOptions.infinite = !this.isEdit;
-      this.updatedSlickOptions.draggable = !this.isEdit;
       this.restartSlick();
     },
   },
