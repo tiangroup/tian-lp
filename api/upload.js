@@ -6,7 +6,7 @@ const uuid = require("node-uuid");
 const fs = require("fs");
 const checkAuth = require("./middleware/check-auth");
 
-const api_backend = process.env.API_BACKEND || "https://api.tian-lp.ru:443";
+const api_backend = process.env.API_BACKEND;
 
 // Create app
 const app = express();
