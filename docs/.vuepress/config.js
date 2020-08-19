@@ -6,6 +6,6 @@ module.exports = {
       { text: "Блоки", link: "/sections/" },
       { text: "Компоненты", link: "/components/" }
     ],
-    sidebar: "auto"
+    sidebar: ["/sections/", "/components/"]
   }
 };

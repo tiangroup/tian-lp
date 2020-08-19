@@ -24,8 +24,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
-      change: "pages/change"
+      isEdit: "isEdit"
     }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
