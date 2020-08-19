@@ -20,6 +20,8 @@ export default {
     sections_tarifs: () => import("~/components/sections/tarifs/tarifs"),
     sections_video: () => import("~/components/sections/video/video"),
     sections_photoes: () => import("~/components/sections/photoes/photoes"),
+    sections_questions: () =>
+      import("~/components/sections/questions/questions"),
   },
   computed: {
     ...mapGetters({

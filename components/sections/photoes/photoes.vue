@@ -22,7 +22,7 @@
             }"
           ></v-gallery>
           <div class="fullwidth">
-            <slick ref="slick" :options="updatedSlickOptions">
+            <slick :ref="'slick' + section.id" :options="updatedSlickOptions" @init="handleInit">
               <div
                 class="gallery__item"
                 :class="{'position-relative': isEdit}"
@@ -52,7 +52,7 @@
                       data-placeholder="Краткое описание фотографии"
                       :text="item.title || ''"
                       :sectionId="section.id"
-                      field="name"
+                      field="title"
                       :itemId="item.id"
                     />
                   </div>
@@ -124,7 +124,9 @@ export default {
     },
     updatedSlickOptions() {
       const slidesQty = this.isEdit ? 3 : 2;
+      const slidesStart = this.isEdit ? 0 : 1;
       return Object.assign(this.slickOptions, {
+        initialSlide: slidesStart,
         slidesToShow: slidesQty,
         centerMode: !this.isEdit,
         infinite: !this.isEdit,
@@ -134,8 +136,8 @@ export default {
     images() {
       var imagesArray = [];
       for (let n = 0; n < this.section.items.length; n++) {
-        let pic = this.section.items[n];
-        let imagesItem = {
+        var pic = this.section.items[n];
+        var imagesItem = {
           title: pic.title,
           href: "https://img.youtube.com/vi/EuDzvfmuPhQ/maxresdefault.jpg",
           type: "image/jpeg",
@@ -155,7 +157,7 @@ export default {
       const _this = this;
       setTimeout(function () {
         _this.isSlick = true;
-      }, 100);
+      }, 200);
     },
     async onItemDelete(payload) {
       const item = this.section.items.find((i) => i.id == payload.itemId);
@@ -169,11 +171,32 @@ export default {
       }
       this.index = itemIndex;
     },
+    handleInit(event, slick) {
+      if (!this.isEdit) {
+        const _this = this;
+        const [slickTrack] = slick.$slideTrack;
+        let slidesCloned = slickTrack.querySelectorAll(".slick-cloned");
+        let slidesRealLength = slickTrack.querySelectorAll(
+          ".slick-slide:not(.slick-cloned)"
+        ).length;
+        for (let m = 0; m < slidesCloned.length; m++) {
+          let slideItem = slidesCloned[m];
+          let slideIndex = Number(slideItem.getAttribute("data-slick-index"));
+          let slideId = null;
+          if (slideIndex > 0) {
+            slideId = slideIndex % slidesRealLength;
+          } else {
+            slideId = slidesRealLength + slideIndex;
+          }
+          slideItem.addEventListener("click", function () {
+            _this.showGallery(slideId);
+          });
+        }
+      }
+    },
   },
   watch: {
     isEdit: function () {
-      this.updatedSlickOptions.infinite = !this.isEdit;
-      this.updatedSlickOptions.draggable = !this.isEdit;
       this.restartSlick();
     },
   },
