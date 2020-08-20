@@ -22,6 +22,7 @@ export default {
     sections_photoes: () => import("~/components/sections/photoes/photoes"),
     sections_questions: () =>
       import("~/components/sections/questions/questions"),
+    sections_reviews: () => import("~/components/sections/reviews/reviews"),
   },
   computed: {
     ...mapGetters({
