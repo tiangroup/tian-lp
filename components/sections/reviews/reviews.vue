@@ -11,22 +11,169 @@
           <editor :text="section.title || ''" :sectionId="section.id" field="title" />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
-        <component :is="view" :section="section" :isEdit="isEdit" @onItemDelete="onItemDelete" />
+
+        <v-gallery
+          :images="reviewImages"
+          :index="index"
+          @close="index = null"
+          v-if="!isEdit && section.items && view === 'view2'"
+          :id="'gallery' + section.id"
+          :options="{
+              closeOnSlideClick: true
+            }"
+        ></v-gallery>
+        <div
+          class="benefits__list mx-ncell"
+          :class="computedSectionClass"
+          v-if="section.items && isSlick"
+        >
+          <slick ref="slick" :options="updatedSlickOptions">
+            <reviews-item
+              v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+              @item-update="onItemsChange"
+              @onItemDelete="onItemDelete"
+              @change-desc="updateReviewDesc(item)"
+              @change-date="updateReviewDate(item)"
+              @show-review="showReview(item)"
+              @show-gallery="showGallery(itemIndex)"
+              :key="item.id"
+              :item="item"
+              :sectionId="section.id"
+              :isEdit="isEdit"
+              :view="view"
+            ></reviews-item>
+            <div
+              class="reviews__item-wrap cell"
+              v-if="isEdit && (!section.items || !section.items.length)"
+            >
+              <buttons-item-add :sectionId="section.id" />
+            </div>
+          </slick>
+        </div>
+        <v-dialog v-model="dialogReviewDesc" max-width="30rem" v-if="isEdit">
+          <v-card>
+            <v-card-title class="mb-10">
+              Текст отзыва
+              <v-spacer></v-spacer>
+              <v-btn icon @click="dialogReviewDesc = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-card-title>
+            <v-card-text>
+              <v-textarea
+                outlined
+                name="input-review-text"
+                label="Текст отзыва"
+                v-model="inputReviewDesc"
+              ></v-textarea>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn depressed color="gray" text @click="dialogReviewDesc = false">Отменить</v-btn>
+              <v-btn depressed color="green" dark @click="saveReviewDesc(inputReviewDesc)">Сохранить</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="dialogReviewDate" persistent width="290px">
+          <v-date-picker v-model="reviewDate" scrollable>
+            <v-spacer></v-spacer>
+            <v-btn text color="primary" @click="dialogReviewDate = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="saveReviewDate(reviewDate)">OK</v-btn>
+          </v-date-picker>
+        </v-dialog>
+
+        <v-dialog v-model="dialogShowReview" max-width="30rem">
+          <div class="der-popup">
+            <div class="der-popup__close">
+              <button class="button button-icon button-close" @click="dialogShowReview=false">
+                <span class="sr-only">Закрыть</span>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1 1L9 9M17 17L9 9M9 9L1 17M9 9L17 1"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div class="der-popup__body">
+              <div class="popup-reviews">
+                <div class="reviews__body--full">
+                  <div class="reviews__person">
+                    <div class="reviews__person__name">{{ currentReview.name }}</div>
+                    <div class="reviews__person__position">{{ currentReview.position }}</div>
+                  </div>
+                  <div class="reviews__text">{{ currentReview.text }}</div>
+                  <div class="reviews__info">
+                    <div class="reviews__date">{{ currentReview.date }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </v-dialog>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 export default {
   props: {
     section: Object,
   },
-  components: {
-    View1: () => import("./ReviewsView1"),
-    View2: () => import("./ReviewsView2"),
-  },
+  data: () => ({
+    currentReview: {},
+    dialogShowReview: false,
+    dialogReviewDate: false,
+    dialogReviewDesc: false,
+    index: null,
+    inputReviewDesc: "",
+    isSlick: true,
+    modalReviewDate: false,
+    reviewDate: "",
+    slickOptions: {
+      arrows: true,
+      dots: true,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      draggable: false,
+      infinite: false,
+      prevArrow:
+        '<button type="button" class="slick-arrow slick-prev"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 1L2 13.9706L15.966 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
+      nextArrow:
+        '<button type="button" class="slick-arrow slick-next"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L15 13.9706L1.03398 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
+      responsive: [
+        {
+          breakpoint: 1280,
+          settings: {
+            arrows: false,
+            centerMode: false,
+            centerPadding: 0,
+          },
+        },
+        {
+          breakpoint: 576,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            centerMode: false,
+            centerPadding: 0,
+          },
+        },
+      ],
+    },
+  }),
   computed: {
     ...mapGetters({
       isEdit: "isEdit",
@@ -37,13 +184,100 @@ export default {
     view() {
       return this.section.settings.view;
     },
+    updatedSlickOptions() {
+      const slidesQty = this.view === "view1" ? 2 : 1;
+      return Object.assign(this.slickOptions, {
+        slidesToShow: slidesQty,
+        infinite: !this.isEdit,
+        draggable: !this.isEdit,
+      });
+    },
+    reviewImages() {
+      var imagesArray = [];
+      for (let n = 0; n < this.section.items.length; n++) {
+        var pic = this.section.items[n];
+        var imagesItem = {
+          title: "Отзыв " + pic.name,
+          href: "https://img.youtube.com/vi/EuDzvfmuPhQ/maxresdefault.jpg",
+          type: "image/jpeg",
+        };
+        imagesArray.push(imagesItem);
+      }
+      return imagesArray;
+    },
+    computedSectionClass() {
+      return this.view === "view1"
+        ? "reviews__list--style1"
+        : "reviews__list--style2";
+    },
   },
   methods: {
+    ...mapMutations({
+      setItemField: "pages/SET_ITEM_FIELD",
+    }),
     async onItemDelete(payload) {
       const item = this.section.items.find((i) => i.id == payload.itemId);
       const formData = new FormData();
       formData.append("image", item.img);
       await this.$axios.post("/api/upload/image-remove", formData);
+    },
+    onItemsChange(event) {
+      this.restartSlick();
+    },
+    restartSlick() {
+      this.isSlick = false;
+      const _this = this;
+      setTimeout(function () {
+        _this.isSlick = true;
+      }, 200);
+    },
+    updateReviewDate(item) {
+      if (this.isEdit) {
+        this.currentReview = item;
+        this.dialogReviewDate = true;
+      }
+    },
+    saveReviewDate(item) {
+      this.saveReviewField("date", this.reviewDate);
+      this.dialogReviewDate = false;
+    },
+    updateReviewDesc(item) {
+      if (this.isEdit) {
+        this.currentReview = item;
+        this.inputReviewDesc = item.text;
+        this.dialogReviewDesc = true;
+      }
+    },
+    saveReviewDesc(userInput) {
+      this.saveReviewField("text", userInput);
+      this.dialogReviewDesc = false;
+    },
+    saveReviewField(field, value) {
+      this.setItemField({
+        sectionId: this.section.id,
+        itemId: this.currentReview.id,
+        items: "items",
+        field: field,
+        value: value,
+      });
+      this.$store.dispatch("pages/savePage");
+    },
+    showReview(item) {
+      this.currentReview = item;
+      this.dialogShowReview = true;
+    },
+    showGallery(itemIndex) {
+      if (!this.isEdit) {
+        this.index = itemIndex;
+      }
+    },
+  },
+  watch: {
+    isEdit: function () {
+      this.restartSlick();
+    },
+    view: function () {
+      this.restartSlick();
     },
   },
 };

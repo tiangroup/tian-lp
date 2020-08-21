@@ -1,135 +1,81 @@
 <template>
   <div class="benefits__list mx-ncell benefits__list--style1" v-if="section.items && isSlick">
     <slick ref="slick" :options="updatedSlickOptions">
-      <div
-        class="reviews__item-wrap"
-        :class="{'position-relative': isEdit}"
-        v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+      <reviews-item
+        v-for="item in section.items.filter(i => i.id)"
+        @item-update="onItemsChange"
+        @onItemDelete="onDeleteItem"
+        @change-desc="updateReviewDesc(item)"
+        @change-date="updateReviewDate(item)"
         :key="item.id"
-      >
-        <buttons-item
-          v-if="isEdit"
-          :itemId="item.id"
-          :sectionId="section.id"
-          @onAction="onItemsChange"
-          @onItemDelete="onDeleteItem"
-        />
-        <div class="reviews__item">
-          <div class="reviews__body">
-            <div class="reviews__person">
-              <div class="reviews__person__name">
-                <editor
-                  data-placeholder="Имя Фамилия"
-                  :text="item.name || ''"
-                  :sectionId="section.id"
-                  field="name"
-                  :itemId="item.id"
-                  v-if="isEdit"
-                />
-                <span v-else>{{ item.name }}</span>
-              </div>
-              <div class="reviews__person__position">
-                <editor
-                  data-placeholder="Должность"
-                  :text="item.position || ''"
-                  :sectionId="section.id"
-                  field="position"
-                  :itemId="item.id"
-                  v-if="isEdit"
-                />
-                <span v-else>{{ item.position }}</span>
-              </div>
-            </div>
-
-            <div v-if="isEdit" class="reviews__text">
-              <editor
-                data-placeholder="Текст отзыва"
-                :text="item.description || ''"
-                :sectionId="section.id"
-                field="description"
-                :itemId="item.id"
-              />
-            </div>
-            <div v-else class="reviews__text">{{ item.description }}</div>
-            <div class="reviews__info align-items-center">
-              <a href class="reviews__readmore">
-                Читать полностью
-                <svg
-                  width="5"
-                  height="8"
-                  viewBox="0 0 5 8"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M1 1L4 4L1 7" stroke="currentColor" />
-                </svg>
-              </a>
-              <div v-if="isEdit">
-                <v-dialog
-                  ref="dialogReviewDate"
-                  v-model="modalReviewDate"
-                  :return-value.sync="reviewDate"
-                  persistent
-                  width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="reviewDate"
-                      label="Выберите дату"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="reviewDate" scrollable>
-                    <v-spacer></v-spacer>
-                    <v-btn text color="primary" @click="modalReviewDate = false">Cancel</v-btn>
-                    <v-btn
-                      text
-                      color="primary"
-                      @click="setReviewDate({
-                        index: itemIndex,
-                      itemId: item.id,
-                      field: 'date',
-                      value: reviewDate
-                    })"
-                    >OK</v-btn>
-                  </v-date-picker>
-                </v-dialog>
-              </div>
-              <div v-else class="reviews__date">{{ item.date }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
+        :item="item"
+        :sectionId="section.id"
+        :isEdit="isEdit"
+      ></reviews-item>
       <div
-        class="cell cell-12 cell-sm-6 cell-lg-3"
+        class="reviews__item-wrap cell"
         v-if="isEdit && (!section.items || !section.items.length)"
       >
         <buttons-item-add :sectionId="section.id" />
       </div>
     </slick>
+    <v-dialog v-model="dialogReviewDesc" max-width="33rem" v-if="isEdit">
+      <v-card>
+        <v-card-title class="mb-10">
+          Текст отзыва
+          <v-spacer></v-spacer>
+          <v-btn icon @click="dialogReviewDesc = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-textarea
+          outlined
+          name="input-review-text"
+          label="Введите текст отзыва"
+          v-model="inputReviewDesc"
+        ></v-textarea>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn depressed color="gray" text @click="dialogReviewDesc = false">Отменить</v-btn>
+          <v-btn depressed color="green" dark @click="saveReviewDesc(inputReviewDesc)">Сохранить</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="dialogReviewDate" persistent width="290px">
+      <v-date-picker v-model="reviewDate" scrollable>
+        <v-spacer></v-spacer>
+        <v-btn text color="primary" @click="dialogReviewDate = false">Cancel</v-btn>
+        <v-btn text color="primary" @click="saveReviewDate(reviewDate)">OK</v-btn>
+      </v-date-picker>
+    </v-dialog>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
+import { mapMutations } from "vuex";
+import ReviewsItem from "./ReviewsItem";
 export default {
   props: {
     section: Object,
     isEdit: Boolean,
   },
+  components: {
+    ReviewsItem,
+  },
   data: () => ({
-    reviewDate: new Date().toISOString().substr(0, 10),
+    dialogReviewDate: false,
+    dialogReviewDesc: false,
+    currentReview: {},
+    inputReviewDesc: "",
+    reviewDate: "",
     modalReviewDate: false,
     isSlick: true,
     slickOptions: {
       arrows: true,
       dots: true,
-      slidesToShow: 3,
+      slidesToShow: 2,
       slidesToScroll: 1,
-      centerMode: false,
-      centerPadding: "18.3333%",
       draggable: false,
       infinite: false,
       prevArrow:
@@ -140,8 +86,6 @@ export default {
         {
           breakpoint: 1280,
           settings: {
-            slidesToShow: 2,
-            slidesToScroll: 1,
             arrows: false,
             centerMode: false,
             centerPadding: 0,
@@ -170,11 +114,8 @@ export default {
     },
     updatedSlickOptions() {
       const slidesQty = this.isEdit ? 3 : 2;
-      const slidesStart = this.isEdit ? 0 : 1;
       return Object.assign(this.slickOptions, {
-        initialSlide: slidesStart,
         slidesToShow: slidesQty,
-        centerMode: !this.isEdit,
         infinite: !this.isEdit,
         draggable: !this.isEdit,
       });
@@ -198,17 +139,36 @@ export default {
         _this.isSlick = true;
       }, 200);
     },
-    setReviewDate(payload) {
-      this.$refs.dialogReviewDate[payload.index].save(this.reviewDate);
+    updateReviewDate(item) {
+      if (this.isEdit) {
+        this.currentReview = item;
+        this.dialogReviewDate = true;
+      }
+    },
+    saveReviewDate(item) {
+      this.saveReviewField("date", this.reviewDate);
+      this.dialogReviewDate = false;
+    },
+    updateReviewDesc(item) {
+      if (this.isEdit) {
+        this.currentReview = item;
+        this.inputReviewDesc = item.text;
+        this.dialogReviewDesc = true;
+      }
+    },
+    saveReviewDesc(userInput) {
+      this.saveReviewField("text", userInput);
+      this.dialogReviewDesc = false;
+    },
+    saveReviewField(field, value) {
       this.setItemField({
         sectionId: this.section.id,
-        itemId: payload.itemId,
+        itemId: this.currentReview.id,
         items: "items",
-        field: payload.field,
-        value: payload.value,
+        field: field,
+        value: value,
       });
       this.$store.dispatch("pages/savePage");
-      this.dialogReviewDate = false;
     },
   },
   watch: {
