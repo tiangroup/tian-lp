@@ -21,13 +21,11 @@
 <script>
 export default {
   props: {
-    item: Object,
-    value: {
-      type: Boolean,
-      default: false
-    }
+    item: Object
   },
-  data: () => ({}),
+  data: () => ({
+    value: false
+  }),
   computed: {
     check: {
       get() {

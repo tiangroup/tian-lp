@@ -1,5 +1,5 @@
 <template>
-  <form class="form">
+  <form class="form" @submit.prevent="onSubmit">
     <div class="form__body" v-if="form">
       <div class="form__title">
         {{ form.form.title }}
@@ -77,7 +77,19 @@ export default {
       savePage: "pages/savePage",
       addForm: "forms/addForm",
       loadForm: "forms/loadForm"
-    })
+    }),
+    async onSubmit() {
+      const formData = new FormData();
+      for (let id of Object.keys(this.formData)) {
+        formData.append(id, this.formData[id]);
+      }
+      formData.append("id", this.formId);
+      const { data } = await this.$axios.post(
+        `${this.$site_app}/forms`,
+        formData
+      );
+      console.log(data);
+    }
   },
   async mounted() {
     if (!this.formId) {

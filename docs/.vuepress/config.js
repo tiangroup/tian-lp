@@ -3,7 +3,7 @@ module.exports = {
   description: "Документация TianLP",
   themeConfig: {
     nav: [
-      { text: "Блоки", link: "/sections/" },
+      //{ text: "Блоки", link: "/sections/" },
       { text: "Компоненты", link: "/components/" }
     ],
     sidebar: ["/sections/", "/components/"]

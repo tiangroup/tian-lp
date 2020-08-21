@@ -34,6 +34,9 @@ export const mutations = {
   },
   SET_MAIL_FIELD(state, payload) {
     const form = state.forms.find(f => f.id == payload.formId);
+    if (!form.mail) {
+      form.mail = {};
+    }
     form.mail[payload.field] = payload.value;
     if (!state.changeForms.includes(form.id)) {
       state.changeForms.push(form.id);
@@ -104,7 +107,7 @@ export const mutations = {
 export const actions = {
   async loadForm({ commit, state }, payload) {
     try {
-      const form = await this.$axios.$get(`${this.$url_api}/forms/${payload}`);
+      const form = await this.$axios.$get(`${this.$site_api}/forms/${payload}`);
       commit("SET_FORM", form);
       commit("SET_CHANGE", false);
     } catch (error) {
@@ -116,7 +119,7 @@ export const actions = {
       commit("SET_SAVE_LOADING", true);
       const form = state.forms.find(f => f.id == payload);
       const response = await this.$axios.$put(
-        `${this.$url_api}/forms/${form.id}`,
+        `${this.$site_api}/forms/${form.id}`,
         form
       );
       commit("SET_FORM", response);
@@ -132,7 +135,7 @@ export const actions = {
       try {
         const form = state.forms.find(f => f.id == id);
         const response = await this.$axios.$put(
-          `${this.$url_api}/forms/${form.id}`,
+          `${this.$site_api}/forms/${form.id}`,
           form
         );
         commit("SET_FORM", response);
@@ -146,7 +149,7 @@ export const actions = {
   },
   async addForm({ commit, state }, payload) {
     try {
-      const form = await this.$axios.$post(`${this.$url_api}/forms`, {
+      const form = await this.$axios.$post(`${this.$site_api}/forms`, {
         form: {
           title: "Заголовок формы",
           button: "Отправить"

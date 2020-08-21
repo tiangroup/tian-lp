@@ -153,5 +153,9 @@ export default {
   robots: {
     UserAgent: "*",
     Disallow: "/"
+  },
+  env: {
+    API_BACKEND: process.env.API_BACKEND,
+    APP_BACKEND: process.env.APP_BACKEND
   }
 };

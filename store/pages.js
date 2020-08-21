@@ -134,7 +134,7 @@ export const mutations = {
 export const actions = {
   async loadPage({ commit }, id) {
     try {
-      const page = await this.$axios.$get(`${this.$url_api}/pages/${id}`);
+      const page = await this.$axios.$get(`${this.$site_api}/pages/${id}`);
       commit("SET_PAGE", page);
       commit("SET_CHANGE", false);
     } catch (error) {
@@ -146,7 +146,7 @@ export const actions = {
       commit("SET_SAVE_LOADING", true);
       const page = state.page;
       const response = await this.$axios.$put(
-        `${this.$url_api}/pages/${page.id}`,
+        `${this.$site_api}/pages/${page.id}`,
         page
       );
       commit("SET_PAGE", response);

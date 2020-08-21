@@ -44,7 +44,7 @@ export const actions = {
         }
       }
       if (hostname) {
-        const sites = await this.$axios.$get(`${this.$url_api}/sites`, {
+        const sites = await this.$axios.$get(`${this.$site_api}/sites`, {
           params: { name: hostname }
         });
         if (sites.length > 0) {

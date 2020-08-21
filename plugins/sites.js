@@ -1,11 +1,9 @@
 export default (context, inject) => {
-  const { store } = context;
-  const site_img = img => "/" + store.getters["sites/id"] + img;
-  inject("site_img", site_img);
+  const { store, env } = context;
 
-  const url_api = process.env.API_BACKEND || "https://api.tian-lp.ru:443";
-  inject("url_api", url_api);
+  inject("site_img", img => "/" + store.getters["sites/id"] + img);
 
-  /*const site_name = process.env.SITE_NAME;
-  inject("site_name", site_name);*/
+  inject("site_api", env.API_BACKEND);
+
+  inject("site_app", env.APP_BACKEND);
 };

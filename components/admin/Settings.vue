@@ -4,7 +4,9 @@
       <div class="tuning-panel__block">
         <div class="tuning-panel__row mb-25px">
           <div class="tuning-panel__cell">
-            <div class="tuning-panel__block__title">«{{ sectionConfig.name }}»</div>
+            <div class="tuning-panel__block__title">
+              «{{ sectionConfig.name }}»
+            </div>
           </div>
           <div class="tuning-panel__cell">
             <div class="tuning-panel__block__bg tuning-bg">
@@ -47,7 +49,7 @@
               @click.prevent="setViewSettings(view.value)"
             >
               <div class="tuning-setting__image">
-                <img v-if="view.img" :src="`${$url_api}${view.img.url}`" />
+                <img v-if="view.img" :src="`${$site_api}${view.img.url}`" />
               </div>
               <div class="tuning-setting__title">{{ view.title }}</div>
             </a>
@@ -72,20 +74,25 @@
               @click.prevent="setViewSettings(view.value)"
             >
               <div class="tuning-setting__image">
-                <img v-if="view.img" :src="`${$url_api}${view.img.url}`" />
+                <img v-if="view.img" :src="`${$site_api}${view.img.url}`" />
               </div>
               <div class="tuning-setting__title">{{ view.title }}</div>
             </a>
           </div>
         </div>
 
-        <div class="tuning-panel__row tuning-panel__options" v-if="sectionConfig.settings.options">
+        <div
+          class="tuning-panel__row tuning-panel__options"
+          v-if="sectionConfig.settings.options"
+        >
           <div
             class="tuning-panel__cell tuning-option-wrap"
             v-for="(option, index) in sectionConfig.settings.options"
             :key="index"
           >
-            <label class="tuning-panel__option tuning-option field field--check">
+            <label
+              class="tuning-panel__option tuning-option field field--check"
+            >
               <input
                 type="checkbox"
                 class="field__input"
@@ -109,33 +116,33 @@ export default {
   props: {
     component: String,
     sectionId: String,
-    settings: Object,
+    settings: Object
   },
   computed: {
     ...mapGetters({
       sections: "sections/sections",
-      isApp: "isApp",
+      isApp: "isApp"
     }),
-    sectionConfig: function () {
-      return this.sections.find((item) => item.component === this.component);
-    },
+    sectionConfig: function() {
+      return this.sections.find(item => item.component === this.component);
+    }
   },
   methods: {
     ...mapMutations({
-      setSettingsField: "pages/SET_SETTINGS_FIELD",
+      setSettingsField: "pages/SET_SETTINGS_FIELD"
     }),
     setBackroundSettings(bg) {
       this.setSettingsField({
         id: this.sectionId,
         field: "background",
-        value: bg,
+        value: bg
       });
     },
     setViewSettings(view) {
       this.setSettingsField({
         id: this.sectionId,
         field: "view",
-        value: view,
+        value: view
       });
     },
     setOptionsSettings(event) {
@@ -144,9 +151,9 @@ export default {
       this.setSettingsField({
         id: this.sectionId,
         field: name,
-        value: checked,
+        value: checked
       });
-    },
-  },
+    }
+  }
 };
 </script>

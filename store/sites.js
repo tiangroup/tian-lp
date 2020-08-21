@@ -11,7 +11,7 @@ export const mutations = {
 export const actions = {
   async loadSite({ commit }, id) {
     try {
-      const site = await this.$axios.$get(`${this.$url_api}/sites/${id}`);
+      const site = await this.$axios.$get(`${this.$site_api}/sites/${id}`);
       commit("SET_SITE", site);
     } catch (error) {
       console.error(error);

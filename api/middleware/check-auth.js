@@ -1,5 +1,5 @@
 const axios = require("axios");
-const api_backend = process.env.API_BACKEND || "https://api.tian-lp.ru:443";
+const api_backend = process.env.API_BACKEND;
 
 module.exports = async (req, res, next) => {
   try {
