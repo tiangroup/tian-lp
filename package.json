@@ -26,6 +26,7 @@
     "node-uuid": "^1.4.8",
     "nodemailer": "^6.4.11",
     "nuxt": "^2.13.0",
+    "templayed": "^0.2.3",
     "vue-confirm-dialog": "^1.0.2",
     "vue-gallery": "^2.0.1",
     "vue-js-modal": "^2.0.0-rc.6",

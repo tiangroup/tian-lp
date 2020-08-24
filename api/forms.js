@@ -2,6 +2,7 @@ const express = require("express");
 const axios = require("axios");
 const fileUpload = require("express-fileupload");
 const nodemailer = require("nodemailer");
+const templayed = require("templayed");
 
 const api_backend = process.env.API_BACKEND;
 const admin_token = process.env.ADMIN_TOKEN;
@@ -25,7 +26,7 @@ app.post("/", async (req, res) => {
         token: admin_token
       }
     });
-    if (form.mail && form.mail.to) {
+    if (form && form.mail && form.mail.to) {
       // разбор полей
       const fields = Array();
       for (let field of form.fields) {
@@ -36,6 +37,18 @@ app.post("/", async (req, res) => {
           type: field.type
         });
       }
+
+      const mailTextTpl = "{{#fields}}{{../field}}{{/fields}}";
+      const mailText = templayed(mailTextTpl)({
+        fields,
+        field: function() {
+          let value = this.value;
+          if (this.type == "check" && value) {
+            return `${this.label}\n`;
+          }
+          return value ? `${this.label}: ${value}\n` : null;
+        }
+      });
 
       // отправка сообщения
       let testAccount = await nodemailer.createTestAccount();
@@ -52,11 +65,33 @@ app.post("/", async (req, res) => {
         from: '"Лендинг" <noreply@tian-lp.ru>',
         to: form.mail.to,
         subject: form.mail.subject,
-        text: "Hello world?"
+        text: mailText
         //html: "<b>Hello world?</b>"
       });
       console.log("Message sent: %s", info.messageId);
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+
+      // сохранение формы
+      await axios.post(
+        `${api_backend}/forms-sends`,
+        {
+          admin: form.admin,
+          datetime: Date.now(),
+          email: form.mail.to,
+          data: fields
+            .filter(item => item.value)
+            .map(item => ({
+              name: item.label,
+              value: item.value,
+              type: item.type
+            }))
+        },
+        {
+          params: {
+            token: admin_token
+          }
+        }
+      );
     }
 
     res.status(200).send("OK");

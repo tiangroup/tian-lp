@@ -43,6 +43,7 @@
 
           <v-tab-item class="mt-4">
             <v-text-field label="Заголовок формы" v-model="formTitle" />
+            <v-text-field label="Описание формы" v-model="formDescription" />
             <v-text-field
               label="Подпись кнопки отправки"
               v-model="formButton"
@@ -133,6 +134,18 @@ export default {
         this.setFormField({
           formId: this.form.id,
           field: "title",
+          value: value
+        });
+      }
+    },
+    formDescription: {
+      get: function() {
+        return this.form.form.description;
+      },
+      set: function(value) {
+        this.setFormField({
+          formId: this.form.id,
+          field: "description",
           value: value
         });
       }

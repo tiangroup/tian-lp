@@ -4,6 +4,9 @@
       <div class="form__title">
         {{ form.form.title }}
       </div>
+      <div class="form__intro" v-if="form.form.description">
+        {{ form.form.description }}
+      </div>
       <slot></slot>
       <component
         v-for="item in form.fields.filter(i => i.id)"
@@ -81,7 +84,9 @@ export default {
     async onSubmit() {
       const formData = new FormData();
       for (let id of Object.keys(this.formData)) {
-        formData.append(id, this.formData[id]);
+        if (this.formData[id] !== null) {
+          formData.append(id, this.formData[id]);
+        }
       }
       formData.append("id", this.formId);
       const { data } = await this.$axios.post(
