@@ -24,6 +24,7 @@
     "gm": "^1.23.1",
     "jquery": "^3.5.1",
     "node-uuid": "^1.4.8",
+    "nodemailer": "^6.4.11",
     "nuxt": "^2.13.0",
     "vue-confirm-dialog": "^1.0.2",
     "vue-gallery": "^2.0.1",
