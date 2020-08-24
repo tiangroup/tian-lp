@@ -27,50 +27,53 @@
           :class="computedSectionClass"
           v-if="section.items && isSlick"
         >
-          <slick ref="slick" :options="updatedSlickOptions">
-            <reviews-item
-              v-for="(item, itemIndex) in section.items.filter(i => i.id)"
-              @item-update="onItemsChange"
-              @onItemDelete="onItemDelete"
-              @change-desc="updateReviewDesc(item)"
-              @change-date="updateReviewDate(item)"
-              @show-review="showReview(item)"
-              @show-gallery="showGallery(itemIndex)"
-              :key="item.id"
-              :item="item"
-              :sectionId="section.id"
-              :isEdit="isEdit"
-              :view="view"
-            ></reviews-item>
-            <div
-              class="reviews__item-wrap cell"
-              v-if="isEdit && (!section.items || !section.items.length)"
-            >
-              <buttons-item-add :sectionId="section.id" />
-            </div>
-          </slick>
+          <div :class="{'fullwidth': view === 'view2'}">
+            <slick ref="slick" :options="updatedSlickOptions">
+              <reviews-item
+                v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                @item-update="onItemsChange"
+                @onItemDelete="onItemDelete"
+                @change-desc="updateReviewDesc(item)"
+                @change-date="updateReviewDate(item)"
+                @show-review="showReview(item)"
+                @show-gallery="showGallery(itemIndex)"
+                :key="item.id"
+                :item="item"
+                :sectionId="section.id"
+                :isEdit="isEdit"
+                :view="view"
+              ></reviews-item>
+              <div
+                class="reviews__item-wrap cell"
+                v-if="isEdit && (!section.items || !section.items.length)"
+              >
+                <buttons-item-add :sectionId="section.id" />
+              </div>
+            </slick>
+          </div>
         </div>
         <v-dialog v-model="dialogReviewDesc" max-width="30rem" v-if="isEdit">
           <v-card>
             <v-card-title class="mb-10">
-              Текст отзыва
+              Отредактируйте текст отзыва
               <v-spacer></v-spacer>
               <v-btn icon @click="dialogReviewDesc = false">
                 <v-icon>mdi-close</v-icon>
               </v-btn>
             </v-card-title>
             <v-card-text>
-              <v-textarea
-                outlined
-                name="input-review-text"
-                label="Текст отзыва"
-                v-model="inputReviewDesc"
-              ></v-textarea>
+              <editor
+                data-placeholder="Введите текст отзыва"
+                editContent="text"
+                :text="currentReview.text || ''"
+                :sectionId="section.id"
+                field="text"
+                :itemId="currentReview.id"
+              />
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn depressed color="gray" text @click="dialogReviewDesc = false">Отменить</v-btn>
-              <v-btn depressed color="green" dark @click="saveReviewDesc(inputReviewDesc)">Сохранить</v-btn>
+              <v-btn depressed color="green" dark @click="dialogReviewDesc=false">Готово</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -78,8 +81,8 @@
         <v-dialog v-model="dialogReviewDate" persistent width="290px">
           <v-date-picker v-model="reviewDate" scrollable>
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="dialogReviewDate = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="saveReviewDate(reviewDate)">OK</v-btn>
+            <v-btn text color="primary" @click="dialogReviewDate = false">Отменить</v-btn>
+            <v-btn text color="primary" @click="saveReviewDate(reviewDate)">Сохранить</v-btn>
           </v-date-picker>
         </v-dialog>
 
@@ -146,6 +149,8 @@ export default {
       dots: true,
       slidesToShow: 1,
       slidesToScroll: 1,
+      centerMode: false,
+      centerPadding: 0,
       draggable: false,
       infinite: false,
       prevArrow:
@@ -186,8 +191,19 @@ export default {
     },
     updatedSlickOptions() {
       const slidesQty = this.view === "view1" ? 2 : 1;
+      var slickCenterMode;
+      var slickCenterPadding;
+      if (this.view === "view2") {
+        slickCenterMode = true;
+        slickCenterPadding = "18.333%";
+      } else {
+        slickCenterPadding = 0;
+        slickCenterMode = false;
+      }
       return Object.assign(this.slickOptions, {
         slidesToShow: slidesQty,
+        centerMode: slickCenterMode,
+        centerPadding: slickCenterPadding,
         infinite: !this.isEdit,
         draggable: !this.isEdit,
       });

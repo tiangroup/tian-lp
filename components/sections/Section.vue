@@ -23,6 +23,7 @@ export default {
     sections_questions: () =>
       import("~/components/sections/questions/questions"),
     sections_reviews: () => import("~/components/sections/reviews/reviews"),
+    sections_cta: () => import("~/components/sections/cta/cta"),
   },
   computed: {
     ...mapGetters({

@@ -12,13 +12,13 @@
         class="reviews__image-wrap"
         :class="{'pic-enlarge': !isEdit}"
         @click="$emit('show-gallery')"
+        v-if="view === 'view2'"
       >
         <image-item
           divClass="reviews__image"
           :img="item.img"
           :itemId="item.id"
           :sectionId="sectionId"
-          v-if="view === 'view2'"
         />
       </div>
       <div class="reviews__body">
@@ -47,7 +47,12 @@
           </div>
         </div>
 
-        <div class="reviews__text" @click="$emit('change-desc')">{{ cropReviewText(item.text) }}</div>
+        <div
+          class="reviews__text"
+          @click="$emit('change-desc')"
+          v-if="isEdit"
+        >{{ cropReviewText(item.text) || "Введите текст отзыва" }}</div>
+        <div class="reviews__text" v-else>{{ cropReviewText(item.text) }}</div>
         <div v-if="isEdit">
           <v-text-field
             :value="formatDate(computedReviewDate)"
@@ -103,19 +108,19 @@ export default {
       this.$emit("onItemDelete", payload);
     },
     cropReviewText(reviewText) {
-      var croppedReviewText = this.truncateText(reviewText, 32);
-      this.isCropped = true;
+      var croppedReviewText = this.truncateText(reviewText, 44);
       return croppedReviewText;
     },
     truncateText(textToTruncate, words) {
       if (!textToTruncate) {
-        return "Введите текст отзыва";
+        return "";
       }
       var currentWords = textToTruncate.split(" ");
       var currentWordsQty = currentWords.length;
       if (currentWordsQty <= words) {
         return textToTruncate;
       }
+      this.isCropped = true;
       return currentWords.slice(0, words + 1).join(" ");
     },
     formatDate(dateToFormat) {
