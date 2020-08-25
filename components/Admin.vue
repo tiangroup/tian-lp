@@ -1,15 +1,12 @@
 <template>
-  <div>
-    admin
-  </div>
+<div></div>
 </template>
 
 <script>
 export default {
   props: {
-    select: {
-      type: String,
-      default: ""
+    params: {
+      type: Object
     }
   }
 };

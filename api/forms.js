@@ -3,6 +3,7 @@ const axios = require("axios");
 const fileUpload = require("express-fileupload");
 const nodemailer = require("nodemailer");
 const templayed = require("templayed");
+const checkAuth = require("./middleware/check-auth");
 
 const api_backend = process.env.API_BACKEND;
 const admin_token = process.env.ADMIN_TOKEN;
@@ -20,8 +21,8 @@ app.use(
 app.post("/", async (req, res) => {
   try {
     // получение формы
-    const id = req.body.id;
-    const { data: form } = await axios.get(`${api_backend}/forms/${id}`, {
+    const form_id = req.body.id;
+    const { data: form } = await axios.get(`${api_backend}/forms/${form_id}`, {
       params: {
         token: admin_token
       }
@@ -75,6 +76,7 @@ app.post("/", async (req, res) => {
       await axios.post(
         `${api_backend}/forms-sends`,
         {
+          form: form_id,
           admin: form.admin,
           datetime: Date.now(),
           email: form.mail.to,
@@ -99,6 +101,31 @@ app.post("/", async (req, res) => {
     console.log(err);
     res.status(500).send(err);
   }
+});
+
+app.get("/", checkAuth, async (req, res) => {
+  const { id: user_id } = req.userData;
+  const { data: forms } = await axios.get(`${api_backend}/forms`, {
+    params: {
+      token: admin_token,
+      admin: user_id
+    }
+  });
+  res.status(200).send(forms);
+});
+
+app.get("/items", checkAuth, async (req, res) => {
+  const { id: user_id } = req.userData;
+  const form_id = req.query.form;
+  const { data: forms } = await axios.get(`${api_backend}/forms-sends`, {
+    params: {
+      token: admin_token,
+      admin: user_id,
+      form: form_id,
+      _sort: "datetime:DESC"
+    }
+  });
+  res.status(200).send(forms);
 });
 
 module.exports = {
