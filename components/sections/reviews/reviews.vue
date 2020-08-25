@@ -22,13 +22,9 @@
               closeOnSlideClick: true
             }"
         ></v-gallery>
-        <div
-          class="benefits__list mx-ncell"
-          :class="computedSectionClass"
-          v-if="section.items && isSlick"
-        >
+        <div class="reviews__list mx-ncell" :class="computedSectionClass" v-if="section.items">
           <div :class="{'fullwidth': view === 'view2'}">
-            <slick ref="slick" :options="updatedSlickOptions">
+            <slick ref="slick" :options="updatedSlickOptions" v-if="isSlick">
               <reviews-item
                 v-for="(item, itemIndex) in section.items.filter(i => i.id)"
                 @item-update="onItemsChange"
@@ -64,7 +60,6 @@
             <v-card-text>
               <editor
                 data-placeholder="Введите текст отзыва"
-                editContent="text"
                 :text="currentReview.text || ''"
                 :sectionId="section.id"
                 field="text"
@@ -73,7 +68,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn depressed color="green" dark @click="dialogReviewDesc=false">Готово</v-btn>
+              <v-btn depressed color="green" dark @click="saveReviewDesc">Готово</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -140,7 +135,6 @@ export default {
     dialogReviewDate: false,
     dialogReviewDesc: false,
     index: null,
-    inputReviewDesc: "",
     isSlick: true,
     modalReviewDate: false,
     reviewDate: "",
@@ -260,13 +254,12 @@ export default {
     updateReviewDesc(item) {
       if (this.isEdit) {
         this.currentReview = item;
-        this.inputReviewDesc = item.text;
         this.dialogReviewDesc = true;
       }
     },
-    saveReviewDesc(userInput) {
-      this.saveReviewField("text", userInput);
+    saveReviewDesc() {
       this.dialogReviewDesc = false;
+      this.$store.dispatch("pages/savePage");
     },
     saveReviewField(field, value) {
       this.setItemField({
@@ -277,6 +270,7 @@ export default {
         value: value,
       });
       this.$store.dispatch("pages/savePage");
+      this.currentReview = {};
     },
     showReview(item) {
       this.currentReview = item;

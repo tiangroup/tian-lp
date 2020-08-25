@@ -1,9 +1,11 @@
 <template>
-  <component :is="comp" :section="section" :isEdit="isEdit" v-if="isShow" />
+<component :is="comp" :section="section" :isEdit="isEdit" v-if="isShow" />
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {
+  mapGetters
+} from "vuex";
 export default {
   props: {
     section: Object
