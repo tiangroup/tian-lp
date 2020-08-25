@@ -87,7 +87,10 @@
             </div>
           </div>
           <div class="cta__countdown__action">
-            <a @click.prevent="dialogCtaBtn = true" class="button button-secondary">Открыть</a>
+            <a
+              @click.prevent="dialogCtaBtn = true"
+              class="button button-secondary"
+            >Заказать прямо сейчас</a>
             <form-dialog :section="section" field="form_cta" v-model="dialogCtaBtn"></form-dialog>
           </div>
         </div>

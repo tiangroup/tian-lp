@@ -53,7 +53,8 @@
           v-if="isEdit"
         >{{ cropReviewText(item.text) || "Введите текст отзыва" }}</div>
         <div class="reviews__text" v-else>{{ cropReviewText(item.text) }}</div>
-        <div v-if="isEdit">
+
+        <div class="reviews__info" v-if="isEdit">
           <v-text-field
             :value="formatDate(computedReviewDate)"
             label="Дата отзыва"
@@ -74,7 +75,7 @@
               <path d="M1 1L4 4L1 7" stroke="currentColor" />
             </svg>
           </button>
-          <div class="reviews__date">{{ formatDate(item.date) }}</div>
+          <div class="reviews__date" v-if="item.date">{{ formatDate(item.date) }}</div>
         </div>
       </div>
     </div>

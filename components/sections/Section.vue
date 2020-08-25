@@ -24,6 +24,7 @@ export default {
       import("~/components/sections/questions/questions"),
     sections_reviews: () => import("~/components/sections/reviews/reviews"),
     sections_cta: () => import("~/components/sections/cta/cta"),
+    sections_footer: () => import("~/components/sections/footer/footer"),
   },
   computed: {
     ...mapGetters({
