@@ -41,37 +41,43 @@
           <v-tab>Поля</v-tab>
           <v-tab>Настройки</v-tab>
 
-          <v-tab-item class="mt-4">
-            <v-text-field label="Заголовок формы" v-model="formTitle" />
-            <v-text-field label="Описание формы" v-model="formDescription" />
-            <v-text-field
-              label="Подпись кнопки отправки"
-              v-model="formButton"
-            />
-            <v-text-field
-              v-if="popup"
-              label="Подпись кнопки открытия формы"
-              v-model="formOpenButton"
-            />
+          <v-tab-item>
+            <v-container>
+              <v-text-field label="Заголовок формы" v-model="formTitle" />
+              <v-text-field label="Описание формы" v-model="formDescription" />
+              <v-text-field
+                label="Подпись кнопки отправки"
+                v-model="formButton"
+              />
+              <v-text-field
+                v-if="popup"
+                label="Подпись кнопки открытия формы"
+                v-model="formOpenButton"
+              />
+            </v-container>
           </v-tab-item>
-          <v-tab-item class="mt-4">
-            <form-editor-input
-              v-for="(item, index) in form.fields.filter(i => i.id)"
-              :key="item.id"
-              :formField="item"
-              :formId="form.id"
-              :first="index == 0"
-              :last="index + 1 == form.fields.length"
-            ></form-editor-input>
-            <v-row class="justify-center">
-              <v-btn fab dark small color="green" @click="newField">
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
-            </v-row>
+          <v-tab-item>
+            <v-container>
+              <form-editor-input
+                v-for="(item, index) in form.fields.filter(i => i.id)"
+                :key="item.id"
+                :formField="item"
+                :formId="form.id"
+                :first="index == 0"
+                :last="index + 1 == form.fields.length"
+              ></form-editor-input>
+              <v-row class="justify-center">
+                <v-btn fab dark small color="green" @click="newField">
+                  <v-icon>mdi-plus</v-icon>
+                </v-btn>
+              </v-row>
+            </v-container>
           </v-tab-item>
-          <v-tab-item class="mt-4">
-            <v-text-field label="E-mail отправки" v-model="mailTo" />
-            <v-text-field label="Заголовок письма" v-model="mailSubject" />
+          <v-tab-item>
+            <v-container>
+              <v-text-field label="Заголовок письма" v-model="mailSubject" />
+              <v-text-field label="E-mail отправки" v-model="mailTo" />
+            </v-container>
           </v-tab-item>
         </v-tabs>
       </v-container>

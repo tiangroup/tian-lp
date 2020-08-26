@@ -96,36 +96,68 @@ app.post("/", async (req, res) => {
       );
     }
 
-    res.status(200).send("OK");
+    res.send("OK");
   } catch (err) {
     console.log(err);
-    res.status(500).send(err);
+    res.sendStatus(500).json({ err });
   }
 });
 
 app.get("/", checkAuth, async (req, res) => {
-  const { id: user_id } = req.userData;
-  const { data: forms } = await axios.get(`${api_backend}/forms`, {
-    params: {
-      token: admin_token,
-      admin: user_id
-    }
-  });
-  res.status(200).send(forms);
+  try {
+    const { id: user_id } = req.userData;
+    const { data: forms } = await axios.get(`${api_backend}/forms`, {
+      params: {
+        token: admin_token,
+        admin: user_id
+      }
+    });
+    res.send(forms);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500).json({ err });
+  }
 });
 
 app.get("/items", checkAuth, async (req, res) => {
-  const { id: user_id } = req.userData;
-  const form_id = req.query.form;
-  const { data: forms } = await axios.get(`${api_backend}/forms-sends`, {
-    params: {
-      token: admin_token,
-      admin: user_id,
-      form: form_id,
-      _sort: "datetime:DESC"
-    }
-  });
-  res.status(200).send(forms);
+  try {
+    const { id: user_id } = req.userData;
+    const form_id = req.query.form;
+    const { data: forms } = await axios.get(`${api_backend}/forms-sends`, {
+      params: {
+        token: admin_token,
+        admin: user_id,
+        form: form_id,
+        _sort: "datetime:DESC"
+      }
+    });
+    res.send(forms);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500).json({ err });
+  }
+});
+
+app.get("/items/count", checkAuth, async (req, res) => {
+  try {
+    const { id: user_id } = req.userData;
+    const form_id = req.query.form;
+    debugger;
+    const { data: count } = await axios.get(
+      `${api_backend}/forms-sends/count`,
+      {
+        params: {
+          token: admin_token,
+          admin: user_id,
+          form: form_id
+        }
+      }
+    );
+    res.send({ count });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500).json({ err });
+  }
 });
 
 module.exports = {

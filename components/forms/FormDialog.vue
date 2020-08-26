@@ -30,7 +30,7 @@
           </button>
         </div>
         <div class="der-popup__body">
-          <div class="popup-callback">
+          <div :class="popupClass">
             <form-base
               :section="section"
               :field="field"
@@ -58,6 +58,9 @@ export default {
       type: String,
       default: "button-primary"
     },
+    popupClass: {
+      type: String
+    },
     hiddenData: String,
     value: false
   },
@@ -70,7 +73,11 @@ export default {
       getForm: "forms/form"
     }),
     styleDiv() {
-      return this.isEdit ? { position: "relative" } : null;
+      return this.isEdit
+        ? {
+            position: "relative"
+          }
+        : null;
     }
   }
 };

@@ -98,11 +98,19 @@ editContent :
 | field       | `String` | имя поля формы                                                   | `form`           |
 | buttonClass | `String` | класс кнопки                                                     | `button-primary` |
 | hiddenData  | `String` | данные для скрытого поля формы, для передачи выбранного элемента |                  |
+| popupClass  | `String` | класс картинки в верхнем правом углу                             |                  |
 
 buttonClass :
 
 - `button-primary` - кнопка с фоном
 - `button-secondary` - прозрачная кнопка
+
+popupClass :
+
+- `popup-order`
+- `popup-callback`
+- `popup-reviews`
+- `popup-question`
 
 ### FormDialog.vue
 
@@ -127,6 +135,14 @@ export default {
 | section    | `Object` | текущий section                                                  |              |
 | field      | `String` | имя поля формы                                                   | `form`       |
 | hiddenData | `String` | данные для скрытого поля формы, для передачи выбранного элемента |              |
+| popupClass | `String` | класс картинки в верхнем правом углу                             |              |
+
+popupClass :
+
+- `popup-order`
+- `popup-callback`
+- `popup-reviews`
+- `popup-question`
 
 ::: tip Слот
 Для компонент форм определён слот по умолчанию, данные выводятся после заголовка формы, перед полями

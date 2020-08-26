@@ -51,7 +51,7 @@ import {
 export default {
   fetchOnServer: false,
   data: () => ({
-    drawer: null,
+    drawer: true,
     forms: null
   }),
   async fetch() {

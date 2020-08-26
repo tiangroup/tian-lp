@@ -1,34 +1,89 @@
 <template>
-<v-card>
-  <v-toolbar>
-    <v-toolbar-title>Форма: {{ params.form.title }}</v-toolbar-title>
-  </v-toolbar>
-  <v-tabs>
-    <v-tab>Статистика</v-tab>
-    <v-tab>Сообщения</v-tab>
-    <v-tab>Настройки</v-tab>
+  <v-card>
+    <v-toolbar>
+      <v-toolbar-title>Форма: {{ params.form.title }}</v-toolbar-title>
+    </v-toolbar>
+    <v-tabs>
+      <v-tab>Статистика</v-tab>
+      <v-tab>Заявки</v-tab>
+      <v-tab>Настройки</v-tab>
 
-    <v-tab-item class="mt-4"> </v-tab-item>
-    <v-tab-item class="mt-4">
-      <v-data-table :headers="headers" :items="items" fixed-header hide-default-footer v-if="isItems">
-        <template v-slot:[`item.datetime`]="{ item }">
-          {{ new Date(item.datetime).toLocaleString("ru") }}
-        </template>
-        <template v-slot:[`item.data`]="{ item }">
-          <div v-for="(field, i) in item.data" :key="i">
-            <strong>{{ field.name }}</strong>: {{ field.type == "check" ? "да" : field.value }}
-          </div>
-        </template>
-      </v-data-table>
-    </v-tab-item>
-    <v-tab-item class="mt-4">
-      <v-container>
-        <v-text-field label="E-mail отправки" v-model="params.mail.to" />
-        <v-text-field label="Заголовок письма" v-model="params.mail.subject" />
-      </v-container>
-    </v-tab-item>
-  </v-tabs>
-</v-card>
+      <v-tab-item>
+        <v-container fluid>
+          <v-row>
+            <v-col cols="12" md="4">
+              <v-card>
+                <v-list dense>
+                  <v-list-item>
+                    <v-list-item-content>Заявок:</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ count }}
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item v-if="items && items.length">
+                    <v-list-item-content>Последняя:</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ new Date(items[0].datetime).toLocaleString("ru") }}
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-tab-item>
+      <v-tab-item>
+        <v-data-table
+          :headers="headers"
+          :items="items"
+          fixed-header
+          hide-default-footer
+          v-if="isItems"
+        >
+          <template v-slot:[`item.datetime`]="{ item }">
+            {{ new Date(item.datetime).toLocaleString("ru") }}
+          </template>
+          <template v-slot:[`item.data`]="{ item }">
+            <div class="mt-2 mb-2">
+              <div v-for="(field, i) in item.data" :key="i">
+                <span class="text-caption font-weight-medium pr-2"
+                  >{{ field.name }}:</span
+                >
+                <span>{{ field.type == "check" ? "да" : field.value }}</span>
+              </div>
+            </div>
+          </template>
+        </v-data-table>
+      </v-tab-item>
+      <v-tab-item>
+        <v-container fluid>
+          <v-row>
+            <v-col cols="12" md="4">
+              <v-card>
+                <v-card-title>Почтовое уведомление</v-card-title>
+                <v-card-text>
+                  <v-text-field
+                    label="Заголовок письма"
+                    v-model="params.mail.subject"
+                  />
+                  <v-text-field
+                    label="E-mail отправки"
+                    v-model="params.mail.to"
+                  />
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="saveMail">
+                    Сохранить
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-tab-item>
+    </v-tabs>
+  </v-card>
 </template>
 
 <script>
@@ -40,23 +95,34 @@ export default {
     }
   },
   data: () => ({
-    headers: [{
+    headers: [
+      {
         text: "Дата",
         value: "datetime"
-      },
-      {
-        text: "E-mail",
-        value: "email"
       },
       {
         text: "Форма",
         value: "data",
         sortable: false
+      },
+      {
+        text: "Отправлено",
+        value: "email"
       }
     ],
-    items: null
+    items: null,
+    count: 0
   }),
   async fetch() {
+    const { count } = await this.$axios.$get(
+      `${this.$site_app}/forms/items/count`,
+      {
+        params: {
+          form: this.params.id
+        }
+      }
+    );
+    this.count = count;
     const items = await this.$axios.$get(`${this.$site_app}/forms/items`, {
       params: {
         form: this.params.id
@@ -68,7 +134,6 @@ export default {
       email: item.email,
       data: item.data
     }));
-    console.log(this.items);
   },
   computed: {
     isItems() {
@@ -77,6 +142,9 @@ export default {
   },
   watch: {
     params: "$fetch"
+  },
+  methods: {
+    saveMail() {}
   }
 };
 </script>

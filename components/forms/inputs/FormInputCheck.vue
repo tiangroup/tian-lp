@@ -21,18 +21,15 @@
 <script>
 export default {
   props: {
-    item: Object
-  },
-  data: () => ({
+    item: Object,
     value: false
-  }),
+  },
   computed: {
     check: {
       get() {
         return this.value;
       },
       set(value) {
-        this.value = value;
         this.$emit("input", value ? 1 : null);
       }
     }
