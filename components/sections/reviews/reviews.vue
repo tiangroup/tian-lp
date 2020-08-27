@@ -29,8 +29,14 @@
                 v-for="(item, itemIndex) in section.items.filter(i => i.id)"
                 @item-update="onItemsChange"
                 @onItemDelete="onItemDelete"
-                @change-desc="updateReviewDesc(item)"
-                @change-date="updateReviewDate(item)"
+                @change-desc="updateReviewDesc({
+                  id: item.id,
+                  text: item.text
+                })"
+                @change-date="updateReviewDate({
+                  id: item.id,
+                  date: item.date
+                })"
                 @show-review="showReview(item)"
                 @show-gallery="showGallery(itemIndex)"
                 :key="item.id"
@@ -58,6 +64,8 @@
               </v-btn>
             </v-card-title>
             <v-card-text>
+              <v-textarea label="Текст отзыва на самом деле" outlined :value="currentReview.text"></v-textarea>
+              <p>Что показывает medium-editor:</p>
               <editor
                 data-placeholder="Введите текст отзыва"
                 :text="currentReview.text || ''"
@@ -68,16 +76,22 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn depressed color="green" dark @click="saveReviewDesc">Готово</v-btn>
+              <v-btn depressed text color="gray" @click="dialogReviewDesc = false">Отменить</v-btn>
+              <v-btn depressed color="green" dark @click="saveReviewDesc">Сохранить</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
 
-        <v-dialog v-model="dialogReviewDate" persistent width="290px">
-          <v-date-picker v-model="reviewDate" scrollable>
+        <v-dialog v-model="dialogReviewDate" width="290px">
+          <v-date-picker v-model="currentReview.date" scrollable>
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="dialogReviewDate = false">Отменить</v-btn>
-            <v-btn text color="primary" @click="saveReviewDate(reviewDate)">Сохранить</v-btn>
+            <v-btn depressed text color="gray" @click="dialogReviewDate = false">Отменить</v-btn>
+            <v-btn
+              depressed
+              text
+              color="primary"
+              @click="saveReviewDate(currentReview.date)"
+            >Сохранить</v-btn>
           </v-date-picker>
         </v-dialog>
 
@@ -130,14 +144,18 @@ export default {
     section: Object,
   },
   data: () => ({
-    currentReview: {},
+    currentReview: {
+      id: null,
+      name: "",
+      position: "",
+      date: "",
+    },
     dialogShowReview: false,
     dialogReviewDate: false,
     dialogReviewDesc: false,
     index: null,
     isSlick: true,
     modalReviewDate: false,
-    reviewDate: "",
     slickOptions: {
       arrows: true,
       dots: true,
@@ -243,7 +261,8 @@ export default {
     },
     updateReviewDate(item) {
       if (this.isEdit) {
-        this.currentReview = item;
+        this.currentReview.id = item.id;
+        this.currentReview.date = item.date;
         this.dialogReviewDate = true;
       }
     },
@@ -253,7 +272,8 @@ export default {
     },
     updateReviewDesc(item) {
       if (this.isEdit) {
-        this.currentReview = item;
+        this.currentReview.id = item.id;
+        this.currentReview.text = item.text;
         this.dialogReviewDesc = true;
       }
     },
@@ -270,15 +290,40 @@ export default {
         value: value,
       });
       this.$store.dispatch("pages/savePage");
-      this.currentReview = {};
     },
     showReview(item) {
-      this.currentReview = item;
+      this.currentReview.id = item.id;
+      this.currentReview.name = item.name;
+      this.currentReview.position = item.position;
+      this.currentReview.text = item.text;
       this.dialogShowReview = true;
     },
     showGallery(itemIndex) {
       if (!this.isEdit) {
         this.index = itemIndex;
+      }
+    },
+    handleInit(event, slick) {
+      if (!this.isEdit) {
+        const _this = this;
+        const [slickTrack] = slick.$slideTrack;
+        let slidesCloned = slickTrack.querySelectorAll(".slick-cloned");
+        let slidesRealLength = slickTrack.querySelectorAll(
+          ".slick-slide:not(.slick-cloned)"
+        ).length;
+        for (let m = 0; m < slidesCloned.length; m++) {
+          let slideItem = slidesCloned[m];
+          let slideIndex = Number(slideItem.getAttribute("data-slick-index"));
+          let slideId = null;
+          if (slideIndex > 0) {
+            slideId = slideIndex % slidesRealLength;
+          } else {
+            slideId = slidesRealLength + slideIndex;
+          }
+          slideItem.addEventListener("click", function () {
+            _this.showReview(slideId);
+          });
+        }
       }
     },
   },

@@ -157,6 +157,7 @@ export default {
     goToTop() {
       //this.$vuetify.goTo("#app", { duration: 500 });
       window.scrollTo({ top: 0, behavior: "smooth" });
+      document.activeElement.blur();
     },
   },
 };
