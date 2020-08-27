@@ -4,7 +4,9 @@ export const state = () => ({
   saveLoading: false,
   changeForms: [],
   message: null,
-  isMessage: false
+  isMessage: false,
+  editor: null,
+  isEditor: false
 });
 
 export const mutations = {
@@ -109,15 +111,25 @@ export const mutations = {
   },
   SET_IS_MESSAGE(state, isMessage) {
     state.isMessage = isMessage;
+  },
+  SET_EDITOR(state, editor) {
+    state.editor = editor;
+  },
+  SET_IS_EDITOR(state, isEditor) {
+    state.isEditor = isEditor;
   }
 };
 
 export const actions = {
-  async loadForm({ commit, state }, payload) {
+  async loadForm({ commit, state }, formId) {
     try {
-      const form = await this.$axios.$get(`${this.$site_api}/forms/${payload}`);
-      commit("SET_FORM", form);
-      commit("SET_CHANGE", false);
+      if (formId) {
+        const form = await this.$axios.$get(
+          `${this.$site_api}/forms/${formId}`
+        );
+        commit("SET_FORM", form);
+        commit("SET_CHANGE", false);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -185,6 +197,13 @@ export const actions = {
   },
   hideMessage({ commit }) {
     commit("SET_IS_MESSAGE", false);
+  },
+  showEditor({ commit }, editor) {
+    commit("SET_EDITOR", editor);
+    commit("SET_IS_EDITOR", true);
+  },
+  hideEditor({ commit }) {
+    commit("SET_IS_EDITOR", false);
   }
 };
 
@@ -194,5 +213,7 @@ export const getters = {
   saveLoading: state => state.saveLoading,
   form: state => id => state.forms.find(f => f.id == id),
   message: state => state.message,
-  isMessage: state => state.isMessage
+  isMessage: state => state.isMessage,
+  editor: state => state.editor,
+  isEditor: state => state.isEditor
 };

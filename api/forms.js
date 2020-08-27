@@ -95,7 +95,6 @@ app.post("/", async (req, res) => {
         }
       );
     }
-
     res.send("OK");
   } catch (err) {
     console.log(err);

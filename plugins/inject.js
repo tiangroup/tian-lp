@@ -9,8 +9,10 @@ export default (context, inject) => {
 
   inject("forms", {
     showMessage: message => {
-      console.log(message);
       store.dispatch("forms/showMessage", message);
+    },
+    showEditor: editor => {
+      store.dispatch("forms/showEditor", editor);
     }
   });
 };

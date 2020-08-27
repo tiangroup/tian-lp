@@ -18,9 +18,9 @@
           type="submit"
           class="button form__submit w-100 w-md-auto"
           :class="{ 'button--loading': loading }"
-          :disabled="loading"
         >
           <div class="button__body">{{ form.form.button }}</div>
+          <div class="button__spinner spinner"></div>
         </button>
       </div>
       <div class="form__text">
@@ -88,29 +88,33 @@ export default {
       loadForm: "forms/loadForm"
     }),
     async onSubmit() {
-      //this.loading = !this.loading;
-      //this.formData = {};
-      // this.$forms.showMessage({
-      //   text: this.form.form.successMessage,
-      //   caption: "Форма отправлена",
-      //   error: false
-      // });
-      this.$emit("send", {
-        text: this.form.form.successMessage,
-        //caption: "Форма отправлена",
-        error: false
-      });
-      // const formData = new FormData();
-      // for (let id of Object.keys(this.formData)) {
-      //   if (this.formData[id] !== null) {
-      //     formData.append(id, this.formData[id]);
-      //   }
-      // }
-      // formData.append("id", this.formId);
-      // const { data } = await this.$axios.post(
-      //   `${this.$site_app}/forms`,
-      //   formData
-      // );
+      if (this.loading) return;
+      this.loading = true;
+      try {
+        const formData = new FormData();
+        for (let id of Object.keys(this.formData)) {
+          if (this.formData[id] !== null) {
+            formData.append(id, this.formData[id]);
+          }
+        }
+        formData.append("id", this.formId);
+        const { data } = await this.$axios.post(
+          `${this.$site_app}/forms`,
+          formData
+        );
+        this.formData = {};
+        this.loading = false;
+        this.$emit("send", {
+          text: this.form.form.successMessage,
+          //caption: "Форма отправлена",
+          error: false
+        });
+      } catch (err) {
+        this.loading = false;
+        this.$emit("send", {
+          error: true
+        });
+      }
     }
   },
   async mounted() {

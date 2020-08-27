@@ -1,10 +1,9 @@
 <template>
   <div>
     <div class="form-wrap bg-theme" :style="styleDiv">
-      <form-editor
+      <form-editor-button
         v-if="isEdit && section[field]"
-        :section="section"
-        :field="field"
+        :formId="section[field]"
       />
       <form-base
         :section="section"

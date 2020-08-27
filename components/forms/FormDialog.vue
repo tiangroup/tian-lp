@@ -2,10 +2,9 @@
   <div>
     <v-dialog v-model="value" max-width="400" @input="$emit('input', value)">
       <div class="der-popup" :style="styleDiv">
-        <form-editor
+        <form-editor-button
           v-if="isEdit && section[field]"
-          :section="section"
-          :field="field"
+          :formId="section[field]"
         />
         <div class="der-popup__close">
           <button
@@ -68,7 +67,8 @@ export default {
   computed: {
     ...mapGetters({
       isEdit: "isEdit",
-      getForm: "forms/form"
+      getForm: "forms/form",
+      isEditor: "forms/isEditor"
     }),
     styleDiv() {
       return this.isEdit
@@ -82,6 +82,13 @@ export default {
     onSend(payload) {
       this.$emit("input", false);
       this.$forms.showMessage(payload);
+    }
+  },
+  watch: {
+    isEditor(value) {
+      if (value) {
+        this.$emit("input", false);
+      }
     }
   }
 };
