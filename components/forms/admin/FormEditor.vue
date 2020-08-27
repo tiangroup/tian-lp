@@ -1,140 +1,99 @@
 <template>
-  <div>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          fab
-          dark
-          x-small
-          color="green"
-          v-bind="attrs"
-          v-on="on"
-          absolute
-          top
-          left
-          @click="drawer = true"
-          class="mt-8"
-        >
-          <v-icon>mdi-pencil</v-icon>
-        </v-btn>
-      </template>
-      <span>Редактировать форму</span>
-    </v-tooltip>
+  <v-navigation-drawer
+    app
+    class="over"
+    v-model="drawer"
+    right
+    temporary
+    width="460"
+  >
+    <v-list-item>
+      <v-btn icon @click="drawer = false">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-list-item>
 
-    <v-navigation-drawer
-      app
-      class="over"
-      v-model="drawer"
-      right
-      temporary
-      width="460"
-    >
-      <v-list-item>
-        <v-btn icon @click="drawer = false">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-list-item>
+    <v-container v-if="form">
+      <v-tabs>
+        <v-tab>Форма</v-tab>
+        <v-tab>Поля</v-tab>
+        <v-tab>Настройки</v-tab>
 
-      <v-container v-if="form">
-        <v-tabs>
-          <v-tab>Форма</v-tab>
-          <v-tab>Поля</v-tab>
-          <v-tab>Настройки</v-tab>
-
-          <v-tab-item>
-            <v-container>
-              <v-text-field label="Заголовок формы" v-model="formTitle" />
-              <v-text-field label="Описание формы" v-model="formDescription" />
-              <v-text-field
-                label="Подпись кнопки отправки"
-                v-model="formButton"
-              />
-              <v-text-field
-                v-if="popup"
-                label="Подпись кнопки открытия формы"
-                v-model="formOpenButton"
-              />
-              <v-text-field
-                label="Сообщение после успешной отправки"
-                v-model="formSuccessMessage"
-              />
-            </v-container>
-          </v-tab-item>
-          <v-tab-item>
-            <v-container>
-              <form-editor-input
-                v-for="(item, index) in form.fields.filter(i => i.id)"
-                :key="item.id"
-                :formField="item"
-                :formId="form.id"
-                :first="index == 0"
-                :last="index + 1 == form.fields.length"
-              ></form-editor-input>
-              <v-row class="justify-center">
-                <v-btn fab dark small color="green" @click="newField">
-                  <v-icon>mdi-plus</v-icon>
-                </v-btn>
-              </v-row>
-            </v-container>
-          </v-tab-item>
-          <v-tab-item>
-            <v-container>
-              <v-text-field label="Заголовок письма" v-model="mailSubject" />
-              <v-text-field label="E-mail отправки" v-model="mailTo" />
-            </v-container>
-          </v-tab-item>
-        </v-tabs>
-      </v-container>
-    </v-navigation-drawer>
-  </div>
+        <v-tab-item>
+          <v-container>
+            <v-text-field label="Заголовок формы" v-model="formTitle" />
+            <v-text-field label="Описание формы" v-model="formDescription" />
+            <v-text-field
+              label="Подпись кнопки отправки"
+              v-model="formButton"
+            />
+            <v-text-field
+              v-if="popup"
+              label="Подпись кнопки открытия формы"
+              v-model="formOpenButton"
+            />
+            <v-text-field
+              label="Сообщение после успешной отправки"
+              v-model="formSuccessMessage"
+            />
+          </v-container>
+        </v-tab-item>
+        <v-tab-item>
+          <v-container>
+            <form-editor-input
+              v-for="(item, index) in form.fields.filter(i => i.id)"
+              :key="item.id"
+              :formField="item"
+              :formId="form.id"
+              :first="index == 0"
+              :last="index + 1 == form.fields.length"
+            ></form-editor-input>
+            <v-row class="justify-center">
+              <v-btn fab dark small color="green" @click="newField">
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+            </v-row>
+          </v-container>
+        </v-tab-item>
+        <v-tab-item>
+          <v-container>
+            <v-text-field label="Заголовок письма" v-model="mailSubject" />
+            <v-text-field label="E-mail отправки" v-model="mailTo" />
+          </v-container>
+        </v-tab-item>
+      </v-tabs>
+    </v-container>
+  </v-navigation-drawer>
 </template>
 
 <script>
 import { mapMutations, mapGetters, mapActions } from "vuex";
 export default {
-  props: {
-    section: Object,
-    field: {
-      type: String,
-      default: "form"
-    },
-    popup: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data: () => ({
-    drawer: false,
-    fieldTypes: [
-      {
-        name: "Текстовое",
-        value: "text"
-      },
-      {
-        name: "E-mail",
-        value: "email"
-      },
-      {
-        name: "Телефон",
-        value: "phone"
-      }
-    ]
-  }),
-  async fetch() {
-    if (!this.form) {
-      await this.$store.dispatch("forms/loadForm", this.formId);
-    }
-  },
   computed: {
     ...mapGetters({
       getForm: "forms/form",
-      isEdit: "isEdit"
+      isEdit: "isEdit",
+      isEditor: "forms/isEditor",
+      editor: "forms/editor"
     }),
-    form() {
-      return this.formId ? this.getForm(this.formId) : null;
+    drawer: {
+      get: function() {
+        return this.isEditor;
+      },
+      set: function(value) {
+        if (!value) {
+          this.hideEditor();
+        }
+      }
     },
     formId() {
-      return this.section[this.field];
+      return this.editor ? this.editor.formId : null;
+    },
+    popup() {
+      return this.editor ? this.editor.popup : null;
+    },
+    form() {
+      return this.formId ? this.getForm(this.formId) : null;
     },
     formTitle: {
       get: function() {
@@ -228,7 +187,8 @@ export default {
       addFieds: "forms/ADD_FIELDS"
     }),
     ...mapActions({
-      saveForms: "forms/saveForms"
+      saveForms: "forms/saveForms",
+      hideEditor: "forms/hideEditor"
     }),
     async newField() {
       this.addFieds({
@@ -242,6 +202,6 @@ export default {
 
 <style scoped>
 .over {
-  z-index: 100100;
+  z-index: 100105;
 }
 </style>

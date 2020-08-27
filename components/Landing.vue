@@ -23,6 +23,7 @@
     />
     <vue-confirm-dialog v-if="isEdit"></vue-confirm-dialog>
     <form-message />
+    <form-editor v-if="isEdit" />
   </div>
 </template>
 
