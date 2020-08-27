@@ -1,13 +1,13 @@
 <template>
-<div>
-  <v-app v-if="isAdmin">
-    <admin-appbar @action="action" />
-    <v-main>
-      <component :is="comp" :params="params" />
-    </v-main>
-  </v-app>
-  <Login v-else />
-</div>
+  <div>
+    <v-app v-if="isAdmin">
+      <admin-appbar @action="action" />
+      <v-main>
+        <component :is="comp" :params="params" />
+      </v-main>
+    </v-app>
+    <Login v-else />
+  </div>
 </template>
 
 <script>

@@ -22,6 +22,7 @@
       :itemImageEdit="itemImageEdit"
     />
     <vue-confirm-dialog v-if="isEdit"></vue-confirm-dialog>
+    <form-message />
   </div>
 </template>
 

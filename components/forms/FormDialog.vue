@@ -35,6 +35,7 @@
               :section="section"
               :field="field"
               :hiddenData="hiddenData"
+              @send="onSend"
             >
               <slot></slot>
             </form-base>
@@ -64,9 +65,6 @@ export default {
     hiddenData: String,
     value: false
   },
-  data: () => ({
-    dialogButton: false
-  }),
   computed: {
     ...mapGetters({
       isEdit: "isEdit",
@@ -78,6 +76,12 @@ export default {
             position: "relative"
           }
         : null;
+    }
+  },
+  methods: {
+    onSend(payload) {
+      this.$emit("input", false);
+      this.$forms.showMessage(payload);
     }
   }
 };

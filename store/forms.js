@@ -2,7 +2,9 @@ export const state = () => ({
   forms: [],
   change: false,
   saveLoading: false,
-  changeForms: []
+  changeForms: [],
+  message: null,
+  isMessage: false
 });
 
 export const mutations = {
@@ -101,6 +103,12 @@ export const mutations = {
       }
       state.change = true;
     }
+  },
+  SET_MESSAGE(state, message) {
+    state.message = message;
+  },
+  SET_IS_MESSAGE(state, isMessage) {
+    state.isMessage = isMessage;
   }
 };
 
@@ -170,6 +178,13 @@ export const actions = {
     } catch (error) {
       console.error(error);
     }
+  },
+  showMessage({ commit }, message) {
+    commit("SET_MESSAGE", message);
+    commit("SET_IS_MESSAGE", true);
+  },
+  hideMessage({ commit }) {
+    commit("SET_IS_MESSAGE", false);
   }
 };
 
@@ -177,5 +192,7 @@ export const getters = {
   forms: state => state.forms,
   change: state => state.change,
   saveLoading: state => state.saveLoading,
-  form: state => id => state.forms.find(f => f.id == id)
+  form: state => id => state.forms.find(f => f.id == id),
+  message: state => state.message,
+  isMessage: state => state.isMessage
 };

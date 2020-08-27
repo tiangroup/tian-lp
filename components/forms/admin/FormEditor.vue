@@ -54,6 +54,10 @@
                 label="Подпись кнопки открытия формы"
                 v-model="formOpenButton"
               />
+              <v-text-field
+                label="Сообщение после успешной отправки"
+                v-model="formSuccessMessage"
+              />
             </v-container>
           </v-tab-item>
           <v-tab-item>
@@ -176,6 +180,18 @@ export default {
         this.setFormField({
           formId: this.form.id,
           field: "openButton",
+          value: value
+        });
+      }
+    },
+    formSuccessMessage: {
+      get: function() {
+        return this.form.form.successMessage;
+      },
+      set: function(value) {
+        this.setFormField({
+          formId: this.form.id,
+          field: "successMessage",
           value: value
         });
       }

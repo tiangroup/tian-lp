@@ -41,6 +41,7 @@
               :section="section"
               :field="field"
               :hiddenData="hiddenData"
+              @send="onSend"
             >
               <slot></slot>
             </form-base>
@@ -91,6 +92,12 @@ export default {
         this.getForm(form_id).form.openButton
         ? this.getForm(form_id).form.openButton
         : "Открыть";
+    }
+  },
+  methods: {
+    onSend(payload) {
+      this.dialogButton = false;
+      this.$forms.showMessage(payload);
     }
   }
 };

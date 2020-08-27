@@ -6,7 +6,12 @@
         :section="section"
         :field="field"
       />
-      <form-base :section="section" :field="field" :hiddenData="hiddenData" />
+      <form-base
+        :section="section"
+        :field="field"
+        :hiddenData="hiddenData"
+        @send="onSend"
+      />
     </div>
   </div>
 </template>
@@ -28,6 +33,11 @@ export default {
     }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
+    }
+  },
+  methods: {
+    onSend(payload) {
+      this.$forms.showMessage(payload);
     }
   }
 };

@@ -6,4 +6,11 @@ export default (context, inject) => {
   inject("site_api", env.API_BACKEND);
 
   inject("site_app", env.APP_BACKEND);
+
+  inject("forms", {
+    showMessage: message => {
+      console.log(message);
+      store.dispatch("forms/showMessage", message);
+    }
+  });
 };

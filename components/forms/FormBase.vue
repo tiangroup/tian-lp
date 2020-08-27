@@ -90,7 +90,16 @@ export default {
     async onSubmit() {
       //this.loading = !this.loading;
       //this.formData = {};
-      this.message = true;
+      // this.$forms.showMessage({
+      //   text: this.form.form.successMessage,
+      //   caption: "Форма отправлена",
+      //   error: false
+      // });
+      this.$emit("send", {
+        text: this.form.form.successMessage,
+        //caption: "Форма отправлена",
+        error: false
+      });
       // const formData = new FormData();
       // for (let id of Object.keys(this.formData)) {
       //   if (this.formData[id] !== null) {
