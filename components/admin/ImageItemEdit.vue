@@ -51,14 +51,21 @@ export default {
       savePage: "pages/savePage"
     }),
     imageSelect() {
-      this.setImageUpload({
+      // this.setImageUpload({
+      //   sectionId: this.sectionId,
+      //   id: this.itemId,
+      //   field: this.field,
+      //   items: this.items,
+      //   value: this.img
+      // });
+      // this.showImageUpload(true);
+      this.$images.upload({
         sectionId: this.sectionId,
         id: this.itemId,
         field: this.field,
         items: this.items,
         value: this.img
       });
-      this.showImageUpload(true);
     },
     async imageDelete() {
       this.$confirm({

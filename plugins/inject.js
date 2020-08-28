@@ -15,4 +15,11 @@ export default (context, inject) => {
       store.dispatch("forms/showEditor", editor);
     }
   });
+
+  inject("images", {
+    src: img => "/" + store.getters["sites/id"] + img,
+    upload: imageUpload => {
+      store.dispatch("showImageUpload", imageUpload);
+    }
+  });
 };

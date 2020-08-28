@@ -22,8 +22,8 @@ export const mutations = {
       state.imageUpload = {};
     }
   },
-  SET_IMAGE_UPLOAD(state, payload) {
-    state.imageUpload = payload;
+  SET_IMAGE_UPLOAD(state, imageUpload) {
+    state.imageUpload = imageUpload;
   }
 };
 
@@ -54,6 +54,13 @@ export const actions = {
     } catch (error) {
       console.error(error);
     }
+  },
+  showImageUpload({ commit }, imageUpload) {
+    commit("SET_IMAGE_UPLOAD", imageUpload);
+    commit("SET_DIALOG_IMAGE_UPLOAD", true);
+  },
+  hideImageUpload({ commit }) {
+    commit("SET_DIALOG_IMAGE_UPLOAD", false);
   }
 };
 

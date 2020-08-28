@@ -1,38 +1,63 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" max-width="400" persistent>
+    <v-dialog v-model="dialog" max-width="400" persistent scrollable>
       <v-card>
         <v-card-title>
           <span class="headline">Вставить картинку</span>
         </v-card-title>
 
-        <v-card-text v-if="orig">
-          <nuxt-img :src="$site_img(origImage)" v-if="!inputLink" />
-          <v-text-field v-else label="Cсылка на картинку" v-model="imageLink" />
+        <v-card-text
+          v-if="orig"
+          style="height: 280px;"
+          class="row justify-center align-center"
+        >
+          <v-container fluid pl-6>
+            <v-row justify="center">
+              <nuxt-img :src="$site_img(origImage)" v-if="!inputLink" />
+              <v-text-field
+                v-else
+                label="Cсылка на картинку"
+                v-model="imageLink"
+              />
+            </v-row>
+          </v-container>
         </v-card-text>
-        <v-card-text v-else>
-          <v-row v-if="!image" justify="center">
-            <v-btn
-              v-if="!inputLink"
-              color="blue-grey"
-              class="white--text"
-              fab
-              x-large
-              @click="selectFile"
-            >
-              <v-icon dark>mdi-file-image</v-icon>
-            </v-btn>
-            <v-text-field
-              v-else
-              label="Cсылка на картинку"
-              v-model="imageLink"
-            />
-          </v-row>
-          <img :src="image" v-show="image" @click="selectFile" />
+        <v-card-text
+          v-else
+          style="height: 280px;"
+          class="row justify-center align-center"
+        >
+          <v-container fluid pl-6>
+            <v-row v-if="!image" justify="center">
+              <v-btn
+                v-if="!inputLink"
+                color="blue-grey"
+                class="white--text"
+                fab
+                x-large
+                @click="selectFile"
+              >
+                <v-icon dark>mdi-file-image</v-icon>
+              </v-btn>
+              <v-text-field
+                v-else
+                label="Cсылка на картинку"
+                v-model="imageLink"
+              />
+            </v-row>
+            <v-row v-else justify="center">
+              <img v-if="!inputLink" :src="image" @click="selectFile" />
+              <v-text-field
+                v-else
+                label="Cсылка на картинку"
+                v-model="imageLink"
+              />
+            </v-row>
+          </v-container>
         </v-card-text>
 
         <v-card-actions>
-          <v-menu bottom left>
+          <v-menu bottom left v-if="!image">
             <template v-slot:activator="{ on, attrs }">
               <v-btn icon v-bind="attrs" v-on="on">
                 <v-icon>mdi-dots-vertical</v-icon>
@@ -64,7 +89,7 @@
           <v-btn
             color="blue-grey"
             class="ma-2 white--text"
-            @click="onUloadLink"
+            @click="onUploadLink"
             v-if="imageLink"
             :loading="loading"
           >
@@ -100,11 +125,11 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   props: {
-    dialog: Boolean,
-    itemImageEdit: Object
+    //dialog: Boolean,
+    //itemImageEdit: Object
   },
   data: () => ({
     image: null,
@@ -116,6 +141,20 @@ export default {
     imageLink: null
   }),
   computed: {
+    ...mapGetters({
+      itemImageEdit: "imageUpload",
+      dialogImageUpload: "dialogImageUpload"
+    }),
+    dialog: {
+      get: function() {
+        return this.dialogImageUpload;
+      },
+      set: function(value) {
+        if (!value) {
+          this.hideImageUpload();
+        }
+      }
+    },
     orig() {
       return this.itemImageEdit.value && !this.image;
     },
@@ -129,14 +168,16 @@ export default {
       setItemField: "pages/SET_ITEM_FIELD"
     }),
     ...mapActions({
-      savePage: "pages/savePage"
+      savePage: "pages/savePage",
+      hideImageUpload: "hideImageUpload"
     }),
     selectFile() {
       this.$refs.file.click();
     },
     close() {
       this.image = null;
-      this.$emit("close");
+      this.imageLink = null;
+      this.dialog = false;
     },
     getImage(event) {
       this.selectedFile = event.target.files[0];
@@ -182,12 +223,13 @@ export default {
         await this.$emit("onUpload", itemImageEdit);
         this.image = null;
         this.loading = false;
+        this.dialog = false;
       } catch (err) {
         console.error(err);
         this.loading = false;
       }
     },
-    async onUloadLink() {
+    async onUploadLink() {
       this.loading = true;
       try {
         const formData = new FormData();
@@ -221,6 +263,7 @@ export default {
         this.image = null;
         this.loading = false;
         this.imageLink = null;
+        this.dialog = false;
       } catch (err) {
         console.error(err);
         this.loading = false;
