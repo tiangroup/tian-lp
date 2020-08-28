@@ -51,8 +51,8 @@
           class="reviews__text"
           @click="$emit('change-desc')"
           v-if="isEdit"
-        >{{ cropReviewText(item.text) || "Введите текст отзыва" }}</div>
-        <div class="reviews__text" v-else>{{ cropReviewText(item.text) }}</div>
+        >{{ truncateText(item.text, 44) || "Введите текст отзыва" }}</div>
+        <div class="reviews__text" v-else>{{ truncateText(item.text, 44) }}</div>
 
         <div class="reviews__info" v-if="isEdit">
           <v-text-field
@@ -107,10 +107,6 @@ export default {
   methods: {
     onDeleteItem(payload) {
       this.$emit("onItemDelete", payload);
-    },
-    cropReviewText(reviewText) {
-      var croppedReviewText = this.truncateText(reviewText, 44);
-      return croppedReviewText;
     },
     truncateText(textToTruncate, words) {
       if (!textToTruncate) {

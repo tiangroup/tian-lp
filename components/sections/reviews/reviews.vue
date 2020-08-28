@@ -24,7 +24,7 @@
         ></v-gallery>
         <div class="reviews__list mx-ncell" :class="computedSectionClass" v-if="section.items">
           <div :class="{'fullwidth': view === 'view2'}">
-            <slick ref="slick" :options="updatedSlickOptions" v-if="isSlick">
+            <slick ref="slick" :options="updatedSlickOptions" v-if="isSlick" @init="handleInit">
               <reviews-item
                 v-for="(item, itemIndex) in section.items.filter(i => i.id)"
                 @item-update="onItemsChange"
@@ -155,6 +155,7 @@ export default {
     dialogReviewDesc: false,
     index: null,
     isSlick: true,
+    itemsQty: null,
     modalReviewDate: false,
     slickOptions: {
       arrows: true,
@@ -250,7 +251,11 @@ export default {
       await this.$axios.post("/api/upload/image-remove", formData);
     },
     onItemsChange(event) {
-      this.restartSlick();
+      if (this.section.items.length < 1) {
+        this.restartSlick();
+      } else {
+        this.itemsQty = this.section.items.length;
+      }
     },
     restartSlick() {
       this.isSlick = false;
@@ -320,18 +325,34 @@ export default {
           } else {
             slideId = slidesRealLength + slideIndex;
           }
-          slideItem.addEventListener("click", function () {
-            _this.showReview(slideId);
-          });
+          let slideImg = slideItem.querySelector(".reviews__image-wrap");
+          if (slideImg) {
+            slideImg.addEventListener("click", function () {
+              _this.showGallery(slideId);
+            });
+          }
+          let slideDetailLink = slideItem.querySelector(".reviews__readmore");
+          if (slideDetailLink) {
+            slideDetailLink.addEventListener("click", function () {
+              _this.showReview(_this.section.items[slideId]);
+            });
+          }
         }
       }
     },
+  },
+  mounted: function () {
+    this.itemsQty = this.section.items.length;
   },
   watch: {
     isEdit: function () {
       this.restartSlick();
     },
     view: function () {
+      this.restartSlick();
+    },
+    section: function () {
+      this.itemsQty = this.section.items.length;
       this.restartSlick();
     },
   },

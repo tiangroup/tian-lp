@@ -105,6 +105,7 @@ export default {
   },
   data: () => ({
     isSlick: true,
+    itemsQty: null,
     slickOptions: {
       arrows: true,
       dots: true,
@@ -156,8 +157,11 @@ export default {
       return pattern.test(emailString);
     },
     onItemsChange(event) {
-      console.log(event);
-      this.restartSlick();
+      if (this.section.items.length < 1) {
+        this.restartSlick();
+      } else {
+        this.itemsQty = this.section.items.length;
+      }
     },
     restartSlick() {
       this.isSlick = false;
@@ -173,10 +177,15 @@ export default {
       await this.$axios.post("/api/upload/image-remove", formData);
     },
   },
+  mounted: function () {
+    this.itemsQty = this.section.items.length;
+  },
   watch: {
     isEdit: function () {
-      this.updatedSlickOptions.infinite = !this.isEdit;
-      this.updatedSlickOptions.draggable = !this.isEdit;
+      this.restartSlick();
+    },
+    section: function () {
+      this.itemsQty = this.section.items.length;
       this.restartSlick();
     },
   },

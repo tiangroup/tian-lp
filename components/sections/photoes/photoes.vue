@@ -78,6 +78,7 @@ export default {
   data: () => ({
     index: null,
     isSlick: true,
+    itemsQty: null,
     slickOptions: {
       arrows: true,
       dots: true,
@@ -150,7 +151,11 @@ export default {
   methods: {
     onItemsChange(event) {
       console.log(event);
-      this.restartSlick();
+      if (this.section.items.length < 1) {
+        this.restartSlick();
+      } else {
+        this.itemsQty = this.section.items.length;
+      }
     },
     restartSlick() {
       this.isSlick = false;
@@ -195,8 +200,15 @@ export default {
       }
     },
   },
+  mounted: function () {
+    this.itemsQty = this.section.items.length;
+  },
   watch: {
     isEdit: function () {
+      this.restartSlick();
+    },
+    section: function () {
+      this.itemsQty = this.section.items.length;
       this.restartSlick();
     },
   },

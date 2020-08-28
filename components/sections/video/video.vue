@@ -49,7 +49,7 @@
                 :sectionId="section.id"
                 :isEdit="isEdit"
                 @gallery-call="showGallery(itemIndex)"
-                @item-update="restartSlick()"
+                @item-update="onItemUpdate"
                 @change-link="itemVideoInput({
                   sectionId:section.id,
                   itemId:item.id,
@@ -104,9 +104,8 @@ export default {
   data: () => ({
     currentVideo: {},
     index: null,
-    videoUrlDialog: false,
-    userUrl: "",
     isSlick: true,
+    itemsQty: null,
     slickOptions: {
       arrows: true,
       dots: true,
@@ -137,6 +136,8 @@ export default {
         },
       ],
     },
+    videoUrlDialog: false,
+    userUrl: "",
   }),
   computed: {
     ...mapGetters({
@@ -170,6 +171,13 @@ export default {
     ...mapMutations({
       setItemField: "pages/SET_ITEM_FIELD",
     }),
+    onItemUpdate() {
+      if (this.section.items.length < 1) {
+        this.restartSlick();
+      } else {
+        this.itemsQty = this.section.items.length;
+      }
+    },
     itemVideoInput(payload) {
       this.currentVideo = payload;
       this.userUrl = payload.value;
@@ -231,8 +239,15 @@ export default {
       }
     },
   },
+  mounted: function () {
+    this.itemsQty = this.section.items.length;
+  },
   watch: {
     isEdit: function () {
+      this.restartSlick();
+    },
+    section: function () {
+      this.itemsQty = this.section.items.length;
       this.restartSlick();
     },
   },

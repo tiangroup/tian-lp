@@ -36,13 +36,10 @@
             <buttons-item-add :sectionId="section.id" />
           </div>
         </div>
-        <div
-          class="partners__list"
-          v-if="section.items && isSlick && section.settings.view === 'slider'"
-        >
-          <slick ref="slick" :options="updatedSlickOptions">
+        <div class="partners__list mx-ncell" v-if="view === 'slider'">
+          <slick ref="slickPartners" :options="updatedSlickOptions" v-if="isSlick">
             <partners-item
-              class="partners__item-wrap"
+              class="partners__item-wrap cell"
               v-for="item in section.items.filter(i => i.id)"
               :key="item.id"
               :item="item"
@@ -57,7 +54,7 @@
             })"
             ></partners-item>
             <div
-              class="partners__item-wrap"
+              class="partners__item-wrap cell"
               v-if="isEdit && (!section.items || !section.items.length)"
             >
               <buttons-item-add :sectionId="section.id" />
@@ -101,8 +98,8 @@ export default {
   },
   data: () => ({
     currentItem: {},
-    userUrl: "",
-    partnerLinkDialog: false,
+    firstItemAdded: false,
+    itemsQty: null,
     isSlick: true,
     slickOptions: {
       arrows: true,
@@ -134,6 +131,8 @@ export default {
         },
       ],
     },
+    partnerLinkDialog: false,
+    userUrl: "",
   }),
   computed: {
     ...mapGetters({
@@ -148,13 +147,20 @@ export default {
         draggable: !this.isEdit,
       });
     },
+    view() {
+      return this.section.settings.view;
+    },
   },
   methods: {
     ...mapMutations({
       setItemField: "pages/SET_ITEM_FIELD",
     }),
     onItemsChange(event) {
-      this.restartSlick();
+      if (this.section.items.length < 1) {
+        this.restartSlick();
+      } else {
+        this.itemsQty = this.section.items.length;
+      }
     },
     restartSlick() {
       this.isSlick = false;
@@ -180,8 +186,15 @@ export default {
       this.partnerLinkDialog = false;
     },
   },
+  mounted: function () {
+    this.itemsQty = this.section.items.length;
+  },
   watch: {
     isEdit: function () {
+      this.restartSlick();
+    },
+    section: function () {
+      this.itemsQty = this.section.items.length;
       this.restartSlick();
     },
   },
