@@ -1,6 +1,11 @@
 <template>
-  <form class="form" @submit.prevent="onSubmit">
-    <div class="form__body" v-if="form">
+  <form
+    class="form"
+    @submit.prevent="onSubmit"
+    :ref="`form-${form.id}`"
+    v-if="form"
+  >
+    <div class="form__body">
       <div class="form__title">{{ form.form.title }}</div>
       <div class="form__intro" v-if="form.form.description">
         {{ form.form.description }}
@@ -28,7 +33,6 @@
         <a href>условиями обработки персональных данных</a>
       </div>
     </div>
-    <div class="form__message"></div>
   </form>
 </template>
 
@@ -103,6 +107,7 @@ export default {
           formData
         );
         this.formData = {};
+        this.$refs[`form-${this.formId}`].reset();
         this.loading = false;
         this.$emit("send", {
           text: this.form.form.successMessage,
