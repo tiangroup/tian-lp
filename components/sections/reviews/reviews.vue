@@ -305,7 +305,6 @@ export default {
       }
     },
     handleInit(event, slick) {
-      console.log("init");
       if (!this.isEdit) {
         const _this = this;
         const [slickTrack] = slick.$slideTrack;
@@ -349,7 +348,11 @@ export default {
       this.restartSlick();
     },
     section: function () {
-      if (this.itemsQty === 0 && this.section.items.length === 1) {
+      if (
+        this.isEdit &&
+        this.itemsQty === 0 &&
+        this.section.items.length === 1
+      ) {
         this.restartSlick();
       }
     },

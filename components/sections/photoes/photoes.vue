@@ -150,12 +150,8 @@ export default {
   },
   methods: {
     onItemsChange(event) {
-      console.log(event);
-      if (this.section.items.length < 1) {
-        this.restartSlick();
-      } else {
-        this.itemsQty = this.section.items.length;
-      }
+      this.itemsQty = this.section.items.length;
+      this.restartSlick();
     },
     restartSlick() {
       this.isSlick = false;
@@ -208,8 +204,13 @@ export default {
       this.restartSlick();
     },
     section: function () {
-      this.itemsQty = this.section.items.length;
-      this.restartSlick();
+      if (
+        this.isEdit &&
+        this.itemsQty === 0 &&
+        this.section.items.length === 1
+      ) {
+        this.restartSlick();
+      }
     },
   },
 };
