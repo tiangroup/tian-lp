@@ -126,12 +126,7 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
-import Vue from "vue";
-Vue.directive("focus", {
-  inserted: function(el) {
-    el.focus();
-  }
-});
+
 export default {
   props: {
     //dialog: Boolean,
