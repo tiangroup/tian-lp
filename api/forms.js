@@ -38,6 +38,7 @@ app.post("/", async (req, res) => {
           type: field.type
         });
       }
+
       const mailTextTpl = "{{#fields}}{{../field}}{{/fields}}";
       const mailText = templayed(mailTextTpl)({
         fields,
@@ -49,6 +50,7 @@ app.post("/", async (req, res) => {
           return value ? `${this.label}: ${value}\n` : null;
         }
       });
+
       // отправка сообщения
       let testAccount = await nodemailer.createTestAccount();
       let transporter = nodemailer.createTransport({
