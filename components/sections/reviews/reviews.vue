@@ -64,8 +64,6 @@
               </v-btn>
             </v-card-title>
             <v-card-text>
-              <v-textarea label="Текст отзыва на самом деле" outlined :value="currentReview.text"></v-textarea>
-              <p>Что показывает medium-editor:</p>
               <editor
                 data-placeholder="Введите текст отзыва"
                 :text="currentReview.text || ''"
@@ -155,8 +153,8 @@ export default {
     dialogReviewDate: false,
     dialogReviewDesc: false,
     index: null,
+    itemsQty: 0,
     isSlick: true,
-    itemsQty: null,
     modalReviewDate: false,
     slickOptions: {
       arrows: true,
@@ -252,11 +250,8 @@ export default {
       await this.$axios.post("/api/upload/image-remove", formData);
     },
     onItemsChange(event) {
-      if (this.section.items.length < 1) {
-        this.restartSlick();
-      } else {
-        this.itemsQty = this.section.items.length;
-      }
+      this.restartSlick();
+      this.itemsQty = this.section.items.length;
     },
     restartSlick() {
       this.isSlick = false;
@@ -310,6 +305,7 @@ export default {
       }
     },
     handleInit(event, slick) {
+      console.log("init");
       if (!this.isEdit) {
         const _this = this;
         const [slickTrack] = slick.$slideTrack;
@@ -342,8 +338,8 @@ export default {
       }
     },
   },
-  mounted: function () {
-    this.itemsQty = this.section.items.length;
+  mounted() {
+    this.itemsQty = this.section.items.length || 0;
   },
   watch: {
     isEdit: function () {
@@ -353,8 +349,9 @@ export default {
       this.restartSlick();
     },
     section: function () {
-      this.itemsQty = this.section.items.length;
-      this.restartSlick();
+      if (this.itemsQty === 0 && this.section.items.length === 1) {
+        this.restartSlick();
+      }
     },
   },
 };
