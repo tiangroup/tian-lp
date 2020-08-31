@@ -72,6 +72,7 @@
                 :sectionId="section.id"
                 field="text"
                 :itemId="currentReview.id"
+                :key="currentReview.id"
               />
             </v-card-text>
             <v-card-actions>
@@ -271,8 +272,8 @@ export default {
         this.dialogReviewDate = true;
       }
     },
-    saveReviewDate(item) {
-      this.saveReviewField("date", this.reviewDate);
+    saveReviewDate(date) {
+      this.saveReviewField("date", date);
       this.dialogReviewDate = false;
     },
     updateReviewDesc(item) {
