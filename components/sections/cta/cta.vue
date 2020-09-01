@@ -38,15 +38,8 @@
               <editor :text="section.title || ''" :sectionId="section.id" field="title" />
             </h2>
             <h2 v-else>{{ section.title }}</h2>
-            <div class="cta__timer">
-              <div class="timer">
-                <div class="timer__text">До конца акции осталось</div>
-                <div class="timer__time">
-                  <span class="timer__value timer__value--days">28</span>
-                  <span class="timer__value timer__value--hours">15</span>
-                  <span class="timer__value timer__value--minutes">56</span>
-                </div>
-              </div>
+            <div class="cta__timer" v-if="countdown" @click.stop="callCtaDateDialog">
+              <timer :end-date="computedEndDate" @expired="reinitTimer"></timer>
             </div>
             <div class="cta__offer">
               <div class="cta__offer__text" v-if="isEdit">
@@ -73,18 +66,11 @@
         </div>
       </div>
     </div>
-    <div class="bg-theme cta__countdown">
+    <div class="bg-theme cta__countdown" v-if="countdown">
       <div class="landing__container">
         <div class="cta__countdown__row">
-          <div class="cta__countdown__timer">
-            <div class="timer">
-              <div class="timer__text">До конца акции осталось</div>
-              <div class="timer__time">
-                <span class="timer__value timer__value--days">28</span>
-                <span class="timer__value timer__value--hours">15</span>
-                <span class="timer__value timer__value--minutes">56</span>
-              </div>
-            </div>
+          <div class="cta__countdown__timer" @click.stop="callCtaDateDialog">
+            <timer :end-date="computedEndDate" @expired="reinitTimer"></timer>
           </div>
           <div class="cta__countdown__action">
             <a
@@ -96,15 +82,31 @@
         </div>
       </div>
     </div>
+    <v-dialog v-model="dialogCtaDate" width="290px">
+      <v-date-picker v-model="ctaDate" scrollable>
+        <v-spacer></v-spacer>
+        <v-btn depressed text color="gray" @click="dialogCtaDate = false">Отменить</v-btn>
+        <v-btn depressed text color="primary" @click="saveCtaDate(ctaDate)">Сохранить</v-btn>
+      </v-date-picker>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import Timer from "./Timer.vue";
 export default {
+  components: {
+    Timer,
+  },
   props: {
     section: Object,
   },
+  data: () => ({
+    dialogCtaBtn: false,
+    dialogCtaDate: false,
+    ctaDate: null,
+  }),
   computed: {
     ...mapGetters({
       isEdit: "isEdit",
@@ -115,14 +117,19 @@ export default {
     countdown() {
       return this.section.settings.countdown === true;
     },
+    computedEndDate() {
+      if (this.section.date) {
+        return String(this.section.date);
+      } else {
+        this.generateEndDate();
+      }
+    },
   },
-  data: () => ({
-    dialogCtaBtn: false,
-  }),
   methods: {
     ...mapMutations({
       showImageUpload: "SET_DIALOG_IMAGE_UPLOAD",
       setImageUpload: "SET_IMAGE_UPLOAD",
+      setSectionField: "pages/SET_SECTION_FIELD",
     }),
     itemImageSelect() {
       this.setImageUpload({
@@ -132,6 +139,32 @@ export default {
         value: this.section.bg_img,
       });
       this.showImageUpload(true);
+    },
+    callCtaDateDialog() {
+      if (this.isEdit) {
+        this.dialogCtaDate = true;
+      }
+    },
+    saveCtaDate(date) {
+      this.setSectionField({
+        id: this.section.id,
+        field: "date",
+        value: date,
+      });
+      this.$store.dispatch("pages/savePage");
+      this.dialogCtaDate = false;
+    },
+    reinitTimer() {
+      let newEndDate = this.generateEndDate();
+      this.saveCtaDate(newEndDate);
+    },
+    generateEndDate() {
+      let computedDate = new Date();
+      // adding some magic numbers to make it look like smb cares
+      computedDate.setTime(
+        computedDate.getTime() + 84 * 60 * 60 * 1000 + 15 * 60 * 1000
+      );
+      return String(computedDate.getTime());
     },
   },
 };
