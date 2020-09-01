@@ -22,4 +22,8 @@ RUN npm run build
 ENV HOST 0.0.0.0
 EXPOSE 3000
 
+ENV API_BACKEND="" \
+    ADMIN_TOKEN="" \
+    APP_BACKEND=""
+
 CMD ["npm", "start"]
