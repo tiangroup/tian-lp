@@ -5,9 +5,9 @@ export default (context, inject) => {
 
   inject("site_img", img => "/" + store.getters["sites/id"] + img);
 
-  inject("site_api", env.API_BACKEND || settings.API_BACKEND);
+  inject("site_api", env.API_BACKEND);
 
-  inject("site_app", env.APP_BACKEND || settings.APP_BACKEND);
+  inject("site_app", env.APP_BACKEND);
 
   inject("forms", {
     showMessage: message => {
