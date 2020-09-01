@@ -64,14 +64,13 @@
               </v-btn>
             </v-card-title>
             <v-card-text>
-              <v-textarea label="Текст отзыва на самом деле" outlined :value="currentReview.text"></v-textarea>
-              <p>Что показывает medium-editor:</p>
               <editor
                 data-placeholder="Введите текст отзыва"
                 :text="currentReview.text || ''"
                 :sectionId="section.id"
                 field="text"
                 :itemId="currentReview.id"
+                :key="currentReview.id"
               />
             </v-card-text>
             <v-card-actions>
@@ -154,8 +153,8 @@ export default {
     dialogReviewDate: false,
     dialogReviewDesc: false,
     index: null,
+    itemsQty: 0,
     isSlick: true,
-    itemsQty: null,
     modalReviewDate: false,
     slickOptions: {
       arrows: true,
@@ -251,11 +250,8 @@ export default {
       await this.$axios.post("/api/upload/image-remove", formData);
     },
     onItemsChange(event) {
-      if (this.section.items.length < 1) {
-        this.restartSlick();
-      } else {
-        this.itemsQty = this.section.items.length;
-      }
+      this.restartSlick();
+      this.itemsQty = this.section.items.length;
     },
     restartSlick() {
       this.isSlick = false;
@@ -271,8 +267,8 @@ export default {
         this.dialogReviewDate = true;
       }
     },
-    saveReviewDate(item) {
-      this.saveReviewField("date", this.reviewDate);
+    saveReviewDate(date) {
+      this.saveReviewField("date", date);
       this.dialogReviewDate = false;
     },
     updateReviewDesc(item) {
@@ -341,8 +337,8 @@ export default {
       }
     },
   },
-  mounted: function () {
-    this.itemsQty = this.section.items.length;
+  mounted() {
+    this.itemsQty = this.section.items.length || 0;
   },
   watch: {
     isEdit: function () {
@@ -352,8 +348,13 @@ export default {
       this.restartSlick();
     },
     section: function () {
-      this.itemsQty = this.section.items.length;
-      this.restartSlick();
+      if (
+        this.isEdit &&
+        this.itemsQty === 0 &&
+        this.section.items.length === 1
+      ) {
+        this.restartSlick();
+      }
     },
   },
 };

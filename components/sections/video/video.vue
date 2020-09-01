@@ -172,11 +172,8 @@ export default {
       setItemField: "pages/SET_ITEM_FIELD",
     }),
     onItemUpdate() {
-      if (this.section.items.length < 1) {
-        this.restartSlick();
-      } else {
-        this.itemsQty = this.section.items.length;
-      }
+      this.restartSlick();
+      this.itemsQty = this.section.items.length;
     },
     itemVideoInput(payload) {
       this.currentVideo = payload;
@@ -247,8 +244,13 @@ export default {
       this.restartSlick();
     },
     section: function () {
-      this.itemsQty = this.section.items.length;
-      this.restartSlick();
+      if (
+        this.isEdit &&
+        this.itemsQty === 0 &&
+        this.section.items.length === 1
+      ) {
+        this.restartSlick();
+      }
     },
   },
 };

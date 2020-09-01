@@ -157,11 +157,8 @@ export default {
       return pattern.test(emailString);
     },
     onItemsChange(event) {
-      if (this.section.items.length < 1) {
-        this.restartSlick();
-      } else {
-        this.itemsQty = this.section.items.length;
-      }
+      this.restartSlick();
+      this.itemsQty = this.section.items.length;
     },
     restartSlick() {
       this.isSlick = false;
@@ -185,8 +182,13 @@ export default {
       this.restartSlick();
     },
     section: function () {
-      this.itemsQty = this.section.items.length;
-      this.restartSlick();
+      if (
+        this.isEdit &&
+        this.itemsQty === 0 &&
+        this.section.items.length === 1
+      ) {
+        this.restartSlick();
+      }
     },
   },
 };
