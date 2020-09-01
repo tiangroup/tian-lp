@@ -38,8 +38,8 @@
               <editor :text="section.title || ''" :sectionId="section.id" field="title" />
             </h2>
             <h2 v-else>{{ section.title }}</h2>
-            <div class="cta__timer" v-if="countdown" @click.stop="dialogCtaDate=true">
-              <timer :end-date="computedEndDate"></timer>
+            <div class="cta__timer" v-if="countdown" @click.stop="callCtaDateDialog">
+              <timer :end-date="computedEndDate" @expired="reinitTimer"></timer>
             </div>
             <div class="cta__offer">
               <div class="cta__offer__text" v-if="isEdit">
@@ -69,8 +69,8 @@
     <div class="bg-theme cta__countdown" v-if="countdown">
       <div class="landing__container">
         <div class="cta__countdown__row">
-          <div class="cta__countdown__timer" @click.stop="dialogCtaDate=true">
-            <timer :end-date="computedEndDate"></timer>
+          <div class="cta__countdown__timer" @click.stop="callCtaDateDialog">
+            <timer :end-date="computedEndDate" @expired="reinitTimer"></timer>
           </div>
           <div class="cta__countdown__action">
             <a
@@ -120,12 +120,9 @@ export default {
     computedEndDate() {
       if (this.section.date) {
         return String(this.section.date);
+      } else {
+        this.generateEndDate();
       }
-      let computedDate = new Date();
-      computedDate.setTime(
-        computedDate.getTime() + 84 * 60 * 60 * 1000 + 15 * 60 * 1000
-      );
-      return String(computedDate.getTime());
     },
   },
   methods: {
@@ -143,6 +140,11 @@ export default {
       });
       this.showImageUpload(true);
     },
+    callCtaDateDialog() {
+      if (this.isEdit) {
+        this.dialogCtaDate = true;
+      }
+    },
     saveCtaDate(date) {
       this.setSectionField({
         id: this.section.id,
@@ -151,6 +153,18 @@ export default {
       });
       this.$store.dispatch("pages/savePage");
       this.dialogCtaDate = false;
+    },
+    reinitTimer() {
+      let newEndDate = this.generateEndDate();
+      this.saveCtaDate(newEndDate);
+    },
+    generateEndDate() {
+      let computedDate = new Date();
+      // adding some magic numbers to make it look like smb cares
+      computedDate.setTime(
+        computedDate.getTime() + 84 * 60 * 60 * 1000 + 15 * 60 * 1000
+      );
+      return String(computedDate.getTime());
     },
   },
 };

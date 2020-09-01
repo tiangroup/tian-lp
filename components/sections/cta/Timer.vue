@@ -26,12 +26,9 @@ export default {
       let parsedDate = Date.parse(this.endDate);
       if (parsedDate) {
         return parsedDate;
+      } else {
+        return generateEndDate();
       }
-      let computedDate = new Date();
-      computedDate.setTime(
-        computedDate.getTime() + 84 * 60 * 60 * 1000 + 15 * 60 * 1000
-      );
-      return computedDate.getTime();
     },
     _seconds() {
       return 1000;
@@ -57,6 +54,7 @@ export default {
           clearInterval(timer);
           this.timerExpired = true;
           this.timerLoaded = true;
+          this.$emit("expired");
           return;
         }
 
@@ -71,6 +69,13 @@ export default {
         this.displayDays = this.formatNum(days);
         this.timerLoaded = true;
       }, 1000);
+    },
+    generateEndDate() {
+      let computedDate = new Date();
+      computedDate.setTime(
+        computedDate.getTime() + 84 * 60 * 60 * 1000 + 15 * 60 * 1000
+      );
+      return computedDate.getTime();
     },
   },
   mounted() {
