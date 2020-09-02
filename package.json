@@ -17,8 +17,10 @@
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.11.0",
     "@nuxtjs/robots": "^2.4.2",
+    "@nuxtjs/vuetify": "^1.11.2",
     "@reallifedigital/nuxt-image-loader-module": "^1.4.2",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "cross-env": "^7.0.2",
     "express-fileupload": "^1.1.7-alpha.3",
     "gm": "^1.23.1",
@@ -32,8 +34,7 @@
     "vue-gallery": "^2.0.1",
     "vue-js-modal": "^2.0.0-rc.6",
     "vue-slick": "^1.1.15",
-    "vue2-medium-editor": "^1.1.6",
-    "@nuxtjs/vuetify": "^1.11.2"
+    "vue2-medium-editor": "^1.1.6"
   },
   "devDependencies": {
     "vuepress": "^1.5.3"
