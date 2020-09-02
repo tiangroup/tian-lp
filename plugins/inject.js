@@ -1,4 +1,4 @@
-const settings = require("../settings.js");
+//const settings = require("../settings.js");
 
 export default (context, inject) => {
   const { store, env } = context;
