@@ -32,10 +32,10 @@
     "vue-gallery": "^2.0.1",
     "vue-js-modal": "^2.0.0-rc.6",
     "vue-slick": "^1.1.15",
-    "vue2-medium-editor": "^1.1.6"
+    "vue2-medium-editor": "^1.1.6",
+    "@nuxtjs/vuetify": "^1.11.2"
   },
   "devDependencies": {
-    "@nuxtjs/vuetify": "^1.11.2",
     "vuepress": "^1.5.3"
   }
 }
