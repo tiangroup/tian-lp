@@ -16,14 +16,14 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    title: process.env.npm_package_name || "",
+    title: "",
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
         hid: "description",
         name: "description",
-        content: process.env.npm_package_description || ""
+        content: ""
       }
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
@@ -109,22 +109,26 @@ export default {
     proxy: true
   },
   proxy: {
-    /*"/api/data/": {
-      target: process.env.API_BACKEND,
-      pathRewrite: { "^/api/data/": "" }
-    }*/
+    // "/api/data/": {
+    //   target: process.env.API_BACKEND,
+    //   pathRewrite: { "^/api/data/": "" }
+    // }
   },
   auth: {
     strategies: {
       local: {
         endpoints: {
           login: {
-            url: process.env.API_BACKEND + "/auth/local",
+            url:
+              (process.env.API_BACKEND || "https://api.tian-lp.ru") +
+              "/auth/local",
             method: "post",
             propertyName: "jwt"
           },
           user: {
-            url: process.env.API_BACKEND + "/users/me",
+            url:
+              (process.env.API_BACKEND || "https://api.tian-lp.ru") +
+              "/users/me",
             method: "get",
             propertyName: ""
           },
@@ -164,8 +168,4 @@ export default {
     UserAgent: "*",
     Disallow: "/"
   }
-  // env: {
-  //   API_BACKEND: process.env.API_BACKEND,
-  //   APP_BACKEND: process.env.APP_BACKEND
-  // }
 };
