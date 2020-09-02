@@ -159,6 +159,10 @@ app.get("/items/count", checkAuth, async (req, res) => {
   }
 });
 
+app.get("/test", (req, res) => {
+  res.send(api_backend);
+});
+
 module.exports = {
   path: "/forms",
   handler: app
