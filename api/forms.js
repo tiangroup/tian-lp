@@ -4,12 +4,20 @@ const fileUpload = require("express-fileupload");
 const nodemailer = require("nodemailer");
 const templayed = require("templayed");
 const checkAuth = require("./middleware/check-auth");
-const cors = require("./middleware/cors");
 
 const api_backend = process.env.API_BACKEND;
 const admin_token = process.env.ADMIN_TOKEN;
 
 const app = express();
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 app.use(
   fileUpload({
@@ -103,7 +111,7 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.get("/", cors, checkAuth, async (req, res) => {
+app.get("/", checkAuth, async (req, res) => {
   try {
     const { id: user_id } = req.userData;
     const { data: forms } = await axios.get(`${api_backend}/forms`, {
@@ -138,7 +146,7 @@ app.get("/items", checkAuth, async (req, res) => {
   }
 });
 
-app.get("/items/count", cors, checkAuth, async (req, res) => {
+app.get("/items/count", checkAuth, async (req, res) => {
   try {
     const { id: user_id } = req.userData;
     const form_id = req.query.form;
