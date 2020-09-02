@@ -4,6 +4,7 @@ const fileUpload = require("express-fileupload");
 const nodemailer = require("nodemailer");
 const templayed = require("templayed");
 const checkAuth = require("./middleware/check-auth");
+const cors = require("./middleware/cors");
 
 const api_backend = process.env.API_BACKEND;
 const admin_token = process.env.ADMIN_TOKEN;
@@ -102,7 +103,7 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.get("/", checkAuth, async (req, res) => {
+app.get("/", cors, checkAuth, async (req, res) => {
   try {
     const { id: user_id } = req.userData;
     const { data: forms } = await axios.get(`${api_backend}/forms`, {
@@ -137,7 +138,7 @@ app.get("/items", checkAuth, async (req, res) => {
   }
 });
 
-app.get("/items/count", checkAuth, async (req, res) => {
+app.get("/items/count", cors, checkAuth, async (req, res) => {
   try {
     const { id: user_id } = req.userData;
     const form_id = req.query.form;
