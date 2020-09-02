@@ -66,6 +66,16 @@ export default {
     "@nuxtjs/auth",
     "@nuxtjs/robots",
     [
+      "nuxt-env",
+      {
+        keys: [
+          "API_BACKEND",
+          "APP_BACKEND",
+          { key: "ADMIN_TOKEN", secret: true }
+        ]
+      }
+    ],
+    [
       "@reallifedigital/nuxt-image-loader-module",
       {
         imagesBaseDir: "content",
@@ -153,9 +163,9 @@ export default {
   robots: {
     UserAgent: "*",
     Disallow: "/"
-  },
-  env: {
-    API_BACKEND: process.env.API_BACKEND,
-    APP_BACKEND: process.env.APP_BACKEND
   }
+  // env: {
+  //   API_BACKEND: process.env.API_BACKEND,
+  //   APP_BACKEND: process.env.APP_BACKEND
+  // }
 };

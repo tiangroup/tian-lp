@@ -1,13 +1,13 @@
 //const settings = require("../settings.js");
 
 export default (context, inject) => {
-  const { store, env } = context;
+  const { store, env, $env } = context;
 
   inject("site_img", img => "/" + store.getters["sites/id"] + img);
 
-  inject("site_api", env.API_BACKEND);
+  inject("site_api", $env.API_BACKEND);
 
-  inject("site_app", env.APP_BACKEND);
+  inject("site_app", $env.APP_BACKEND);
 
   inject("forms", {
     showMessage: message => {
