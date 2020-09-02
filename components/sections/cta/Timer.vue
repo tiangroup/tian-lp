@@ -18,6 +18,7 @@ export default {
     displayMinutes: 0,
     displayHours: 0,
     displayDays: 0,
+    timer: 0,
     timerLoaded: false,
     timerExpired: false,
   }),
@@ -27,7 +28,7 @@ export default {
       if (parsedDate) {
         return parsedDate;
       } else {
-        return generateEndDate();
+        return this.generateEndDate();
       }
     },
     _seconds() {
@@ -45,30 +46,40 @@ export default {
   },
   methods: {
     formatNum: (num) => (num < 10 ? "0" + num : num),
-    showRemaining() {
-      const timer = setInterval(() => {
-        const now = new Date();
-        const distance = this.expDate - now.getTime();
+    timerTick() {
+      const now = new Date();
+      const distance = this.expDate - now.getTime();
 
-        if (distance < 0) {
-          clearInterval(timer);
-          this.timerExpired = true;
-          this.timerLoaded = true;
-          this.$emit("expired");
-          return;
+      if (distance < 0) {
+        if (this.timer) {
+          clearInterval(this.timer);
         }
-
-        const days = Math.floor(distance / this._days);
-        const hours = Math.floor((distance % this._days) / this._hours);
-        const minutes = Math.floor((distance % this._hours) / this._minutes);
-        const seconds = Math.floor((distance % this._minutes) / this._seconds);
-
-        this.displaySeconds = this.formatNum(seconds);
-        this.displayMinutes = this.formatNum(minutes);
-        this.displayHours = this.formatNum(hours);
-        this.displayDays = this.formatNum(days);
+        this.timerExpired = true;
         this.timerLoaded = true;
-      }, 1000);
+        this.displayMinutes = 0;
+        this.displayHours = 0;
+        this.displayDays = 0;
+        this.$emit("expired");
+        return;
+      } else {
+        this.timerExpired = false;
+      }
+
+      const days = Math.floor(distance / this._days);
+      const hours = Math.floor((distance % this._days) / this._hours);
+      const minutes = Math.floor((distance % this._hours) / this._minutes);
+      const seconds = Math.floor((distance % this._minutes) / this._seconds);
+
+      this.displaySeconds = this.formatNum(seconds);
+      this.displayMinutes = this.formatNum(minutes);
+      this.displayHours = this.formatNum(hours);
+      this.displayDays = this.formatNum(days);
+      this.timerLoaded = true;
+    },
+    showRemaining() {
+      this.timerTick();
+      // interval set to 1 min, cause seconds are not displayed.
+      this.timer = setInterval(this.timerTick, 60000);
     },
     generateEndDate() {
       let computedDate = new Date();
@@ -80,6 +91,11 @@ export default {
   },
   mounted() {
     this.showRemaining();
+  },
+  watch: {
+    expDate: function () {
+      this.showRemaining();
+    },
   },
 };
 </script>

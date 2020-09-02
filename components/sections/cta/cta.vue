@@ -105,7 +105,7 @@ export default {
   data: () => ({
     dialogCtaBtn: false,
     dialogCtaDate: false,
-    ctaDate: null,
+    ctaDate: "",
   }),
   computed: {
     ...mapGetters({
@@ -119,9 +119,10 @@ export default {
     },
     computedEndDate() {
       if (this.section.date) {
-        return String(this.section.date);
+        return this.section.date;
       } else {
-        this.generateEndDate();
+        let genDate = this.generateEndDate();
+        return genDate;
       }
     },
   },
@@ -142,21 +143,24 @@ export default {
     },
     callCtaDateDialog() {
       if (this.isEdit) {
+        this.ctaDate = this.computedEndDate;
         this.dialogCtaDate = true;
       }
     },
-    saveCtaDate(date) {
+    saveCtaDate(newDate) {
       this.setSectionField({
         id: this.section.id,
         field: "date",
-        value: date,
+        value: newDate,
       });
       this.$store.dispatch("pages/savePage");
       this.dialogCtaDate = false;
     },
     reinitTimer() {
-      let newEndDate = this.generateEndDate();
-      this.saveCtaDate(newEndDate);
+      if (!this.isEdit) {
+        let newEndDate = this.generateEndDate();
+        this.saveCtaDate(newEndDate);
+      }
     },
     generateEndDate() {
       let computedDate = new Date();
@@ -164,7 +168,7 @@ export default {
       computedDate.setTime(
         computedDate.getTime() + 84 * 60 * 60 * 1000 + 15 * 60 * 1000
       );
-      return String(computedDate.getTime());
+      return computedDate.toISOString().substr(0, 10);
     },
   },
 };

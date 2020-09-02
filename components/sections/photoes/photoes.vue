@@ -140,7 +140,7 @@ export default {
         var pic = this.section.items[n];
         var imagesItem = {
           title: pic.title,
-          href: "https://img.youtube.com/vi/EuDzvfmuPhQ/maxresdefault.jpg",
+          href: this.$images.src(pic.img),
           type: "image/jpeg",
         };
         imagesArray.push(imagesItem);
