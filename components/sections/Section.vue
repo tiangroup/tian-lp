@@ -1,5 +1,5 @@
 <template>
-<component :is="comp" :section="section" :isEdit="isEdit" />
+<component :is="comp" :section="section" :isEdit="isEdit" v-if="isShow" />
 </template>
 
 <script>
