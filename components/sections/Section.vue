@@ -1,12 +1,14 @@
 <template>
-  <component :is="comp" :section="section" :isEdit="isEdit" v-if="isShow" />
+<component :is="comp" :section="section" :isEdit="isEdit" />
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {
+  mapGetters
+} from "vuex";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   components: {
     sections_header: () => import("~/components/sections/header/header"),
@@ -24,18 +26,18 @@ export default {
       import("~/components/sections/questions/questions"),
     sections_reviews: () => import("~/components/sections/reviews/reviews"),
     sections_cta: () => import("~/components/sections/cta/cta"),
-    sections_footer: () => import("~/components/sections/footer/footer"),
+    sections_footer: () => import("~/components/sections/footer/footer")
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      isEdit: "isEdit"
     }),
     isShow() {
       return this.isEdit || this.section.show === true;
     },
     comp() {
       return this.section.__component.replace(".", "_");
-    },
-  },
+    }
+  }
 };
 </script>
