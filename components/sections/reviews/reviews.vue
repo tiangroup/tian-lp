@@ -226,7 +226,7 @@ export default {
         var pic = this.section.items[n];
         var imagesItem = {
           title: "Отзыв " + pic.name,
-          href: "https://img.youtube.com/vi/EuDzvfmuPhQ/maxresdefault.jpg",
+          href: this.$images.src(pic.img),
           type: "image/jpeg",
         };
         imagesArray.push(imagesItem);
