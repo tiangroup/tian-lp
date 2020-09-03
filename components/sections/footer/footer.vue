@@ -106,7 +106,7 @@
             <div class="d-inline-flex" v-if="isEdit">
               <editor :text="section.copy || computedCopy" :sectionId="section.id" field="copy" />
             </div>
-            <span v-else>{{ section.copy }}</span>
+            <span v-else>{{ section.copy || computedCopy }}</span>
           </div>
           <div class="tian">
             Интернет-агентство Tian Group:

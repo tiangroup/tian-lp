@@ -22,7 +22,7 @@
             }"
           ></v-gallery>
           <div class="fullwidth">
-            <slick :ref="'slick' + section.id" :options="updatedSlickOptions" @init="handleInit">
+            <slick :ref="slickRef" :options="updatedSlickOptions" @init="handleInit">
               <div
                 class="gallery__item"
                 :class="{'position-relative': isEdit}"
@@ -84,7 +84,7 @@ export default {
       dots: true,
       slidesToShow: 3,
       slidesToScroll: 1,
-      centerMode: false,
+      centerMode: true,
       centerPadding: "18.3333%",
       draggable: false,
       infinite: false,
@@ -124,12 +124,15 @@ export default {
       return this.isEdit ? { position: "relative" } : null;
     },
     updatedSlickOptions() {
-      const slidesQty = this.isEdit ? 3 : 2;
-      const slidesStart = this.isEdit ? 0 : 1;
+      const slidesQty = this.isEdit ? 2 : 2;
+      let slidesStart = 0;
+      if (this.section.items.length > 3) {
+        slidesStart = 1;
+      }
       return Object.assign(this.slickOptions, {
         initialSlide: slidesStart,
         slidesToShow: slidesQty,
-        centerMode: !this.isEdit,
+        //centerMode: !this.isEdit,
         infinite: !this.isEdit,
         draggable: !this.isEdit,
       });
@@ -147,18 +150,26 @@ export default {
       }
       return imagesArray;
     },
+    slickRef() {
+      return "slick" + this.section.id;
+    },
   },
   methods: {
     onItemsChange(event) {
       this.itemsQty = this.section.items.length;
       this.restartSlick();
     },
-    restartSlick() {
+    async restartSlick() {
+      let currSlideIndex = this.$refs[this.slickRef].currentSlide();
       this.isSlick = false;
       const _this = this;
-      setTimeout(function () {
-        _this.isSlick = true;
-      }, 200);
+      let enableSlick = new Promise((resolve) => {
+        setTimeout(() => {
+          resolve((_this.isSlick = true));
+        }, 200);
+      });
+      await enableSlick;
+      this.$refs[this.slickRef].goTo(currSlideIndex, true);
     },
     async onItemDelete(payload) {
       const item = this.section.items.find((i) => i.id == payload.itemId);

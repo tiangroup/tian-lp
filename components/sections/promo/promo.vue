@@ -39,11 +39,7 @@
         <div class="hero__row">
           <div class="hero__body">
             <h1 v-if="isEdit">
-              <editor
-                :text="section.title || ''"
-                :sectionId="section.id"
-                field="title"
-              />
+              <editor :text="section.title || ''" :sectionId="section.id" field="title" />
             </h1>
             <h1 v-else>{{ section.title }}</h1>
             <div class="hero__text" v-if="isEdit">
@@ -54,18 +50,17 @@
               />
             </div>
             <div class="hero__text" v-else>{{ section.description }}</div>
+            <div class="hero__timer" v-if="countdown">
+              <timer></timer>
+            </div>
             <div class="hero__action" v-if="button || form">
               <form-popup :section="section" field="promo_form"></form-popup>
               <a @click.prevent="formDialog = true">Открыть</a>
-              <form-dialog
-                :section="section"
-                field="promo_form"
-                v-model="formDialog"
-              ></form-dialog>
+              <form-dialog :section="section" field="promo_form" v-model="formDialog"></form-dialog>
             </div>
           </div>
 
-          <div class="display-none display-lg-block cell cell-lg-4" v-if="form">
+          <div class="hero__form-wrap" v-if="form">
             <form-inline :section="section" field="promo_form" />
           </div>
           <image-item
@@ -84,13 +79,17 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import Timer from "../cta/Timer.vue";
 export default {
+  components: {
+    Timer,
+  },
   props: {
-    section: Object
+    section: Object,
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      isEdit: "isEdit",
     }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
@@ -103,24 +102,27 @@ export default {
     },
     image() {
       return this.section.settings.image === true;
-    }
+    },
+    countdown() {
+      return this.section.settings.countdown === true;
+    },
   },
   data: () => ({
-    formDialog: false
+    formDialog: false,
   }),
   methods: {
     ...mapMutations({
       showImageUpload: "SET_DIALOG_IMAGE_UPLOAD",
-      setImageUpload: "SET_IMAGE_UPLOAD"
+      setImageUpload: "SET_IMAGE_UPLOAD",
     }),
     itemImageSelect() {
       this.$images.upload({
         sectionId: this.section.id,
         field: "bg_img",
         items: null,
-        value: this.section.bg_img
+        value: this.section.bg_img,
       });
-    }
-  }
+    },
+  },
 };
 </script>
