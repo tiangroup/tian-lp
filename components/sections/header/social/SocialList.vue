@@ -27,10 +27,6 @@
 
 <script>
 export default {
-  components: {
-    SocialListButton: () => import("./SocialListButton"),
-    SocialListEditor: () => import("./SocialListEditor")
-  },
   props: {
     section: Object,
     isEdit: Boolean

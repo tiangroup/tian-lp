@@ -18,17 +18,20 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import View1 from "./HeaderView1";
+import View2 from "./HeaderView2";
+import View3 from "./HeaderView3";
+import View4 from "./HeaderView4";
+import View5 from "./HeaderView5";
+import View6 from "./HeaderView6";
 export default {
   components: {
-    ButtonsSection: () => import("@/components/admin/ButtonsSection"),
-    MenuEditor: () => import("./menu/MenuEditor"),
-    MenuEditorButton: () => import("./menu/MenuEditorButton"),
-    View1: () => import("./HeaderView1"),
-    View2: () => import("./HeaderView2"),
-    View3: () => import("./HeaderView3"),
-    View4: () => import("./HeaderView4"),
-    View5: () => import("./HeaderView5"),
-    View6: () => import("./HeaderView6")
+    View1,
+    View2,
+    View3,
+    View4,
+    View5,
+    View6
   },
   props: {
     section: Object

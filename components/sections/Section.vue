@@ -1,32 +1,42 @@
 <template>
-<component :is="comp" :section="section" :isEdit="isEdit" v-if="isShow" />
+  <component :is="comp" :section="section" :isEdit="isEdit" v-if="isShow" />
 </template>
 
 <script>
-import {
-  mapGetters
-} from "vuex";
+import { mapGetters } from "vuex";
+import sections_header from "~/components/sections/header/header";
+import sections_benefits from "~/components/sections/benefits/benefits";
+import sections_highlights from "~/components/sections/highlights/highlights";
+import sections_process from "~/components/sections/process/process";
+import sections_promo from "~/components/sections/promo/promo";
+import sections_partners from "~/components/sections/partners/partners";
+import sections_staff from "~/components/sections/staff/staff";
+import sections_tarifs from "~/components/sections/tarifs/tarifs";
+import sections_video from "~/components/sections/video/video";
+import sections_photoes from "~/components/sections/photoes/photoes";
+import sections_questions from "~/components/sections/questions/questions";
+import sections_reviews from "~/components/sections/reviews/reviews";
+import sections_cta from "~/components/sections/cta/cta";
+import sections_footer from "~/components/sections/footer/footer";
 export default {
   props: {
     section: Object
   },
   components: {
-    sections_header: () => import("~/components/sections/header/header"),
-    sections_benefits: () => import("~/components/sections/benefits/benefits"),
-    sections_highlights: () =>
-      import("~/components/sections/highlights/highlights"),
-    sections_process: () => import("~/components/sections/process/process"),
-    sections_promo: () => import("~/components/sections/promo/promo"),
-    sections_partners: () => import("~/components/sections/partners/partners"),
-    sections_staff: () => import("~/components/sections/staff/staff"),
-    sections_tarifs: () => import("~/components/sections/tarifs/tarifs"),
-    sections_video: () => import("~/components/sections/video/video"),
-    sections_photoes: () => import("~/components/sections/photoes/photoes"),
-    sections_questions: () =>
-      import("~/components/sections/questions/questions"),
-    sections_reviews: () => import("~/components/sections/reviews/reviews"),
-    sections_cta: () => import("~/components/sections/cta/cta"),
-    sections_footer: () => import("~/components/sections/footer/footer")
+    sections_header,
+    sections_benefits,
+    sections_highlights,
+    sections_process,
+    sections_promo,
+    sections_partners,
+    sections_staff,
+    sections_tarifs,
+    sections_video,
+    sections_photoes,
+    sections_questions,
+    sections_reviews,
+    sections_cta,
+    sections_footer
   },
   computed: {
     ...mapGetters({

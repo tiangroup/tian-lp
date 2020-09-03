@@ -13,14 +13,17 @@
 
 <script>
 import { mapGetters } from "vuex";
+import View1 from "./BenefitsView1";
+import View2 from "./BenefitsView2";
+import View3 from "./BenefitsView3";
 export default {
   props: {
     section: Object
   },
   components: {
-    View1: () => import("./BenefitsView1"),
-    View2: () => import("./BenefitsView2"),
-    View3: () => import("./BenefitsView3")
+    View1,
+    View2,
+    View3
   },
   computed: {
     ...mapGetters({

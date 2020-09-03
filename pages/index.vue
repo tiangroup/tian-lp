@@ -12,9 +12,14 @@ export default {
       const page = site.pages.find(p => p.slug === "/");
       if (page) {
         await store.dispatch("pages/loadPage", page.page);
+      } else {
+        console.log("page not found");
       }
     } else {
-      error({ statusCode: 404, message: "Сайт не найден" });
+      error({
+        statusCode: 404,
+        message: "Сайт не найден"
+      });
     }
   },
   components: {

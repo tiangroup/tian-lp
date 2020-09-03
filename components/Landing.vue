@@ -13,6 +13,7 @@
       <v-overlay :value="overlay" v-if="isEdit" z-index="10000">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
+
       <image-upload v-if="isEdit && dialogImageUpload" />
       <vue-confirm-dialog v-if="isEdit"></vue-confirm-dialog>
       <form-message />
