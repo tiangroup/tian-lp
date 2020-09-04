@@ -17,10 +17,11 @@ import sections_photoes from "~/components/sections/photoes/photoes";
 import sections_questions from "~/components/sections/questions/questions";
 import sections_reviews from "~/components/sections/reviews/reviews";
 import sections_cta from "~/components/sections/cta/cta";
+import sections_contacts from "~/components/sections/contacts/contacts";
 import sections_footer from "~/components/sections/footer/footer";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   components: {
     sections_header,
@@ -36,18 +37,19 @@ export default {
     sections_questions,
     sections_reviews,
     sections_cta,
-    sections_footer
+    sections_contacts,
+    sections_footer,
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      isEdit: "isEdit",
     }),
     isShow() {
       return this.isEdit || this.section.show === true;
     },
     comp() {
       return this.section.__component.replace(".", "_");
-    }
-  }
+    },
+  },
 };
 </script>
