@@ -15,9 +15,11 @@
       </v-overlay>
 
       <image-upload v-if="isEdit && dialogImageUpload" />
-      <vue-confirm-dialog v-if="isEdit"></vue-confirm-dialog>
+
       <form-message />
       <form-editor v-if="isEdit" />
+
+      <dialog-confirm />
     </div>
   </div>
 </template>

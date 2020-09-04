@@ -54,6 +54,30 @@ this.$images.upload({
 <img :src="$site_img(item.img)" />
 ```
 
+### \$confirm(payload)
+
+Функция вызывает диалоговое окно подтверждение действия пользователем
+
+```js
+methods: {
+  imageDelete() {
+    this.$confirm({
+      title: "Удалить картинку",
+      message: "Вы действительно хотите удалить картинку?",
+      button: {
+        no: "Отмена",
+        yes: "Удалить"
+      },
+      callback: async confirm => {
+        if (confirm) {
+          ...
+        }
+      }
+    });
+  }
+}
+```
+
 ## Slick slider
 
 Официальная документация компонента: [https://www.npmjs.com/package/vue-slick](https://www.npmjs.com/package/vue-slick)
@@ -80,7 +104,8 @@ restartSlick() {
 <buttons-item ... @onAction="restartSlick" />
 ```
 
-### Добавление первого элемента в коллекцию кнопкой <buttons-item-add>
+### Добавление первого элемента в коллекцию кнопкой \<buttons-item-add\>
+
 Вручную перерисовывать слайдер. Пока решено через отслеживание количества элементов в section.items и если было 0, стало 1, перерисовываеца слайдер. Теоретически можно было бы использовать эту схему для перерисовки слайдера в прочих случаях, описанных выше (см. Реактивное добавление, удаление, перемещение слайдов), но перемещение элементов не дает обновления section.items -> слайдер не перерисовываеца.
 
 ### Реактивные изменения отображения слайдера в зависимости от параметров страницы
@@ -111,31 +136,3 @@ watch: {
 Гитхаб компонента: [https://github.com/RobinCK/vue-gallery](https://github.com/RobinCK/vue-gallery)
 
 Настройка closeOnSlideClick: true не работает для видео.
-
-## vue-confirm-dialog
-
-Гитхаб компонента: [https://github.com/aslanon/vue-confirm-dialog](https://github.com/aslanon/vue-confirm-dialog)
-
-Simple Confirm Dialog verification plugin with Vue.js
-
-Компонент подключен глобально, можно использовать через API контекста
-
-```js
-methods: {
-  imageDelete() {
-    this.$confirm({
-      title: "Удалить картинку",
-      message: "Вы действительно хотите удалить картинку?",
-      button: {
-        no: "Отмена",
-        yes: "Удалить"
-      },
-      callback: async confirm => {
-        if (confirm) {
-          ...
-        }
-      }
-    });
-  }
-}
-```

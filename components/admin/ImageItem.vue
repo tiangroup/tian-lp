@@ -12,6 +12,8 @@
 
 <script>
 import { mapGetters } from "vuex";
+import out from "~/components/admin/ImageItemOut";
+import edit from "~/components/admin/ImageItemEdit";
 export default {
   props: {
     divClass: { type: String, default: "" },
@@ -22,8 +24,8 @@ export default {
     items: { type: String, default: "items" }
   },
   components: {
-    out: () => import("@/components/admin/ImageItemOut"),
-    edit: () => import("@/components/admin/ImageItemEdit")
+    out,
+    edit
   },
   computed: {
     ...mapGetters({

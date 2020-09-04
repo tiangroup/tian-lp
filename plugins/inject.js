@@ -24,4 +24,6 @@ export default (context, inject) => {
       store.dispatch("showImageUpload", imageUpload);
     }
   });
+
+  inject("confirm", confirm => store.dispatch("showConfirm", confirm));
 };
