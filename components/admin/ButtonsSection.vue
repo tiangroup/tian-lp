@@ -253,6 +253,9 @@ export default {
       });
     },
     async onDelete() {
+      await this.$axios.post(`${this.$site_app}/api/upload/dir-remove`, {
+        dir: this.section.id
+      });
       this.deleteSection({
         sectionId: this.section.id
       });

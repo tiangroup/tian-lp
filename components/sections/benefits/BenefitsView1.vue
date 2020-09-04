@@ -5,7 +5,11 @@
   >
     <div class="landing__container">
       <h2 v-if="isEdit">
-        <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+        <editor
+          :text="section.title || ''"
+          :sectionId="section.id"
+          field="title"
+        />
       </h2>
       <h2 v-else>{{ section.title }}</h2>
       <div class="benefits__intro" v-if="isEdit">
@@ -28,7 +32,6 @@
             v-if="isEdit"
             :itemId="item.id"
             :sectionId="section.id"
-            @onItemDelete="onDeleteItem"
           />
           <div class="benefits__item">
             <image-item
@@ -59,7 +62,9 @@
                   :itemId="item.id"
                 />
               </div>
-              <div v-else class="benefits__description">{{ item.description }}</div>
+              <div v-else class="benefits__description">
+                {{ item.description }}
+              </div>
             </div>
           </div>
         </div>
@@ -78,21 +83,12 @@
 export default {
   props: {
     section: Object,
-    isEdit: Boolean,
-  },
-  components: {
-    Editor: () => import("@/components/admin/Editor"),
-    ButtonsItem: () => import("@/components/admin/ButtonsItem"),
+    isEdit: Boolean
   },
   computed: {
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
-    },
-  },
-  methods: {
-    onDeleteItem(payload) {
-      this.$emit("onItemDelete", payload);
-    },
-  },
+    }
+  }
 };
 </script>

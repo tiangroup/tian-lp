@@ -105,7 +105,6 @@
               v-if="isEdit"
               :itemId="item.id"
               :sectionId="section.id"
-              @onItemDelete="onDeleteItem"
             />
             <div class="benefits__icon">
               <svg
@@ -161,10 +160,6 @@ export default {
     section: Object,
     isEdit: Boolean
   },
-  components: {
-    Editor: () => import("@/components/admin/Editor"),
-    ButtonsItem: () => import("@/components/admin/ButtonsItem")
-  },
   computed: {
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
@@ -176,11 +171,6 @@ export default {
     items2() {
       const len = Math.ceil(this.section.items.length / 2);
       return this.section.items.filter((item, index) => index >= len);
-    }
-  },
-  methods: {
-    onDeleteItem(payload) {
-      this.$emit("onItemDelete", payload);
     }
   }
 };

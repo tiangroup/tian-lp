@@ -2,11 +2,14 @@ const express = require("express");
 const axios = require("axios");
 const bodyParser = require("body-parser");
 const checkAuth = require("./middleware/check-auth");
+const cors = require("cors");
 
 const api_backend = process.env.API_BACKEND;
 const admin_token = process.env.ADMIN_TOKEN;
 
 const app = express();
+
+app.use(cors());
 
 app.use(bodyParser.json());
 

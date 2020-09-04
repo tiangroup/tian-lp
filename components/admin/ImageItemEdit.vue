@@ -8,7 +8,7 @@
     <v-list>
       <v-list-item @click="imageSelect">
         <v-list-item-title>
-          Вставить картинку
+          {{ img ? "Изменить картинку" : "Вставить картинку" }}
         </v-list-item-title>
       </v-list-item>
       <v-list-item v-if="img" @click="imageDelete">
@@ -68,21 +68,6 @@ export default {
       });
     },
     async imageDelete() {
-      this.$confirm({
-        title: "Удалить картинку",
-        message: "Вы действительно хотите удалить картинку?",
-        button: {
-          no: "Отмена",
-          yes: "Удалить"
-        },
-        callback: confirm => {
-          if (confirm) {
-            console.log("Есть контакт" + this.itemId);
-          } else {
-            console.log("Нет контакта");
-          }
-        }
-      });
       // this.$confirm({
       //   title: "Удалить картинку",
       //   message: "Вы действительно хотите удалить картинку?",
@@ -90,33 +75,48 @@ export default {
       //     no: "Отмена",
       //     yes: "Удалить"
       //   },
-      //   callback: async confirm => {
+      //   callback: confirm => {
       //     if (confirm) {
-      //       this.overlay(true);
-      //       const formData = new FormData();
-      //       formData.append("image", this.img);
-      //       await this.$axios.post("/api/upload/image-remove", formData);
-      //       if (this.items) {
-      //         this.setItemField({
-      //           sectionId: this.sectionId,
-      //           itemId: this.itemId,
-      //           items: this.items,
-      //           field: this.field,
-      //           value: null
-      //         });
-      //       } else {
-      //         this.setSectionField({
-      //           id: this.sectionId,
-      //           field: this.field,
-      //           value: null
-      //         });
-      //       }
-      //       await this.savePage();
-      //       this.overlay(false);
-      //       this.deleteDialog = false;
+      //       console.log("Есть контакт" + this.itemId);
+      //     } else {
+      //       console.log("Нет контакта");
       //     }
       //   }
       // });
+      this.$confirm({
+        title: "Удалить картинку",
+        message: "Вы действительно хотите удалить картинку?",
+        button: {
+          no: "Отмена",
+          yes: "Удалить"
+        },
+        callback: async confirm => {
+          if (confirm) {
+            this.overlay(true);
+            const formData = new FormData();
+            formData.append("image", this.img);
+            await this.$axios.post("/api/upload/image-remove", formData);
+            if (this.items) {
+              this.setItemField({
+                sectionId: this.sectionId,
+                itemId: this.itemId,
+                items: this.items,
+                field: this.field,
+                value: null
+              });
+            } else {
+              this.setSectionField({
+                id: this.sectionId,
+                field: this.field,
+                value: null
+              });
+            }
+            await this.savePage();
+            this.overlay(false);
+            this.deleteDialog = false;
+          }
+        }
+      });
     }
   }
 };

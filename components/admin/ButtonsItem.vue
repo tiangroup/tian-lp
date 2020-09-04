@@ -145,6 +145,10 @@ export default {
     },
     async itemDelete() {
       this.$emit("onItemDelete", { itemId: this.itemId });
+      // очистка файлов картинок
+      await this.$axios.post(`${this.$site_app}/api/upload/dir-remove`, {
+        dir: this.sectionId + "/" + this.itemId
+      });
       this.deleteItem({
         sectionId: this.sectionId,
         itemId: this.itemId,

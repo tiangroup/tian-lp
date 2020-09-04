@@ -2,14 +2,21 @@ const express = require("express");
 const axios = require("axios");
 const fileUpload = require("express-fileupload");
 const path = require("path");
-const uuid = require("node-uuid");
+//const uuid = require("node-uuid");
 const fs = require("fs");
+const bodyParser = require("body-parser");
 const checkAuth = require("./middleware/check-auth");
+const cors = require("cors");
+const rimraf = require("rimraf");
 
 const api_backend = process.env.API_BACKEND;
 
 // Create app
 const app = express();
+
+app.use(cors());
+
+app.use(bodyParser.json());
 
 // enable files upload
 app.use(
@@ -45,7 +52,11 @@ app.post("/image", checkAuth, async (req, res) => {
         //const catalog = req.body.catalog;
         const catalog = await getCatalog(req);
 
-        const filename = uuid.v4() + path.extname(image.name).toLowerCase();
+        let filename =
+          /*uuid.v4()*/ random_gen(10) + path.extname(image.name).toLowerCase();
+        if (req.body.path) {
+          filename = req.body.path + "/" + filename;
+        }
         image.mv(`./content/${catalog}/${filename}`);
 
         const old_image = req.body.old_image;
@@ -105,7 +116,8 @@ app.post("/image-link", checkAuth, async (req, res) => {
   try {
     const image_link = req.body.image_link;
 
-    const filename = uuid.v4() + path.extname(image_link).toLowerCase();
+    const filename =
+      /*uuid.v4()*/ random_gen(10) + path.extname(image_link).toLowerCase();
 
     //const catalog = req.body.catalog;
     const catalog = await getCatalog(req);
@@ -135,6 +147,7 @@ app.post("/image-link", checkAuth, async (req, res) => {
   }
 });
 
+// удаление картинки
 app.post("/image-remove", checkAuth, async (req, res) => {
   const image = req.body.image;
   //const catalog = req.body.catalog;
@@ -150,15 +163,23 @@ app.post("/image-remove", checkAuth, async (req, res) => {
   });
 });
 
-app.options("*", (req, res) => {
-  res.set("Access-Control-Allow-Origin", "*");
-  //res.set("Access-Control-Allow-Headers", "Content-Type");
-  res.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.set(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.send("ok");
+// удаление папки
+app.post("/dir-remove", checkAuth, async (req, res) => {
+  const dir = req.body.dir;
+  const catalog = await getCatalog(req);
+  if (dir) {
+    try {
+      rimraf(`./content/${catalog}/${dir}`, function() {
+        console.log("done dir-remove");
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  res.send({
+    status: true,
+    message: "Dir remove"
+  });
 });
 
 // -- export app --
@@ -180,4 +201,14 @@ async function getCatalog(req) {
   });
   const catalog = data[0].id;
   return catalog;
+}
+
+function random_gen(len) {
+  const chrs = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+  let str = "";
+  for (var i = 0; i < len; i++) {
+    var pos = Math.floor(Math.random() * chrs.length);
+    str += chrs.substring(pos, pos + 1);
+  }
+  return str;
 }

@@ -19,7 +19,7 @@
       <form-message />
       <form-editor v-if="isEdit" />
 
-      <dialog-confirm />
+      <dialog-confirm v-if="isEdit" />
     </div>
   </div>
 </template>

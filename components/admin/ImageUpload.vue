@@ -200,7 +200,15 @@ export default {
         const formData = new FormData();
         formData.append("image", this.selectedFile, this.selectedFile.name);
         formData.append("old_image", this.itemImageEdit.value);
-        const { data } = await this.$axios.post("/api/upload/image", formData);
+        // контекстный путь картинки
+        const path = `${this.itemImageEdit.sectionId}${
+          this.itemImageEdit.id ? "/" + this.itemImageEdit.id : ""
+        }`;
+        formData.append("path", path);
+        const { data } = await this.$axios.post(
+          `${this.$site_app}/api/upload/image`,
+          formData
+        );
         const itemImageEdit = JSON.parse(JSON.stringify(this.itemImageEdit));
         itemImageEdit.value = data.data.path;
         if (itemImageEdit.sectionId) {
@@ -236,8 +244,13 @@ export default {
         const formData = new FormData();
         formData.append("old_image", this.itemImageEdit.value);
         formData.append("image_link", this.imageLink);
+        // контекстный путь картинки
+        const path = `${this.itemImageEdit.sectionId}${
+          this.itemImageEdit.id ? "/" + this.itemImageEdit.id : ""
+        }`;
+        formData.append("path", path);
         const { data } = await this.$axios.post(
-          "/api/upload/image-link",
+          `${this.$site_app}/api/upload/image-link`,
           formData
         );
         const itemImageEdit = JSON.parse(JSON.stringify(this.itemImageEdit));
