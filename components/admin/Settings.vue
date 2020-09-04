@@ -4,11 +4,9 @@
       <div class="tuning-panel__block">
         <div class="tuning-panel__row mb-25px">
           <div class="tuning-panel__cell">
-            <div class="tuning-panel__block__title">
-              «{{ sectionConfig.name }}»
-            </div>
+            <div class="tuning-panel__block__title">«{{ sectionConfig.name }}»</div>
           </div>
-          <div class="tuning-panel__cell">
+          <div class="tuning-panel__cell" v-if="sectionConfig.settings.background.length">
             <div class="tuning-panel__block__bg tuning-bg">
               <div class="tuning-bg__title">Фон</div>
               <a
@@ -81,18 +79,13 @@
           </div>
         </div>
 
-        <div
-          class="tuning-panel__row tuning-panel__options"
-          v-if="sectionConfig.settings.options"
-        >
+        <div class="tuning-panel__row tuning-panel__options" v-if="sectionConfig.settings.options">
           <div
             class="tuning-panel__cell tuning-option-wrap"
             v-for="(option, index) in sectionConfig.settings.options"
             :key="index"
           >
-            <label
-              class="tuning-panel__option tuning-option field field--check"
-            >
+            <label class="tuning-panel__option tuning-option field field--check">
               <input
                 type="checkbox"
                 class="field__input"
@@ -100,8 +93,8 @@
                 :checked="settings[option.field] === true"
                 @change="setOptionsSettings"
               />
-              <div class="fake-checkbox"></div>
-              <div class="field__label">{{ option.label }}</div>
+              <span class="fake-checkbox"></span>
+              <span class="field__label">{{ option.label }}</span>
             </label>
           </div>
         </div>
@@ -116,33 +109,33 @@ export default {
   props: {
     component: String,
     sectionId: String,
-    settings: Object
+    settings: Object,
   },
   computed: {
     ...mapGetters({
       sections: "sections/sections",
-      isApp: "isApp"
+      isApp: "isApp",
     }),
-    sectionConfig: function() {
-      return this.sections.find(item => item.component === this.component);
-    }
+    sectionConfig: function () {
+      return this.sections.find((item) => item.component === this.component);
+    },
   },
   methods: {
     ...mapMutations({
-      setSettingsField: "pages/SET_SETTINGS_FIELD"
+      setSettingsField: "pages/SET_SETTINGS_FIELD",
     }),
     setBackroundSettings(bg) {
       this.setSettingsField({
         id: this.sectionId,
         field: "background",
-        value: bg
+        value: bg,
       });
     },
     setViewSettings(view) {
       this.setSettingsField({
         id: this.sectionId,
         field: "view",
-        value: view
+        value: view,
       });
     },
     setOptionsSettings(event) {
@@ -151,9 +144,9 @@ export default {
       this.setSettingsField({
         id: this.sectionId,
         field: name,
-        value: checked
+        value: checked,
       });
-    }
-  }
+    },
+  },
 };
 </script>

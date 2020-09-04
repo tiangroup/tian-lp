@@ -1,11 +1,7 @@
 <template>
   <div>
     <div class="field__label">{{ item.label }}</div>
-    <label
-      class="field field--radio"
-      v-for="(value, index) in values"
-      :key="index"
-    >
+    <label class="field field--radio" v-for="(value, index) in values" :key="index">
       <input
         type="radio"
         class="field__input"
@@ -13,8 +9,8 @@
         :value="value"
         @input="$emit('input', $event.target.value)"
       />
-      <div class="fake-radio"></div>
-      <div class="field__label">{{ value }}</div>
+      <span class="fake-radio"></span>
+      <span class="field__label">{{ value }}</span>
     </label>
   </div>
 </template>
@@ -23,17 +19,17 @@
 export default {
   props: {
     item: Object,
-    value: String
+    value: String,
   },
   computed: {
     values() {
       const values = this.item.values;
       if (values) {
-        return values.split("\n").filter(s => s.trim() != "");
+        return values.split("\n").filter((s) => s.trim() != "");
       } else {
         return [];
       }
-    }
-  }
+    },
+  },
 };
 </script>

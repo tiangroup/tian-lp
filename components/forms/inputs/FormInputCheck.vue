@@ -1,8 +1,5 @@
 <template>
-  <label
-    class="field field--check"
-    :class="{ 'field--required': item.required }"
-  >
+  <label class="field field--check" :class="{ 'field--required': item.required }">
     <input
       type="checkbox"
       class="field__input"
@@ -11,10 +8,8 @@
       v-model="check"
     />
 
-    <div class="fake-checkbox"></div>
-    <div class="field__label">
-      {{ item.label }}
-    </div>
+    <span class="fake-checkbox"></span>
+    <span class="field__label">{{ item.label }}</span>
   </label>
 </template>
 
@@ -22,7 +17,7 @@
 export default {
   props: {
     item: Object,
-    value: false
+    value: false,
   },
   computed: {
     check: {
@@ -31,8 +26,8 @@ export default {
       },
       set(value) {
         this.$emit("input", value ? 1 : null);
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
