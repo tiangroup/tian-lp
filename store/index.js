@@ -3,7 +3,9 @@ export const state = () => ({
   isPreview: false,
   overlay: false,
   dialogImageUpload: false,
-  imageUpload: {}
+  imageUpload: {},
+  dialogConfirm: false,
+  confirm: {}
 });
 
 export const mutations = {
@@ -24,6 +26,15 @@ export const mutations = {
   },
   SET_IMAGE_UPLOAD(state, imageUpload) {
     state.imageUpload = imageUpload;
+  },
+  SET_DIALOG_CONFIRM(state, dialog) {
+    state.dialogConfirm = dialog;
+    if (!dialog) {
+      //state.confirm = {};
+    }
+  },
+  SET_CONFIRM(state, confirm) {
+    state.confirm = confirm;
   }
 };
 
@@ -61,6 +72,13 @@ export const actions = {
   },
   hideImageUpload({ commit }) {
     commit("SET_DIALOG_IMAGE_UPLOAD", false);
+  },
+  showConfirm({ commit }, confirm) {
+    commit("SET_CONFIRM", confirm);
+    commit("SET_DIALOG_CONFIRM", true);
+  },
+  hideConfirm({ commit }) {
+    commit("SET_DIALOG_CONFIRM", false);
   }
 };
 
@@ -72,5 +90,7 @@ export const getters = {
   },
   overlay: state => state.overlay,
   dialogImageUpload: state => state.dialogImageUpload,
-  imageUpload: state => state.imageUpload
+  imageUpload: state => state.imageUpload,
+  dialogConfirm: state => state.dialogConfirm,
+  confirm: state => state.confirm
 };

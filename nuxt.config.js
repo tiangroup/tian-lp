@@ -45,7 +45,6 @@ export default {
     { src: "~/plugins/inject" },
     { src: "~/plugins/slick", ssr: false },
     { src: "~/plugins/vue-gallery.client.js" },
-    { src: "~/plugins/vue-confirm-dialog", ssr: false },
     "~plugins/vue-js-modal.js"
   ],
   /*

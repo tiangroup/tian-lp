@@ -6,18 +6,24 @@
 Каждый блок помещается в свою подпапку с соответствующим названием.
 :::
 
-В корне `/components/sections` находится компонент Sections.vue, в нём регистрируются компоненты блоков:
+В корне `/components/sections` находится компонент Section.vue, в нём регистрируются компоненты блоков:
 
 ```js
   ...
-  components: {
-    sections_header: () => import("~/components/sections/header/header"),
-    sections_benefits: () => import("~/components/sections/benefits/benefits"),
-    sections_highlights: () => import("~/components/sections/highlights/highlights"),
-    sections_process: () => import("~/components/sections/process/process"),
+  import sections_header from "~/components/sections/header/header";
+  import sections_benefits from "~/components/sections/benefits/benefits";
+  import sections_highlights from "~/components/sections/highlights/highlights";
+  import sections_process from "~/components/sections/process/process";
+  export default {
+    components: {
+      sections_header,
+      sections_benefits,
+      sections_highlights,
+      sections_process,
+      ...
+    },
     ...
-  },
-  ...
+  }
 ```
 
 Название компонента блока должно быть вида `sections_benefits` , что соответствует названию компоненты в базе `"__component": "sections.benefits"`.
