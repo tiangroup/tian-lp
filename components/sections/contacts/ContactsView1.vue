@@ -4,7 +4,11 @@
       <div class="contacts__row">
         <div class="contacts__body custom-v-spacing-2">
           <h2 v-if="isEdit">
-            <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+            <editor
+              :text="section.title || ''"
+              :sectionId="section.id"
+              field="title"
+            />
           </h2>
           <h2 v-else>{{ section.title }}</h2>
           <div class="addresses contacts__addresses connect__item">
@@ -17,7 +21,10 @@
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path d="M5.51855 6.5V5.5H6.48187V6V6.5H5.51855Z" stroke="currentColor" />
+                  <path
+                    d="M5.51855 6.5V5.5H6.48187V6V6.5H5.51855Z"
+                    stroke="currentColor"
+                  />
                   <path
                     d="M1.55675 8.72429C1.35405 8.39072 1.12937 7.72073 1.03953 6.84679C0.951568 5.99119 1.00319 5.03402 1.26707 4.15293C1.52927 3.27743 1.99072 2.50633 2.70692 1.95137C3.41745 1.40082 4.45966 1 5.99998 1C7.54031 1 8.58252 1.40082 9.29305 1.95138C10.0093 2.50634 10.4707 3.27745 10.7329 4.15295C10.9968 5.03404 11.0484 5.99121 10.9605 6.8468C10.8706 7.72074 10.6459 8.39072 10.4432 8.72426C9.99777 9.45729 9.18444 10.283 8.28452 11.0528C7.42138 11.7911 6.54621 12.4215 5.99997 12.7973C5.45373 12.4215 4.57854 11.7911 3.71541 11.0528C2.81549 10.283 2.00218 9.4573 1.55675 8.72429Z"
                     stroke="currentColor"
@@ -26,7 +33,9 @@
                 </svg>
               </div>
               <div class="connect__instances">
-                <div class="connect__instance">Москва, пр. Христорождественского, 145</div>
+                <div class="connect__instance">
+                  Москва, пр. Христорождественского, 145
+                </div>
               </div>
             </div>
           </div>
@@ -83,7 +92,10 @@
                   <div class="phones__messenger messenger">
                     <ul class="messenger__list">
                       <li class="messenger__item">
-                        <a href="tg://resolve?domain=USERNAME" class="messenger__link">
+                        <a
+                          href="tg://resolve?domain=USERNAME"
+                          class="messenger__link"
+                        >
                           <span class="sr-only">Ссылка на чат в Телеграм</span>
                           <svg
                             height="24"
@@ -115,7 +127,10 @@
                         </a>
                       </li>
                       <li class="messenger__item">
-                        <a href="viber://add?number=%2B79991112233" class="messenger__link">
+                        <a
+                          href="viber://add?number=%2B79991112233"
+                          class="messenger__link"
+                        >
                           <!-- %2B заменяет + в номере -->
                           <span class="sr-only">Ссылка на чат в Viber</span>
                           <svg
@@ -134,7 +149,10 @@
                         </a>
                       </li>
                       <li class="messenger__item">
-                        <a href="https://wa.me/79991112233" class="messenger__link">
+                        <a
+                          href="https://wa.me/79991112233"
+                          class="messenger__link"
+                        >
                           <span class="sr-only">Ссылка на чат в Whatsapp</span>
                           <svg
                             width="24"
@@ -191,7 +209,9 @@
               </li>
               <li class="social__item">
                 <a href class="social__link social__link--colored">
-                  <span class="sr-only">Ссылка на страницу в Одноклассниках</span>
+                  <span class="sr-only"
+                    >Ссылка на страницу в Одноклассниках</span
+                  >
                   <span class="social__icon social__icon--ok"></span>
                 </a>
               </li>
@@ -210,7 +230,7 @@
             </ul>
           </div>
         </div>
-        <div class="contacts__map"></div>
+        <contacts-map :items="address"></contacts-map>
       </div>
     </div>
   </div>
@@ -220,23 +240,49 @@
 import ContactsMap from "./ContactsMap";
 import Editor from "@/components/admin/Editor";
 export default {
+  components: {
+    ContactsMap,
+    Editor
+  },
   props: {
     section: Object,
-    isEdit: Boolean,
+    isEdit: Boolean
   },
-  components: {
-    Editor,
-    ContactsMap,
+  data() {
+    return {
+      addresses: [
+        {
+          id: 0,
+          coords: [55.177028, 61.348218],
+          name: "Главный офис",
+          address: "ul. Kakaya-to, bld 100, apt 18",
+          phone: "+7 800 2000 600"
+        },
+        {
+          id: 1,
+          coords: [55.175315, 61.339782],
+          name: "Secondary офис",
+          address: "ul. Kakaya-to, bld 100, apt 120",
+          phone: "+7 800 2000 601"
+        }
+      ],
+      myMap: {}
+    };
   },
   computed: {
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
     },
+    address() {
+      var mainOffice = [];
+      mainOffice.push(this.addresses[0]);
+      return mainOffice;
+    }
   },
   methods: {
     onDeleteItem(payload) {
       this.$emit("onItemDelete", payload);
-    },
-  },
+    }
+  }
 };
 </script>
