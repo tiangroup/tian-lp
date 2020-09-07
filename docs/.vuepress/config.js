@@ -1,3 +1,5 @@
+const moment = require("moment");
+
 module.exports = {
   title: "TianLP",
   description: "Документация TianLP",
@@ -14,7 +16,9 @@ module.exports = {
       "@vuepress/last-updated",
       {
         transformer: (timestamp, lang) => {
-          return new Date(timestamp).toLocaleString(lang);
+          //return new Date(timestamp).toLocaleString(lang);
+          moment.locale(lang);
+          return moment(timestamp).format("LLL");
         }
       }
     ]
