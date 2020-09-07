@@ -3,17 +3,38 @@
     <div class="landing__container">
       <div class="contacts__body">
         <h2>
-          <editor :text="section.title || ''" :sectionId="section.id" field="title" v-if="isEdit" />
+          <editor
+            :text="section.title || ''"
+            :sectionId="section.id"
+            field="title"
+            v-if="isEdit"
+          />
           <span v-else>{{ section.title }}</span>
         </h2>
         <div class="contacts__list mx-ncell">
-          <slick :ref="'slick' + section.id" :options="updatedSlickOptions" v-if="isSlick">
-            <div class="cell" :class="{'position-relative': isEdit}" v-for="n in 3" :key="n">
+          <slick
+            :ref="'slick' + section.id"
+            :options="updatedSlickOptions"
+            v-if="isSlick"
+          >
+            <div
+              class="cell"
+              :class="{ 'position-relative': isEdit }"
+              v-for="n in 3"
+              :key="n"
+            >
               <div class="contacts__item department">
                 <div class="department__title">Главный офис</div>
                 <div class="department__address">
-                  <div class="department__address__text">г. Челябинск, пр. Ленина 164, офис 307</div>
-                  <a href class="department__address__link">Показать на карте</a>
+                  <div class="department__address__text">
+                    г. Челябинск, пр. Ленина 164, офис 307
+                  </div>
+                  <a
+                    href
+                    class="department__address__link"
+                    @click.prevent="showItemOnMap([55.177028, 61.348218])"
+                    >Показать на карте</a
+                  >
                 </div>
                 <div class="department__emails">
                   <div class="department__email">
@@ -28,8 +49,13 @@
                     <div class="department__messenger messenger">
                       <ul class="messenger__list">
                         <li class="messenger__item">
-                          <a href="tg://resolve?domain=username" class="messenger__link">
-                            <span class="sr-only">Ссылка на чат в Телеграм</span>
+                          <a
+                            href="tg://resolve?domain=username"
+                            class="messenger__link"
+                          >
+                            <span class="sr-only"
+                              >Ссылка на чат в Телеграм</span
+                            >
                             <svg
                               height="24"
                               viewBox="0 0 24 24"
@@ -60,7 +86,10 @@
                           </a>
                         </li>
                         <li class="messenger__item">
-                          <a href="viber://add?number=%2Bnumber" class="messenger__link">
+                          <a
+                            href="viber://add?number=%2Bnumber"
+                            class="messenger__link"
+                          >
                             <span class="sr-only">Ссылка на чат в Viber</span>
                             <svg
                               width="40"
@@ -78,8 +107,13 @@
                           </a>
                         </li>
                         <li class="messenger__item">
-                          <a href="https://wa.me/79991112233" class="messenger__link">
-                            <span class="sr-only">Ссылка на чат в Whatsapp</span>
+                          <a
+                            href="https://wa.me/79991112233"
+                            class="messenger__link"
+                          >
+                            <span class="sr-only"
+                              >Ссылка на чат в Whatsapp</span
+                            >
                             <svg
                               width="24"
                               height="24"
@@ -116,8 +150,13 @@
                     <div class="department__messenger messenger">
                       <ul class="messenger__list">
                         <li class="messenger__item">
-                          <a href="tg://resolve?domain=username" class="messenger__link">
-                            <span class="sr-only">Ссылка на чат в Телеграм</span>
+                          <a
+                            href="tg://resolve?domain=username"
+                            class="messenger__link"
+                          >
+                            <span class="sr-only"
+                              >Ссылка на чат в Телеграм</span
+                            >
                             <svg
                               height="24"
                               viewBox="0 0 24 24"
@@ -148,7 +187,10 @@
                           </a>
                         </li>
                         <li class="messenger__item">
-                          <a href="viber://add?number=%2Bnumber" class="messenger__link">
+                          <a
+                            href="viber://add?number=%2Bnumber"
+                            class="messenger__link"
+                          >
                             <span class="sr-only">Ссылка на чат в Viber</span>
                             <svg
                               width="40"
@@ -166,8 +208,13 @@
                           </a>
                         </li>
                         <li class="messenger__item">
-                          <a href="https://wa.me/79991112233" class="messenger__link">
-                            <span class="sr-only">Ссылка на чат в Whatsapp</span>
+                          <a
+                            href="https://wa.me/79991112233"
+                            class="messenger__link"
+                          >
+                            <span class="sr-only"
+                              >Ссылка на чат в Whatsapp</span
+                            >
                             <svg
                               width="24"
                               height="24"
@@ -209,7 +256,11 @@
         </div>
       </div>
     </div>
-    <div class="contacts__map" v-if="view === 'view2'"></div>
+    <contacts-map
+      :items="addresses"
+      v-if="view === 'view2'"
+      @map-ready="defineMyMap(inst)"
+    ></contacts-map>
   </div>
 </template>
 
@@ -223,18 +274,35 @@ export default {
     isEdit: Boolean,
     view: {
       type: String,
-      default: "view2",
-    },
+      default: "view2"
+    }
   },
   components: {
     Editor,
     ContactsMap,
-    ButtonsItem,
+    ButtonsItem
   },
   data() {
     return {
+      addresses: [
+        {
+          id: 0,
+          coords: [55.177028, 61.348218],
+          name: "Главный офис",
+          address: "ul. Kakaya-to, bld 100, apt 18",
+          phone: "+7 800 2000 600"
+        },
+        {
+          id: 1,
+          coords: [55.175315, 61.339782],
+          name: "Secondary офис",
+          address: "ul. Kakaya-to, bld 100, apt 120",
+          phone: "+7 800 2000 601"
+        }
+      ],
       isSlick: true,
       itemsQty: null,
+      myMap: {},
       slickOptions: {
         arrows: true,
         dots: true,
@@ -250,28 +318,28 @@ export default {
           {
             breakpoint: 1280,
             settings: {
-              arrows: false,
-            },
+              arrows: false
+            }
           },
           {
             breakpoint: 576,
             settings: {
               slidesToShow: 1,
               slidesToScroll: 1,
-              arrows: false,
-            },
-          },
-        ],
-      },
+              arrows: false
+            }
+          }
+        ]
+      }
     };
   },
   computed: {
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
-    },
+    }
   },
   methods: {
     onDeleteItem(payload) {
@@ -285,7 +353,7 @@ export default {
       let currSlideIndex = this.$refs[this.slickRef].currentSlide();
       this.isSlick = false;
       const _this = this;
-      let enableSlick = new Promise((resolve) => {
+      let enableSlick = new Promise(resolve => {
         setTimeout(() => {
           resolve((_this.isSlick = true));
         }, 200);
@@ -314,19 +382,29 @@ export default {
             ".department__address__link"
           );
           if (slideDetailLink) {
-            slideDetailLink.addEventListener("click", function () {});
+            slideDetailLink.addEventListener("click", function() {
+              console.log("clone clicked");
+            });
           }
         }
       }
     },
+    showItemOnMap(coords) {
+      if (this.myMap.length > 0) {
+        this.myMap.setCenter(coords);
+      }
+    },
+    defineMyMap(inst) {
+      this.myMap = inst;
+    }
   },
-  mounted: function () {
+  mounted: function() {
     //this.itemsQty = this.section.items.length;
   },
   watch: {
-    isEdit: function () {
+    isEdit: function() {
       this.restartSlick();
-    },
+    }
     // section: function () {
     //   if (
     //     this.isEdit &&
@@ -336,7 +414,7 @@ export default {
     //     this.restartSlick();
     //   }
     // },
-  },
+  }
 };
 </script>
 <style>
