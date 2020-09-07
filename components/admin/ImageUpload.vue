@@ -128,10 +128,6 @@
 import { mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
-  props: {
-    //dialog: Boolean,
-    //itemImageEdit: Object
-  },
   data: () => ({
     image: null,
     selectedFile: null,

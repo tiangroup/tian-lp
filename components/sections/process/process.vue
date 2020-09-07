@@ -26,19 +26,40 @@
               :itemId="item.id"
               :sectionId="section.id"
             />
+            <v-menu v-if="isEdit" absolute offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <div v-on="on" v-bind="attrs">
+                  <div
+                    class="process__image"
+                    :class="{ 'no-image': !item.svg }"
+                    v-html="item.svg"
+                  ></div>
+                </div>
+              </template>
+              <v-list>
+                <v-list-item
+                  @click="
+                    itemSvgSelect({
+                      items: 'items',
+                      itemId: item.id,
+                      field: 'svg',
+                      value: item.svg
+                    })
+                  "
+                >
+                  <v-list-item-title>
+                    Изменить картинку
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
             <div
+              v-else
               class="process__image"
               :class="{ 'no-image': !item.svg }"
               v-html="item.svg"
-              :title="isEdit ? 'Двойной клик - изменить картинку' : ''"
-              @dblclick="
-                itemSvgSelect({
-                  itemId: item.id,
-                  field: 'svg',
-                  value: item.svg
-                })
-              "
             ></div>
+
             <div class="process__body">
               <div class="process__title" v-if="isEdit">
                 <editor
@@ -73,32 +94,15 @@
         </div>
       </div>
     </div>
-    <image-svg
-      v-if="isEdit"
-      :dialog="dialogImageSvg"
-      :itemSvgEdit="itemSvgEdit"
-      @close="dialogImageSvg = false"
-      @save="itemSvgSave"
-    />
   </div>
 </template>
 
 <script>
 import { mapMutations, mapGetters } from "vuex";
 export default {
-  components: {
-    Editor: () => import("@/components/admin/Editor"),
-    ButtonsSection: () => import("@/components/admin/ButtonsSection"),
-    ButtonsItem: () => import("@/components/admin/ButtonsItem"),
-    ImageSvg: () => import("@/components/admin/ImageSvg")
-  },
   props: {
     section: Object
   },
-  data: () => ({
-    dialogImageSvg: false,
-    itemSvgEdit: {}
-  }),
   computed: {
     ...mapGetters({
       isEdit: "isEdit"
@@ -109,22 +113,27 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setSectionField: "pages/SET_SECTION_FIELD",
       setItemField: "pages/SET_ITEM_FIELD"
     }),
     itemSvgSelect(item) {
-      this.itemSvgEdit = item;
-      this.dialogImageSvg = true;
-    },
-    itemSvgSave(payload) {
-      this.dialogImageSvg = false;
-      console.log(payload);
-      this.setItemField({
+      // this.$images.svg({
+      //   value: item.value,
+      //   callback: value => {
+      //     this.setItemField({
+      //       sectionId: this.section.id,
+      //       itemId: item.itemId,
+      //       items: item.items,
+      //       field: item.field,
+      //       value
+      //     });
+      //   }
+      // });
+      this.$images.svg({
         sectionId: this.section.id,
-        itemId: payload.itemId,
-        items: "items",
-        field: payload.field,
-        value: payload.value
+        itemId: item.itemId,
+        items: item.items,
+        field: item.field,
+        value: item.value
       });
     }
   }

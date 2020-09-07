@@ -19,18 +19,38 @@
               :itemId="item.id"
               :sectionId="section.id"
             />
+            <v-menu v-if="isEdit" absolute offset-y>
+              <template v-slot:activator="{ on }">
+                <div
+                  v-on="on"
+                  class="highlights__icon"
+                  :class="{ 'no-image': !item.svg }"
+                  v-html="item.svg"
+                  style="cursor: pointer"
+                ></div>
+              </template>
+              <v-list>
+                <v-list-item
+                  @click="
+                    itemSvgSelect({
+                      items: 'items',
+                      itemId: item.id,
+                      field: 'svg',
+                      value: item.svg
+                    })
+                  "
+                >
+                  <v-list-item-title>
+                    Изменить картинку
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
             <div
+              v-else
               class="highlights__icon"
               :class="{ 'no-image': !item.svg }"
               v-html="item.svg"
-              :title="isEdit ? 'Двойной клик - изменить картинку' : ''"
-              @dblclick="
-                itemSvgSelect({
-                  itemId: item.id,
-                  field: 'svg',
-                  value: item.svg
-                })
-              "
             ></div>
             <div class="highlights__text" v-if="isEdit">
               <editor
@@ -51,14 +71,6 @@
         </div>
       </div>
     </div>
-
-    <image-svg
-      v-if="isEdit"
-      :dialog="dialogImageSvg"
-      :itemSvgEdit="itemSvgEdit"
-      @close="dialogImageSvg = false"
-      @save="itemSvgSave"
-    />
   </div>
 </template>
 
@@ -68,44 +80,30 @@ export default {
   props: {
     section: Object
   },
-  components: {
-    Editor: () => import("@/components/admin/Editor"),
-    ButtonsSection: () => import("@/components/admin/ButtonsSection"),
-    ButtonsItem: () => import("@/components/admin/ButtonsItem"),
-    ImageSvg: () => import("@/components/admin/ImageSvg")
-  },
-  data: () => ({
-    dialogImageSvg: false,
-    itemSvgEdit: {}
-  }),
   computed: {
     ...mapGetters({
       isEdit: "isEdit"
     }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
-    },
-    ...mapGetters({
-      change: "pages/change"
-    })
+    }
   },
   methods: {
     ...mapMutations({
-      setSectionField: "pages/SET_SECTION_FIELD",
       setItemField: "pages/SET_ITEM_FIELD"
     }),
     itemSvgSelect(item) {
-      this.itemSvgEdit = item;
-      this.dialogImageSvg = true;
-    },
-    itemSvgSave(payload) {
-      this.dialogImageSvg = false;
-      this.setItemField({
-        sectionId: this.section.id,
-        itemId: payload.itemId,
-        items: "items",
-        field: payload.field,
-        value: payload.value
+      this.$images.svg({
+        value: item.value,
+        callback: value => {
+          this.setItemField({
+            sectionId: this.section.id,
+            itemId: item.itemId,
+            items: item.items,
+            field: item.field,
+            value
+          });
+        }
       });
     }
   }

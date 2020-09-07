@@ -21,7 +21,8 @@ export default {
     itemId: String,
     sectionId: String,
     field: { type: String, default: "img" },
-    items: { type: String, default: "items" }
+    items: { type: String, default: "items" },
+    type: { type: String, default: "image" }
   },
   components: {
     out,

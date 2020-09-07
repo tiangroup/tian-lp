@@ -22,6 +22,9 @@ export default (context, inject) => {
     src: img => "/" + store.getters["sites/id"] + img,
     upload: imageUpload => {
       store.dispatch("showImageUpload", imageUpload);
+    },
+    svg: imageSvg => {
+      store.dispatch("showImageSvg", imageSvg);
     }
   });
 

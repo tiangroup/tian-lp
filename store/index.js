@@ -5,7 +5,9 @@ export const state = () => ({
   dialogImageUpload: false,
   imageUpload: {},
   dialogConfirm: false,
-  confirm: {}
+  confirm: {},
+  dialogImageSvg: false,
+  imageSvg: {}
 });
 
 export const mutations = {
@@ -29,12 +31,21 @@ export const mutations = {
   },
   SET_DIALOG_CONFIRM(state, dialog) {
     state.dialogConfirm = dialog;
-    if (!dialog) {
-      //state.confirm = {};
-    }
+    // if (!dialog) {
+    //   state.confirm = {};
+    // }
   },
   SET_CONFIRM(state, confirm) {
     state.confirm = confirm;
+  },
+  SET_DIALOG_IMAGE_SVG(state, dialog) {
+    state.dialogImageSvg = dialog;
+    // if (!dialog) {
+    //   state.imageSvg = {};
+    // }
+  },
+  SET_IMAGE_SVG(state, imageSvg) {
+    state.imageSvg = imageSvg;
   }
 };
 
@@ -79,6 +90,13 @@ export const actions = {
   },
   hideConfirm({ commit }) {
     commit("SET_DIALOG_CONFIRM", false);
+  },
+  showImageSvg({ commit }, imageSvg) {
+    commit("SET_IMAGE_SVG", imageSvg);
+    commit("SET_DIALOG_IMAGE_SVG", true);
+  },
+  hideImageSvg({ commit }) {
+    commit("SET_DIALOG_IMAGE_SVG", false);
   }
 };
 
@@ -92,5 +110,7 @@ export const getters = {
   dialogImageUpload: state => state.dialogImageUpload,
   imageUpload: state => state.imageUpload,
   dialogConfirm: state => state.dialogConfirm,
-  confirm: state => state.confirm
+  confirm: state => state.confirm,
+  dialogImageSvg: state => state.dialogImageSvg,
+  imageSvg: state => state.imageSvg
 };

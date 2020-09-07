@@ -53,7 +53,7 @@ app.post("/image", checkAuth, async (req, res) => {
         const catalog = await getCatalog(req);
 
         let filename =
-          /*uuid.v4()*/ random_gen(10) + path.extname(image.name).toLowerCase();
+          /*uuid.v4()*/ random_gen(7) + path.extname(image.name).toLowerCase();
         if (req.body.path) {
           filename = req.body.path + "/" + filename;
         }
@@ -117,7 +117,7 @@ app.post("/image-link", checkAuth, async (req, res) => {
     const image_link = req.body.image_link;
 
     const filename =
-      /*uuid.v4()*/ random_gen(10) + path.extname(image_link).toLowerCase();
+      /*uuid.v4()*/ random_gen(7) + path.extname(image_link).toLowerCase();
 
     //const catalog = req.body.catalog;
     const catalog = await getCatalog(req);
@@ -169,9 +169,7 @@ app.post("/dir-remove", checkAuth, async (req, res) => {
   const catalog = await getCatalog(req);
   if (dir) {
     try {
-      rimraf(`./content/${catalog}/${dir}`, function() {
-        console.log("done dir-remove");
-      });
+      rimraf(`./content/${catalog}/${dir}`, function() {});
     } catch (error) {
       console.log(error);
     }

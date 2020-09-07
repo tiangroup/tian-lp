@@ -16,6 +16,8 @@
 
       <image-upload v-if="isEdit && dialogImageUpload" />
 
+      <image-svg v-if="isEdit" />
+
       <form-message />
       <form-editor v-if="isEdit" />
 
@@ -36,7 +38,8 @@ export default {
       isApp: "isApp",
       isEdit: "isEdit",
       overlay: "overlay",
-      dialogImageUpload: "dialogImageUpload"
+      dialogImageUpload: "dialogImageUpload",
+      dialogImageSvg: "dialogImageSvg"
     }),
     isLogin() {
       return this.isApp && !this.$auth.loggedIn;
