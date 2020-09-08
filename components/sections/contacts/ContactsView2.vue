@@ -33,6 +33,7 @@
                     href
                     class="department__address__link"
                     @click.prevent="showItemOnMap([55.177028, 61.348218])"
+                    v-if="view === 'view2'"
                     >Показать на карте</a
                   >
                 </div>
@@ -259,7 +260,8 @@
     <contacts-map
       :items="addresses"
       v-if="view === 'view2'"
-      @map-ready="defineMyMap(inst)"
+      @map-ready="defineMyMap"
+      :map-key="section.map_key"
     ></contacts-map>
   </div>
 </template>
@@ -390,8 +392,11 @@ export default {
       }
     },
     showItemOnMap(coords) {
-      if (this.myMap.length > 0) {
+      if (this.myMap) {
         this.myMap.setCenter(coords);
+        this.myMap.setZoom(16, {
+          checkZoomRange: true
+        });
       }
     },
     defineMyMap(inst) {

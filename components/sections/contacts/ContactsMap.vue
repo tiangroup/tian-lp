@@ -1,18 +1,23 @@
 <template>
   <div class="contacts__map">
     <yandex-map
+      :settings="settings"
       :coords="mapCenter"
       zoom="10"
       class="contacts__map__container"
       @map-was-initialized="processMap"
       :controls="mapControls"
+      :behaviors="mapBehaviors"
     ></yandex-map>
   </div>
 </template>
 <script>
+import { yandexMap } from "vue-yandex-maps";
 export default {
+  components: { yandexMap },
   props: {
-    items: Array
+    items: Array,
+    mapKey: String
   },
   data: () => ({
     mapCenter: [55.159897, 61.402554],
@@ -22,11 +27,19 @@ export default {
       "trafficControl",
       "typeSelector",
       "zoomControl"
-    ]
+    ],
+    mapBehaviors: ["drag", "dblClickZoom", "multiTouch"]
   }),
+  computed: {
+    settings() {
+      return {
+        apiKey: this.mapKey || "",
+        lang: "ru_RU"
+      };
+    }
+  },
   methods: {
     processMap(map) {
-      console.log(this.items);
       for (var i = 0; i < this.items.length; i++) {
         let place = this.items[i];
         var placemark = new ymaps.Placemark(
@@ -34,17 +47,13 @@ export default {
           {
             balloonContentHeader: place.name,
             balloonContentBody: place.address + "<br>" + place.phone
+          },
+          {
+            iconLayout: "default#image",
+            iconImageHref: "/icon-loc.svg",
+            iconImageSize: [38, 45],
+            iconImageOffset: [-19, -40]
           }
-          // {
-          //   iconLayout: "default#image",
-          //   // Своё изображение иконки метки.
-          //   iconImageHref: "~/assets/images/icon-loc--map.png",
-          //   // Размеры метки.
-          //   iconImageSize: [38, 45],
-          //   // Смещение левого верхнего угла иконки относительно
-          //   // её "ножки" (точки привязки).
-          //   iconImageOffset: [-19, -40]
-          // }
         );
         map.geoObjects.add(placemark);
         map

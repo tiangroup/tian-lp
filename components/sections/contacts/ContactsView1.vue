@@ -230,7 +230,10 @@
             </ul>
           </div>
         </div>
-        <contacts-map :items="address"></contacts-map>
+        <contacts-map
+          :items="address"
+          :map-key="section.map_key"
+        ></contacts-map>
       </div>
     </div>
   </div>
