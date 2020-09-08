@@ -45,7 +45,8 @@ export default {
     { src: "~/plugins/inject" },
     { src: "~/plugins/slick", ssr: false },
     { src: "~/plugins/vue-gallery.client.js" },
-    "~plugins/vue-js-modal.js"
+    "~plugins/vue-js-modal.js",
+    { src: "~/plugins/ymapPlugin.js", mode: "client" }
   ],
   /*
    ** Auto import components
