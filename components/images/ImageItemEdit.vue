@@ -51,14 +51,6 @@ export default {
       savePage: "pages/savePage"
     }),
     imageSelect() {
-      // this.setImageUpload({
-      //   sectionId: this.sectionId,
-      //   id: this.itemId,
-      //   field: this.field,
-      //   items: this.items,
-      //   value: this.img
-      // });
-      // this.showImageUpload(true);
       this.$images.upload({
         sectionId: this.sectionId,
         id: this.itemId,
@@ -68,21 +60,6 @@ export default {
       });
     },
     async imageDelete() {
-      // this.$confirm({
-      //   title: "Удалить картинку",
-      //   message: "Вы действительно хотите удалить картинку?",
-      //   button: {
-      //     no: "Отмена",
-      //     yes: "Удалить"
-      //   },
-      //   callback: confirm => {
-      //     if (confirm) {
-      //       console.log("Есть контакт" + this.itemId);
-      //     } else {
-      //       console.log("Нет контакта");
-      //     }
-      //   }
-      // });
       this.$confirm({
         title: "Удалить картинку",
         message: "Вы действительно хотите удалить картинку?",
