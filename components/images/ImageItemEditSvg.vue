@@ -3,15 +3,20 @@
     <template v-slot:activator="{ on }">
       <div
         v-on="on"
-        :class="[divClass, { 'no-image': !img }]"
+        :class="[divClass, { 'no-image': !svg }]"
         style="cursor: pointer"
-        v-html="img"
+        v-html="svg"
       ></div>
     </template>
     <v-list>
-      <v-list-item @click="svgEdit">
+      <v-list-item @click="svgSelect">
         <v-list-item-title>
-          Изменить svg картинку
+          {{ svg ? "Изменить svg картинку" : "Вставить svg картинку" }}
+        </v-list-item-title>
+      </v-list-item>
+      <v-list-item v-if="field" @click="imageSelect">
+        <v-list-item-title>
+          Загрузить картинку
         </v-list-item-title>
       </v-list-item>
     </v-list>
@@ -19,7 +24,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   props: {
     divClass: { type: String, default: "" },
@@ -27,7 +32,9 @@ export default {
     itemId: String,
     sectionId: String,
     field: { type: String, default: "svg" },
-    items: { type: String, default: "items" }
+    items: { type: String, default: "items" },
+    svg: String,
+    fieldSvg: String
   },
   computed: {
     ...mapGetters({
@@ -35,13 +42,47 @@ export default {
     })
   },
   methods: {
-    svgEdit() {
+    ...mapMutations({
+      setSectionField: "pages/SET_SECTION_FIELD",
+      setItemField: "pages/SET_ITEM_FIELD"
+    }),
+    ...mapActions({
+      savePage: "pages/savePage"
+    }),
+    svgSelect() {
       this.$images.svg({
         sectionId: this.sectionId,
         itemId: this.itemId,
         items: this.items,
+        field: this.fieldSvg,
+        value: this.svg
+      });
+    },
+    imageSelect() {
+      this.$images.upload({
+        sectionId: this.sectionId,
+        id: this.itemId,
         field: this.field,
-        value: this.img
+        items: this.items,
+        value: this.img,
+        callback: item => {
+          if (this.items) {
+            this.setItemField({
+              sectionId: this.sectionId,
+              itemId: this.itemId,
+              items: this.items,
+              field: this.fieldSvg,
+              value: null
+            });
+          } else {
+            this.setSectionField({
+              id: this.sectionId,
+              field: this.fieldSvg,
+              value: null
+            });
+          }
+          this.savePage();
+        }
       });
     }
   }

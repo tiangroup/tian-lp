@@ -229,6 +229,9 @@ export default {
         this.image = null;
         this.loading = false;
         this.dialog = false;
+        if (this.itemImageEdit.callback) {
+          this.itemImageEdit.callback(itemImageEdit);
+        }
       } catch (err) {
         console.error(err);
         this.loading = false;
@@ -274,6 +277,9 @@ export default {
         this.loading = false;
         this.imageLink = null;
         this.dialog = false;
+        if (this.itemImageEdit.callback) {
+          this.itemImageEdit.callback(itemImageEdit);
+        }
       } catch (err) {
         console.error(err);
         this.loading = false;

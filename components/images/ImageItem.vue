@@ -5,8 +5,10 @@
     :img="img"
     :itemId="itemId"
     :sectionId="sectionId"
-    :field="fieldName"
+    :field="field"
     :items="items"
+    :fieldSvg="fieldSvg"
+    :svg="svg"
   />
 </template>
 
@@ -19,12 +21,13 @@ import editSvg from "./ImageItemEditSvg";
 export default {
   props: {
     divClass: { type: String, default: "" },
-    img: String,
+    img: { type: String, default: null },
     itemId: String,
     sectionId: String,
     field: { type: String, default: "img" },
     items: { type: String, default: "items" },
-    fieldSvg: { type: String, default: null }
+    fieldSvg: { type: String, default: null },
+    svg: { type: String, default: null }
   },
   components: {
     out,
@@ -40,7 +43,11 @@ export default {
       return this.fieldSvg ? this.fieldSvg : this.field;
     },
     comp() {
-      if (this.fieldSvg) {
+      if (this.fieldSvg && this.field && this.svg) {
+        return this.isEdit ? "editSvg" : "outSvg";
+      } else if (this.fieldSvg && this.field) {
+        return this.isEdit ? "edit" : "out";
+      } else if (this.fieldSvg) {
         return this.isEdit ? "editSvg" : "outSvg";
       } else {
         return this.isEdit ? "edit" : "out";
