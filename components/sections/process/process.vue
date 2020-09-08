@@ -26,39 +26,13 @@
               :itemId="item.id"
               :sectionId="section.id"
             />
-            <v-menu v-if="isEdit" absolute offset-y>
-              <template v-slot:activator="{ on, attrs }">
-                <div v-on="on" v-bind="attrs">
-                  <div
-                    class="process__image"
-                    :class="{ 'no-image': !item.svg }"
-                    v-html="item.svg"
-                  ></div>
-                </div>
-              </template>
-              <v-list>
-                <v-list-item
-                  @click="
-                    itemSvgSelect({
-                      items: 'items',
-                      itemId: item.id,
-                      field: 'svg',
-                      value: item.svg
-                    })
-                  "
-                >
-                  <v-list-item-title>
-                    Изменить картинку
-                  </v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-            <div
-              v-else
-              class="process__image"
-              :class="{ 'no-image': !item.svg }"
-              v-html="item.svg"
-            ></div>
+            <image-item
+              divClass="process__image"
+              :img="item.svg"
+              :itemId="item.id"
+              :sectionId="section.id"
+              fieldSvg="svg"
+            />
 
             <div class="process__body">
               <div class="process__title" v-if="isEdit">
@@ -109,32 +83,6 @@ export default {
     }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
-    }
-  },
-  methods: {
-    ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD"
-    }),
-    itemSvgSelect(item) {
-      // this.$images.svg({
-      //   value: item.value,
-      //   callback: value => {
-      //     this.setItemField({
-      //       sectionId: this.section.id,
-      //       itemId: item.itemId,
-      //       items: item.items,
-      //       field: item.field,
-      //       value
-      //     });
-      //   }
-      // });
-      this.$images.svg({
-        sectionId: this.section.id,
-        itemId: item.itemId,
-        items: item.items,
-        field: item.field,
-        value: item.value
-      });
     }
   }
 };

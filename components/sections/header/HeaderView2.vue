@@ -191,13 +191,6 @@
 <script>
 import { mapMutations } from "vuex";
 export default {
-  components: {
-    //MenuTop: () => import("../menu/MenuTop"),
-    Editor: () => import("@/components/admin/Editor"),
-    ImageSvg: () => import("@/components/admin/ImageSvg"),
-    ImageUpload: () => import("@/components/admin/ImageUpload")
-    //SocialList: () => import("../social/SocialList")
-  },
   props: {
     section: Object,
     isEdit: Boolean,

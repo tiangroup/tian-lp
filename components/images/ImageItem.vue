@@ -5,15 +5,17 @@
     :img="img"
     :itemId="itemId"
     :sectionId="sectionId"
-    :field="field"
+    :field="fieldName"
     :items="items"
   />
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import out from "~/components/admin/ImageItemOut";
-import edit from "~/components/admin/ImageItemEdit";
+import out from "./ImageItemOut";
+import edit from "./ImageItemEdit";
+import outSvg from "./ImageItemOutSvg";
+import editSvg from "./ImageItemEditSvg";
 export default {
   props: {
     divClass: { type: String, default: "" },
@@ -22,18 +24,27 @@ export default {
     sectionId: String,
     field: { type: String, default: "img" },
     items: { type: String, default: "items" },
-    type: { type: String, default: "image" }
+    fieldSvg: { type: String, default: null }
   },
   components: {
     out,
-    edit
+    edit,
+    outSvg,
+    editSvg
   },
   computed: {
     ...mapGetters({
       isEdit: "isEdit"
     }),
+    fieldName() {
+      return this.fieldSvg ? this.fieldSvg : this.field;
+    },
     comp() {
-      return this.isEdit ? "edit" : "out";
+      if (this.fieldSvg) {
+        return this.isEdit ? "editSvg" : "outSvg";
+      } else {
+        return this.isEdit ? "edit" : "out";
+      }
     }
   }
 };
