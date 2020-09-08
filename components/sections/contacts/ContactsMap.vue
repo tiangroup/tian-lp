@@ -1,12 +1,12 @@
 <template>
   <div class="contacts__map">
-    <!-- <yandex-map 
-    :coords="mapCenter" 
-    zoom="10" 
-    class="contacts__map__container"
-    @map-was-initialized="processMap"
-    :controls="mapControls"
-    ></yandex-map>-->
+    <yandex-map
+      :coords="mapCenter"
+      zoom="10"
+      class="contacts__map__container"
+      @map-was-initialized="processMap"
+      :controls="mapControls"
+    ></yandex-map>
   </div>
 </template>
 <script>
@@ -28,28 +28,34 @@ export default {
     processMap(map) {
       console.log(this.items);
       for (var i = 0; i < this.items.length; i++) {
+        let place = this.items[i];
         var placemark = new ymaps.Placemark(
-          this.addr[i].coords,
+          place.coords,
           {
-            iconCaption: place.name,
             balloonContentHeader: place.name,
             balloonContentBody: place.address + "<br>" + place.phone
-          },
-          {
-            iconLayout: "default#image",
-            // Своё изображение иконки метки.
-            iconImageHref: "~/assets/images/icon-loc--map.png",
-            // Размеры метки.
-            iconImageSize: [38, 45],
-            // Смещение левого верхнего угла иконки относительно
-            // её "ножки" (точки привязки).
-            iconImageOffset: [-19, -40]
           }
+          // {
+          //   iconLayout: "default#image",
+          //   // Своё изображение иконки метки.
+          //   iconImageHref: "~/assets/images/icon-loc--map.png",
+          //   // Размеры метки.
+          //   iconImageSize: [38, 45],
+          //   // Смещение левого верхнего угла иконки относительно
+          //   // её "ножки" (точки привязки).
+          //   iconImageOffset: [-19, -40]
+          // }
         );
         map.geoObjects.add(placemark);
-        map.setBounds(map.geoObjects.getBounds(), {
-          checkZoomRange: true
-        });
+        map
+          .setBounds(map.geoObjects.getBounds(), {
+            checkZoomRange: true
+          })
+          .then(function() {
+            if (map.getZoom() > 16) {
+              map.setZoom(16);
+            }
+          });
       }
       this.$emit("map-ready", map);
     }
