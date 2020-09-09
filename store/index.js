@@ -22,9 +22,9 @@ export const mutations = {
   },
   SET_DIALOG_IMAGE_UPLOAD(state, dialog) {
     state.dialogImageUpload = dialog;
-    if (!dialog) {
-      state.imageUpload = {};
-    }
+    // if (!dialog) {
+    //   state.imageUpload = {};
+    // }
   },
   SET_IMAGE_UPLOAD(state, imageUpload) {
     state.imageUpload = imageUpload;

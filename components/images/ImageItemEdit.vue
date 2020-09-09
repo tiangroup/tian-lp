@@ -16,6 +16,11 @@
           Удалить картинку
         </v-list-item-title>
       </v-list-item>
+      <v-list-item v-if="fieldSvg" @click="svgSelect">
+        <v-list-item-title>
+          Вставить svg картинку
+        </v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
@@ -29,7 +34,9 @@ export default {
     itemId: String,
     sectionId: String,
     field: { type: String, default: "img" },
-    items: { type: String, default: "items" }
+    items: { type: String, default: "items" },
+    fieldSvg: String,
+    svg: String
   },
   data: () => ({
     deleteDialog: false
@@ -59,6 +66,18 @@ export default {
         value: this.img
       });
     },
+    svgSelect() {
+      this.$images.svg({
+        sectionId: this.sectionId,
+        itemId: this.itemId,
+        items: this.items,
+        field: this.fieldSvg,
+        value: this.svg,
+        callback: () => {
+          this.imageRemove();
+        }
+      });
+    },
     async imageDelete() {
       this.$confirm({
         title: "Удалить картинку",
@@ -70,30 +89,36 @@ export default {
         callback: async confirm => {
           if (confirm) {
             this.overlay(true);
-            const formData = new FormData();
-            formData.append("image", this.img);
-            await this.$axios.post("/api/upload/image-remove", formData);
-            if (this.items) {
-              this.setItemField({
-                sectionId: this.sectionId,
-                itemId: this.itemId,
-                items: this.items,
-                field: this.field,
-                value: null
-              });
-            } else {
-              this.setSectionField({
-                id: this.sectionId,
-                field: this.field,
-                value: null
-              });
-            }
-            await this.savePage();
+            this.imageRemove();
             this.overlay(false);
             this.deleteDialog = false;
           }
         }
       });
+    },
+    async imageRemove() {
+      const formData = new FormData();
+      formData.append("image", this.img);
+      await this.$axios.post(
+        `${this.$site_app}/api/upload/image-remove`,
+        formData
+      );
+      if (this.items) {
+        this.setItemField({
+          sectionId: this.sectionId,
+          itemId: this.itemId,
+          items: this.items,
+          field: this.field,
+          value: null
+        });
+      } else {
+        this.setSectionField({
+          id: this.sectionId,
+          field: this.field,
+          value: null
+        });
+      }
+      await this.savePage();
     }
   }
 };

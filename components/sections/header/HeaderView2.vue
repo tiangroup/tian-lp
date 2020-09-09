@@ -99,55 +99,15 @@
       <div class="header__wrap header__wrap--vs2">
         <div class="logo header__logo">
           <a class="logo__link">
-            <v-menu absolute offset-y v-if="isEdit">
-              <template v-slot:activator="{ on, attrs }">
-                <div
-                  class="logo__image"
-                  :class="{
-                    'no-image': !section.logo_svg && !section.logo_img
-                  }"
-                  v-html="
-                    section.logo_img
-                      ? `<img src='${section.logo_img}'/>`
-                      : section.logo_svg
-                  "
-                  v-bind="attrs"
-                  v-on="on"
-                ></div>
-              </template>
-              <v-list>
-                <v-list-item
-                  @click="
-                    itemSvgSelect({
-                      sectionId: section.id,
-                      field: 'logo_svg',
-                      value: section.logo_svg
-                    })
-                  "
-                >
-                  <v-list-item-title>Вставить svg картинку</v-list-item-title>
-                </v-list-item>
-                <v-list-item
-                  @click="
-                    itemImageSelect({
-                      field: 'logo_img',
-                      value: section.logo_img
-                    })
-                  "
-                >
-                  <v-list-item-title>Вставить картинку</v-list-item-title>
-                </v-list-item>
-                <v-list-item v-if="section.logo_img" @click="deleteImageLogo">
-                  <v-list-item-title>Удалить картинку</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-            <div
-              class="logo__image"
-              :class="{ 'no-image': !section.logo_svg }"
-              v-html="section.logo_svg"
-              v-else
-            ></div>
+            <image-item
+              divClass="logo__image"
+              :img="section.logo_img"
+              :svg="section.logo_svg"
+              :sectionId="section.id"
+              :items="null"
+              field="logo_img"
+              fieldSvg="logo_svg"
+            />
             <div v-if="isEdit" class="logo__text">
               <editor
                 data-placeholder="Название"
@@ -189,7 +149,6 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
 export default {
   props: {
     section: Object,
@@ -197,53 +156,6 @@ export default {
     showTopBlock: {
       type: Boolean,
       default: true
-    }
-  },
-  data: () => ({
-    dialogImageSvg: false,
-    itemSvgEdit: {},
-    dialogImageUpload: false,
-    itemImageEdit: {}
-  }),
-  methods: {
-    ...mapMutations({
-      setSectionField: "pages/SET_SECTION_FIELD"
-    }),
-    itemSvgSelect(item) {
-      this.itemSvgEdit = item;
-      this.dialogImageSvg = true;
-    },
-    itemSvgSave(payload) {
-      this.dialogImageSvg = false;
-      this.setSectionField({
-        id: this.section.id,
-        field: "logo_svg",
-        value: payload.value
-      });
-    },
-    itemImageSelect(payload) {
-      this.itemImageEdit = payload;
-      this.dialogImageUpload = true;
-    },
-    onUploadImage(payload) {
-      this.dialogImageUpload = false;
-      this.setSectionField({
-        id: this.section.id,
-        field: payload.field,
-        value: payload.value
-      });
-      this.$store.dispatch("pages/savePage");
-    },
-    async deleteImageLogo() {
-      const formData = new FormData();
-      formData.append("image", this.section.logo_img);
-      await this.$axios.post("/api/upload/image-remove", formData);
-      this.setSectionField({
-        id: this.section.id,
-        field: "logo_img",
-        value: null
-      });
-      this.$store.dispatch("pages/savePage");
     }
   }
 };

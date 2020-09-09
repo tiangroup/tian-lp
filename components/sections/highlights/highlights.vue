@@ -21,9 +21,10 @@
             />
             <image-item
               divClass="highlights__icon"
-              :img="item.svg"
+              :svg="item.svg"
               :itemId="item.id"
               :sectionId="section.id"
+              :field="null"
               fieldSvg="svg"
             />
             <div class="highlights__text" v-if="isEdit">

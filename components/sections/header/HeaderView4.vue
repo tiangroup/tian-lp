@@ -3,9 +3,10 @@
 </template>
 
 <script>
+import View2 from "./HeaderView2";
 export default {
   components: {
-    View2: () => import("./HeaderView2")
+    View2
   },
   props: {
     section: Object,

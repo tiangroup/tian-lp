@@ -51,14 +51,29 @@ editContent :
 ```vue
 <image-item
   divClass="highlights__icon"
-  :img="item.svg"
+  :svg="item.svg"
   :itemId="item.id"
   :sectionId="section.id"
+  :field="null"
   fieldSvg="svg"
 />
 ```
 
-в результате будет выведен следующая разметка для загруженного файла:
+Для вывода svg картинки или загруженного файла:
+
+```vue
+<image-item
+  divClass="highlights__icon"
+  :svg="item.svg"
+  :img="item.img"
+  :itemId="item.id"
+  :sectionId="section.id"
+  field="img"
+  fieldSvg="svg"
+/>
+```
+
+в результате будет выведена следующая разметка для загруженного файла:
 
 ```html
 <div class="staff__image">

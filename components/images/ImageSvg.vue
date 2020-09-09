@@ -62,23 +62,32 @@ export default {
       hideImageSvg: "hideImageSvg"
     }),
     ...mapMutations({
+      setSectionField: "pages/SET_SECTION_FIELD",
       setItemField: "pages/SET_ITEM_FIELD"
     }),
     close() {
       this.hideImageSvg();
     },
     save() {
-      // if (this.imageSvg.callback) {
-      //   this.imageSvg.callback(this.svg || this.imageSvg.value);
-      // }
-      this.setItemField({
-        sectionId: this.imageSvg.sectionId,
-        itemId: this.imageSvg.itemId,
-        items: this.imageSvg.items,
-        field: this.imageSvg.field,
-        value: this.svg === null ? this.imageSvg.value : this.svg
-      });
+      if (this.imageSvg.items) {
+        this.setItemField({
+          sectionId: this.imageSvg.sectionId,
+          itemId: this.imageSvg.itemId,
+          items: this.imageSvg.items,
+          field: this.imageSvg.field,
+          value: this.svg === null ? this.imageSvg.value : this.svg
+        });
+      } else {
+        this.setSectionField({
+          id: this.imageSvg.sectionId,
+          field: this.imageSvg.field,
+          value: this.svg === null ? this.imageSvg.value : this.svg
+        });
+      }
       this.hideImageSvg();
+      if (this.imageSvg.callback) {
+        this.imageSvg.callback();
+      }
     }
   },
   watch: {
