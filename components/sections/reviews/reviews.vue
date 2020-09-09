@@ -8,7 +8,11 @@
     >
       <div class="landing__container">
         <h2 v-if="isEdit">
-          <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+          <editor
+            :text="section.title || ''"
+            :sectionId="section.id"
+            field="title"
+          />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
 
@@ -19,24 +23,36 @@
           v-if="!isEdit && section.items && view === 'view2'"
           :id="'gallery' + section.id"
           :options="{
-              closeOnSlideClick: true
-            }"
+            closeOnSlideClick: true
+          }"
         ></v-gallery>
-        <div class="reviews__list mx-ncell" :class="computedSectionClass" v-if="section.items">
-          <div :class="{'fullwidth': view === 'view2'}">
-            <slick ref="slick" :options="updatedSlickOptions" v-if="isSlick" @init="handleInit">
+        <div
+          class="reviews__list mx-ncell"
+          :class="computedSectionClass"
+          v-if="section.items"
+        >
+          <div :class="{ fullwidth: view === 'view2' }">
+            <slick
+              ref="slick"
+              :options="updatedSlickOptions"
+              v-if="isSlick"
+              @init="handleInit"
+            >
               <reviews-item
                 v-for="(item, itemIndex) in section.items.filter(i => i.id)"
                 @item-update="onItemsChange"
-                @onItemDelete="onItemDelete"
-                @change-desc="updateReviewDesc({
-                  id: item.id,
-                  text: item.text
-                })"
-                @change-date="updateReviewDate({
-                  id: item.id,
-                  date: item.date
-                })"
+                @change-desc="
+                  updateReviewDesc({
+                    id: item.id,
+                    text: item.text
+                  })
+                "
+                @change-date="
+                  updateReviewDate({
+                    id: item.id,
+                    date: item.date
+                  })
+                "
                 @show-review="showReview(item)"
                 @show-gallery="showGallery(itemIndex)"
                 :key="item.id"
@@ -75,8 +91,16 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn depressed text color="gray" @click="dialogReviewDesc = false">Отменить</v-btn>
-              <v-btn depressed color="green" dark @click="saveReviewDesc">Сохранить</v-btn>
+              <v-btn
+                depressed
+                text
+                color="gray"
+                @click="dialogReviewDesc = false"
+                >Отменить</v-btn
+              >
+              <v-btn depressed color="green" dark @click="saveReviewDesc"
+                >Сохранить</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -84,20 +108,26 @@
         <v-dialog v-model="dialogReviewDate" width="290px">
           <v-date-picker v-model="currentReview.date" scrollable>
             <v-spacer></v-spacer>
-            <v-btn depressed text color="gray" @click="dialogReviewDate = false">Отменить</v-btn>
+            <v-btn depressed text color="gray" @click="dialogReviewDate = false"
+              >Отменить</v-btn
+            >
             <v-btn
               depressed
               text
               color="primary"
               @click="saveReviewDate(currentReview.date)"
-            >Сохранить</v-btn>
+              >Сохранить</v-btn
+            >
           </v-date-picker>
         </v-dialog>
 
         <v-dialog v-model="dialogShowReview" max-width="30rem">
           <div class="der-popup">
             <div class="der-popup__close">
-              <button class="button button-icon button-close" @click="dialogShowReview=false">
+              <button
+                class="button button-icon button-close"
+                @click="dialogShowReview = false"
+              >
                 <span class="sr-only">Закрыть</span>
                 <svg
                   width="18"
@@ -119,8 +149,12 @@
               <div class="popup-reviews">
                 <div class="reviews__body--full">
                   <div class="reviews__person">
-                    <div class="reviews__person__name">{{ currentReview.name }}</div>
-                    <div class="reviews__person__position">{{ currentReview.position }}</div>
+                    <div class="reviews__person__name">
+                      {{ currentReview.name }}
+                    </div>
+                    <div class="reviews__person__position">
+                      {{ currentReview.position }}
+                    </div>
                   </div>
                   <div class="reviews__text">{{ currentReview.text }}</div>
                   <div class="reviews__info">
@@ -140,14 +174,14 @@
 import { mapMutations, mapGetters } from "vuex";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   data: () => ({
     currentReview: {
       id: null,
       name: "",
       position: "",
-      date: "",
+      date: ""
     },
     dialogShowReview: false,
     dialogReviewDate: false,
@@ -175,8 +209,8 @@ export default {
           settings: {
             arrows: false,
             centerMode: false,
-            centerPadding: 0,
-          },
+            centerPadding: 0
+          }
         },
         {
           breakpoint: 576,
@@ -185,15 +219,15 @@ export default {
             slidesToScroll: 1,
             arrows: false,
             centerMode: false,
-            centerPadding: 0,
-          },
-        },
-      ],
-    },
+            centerPadding: 0
+          }
+        }
+      ]
+    }
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      isEdit: "isEdit"
     }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
@@ -217,7 +251,7 @@ export default {
         centerMode: slickCenterMode,
         centerPadding: slickCenterPadding,
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     reviewImages() {
@@ -227,7 +261,7 @@ export default {
         var imagesItem = {
           title: "Отзыв " + pic.name,
           href: this.$images.src(pic.img),
-          type: "image/jpeg",
+          type: "image/jpeg"
         };
         imagesArray.push(imagesItem);
       }
@@ -237,18 +271,12 @@ export default {
       return this.view === "view1"
         ? "reviews__list--style1"
         : "reviews__list--style2";
-    },
+    }
   },
   methods: {
     ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD",
+      setItemField: "pages/SET_ITEM_FIELD"
     }),
-    async onItemDelete(payload) {
-      const item = this.section.items.find((i) => i.id == payload.itemId);
-      const formData = new FormData();
-      formData.append("image", item.img);
-      await this.$axios.post("/api/upload/image-remove", formData);
-    },
     onItemsChange(event) {
       this.restartSlick();
       this.itemsQty = this.section.items.length;
@@ -256,7 +284,7 @@ export default {
     restartSlick() {
       this.isSlick = false;
       const _this = this;
-      setTimeout(function () {
+      setTimeout(function() {
         _this.isSlick = true;
       }, 200);
     },
@@ -288,7 +316,7 @@ export default {
         itemId: this.currentReview.id,
         items: "items",
         field: field,
-        value: value,
+        value: value
       });
       this.$store.dispatch("pages/savePage");
     },
@@ -323,31 +351,31 @@ export default {
           }
           let slideImg = slideItem.querySelector(".reviews__image-wrap");
           if (slideImg) {
-            slideImg.addEventListener("click", function () {
+            slideImg.addEventListener("click", function() {
               _this.showGallery(slideId);
             });
           }
           let slideDetailLink = slideItem.querySelector(".reviews__readmore");
           if (slideDetailLink) {
-            slideDetailLink.addEventListener("click", function () {
+            slideDetailLink.addEventListener("click", function() {
               _this.showReview(_this.section.items[slideId]);
             });
           }
         }
       }
-    },
+    }
   },
   mounted() {
     this.itemsQty = this.section.items.length || 0;
   },
   watch: {
-    isEdit: function () {
+    isEdit: function() {
       this.restartSlick();
     },
-    view: function () {
+    view: function() {
       this.restartSlick();
     },
-    section: function () {
+    section: function() {
       if (
         this.isEdit &&
         this.itemsQty === 0 &&
@@ -355,7 +383,7 @@ export default {
       ) {
         this.restartSlick();
       }
-    },
-  },
+    }
+  }
 };
 </script>

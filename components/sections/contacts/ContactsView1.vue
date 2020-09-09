@@ -282,10 +282,6 @@ export default {
       return mainOffice;
     }
   },
-  methods: {
-    onDeleteItem(payload) {
-      this.$emit("onItemDelete", payload);
-    }
-  }
+  methods: {}
 };
 </script>

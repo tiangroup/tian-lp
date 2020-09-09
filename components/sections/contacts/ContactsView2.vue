@@ -344,9 +344,6 @@ export default {
     }
   },
   methods: {
-    onDeleteItem(payload) {
-      this.$emit("onItemDelete", payload);
-    },
     // onItemsChange(event) {
     //   this.restartSlick();
     //   this.itemsQty = this.section.items.length;
