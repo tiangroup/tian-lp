@@ -11,7 +11,9 @@ export const mutations = {
 export const actions = {
   async loadSections({ commit }) {
     try {
-      const sections = await this.$axios.$get(`${this.$site_api}/sections`);
+      const sections = await this.$axios.$get(`${this.$site_api}/sections`, {
+        params: { _sort: "sort:ASC" }
+      });
       commit("SET_SECTIONS", sections);
     } catch (error) {
       console.error(error);

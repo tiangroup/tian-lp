@@ -29,9 +29,10 @@
             <image-item
               divClass="process__image"
               :svg="item.svg"
+              :img="item.img"
               :itemId="item.id"
               :sectionId="section.id"
-              :field="null"
+              field="img"
               fieldSvg="svg"
             />
 

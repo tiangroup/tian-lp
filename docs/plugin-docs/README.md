@@ -78,6 +78,21 @@ methods: {
 }
 ```
 
+### \$overlay(show)
+
+Показ оверлея(загрузки) на всю страницу
+
+```js
+methods: {
+  async add() {
+    ...
+    this.$overlay(true);
+    await this.savePage();
+    this.$overlay(false);
+  }
+}
+```
+
 ## Slick slider
 
 Официальная документация компонента: [https://www.npmjs.com/package/vue-slick](https://www.npmjs.com/package/vue-slick)

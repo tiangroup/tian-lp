@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   data: () => ({
     dialog: false,
@@ -73,9 +73,6 @@ export default {
   methods: {
     ...mapActions({
       loadSite: "sites/loadSite"
-    }),
-    ...mapMutations({
-      overlay: "SET_OVERLAY"
     }),
     openForm() {
       this.settings.slug = this.slug ? this.slug.replace("/", "") : null;
@@ -98,14 +95,14 @@ export default {
     async deletePage() {
       this.deleteDialog = false;
       this.dialog = false;
-      this.overlay(true);
+      this.$overlay(true);
       const page = this.site.pages.find(p => p.page == this.page.id);
       const data = await this.$axios.$put("/api/sites/pages/delete", {
         site_id: this.site.id,
         page_id: page.id
       });
       await this.loadSite(this.site.id);
-      this.overlay(false);
+      this.$overlay(false);
       this.$router.push("/");
     }
   },

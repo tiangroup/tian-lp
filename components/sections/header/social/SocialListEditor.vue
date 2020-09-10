@@ -30,9 +30,6 @@
           </v-btn>
         </v-row>
       </v-container>
-      <v-overlay :value="overlay" absolute>
-        <v-progress-circular indeterminate size="64"></v-progress-circular>
-      </v-overlay>
     </v-navigation-drawer>
   </div>
 </template>
@@ -47,9 +44,6 @@ export default {
     show: Boolean,
     section: Object
   },
-  data: () => ({
-    overlay: false
-  }),
   computed: {
     drawer: {
       get() {
@@ -74,9 +68,9 @@ export default {
           type: "vk"
         }
       });
-      this.overlay = true;
+      this.$overlay(true);
       await this.$store.dispatch("pages/savePage");
-      this.overlay = false;
+      this.$overlay(false);
     }
   }
 };

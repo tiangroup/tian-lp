@@ -87,8 +87,7 @@ export default {
     MenuItemSettings
   },
   data: () => ({
-    drawer: false,
-    overlay: false
+    drawer: false
   }),
   computed: {
     ...mapGetters({

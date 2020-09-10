@@ -10,11 +10,10 @@
       <div class="add-section" v-if="page.sections.length === 0 && isEdit">
         <new-section-button />
       </div>
-      <v-overlay :value="overlay" v-if="isEdit" z-index="10000">
-        <v-progress-circular indeterminate size="64"></v-progress-circular>
-      </v-overlay>
 
-      <image-upload v-if="isEdit && dialogImageUpload" />
+      <overlay v-if="isEdit" />
+
+      <image-upload v-if="isEdit" />
 
       <image-svg v-if="isEdit" />
 

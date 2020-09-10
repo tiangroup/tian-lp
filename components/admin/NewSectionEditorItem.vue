@@ -3,9 +3,22 @@
     <v-card-title>
       <span>{{ section.name }}</span>
       <v-spacer></v-spacer>
-      <v-btn fab x-small dark color="green" @click="add">
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            v-on="on"
+            fab
+            x-small
+            dark
+            color="green"
+            @click="add"
+          >
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </template>
+        <span>Добавить на страницу</span>
+      </v-tooltip>
     </v-card-title>
   </v-card>
 </template>
@@ -27,12 +40,15 @@ export default {
     ...mapActions({
       savePage: "pages/savePage"
     }),
-    add() {
+    async add() {
       this.addSection({
         sectionId: this.sectionId,
         section: this.section.template
       });
-      this.savePage();
+      this.$emit("onAdd");
+      this.$overlay(true);
+      await this.savePage();
+      this.$overlay(false);
     }
   }
 };

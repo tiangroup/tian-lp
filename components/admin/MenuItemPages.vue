@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   data: () => ({}),
   computed: {
@@ -25,11 +25,6 @@ export default {
         return this.pages.indexOf(this.pages.find(p => p.page == this.page.id));
       },
       set(value) {
-        /*const id = this.pages[value].page;
-        this.overlay(true);
-        this.loadPage(id).then(() => {
-          this.overlay(false);
-        });*/
         if (value > -1) {
           this.$router.push(this.pages[value].slug);
         }
@@ -39,9 +34,6 @@ export default {
   methods: {
     ...mapActions({
       loadPage: "pages/loadPage"
-    }),
-    ...mapMutations({
-      overlay: "SET_OVERLAY"
     })
   }
 };

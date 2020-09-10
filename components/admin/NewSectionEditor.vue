@@ -12,7 +12,7 @@
         <v-btn icon @click="drawer = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <span>Новый блок</span>
+        <span>Добавить блок</span>
       </v-list-item>
       <v-container>
         <new-section-editor-item
@@ -20,6 +20,7 @@
           :key="section.component"
           :section="section"
           :sectionId="sectionId"
+          @onAdd="drawer = false"
         />
       </v-container>
     </v-navigation-drawer>

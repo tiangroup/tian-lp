@@ -4,11 +4,9 @@
       <v-card-title>
         <span class="headline">{{ title }}</span>
       </v-card-title>
-
       <v-card-text>
         {{ message }}
       </v-card-text>
-
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="onNo">
@@ -18,12 +16,6 @@
           {{ button.yes }}
         </v-btn>
       </v-card-actions>
-
-      <!--
-      <v-overlay :value="overlay_delete" :absolute="true">
-        <v-progress-circular indeterminate size="64"></v-progress-circular>
-      </v-overlay>
-      -->
     </v-card>
   </v-dialog>
 </template>

@@ -51,8 +51,7 @@ export default {
       showImageUpload: "SET_DIALOG_IMAGE_UPLOAD",
       setImageUpload: "SET_IMAGE_UPLOAD",
       setSectionField: "pages/SET_SECTION_FIELD",
-      setItemField: "pages/SET_ITEM_FIELD",
-      overlay: "SET_OVERLAY"
+      setItemField: "pages/SET_ITEM_FIELD"
     }),
     ...mapActions({
       savePage: "pages/savePage"
@@ -88,9 +87,9 @@ export default {
         },
         callback: async confirm => {
           if (confirm) {
-            this.overlay(true);
+            this.$overlay(true);
             this.imageRemove();
-            this.overlay(false);
+            this.$overlay(false);
             this.deleteDialog = false;
           }
         }
