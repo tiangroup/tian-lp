@@ -1,5 +1,6 @@
 const express = require("express");
 const axios = require("axios");
+const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const nodemailer = require("nodemailer");
 const templayed = require("templayed");
@@ -12,6 +13,8 @@ const admin_token = process.env.ADMIN_TOKEN;
 const app = express();
 
 app.use(cors());
+
+app.use(bodyParser.json());
 
 app.use(
   fileUpload({
@@ -101,7 +104,7 @@ app.post("/", async (req, res) => {
     res.send("OK");
   } catch (err) {
     console.log(err);
-    res.sendStatus(500).json({ err });
+    res.status(500).json({ err });
   }
 });
 
@@ -117,7 +120,7 @@ app.get("/", checkAuth, async (req, res) => {
     res.send(forms);
   } catch (err) {
     console.log(err);
-    res.sendStatus(500).json({ err });
+    res.status(500).json({ err });
   }
 });
 
@@ -136,7 +139,7 @@ app.get("/items", checkAuth, async (req, res) => {
     res.send(forms);
   } catch (err) {
     console.log(err);
-    res.sendStatus(500).json({ err });
+    res.status(500).json({ err });
   }
 });
 
@@ -144,7 +147,6 @@ app.get("/items/count", checkAuth, async (req, res) => {
   try {
     const { id: user_id } = req.userData;
     const form_id = req.query.form;
-    debugger;
     const { data: count } = await axios.get(
       `${api_backend}/forms-sends/count`,
       {
@@ -158,7 +160,34 @@ app.get("/items/count", checkAuth, async (req, res) => {
     res.send({ count });
   } catch (err) {
     console.log(err);
-    res.sendStatus(500).json({ err });
+    res.status(500).json({ err });
+  }
+});
+
+// удаление форм блока
+app.put("/remove-section", checkAuth, async (req, res) => {
+  const { id: user_id } = req.userData;
+  try {
+    const { section } = req.body;
+    const { data: forms } = await axios.get(`${api_backend}/forms`, {
+      params: {
+        token: admin_token,
+        admin: user_id,
+        section: section
+      }
+    });
+    for (let form of forms) {
+      await axios.delete(`${api_backend}/forms/${form.id}`, {
+        params: {
+          token: admin_token
+        },
+        validateStatus: false
+      });
+    }
+    res.send("OK");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
   }
 });
 

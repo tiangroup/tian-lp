@@ -128,7 +128,7 @@
             color="red"
             v-bind="attrs"
             v-on="on"
-            @click="deleteDialog = true"
+            @click="remove"
           >
             <v-icon>mdi-delete</v-icon>
           </v-btn>
@@ -164,40 +164,12 @@
       @onClose="showNewSectionEditor = false"
       :sectionId="section.id"
     />
-    <v-dialog v-model="deleteDialog" persistent max-width="400px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">Удалить блок</span>
-        </v-card-title>
-
-        <v-card-text>
-          Вы действительно хотите удалить данный блок?
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="deleteDialog = false">
-            Отмена
-          </v-btn>
-          <v-btn color="blue darken-1" text @click="onDelete">
-            Удалить
-          </v-btn>
-        </v-card-actions>
-
-        <v-overlay :value="overlay_delete" :absolute="true">
-          <v-progress-circular indeterminate size="64"></v-progress-circular>
-        </v-overlay>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 export default {
-  components: {
-    Settings: () => import("@/components/admin/Settings")
-  },
   props: {
     section: Object,
     top: {
@@ -224,9 +196,7 @@ export default {
   data: () => ({
     settingsDrawer: false,
     fab: false,
-    showNewSectionEditor: false,
-    deleteDialog: false,
-    overlay_delete: false
+    showNewSectionEditor: false
   }),
   methods: {
     ...mapMutations({
@@ -234,6 +204,9 @@ export default {
       downSection: "pages/DOWN_SECTION",
       upSection: "pages/UP_SECTION",
       deleteSection: "pages/DELETE_SECTION"
+    }),
+    ...mapActions({
+      savePage: "pages/savePage"
     }),
     setShowSection(show) {
       this.setSectionField({
@@ -253,11 +226,32 @@ export default {
       });
     },
     async onDelete() {
+      this.$overlay(true);
       await this.$axios.post(`${this.$site_app}/api/upload/dir-remove`, {
         dir: this.section.id
       });
+      await this.$axios.put(`${this.$site_app}/forms/remove-section`, {
+        section: this.section.id
+      });
       this.deleteSection({
         sectionId: this.section.id
+      });
+      await this.savePage();
+      this.$overlay(false);
+    },
+    remove() {
+      this.$confirm({
+        title: "Удалить блок",
+        message: "Вы действительно хотите удалить данный блок?",
+        button: {
+          no: "Отмена",
+          yes: "Удалить"
+        },
+        callback: confirm => {
+          if (confirm) {
+            this.onDelete();
+          }
+        }
       });
     }
   }

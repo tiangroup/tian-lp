@@ -8,7 +8,7 @@ module.exports = {
     //   //{ text: "Блоки", link: "/sections/" },
     //   //{ text: "Компоненты", link: "/components/" }
     // ],
-    sidebar: ["/sections/", "/components/", "/plugin-docs/"],
+    sidebar: ["/sections/", "/components/", "/plugins/"],
     lastUpdated: "Изменено"
   },
   plugins: [

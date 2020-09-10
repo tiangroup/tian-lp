@@ -174,7 +174,8 @@ export const actions = {
           title: "Заголовок формы",
           button: "Отправить"
         },
-        admin: this.$auth.user.id
+        admin: this.$auth.user.id,
+        section: payload.sectionId
       });
       if (payload.sectionId && payload.field) {
         commit(
@@ -187,6 +188,12 @@ export const actions = {
           { root: true }
         );
       }
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  async removeSectionForms({ commit, state }, payload) {
+    try {
     } catch (error) {
       console.error(error);
     }
