@@ -7,7 +7,11 @@
     >
       <div class="landing__container">
         <h2 v-if="isEdit">
-          <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+          <editor
+            :text="section.title || ''"
+            :sectionId="section.id"
+            field="title"
+          />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
         <div class="gallery__list" v-if="section.items && isSlick">
@@ -22,10 +26,14 @@
             }"
           ></v-gallery>
           <div class="fullwidth">
-            <slick :ref="slickRef" :options="updatedSlickOptions" @init="handleInit">
+            <slick
+              :ref="slickRef"
+              :options="updatedSlickOptions"
+              @init="handleInit"
+            >
               <div
                 class="gallery__item"
-                :class="{'position-relative': isEdit}"
+                :class="{ 'position-relative': isEdit }"
                 v-for="(item, itemIndex) in section.items.filter(i => i.id)"
                 :key="item.id"
               >
@@ -34,11 +42,10 @@
                   :itemId="item.id"
                   :sectionId="section.id"
                   @onAction="onItemsChange"
-                  @onItemDelete="onItemDelete"
                 />
                 <div
                   class="gallery__link"
-                  :class="{'pic-enlarge': !isEdit}"
+                  :class="{ 'pic-enlarge': !isEdit }"
                   @click="showGallery(itemIndex)"
                 >
                   <image-item
@@ -58,7 +65,10 @@
                   </div>
                 </div>
               </div>
-              <div class="gallery__item" v-if="isEdit && (!section.items || !section.items.length)">
+              <div
+                class="gallery__item"
+                v-if="isEdit && (!section.items || !section.items.length)"
+              >
                 <buttons-item-add :sectionId="section.id" />
               </div>
             </slick>
@@ -73,7 +83,7 @@
 import { mapGetters } from "vuex";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   data: () => ({
     index: null,
@@ -100,8 +110,8 @@ export default {
             slidesToScroll: 1,
             arrows: false,
             centerMode: false,
-            centerPadding: 0,
-          },
+            centerPadding: 0
+          }
         },
         {
           breakpoint: 576,
@@ -110,15 +120,15 @@ export default {
             slidesToScroll: 1,
             arrows: false,
             centerMode: false,
-            centerPadding: 0,
-          },
-        },
-      ],
-    },
+            centerPadding: 0
+          }
+        }
+      ]
+    }
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      isEdit: "isEdit"
     }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
@@ -134,7 +144,7 @@ export default {
         slidesToShow: slidesQty,
         //centerMode: !this.isEdit,
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     images() {
@@ -144,7 +154,7 @@ export default {
         var imagesItem = {
           title: pic.title,
           href: this.$images.src(pic.img),
-          type: "image/jpeg",
+          type: "image/jpeg"
         };
         imagesArray.push(imagesItem);
       }
@@ -152,7 +162,7 @@ export default {
     },
     slickRef() {
       return "slick" + this.section.id;
-    },
+    }
   },
   methods: {
     onItemsChange(event) {
@@ -163,19 +173,13 @@ export default {
       let currSlideIndex = this.$refs[this.slickRef].currentSlide();
       this.isSlick = false;
       const _this = this;
-      let enableSlick = new Promise((resolve) => {
+      let enableSlick = new Promise(resolve => {
         setTimeout(() => {
           resolve((_this.isSlick = true));
         }, 200);
       });
       await enableSlick;
       this.$refs[this.slickRef].goTo(currSlideIndex, true);
-    },
-    async onItemDelete(payload) {
-      const item = this.section.items.find((i) => i.id == payload.itemId);
-      const formData = new FormData();
-      formData.append("image", item.img);
-      await this.$axios.post("/api/upload/image-remove", formData);
     },
     showGallery(itemIndex) {
       if (this.isEdit) {
@@ -200,21 +204,21 @@ export default {
           } else {
             slideId = slidesRealLength + slideIndex;
           }
-          slideItem.addEventListener("click", function () {
+          slideItem.addEventListener("click", function() {
             _this.showGallery(slideId);
           });
         }
       }
-    },
+    }
   },
-  mounted: function () {
+  mounted: function() {
     this.itemsQty = this.section.items.length;
   },
   watch: {
-    isEdit: function () {
+    isEdit: function() {
       this.restartSlick();
     },
-    section: function () {
+    section: function() {
       if (
         this.isEdit &&
         this.itemsQty === 0 &&
@@ -222,7 +226,7 @@ export default {
       ) {
         this.restartSlick();
       }
-    },
-  },
+    }
+  }
 };
 </script>

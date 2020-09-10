@@ -1,11 +1,10 @@
 <template>
-  <div class="partners__item-wrap" :class="{'position-relative': isEdit}">
+  <div class="partners__item-wrap" :class="{ 'position-relative': isEdit }">
     <buttons-item
       v-if="isEdit"
       :itemId="item.id"
       :sectionId="sectionId"
       @onAction="$emit('item-update')"
-      @onItemDelete="onItemDelete"
     >
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -25,7 +24,12 @@
       </v-tooltip>
     </buttons-item>
     <div class="partners__item">
-      <a v-if="item.link && !isEdit" :href="item.link" class="partners__link" target="_blank"></a>
+      <a
+        v-if="item.link && !isEdit"
+        :href="item.link"
+        class="partners__link"
+        target="_blank"
+      ></a>
       <image-item
         divClass="partners__image"
         :img="item.img"
@@ -50,15 +54,9 @@ export default {
   props: {
     item: Object,
     sectionId: String,
-    isEdit: Boolean,
+    isEdit: Boolean
   },
   data: () => ({}),
-  methods: {
-    async onItemDelete(payload) {
-      const formData = new FormData();
-      formData.append("image", this.item.img);
-      await this.$axios.post("/api/upload/image-remove", formData);
-    },
-  },
+  methods: {}
 };
 </script>

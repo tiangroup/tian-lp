@@ -25,7 +25,6 @@
       :is="view"
       :section="section"
       :isEdit="isEdit"
-      @onItemDelete="onItemDelete"
     />
 
     <v-dialog v-model="dialogMapKey" max-width="33rem" v-if="isEdit">
@@ -89,12 +88,6 @@ export default {
     ...mapMutations({
       setSectionField: "pages/SET_SECTION_FIELD"
     }),
-    async onItemDelete(payload) {
-      const item = this.section.items.find(i => i.id == payload.itemId);
-      const formData = new FormData();
-      formData.append("image", item.img);
-      await this.$axios.post("/api/upload/image-remove", formData);
-    },
     updateMapKey() {
       this.userKey = this.section.map_key || "";
       this.dialogMapKey = true;

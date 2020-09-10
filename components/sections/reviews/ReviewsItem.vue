@@ -1,16 +1,15 @@
 <template>
-  <div class="reviews__item-wrap cell" :class="{'position-relative': isEdit}">
+  <div class="reviews__item-wrap cell" :class="{ 'position-relative': isEdit }">
     <buttons-item
       v-if="isEdit"
       :itemId="item.id"
       :sectionId="sectionId"
       @onAction="$emit('item-update')"
-      @onItemDelete="onDeleteItem"
     />
     <div class="reviews__item">
       <div
         class="reviews__image-wrap"
-        :class="{'pic-enlarge': !isEdit}"
+        :class="{ 'pic-enlarge': !isEdit }"
         @click="$emit('show-gallery')"
         v-if="view === 'view2'"
       >
@@ -47,12 +46,12 @@
           </div>
         </div>
 
-        <div
-          class="reviews__text"
-          @click="$emit('change-desc')"
-          v-if="isEdit"
-        >{{ truncateText(item.text, 44) || "Введите текст отзыва" }}</div>
-        <div class="reviews__text" v-else>{{ truncateText(item.text, 44) }}</div>
+        <div class="reviews__text" @click="$emit('change-desc')" v-if="isEdit">
+          {{ truncateText(item.text, 44) || "Введите текст отзыва" }}
+        </div>
+        <div class="reviews__text" v-else>
+          {{ truncateText(item.text, 44) }}
+        </div>
 
         <div class="reviews__info" v-if="isEdit">
           <v-text-field
@@ -63,7 +62,11 @@
           ></v-text-field>
         </div>
         <div class="reviews__info align-items-center" v-else>
-          <button class="reviews__readmore" v-if="isCropped" @click="$emit('show-review')">
+          <button
+            class="reviews__readmore"
+            v-if="isCropped"
+            @click="$emit('show-review')"
+          >
             Читать полностью
             <svg
               width="5"
@@ -75,7 +78,9 @@
               <path d="M1 1L4 4L1 7" stroke="currentColor" />
             </svg>
           </button>
-          <div class="reviews__date" v-if="item.date">{{ formatDate(item.date) }}</div>
+          <div class="reviews__date" v-if="item.date">
+            {{ formatDate(item.date) }}
+          </div>
         </div>
       </div>
     </div>
@@ -88,26 +93,23 @@ export default {
     item: Object,
     sectionId: String,
     isEdit: Boolean,
-    view: String,
+    view: String
   },
   data: () => ({
-    isCropped: false,
+    isCropped: false
   }),
   components: {
     Editor: () => import("@/components/admin/Editor"),
-    ButtonsItem: () => import("@/components/admin/ButtonsItem"),
+    ButtonsItem: () => import("@/components/admin/ButtonsItem")
   },
   computed: {
     computedReviewDate() {
       return this.item.date
         ? this.item.date
         : new Date().toISOString().substr(0, 10);
-    },
+    }
   },
   methods: {
-    onDeleteItem(payload) {
-      this.$emit("onItemDelete", payload);
-    },
     truncateText(textToTruncate, words) {
       if (!textToTruncate) {
         return "";
@@ -123,8 +125,8 @@ export default {
     formatDate(dateToFormat) {
       const [year, month, day] = dateToFormat.split("-");
       return `${day}.${month}.${year}`;
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
