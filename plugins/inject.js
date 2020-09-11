@@ -5,9 +5,9 @@ export default (context, inject) => {
 
   inject("site_img", img => "/" + store.getters["sites/id"] + img);
 
-  inject("site_api", $env.API_BACKEND);
+  inject("site_api", $env.API_BACKEND || "https://api.tian-lp.ru");
 
-  inject("site_app", $env.APP_BACKEND);
+  inject("site_app", $env.APP_BACKEND || "https://app.tian-lp.ru");
 
   inject("forms", {
     showMessage: message => {
