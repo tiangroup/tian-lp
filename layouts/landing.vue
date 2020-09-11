@@ -7,7 +7,9 @@
       </v-main>
     </v-app>
     <v-app v-else>
-      <nuxt />
+      <v-main>
+        <nuxt />
+      </v-main>
     </v-app>
   </div>
 </template>
