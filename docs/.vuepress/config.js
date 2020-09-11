@@ -8,7 +8,26 @@ module.exports = {
     //   //{ text: "Блоки", link: "/sections/" },
     //   //{ text: "Компоненты", link: "/components/" }
     // ],
-    sidebar: ["/sections/", "/components/", "/plugins/"],
+    sidebar: [
+      "/sections/",
+      {
+        title: "Компоненты",
+        children: [
+          "/components/editor",
+          "/components/image-item",
+          "/components/forms"
+        ]
+      },
+      {
+        title: "Плагины",
+        //path: "/plugins/",
+        children: [
+          "/plugins/inject",
+          "/plugins/vue-slick",
+          "/plugins/vue-gallery"
+        ]
+      }
+    ],
     lastUpdated: "Изменено"
   },
   plugins: [
