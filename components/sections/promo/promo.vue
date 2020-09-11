@@ -39,7 +39,11 @@
         <div class="hero__row">
           <div class="hero__body">
             <h1 v-if="isEdit">
-              <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+              <editor
+                :text="section.title || ''"
+                :sectionId="section.id"
+                field="title"
+              />
             </h1>
             <h1 v-else>{{ section.title }}</h1>
             <div class="hero__text" v-if="isEdit">
@@ -55,8 +59,6 @@
             </div>
             <div class="hero__action" v-if="button || form">
               <form-popup :section="section" field="promo_form"></form-popup>
-              <a @click.prevent="formDialog = true">Открыть</a>
-              <form-dialog :section="section" field="promo_form" v-model="formDialog"></form-dialog>
             </div>
           </div>
 
@@ -78,19 +80,16 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 import Timer from "../cta/Timer.vue";
 export default {
   components: {
-    Timer,
+    Timer
   },
   props: {
     section: Object,
+    isEdit: Boolean
   },
   computed: {
-    ...mapGetters({
-      isEdit: "isEdit",
-    }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
     },
@@ -105,24 +104,17 @@ export default {
     },
     countdown() {
       return this.section.settings.countdown === true;
-    },
+    }
   },
-  data: () => ({
-    formDialog: false,
-  }),
   methods: {
-    ...mapMutations({
-      showImageUpload: "SET_DIALOG_IMAGE_UPLOAD",
-      setImageUpload: "SET_IMAGE_UPLOAD",
-    }),
     itemImageSelect() {
       this.$images.upload({
         sectionId: this.section.id,
         field: "bg_img",
         items: null,
-        value: this.section.bg_img,
+        value: this.section.bg_img
       });
-    },
-  },
+    }
+  }
 };
 </script>

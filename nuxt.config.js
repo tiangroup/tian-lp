@@ -150,6 +150,7 @@ export default {
     //dir: process.env.EXPORT_DIR || "dist",
     fallback: true,
     routes() {
+      console.log("process.env.SITE_NAME: " + process.env.SITE_NAME);
       return axios
         .get(`${process.env.API_BACKEND}/sites`, {
           params: { name: process.env.SITE_NAME }

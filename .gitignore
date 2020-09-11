@@ -94,3 +94,5 @@ sw.*
 static/image-style
 
 content
+
+.vscode
