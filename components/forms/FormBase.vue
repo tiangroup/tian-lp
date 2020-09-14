@@ -1,8 +1,15 @@
 <template>
-  <form class="form" @submit.prevent="onSubmit" :ref="`form-${form.id}`" v-if="form">
+  <form
+    class="form"
+    @submit.prevent="onSubmit"
+    :ref="`form-${form.id}`"
+    v-if="form"
+  >
     <div class="form__body">
       <div class="form__title">{{ form.form.title }}</div>
-      <div class="form__intro" v-if="form.form.description">{{ form.form.description }}</div>
+      <div class="form__intro" v-if="form.form.description">
+        {{ form.form.description }}
+      </div>
       <slot></slot>
       <component
         v-for="item in form.fields.filter(i => i.id)"
@@ -23,9 +30,7 @@
       </div>
       <div class="form__text">
         Нажимая на&nbsp;кнопку, подтверждаю свое согласие с&nbsp;
-        <a
-          href
-        >условиями обработки персональных данных</a>
+        <a href>условиями обработки персональных данных</a>
       </div>
     </div>
   </form>
@@ -38,9 +43,9 @@ export default {
     section: Object,
     field: {
       type: String,
-      default: "form",
+      default: "form"
     },
-    hiddenData: String,
+    hiddenData: String
   },
   components: {
     input_text: () => import("./inputs/FormInputText"),
@@ -49,27 +54,27 @@ export default {
     input_textarea: () => import("./inputs/FormInputTextarea"),
     input_check: () => import("./inputs/FormInputCheck"),
     input_radio: () => import("./inputs/FormInputRadio"),
-    input_select: () => import("./inputs/FormInputSelect"),
+    input_select: () => import("./inputs/FormInputSelect")
   },
   data: () => ({
     formData: {},
     loading: false,
-    message: false,
+    message: false
   }),
   async fetch() {
-    if (this.formId) {
-      await this.$store.dispatch("forms/loadForm", this.formId);
-    }
+    // if (this.formId) {
+    //   await this.$store.dispatch("forms/loadForm", this.formId);
+    // }
   },
   computed: {
     ...mapGetters({
       getForm: "forms/form",
-      isEdit: "isEdit",
+      isEdit: "isEdit"
     }),
     styleDiv() {
       return this.isEdit
         ? {
-            position: "relative",
+            position: "relative"
           }
         : null;
     },
@@ -78,13 +83,13 @@ export default {
     },
     formId() {
       return this.section[this.field];
-    },
+    }
   },
   methods: {
     ...mapActions({
       savePage: "pages/savePage",
       addForm: "forms/addForm",
-      loadForm: "forms/loadForm",
+      loadForm: "forms/loadForm"
     }),
     async onSubmit() {
       if (this.loading) return;
@@ -107,25 +112,27 @@ export default {
         this.$emit("send", {
           text: this.form.form.successMessage,
           //caption: "Форма отправлена",
-          error: false,
+          error: false
         });
       } catch (err) {
         this.loading = false;
         this.$emit("send", {
-          error: true,
+          error: true
         });
       }
-    },
+    }
   },
   async mounted() {
     if (!this.formId && this.isEdit) {
       await this.addForm({
         sectionId: this.section.id,
-        field: this.field,
+        field: this.field
       });
       await this.savePage();
       await this.loadForm(this.formId);
+    } else if (this.formId) {
+      this.loadForm(this.formId);
     }
-  },
+  }
 };
 </script>
