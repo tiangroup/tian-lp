@@ -36,7 +36,6 @@ export default {
       page: "pages/page",
       isApp: "isApp",
       isEdit: "isEdit",
-      overlay: "overlay",
       dialogImageUpload: "dialogImageUpload",
       dialogImageSvg: "dialogImageSvg"
     }),

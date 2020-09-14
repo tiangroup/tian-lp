@@ -104,7 +104,7 @@ export const getters = {
   isApp: state => state.isApp,
   isPreview: state => state.isPreview,
   isEdit: state => {
-    return state.auth.loggedIn && state.isApp && !state.isPreview;
+    return state.auth.loggedIn /*&& state.isApp*/ && !state.isPreview;
   },
   overlay: state => state.overlay,
   dialogImageUpload: state => state.dialogImageUpload,

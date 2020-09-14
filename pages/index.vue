@@ -22,9 +22,6 @@ export default {
       });
     }
   },
-  components: {
-    Landing: () => import("~/components/Landing")
-  },
   head() {
     const meta = this.head
       ? this.head.meta.map(item => ({

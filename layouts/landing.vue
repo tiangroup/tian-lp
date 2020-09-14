@@ -15,11 +15,7 @@
 </template>
 
 <script>
-import Appbar from "~/components/admin/Appbar";
 export default {
-  components: {
-    Appbar
-  },
   head: {
     link: [
       {
