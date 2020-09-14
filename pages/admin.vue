@@ -14,8 +14,8 @@
 export default {
   layout: "admin",
   components: {
-    Admin: () => import("~/components/Admin"),
-    AdminForm: () => import("~/components/admin/AdminForm")
+    // Admin: () => import("~/components/Admin"),
+    // AdminForm: () => import("~/components/admin/AdminForm")
   },
   head: () => ({
     title: "Панель управления"
