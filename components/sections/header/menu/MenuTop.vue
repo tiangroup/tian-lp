@@ -13,7 +13,9 @@
         :key="item.id"
         ref="menu_items"
       >
-        <a :href="item.link" class="primary-nav__link" v-show="item.show">{{ item.title }}</a>
+        <a :href="item.link" class="primary-nav__link" v-show="item.show">{{
+          item.title
+        }}</a>
       </li>
       <li class="primary-nav__reveal reveal" v-if="itemsHide.length">
         <input class="reveal__input" type="checkbox" id="reveal-magic-3" />
@@ -23,8 +25,14 @@
         </label>
         <div class="reveal__content">
           <ul class="primary-nav__extra">
-            <li class="primary-nav__item" v-for="(item, index) in itemsHide" :key="index">
-              <a :href="item.link" class="primary-nav__link">{{ item.title }}</a>
+            <li
+              class="primary-nav__item"
+              v-for="(item, index) in itemsHide"
+              :key="index"
+            >
+              <a :href="item.link" class="primary-nav__link">{{
+                item.title
+              }}</a>
             </li>
           </ul>
         </div>
@@ -37,7 +45,7 @@
 import _ from "lodash";
 export default {
   props: {
-    menu: Array,
+    menu: Array
   },
   data: () => ({
     items: [
@@ -81,56 +89,56 @@ export default {
         title: "Контакты",
         show: true
       }*/
-    ],
+    ]
   }),
   methods: {
-    handleResize: _.throttle(function () {
+    handleResize: _.throttle(function() {
       this.items = this.items.map((item, index) => ({
         ...item,
-        show: true,
+        show: true
       }));
       setTimeout(this.onResize, 50);
     }, 300),
     onResize() {
-      const menuWidth = this.$refs.menu.clientWidth;
-
-      const menu_items = this.$refs.menu_items;
-
-      this.menuItems = this.items.map((item, index) => ({
-        ...item,
-        show: !(
-          menu_items[index].offsetLeft + menu_items[index].clientWidth + 15 >
-          menuWidth
-        ),
-      }));
-    },
+      if (this.$refs.menu) {
+        const menuWidth = this.$refs.menu.clientWidth;
+        const menu_items = this.$refs.menu_items;
+        this.menuItems = this.items.map((item, index) => ({
+          ...item,
+          show: !(
+            menu_items[index].offsetLeft + menu_items[index].clientWidth + 15 >
+            menuWidth
+          )
+        }));
+      }
+    }
   },
   mounted() {
     this.handleResize();
   },
   computed: {
     itemsHide() {
-      return this.items.filter((item) => !item.show);
+      return this.items.filter(item => !item.show);
     },
     menuItems: {
-      get: function () {
+      get: function() {
         let _this = this;
-        const items = this.menu.map((i) => ({
+        const items = this.menu.map(i => ({
           id: i.id,
           title: i.title,
           type: i.type,
           link: i.link,
-          show: _this.items.find((item) => item.id == i.id)
-            ? _this.items.find((item) => item.id == i.id).show
-            : true,
+          show: _this.items.find(item => item.id == i.id)
+            ? _this.items.find(item => item.id == i.id).show
+            : true
         }));
         this.items = items;
         return this.items;
       },
-      set: function (value) {
+      set: function(value) {
         this.items = value;
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

@@ -35,8 +35,8 @@
 <script>
 export default {
   data: () => ({
-    username: "",
-    password: "",
+    username: null,
+    password: null,
     error: null,
     process: false
   }),
@@ -69,5 +69,10 @@ export default {
       title: "Авторизация"
     };
   }
+  // mounted() {
+  //   if (!this.$auth.loggedIn) {
+  //     this.$auth.logout();
+  //   }
+  // }
 };
 </script>

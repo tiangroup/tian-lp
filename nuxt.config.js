@@ -135,7 +135,9 @@ export default {
         }
       }
     },
-    redirect: false
+    redirect: false,
+    localStorage: false,
+    cookie: false
   },
   bootstrapVue: {
     icons: true // Install the IconsPlugin (in addition to BootStrapVue plugin
