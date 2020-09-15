@@ -171,12 +171,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import ButtonsSection from "@/components/admin/ButtonsSection";
-import SocialList from "@/components/sections/header/social/SocialList";
 export default {
-  components: {
-    //SocialList,
-  },
   props: {
     section: Object
   },
