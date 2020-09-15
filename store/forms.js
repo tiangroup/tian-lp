@@ -174,6 +174,7 @@ export const actions = {
           title: "Заголовок формы",
           button: "Отправить"
         },
+        mail: {},
         admin: this.$auth.user.id,
         section: payload.sectionId
       });

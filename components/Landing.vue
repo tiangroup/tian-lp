@@ -27,9 +27,10 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import Sections from "~/components/sections/Section";
 export default {
   components: {
-    Sections: () => import("~/components/sections/Section")
+    Sections
   },
   computed: {
     ...mapGetters({

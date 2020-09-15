@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import Admin from "~/components/Admin";
-import AdminForm from "~/components/admin/AdminForm";
+import Admin from "~/components/admin/Admin/Admin";
+import AdminForm from "~/components/admin/Admin/AdminForm";
 export default {
   layout: "admin",
   components: {

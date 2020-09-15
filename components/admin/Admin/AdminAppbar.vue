@@ -2,11 +2,25 @@
   <div>
     <v-app-bar app color="blue" dark clipped-left>
       <v-toolbar-title>
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <span>Панель управления <nuxt-link to="/">редактор</nuxt-link></span>
+        <v-app-bar-nav-icon
+          @click.stop="drawer = !drawer"
+          v-if="!drawer"
+        ></v-app-bar-nav-icon>
+
+        <span>Панель управления</span>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
+
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on" @click="$router.push('/')">
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+        </template>
+        <span>Редактировать сайт</span>
+      </v-tooltip>
+      <v-divider vertical inset class="ml-4"></v-divider>
 
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -75,10 +89,11 @@ export default {
   },
   methods: {
     exit() {
-      if (!this.isApp) {
-        this.$auth.logout();
-      }
-      this.$router.push("/");
+      // if (!this.isApp) {
+      //   this.$auth.logout();
+      // }
+      // this.$router.push("/");
+      this.$auth.logout();
     }
   }
 };

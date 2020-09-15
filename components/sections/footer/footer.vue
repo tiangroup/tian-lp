@@ -175,8 +175,7 @@ import ButtonsSection from "@/components/admin/ButtonsSection";
 import SocialList from "@/components/sections/header/social/SocialList";
 export default {
   components: {
-    ButtonsSection,
-    SocialList
+    //SocialList,
   },
   props: {
     section: Object

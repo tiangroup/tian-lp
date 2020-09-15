@@ -39,8 +39,8 @@ export default {
     sections_reviews,
     sections_cta,
     sections_contacts,
-    sections_footer,
-    sections_products
+    sections_products,
+    sections_footer
   },
   computed: {
     ...mapGetters({

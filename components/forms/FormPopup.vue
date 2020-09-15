@@ -72,6 +72,11 @@ export default {
   data: () => ({
     dialogButton: false
   }),
+  async fetch() {
+    if (this.section[this.field]) {
+      await this.$store.dispatch("forms/loadForm", this.section[this.field]);
+    }
+  },
   computed: {
     ...mapGetters({
       isEdit: "isEdit",

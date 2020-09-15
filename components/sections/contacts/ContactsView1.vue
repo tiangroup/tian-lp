@@ -247,13 +247,9 @@
 <script>
 import { mapMutations, mapActions } from "vuex";
 import ContactsMap from "./ContactsMap";
-import Editor from "@/components/admin/Editor";
-import SocialList from "@/components/sections/header/social/SocialList";
 export default {
   components: {
-    ContactsMap,
-    Editor,
-    SocialList
+    ContactsMap
   },
   props: {
     section: Object,

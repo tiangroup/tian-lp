@@ -14,7 +14,6 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
-  data: () => ({}),
   computed: {
     ...mapGetters({
       pages: "sites/pages",
