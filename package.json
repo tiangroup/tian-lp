@@ -8,8 +8,8 @@
     "start": "nuxt start",
     "export": "nuxt export",
     "serve": "nuxt serve",
-    "generate": "nuxt build --target static && nuxt export",
-    "buildstatic": "nuxt build --target static",
+    "generate": "cross-env MODE_BUILD=static nuxt build --target static && nuxt export",
+    "buildstatic": "cross-env MODE_BUILD=static nuxt build --target static",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
