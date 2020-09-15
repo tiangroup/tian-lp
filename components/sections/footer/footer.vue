@@ -1,17 +1,28 @@
 <template>
-  <footer :style="styleDiv" :id="section.id">
+  <footer :class="{ 'position-relative': isEdit }" :id="section.id">
     <buttons-section v-if="isEdit" :section="section"></buttons-section>
-    <div class="footer bg-secondary" :class="{'footer--style2': view === 'view2'}">
+    <div
+      class="footer bg-secondary"
+      :class="{ 'footer--style2': view === 'view2' }"
+    >
       <v-fab-transition>
         <div class="ascend" v-show="showToTop">
-          <button class="ascend__link" title="Наверх" @click="goToTop" v-scroll="onScroll"></button>
+          <button
+            class="ascend__link"
+            title="Наверх"
+            @click="goToTop"
+            v-scroll="onScroll"
+          ></button>
         </div>
       </v-fab-transition>
       <div class="landing__container">
         <div class="cells justify-content-between" v-if="view === 'view2'">
           <div class="cell cell-auto footer__contacts-wrap">
             <div class="footer__contacts">
-              <div class="addresses footer__addresses connect__item">
+              <div
+                class="addresses footer__addresses connect__item"
+                v-if="address || isEdit"
+              >
                 <div class="connect__row">
                   <div class="connect__icon">
                     <svg
@@ -21,7 +32,10 @@
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path d="M5.51855 6.5V5.5H6.48187V6V6.5H5.51855Z" stroke="currentColor" />
+                      <path
+                        d="M5.51855 6.5V5.5H6.48187V6V6.5H5.51855Z"
+                        stroke="currentColor"
+                      />
                       <path
                         d="M1.55675 8.72429C1.35405 8.39072 1.12937 7.72073 1.03953 6.84679C0.951568 5.99119 1.00319 5.03402 1.26707 4.15293C1.52927 3.27743 1.99072 2.50633 2.70692 1.95137C3.41745 1.40082 4.45966 1 5.99998 1C7.54031 1 8.58252 1.40082 9.29305 1.95138C10.0093 2.50634 10.4707 3.27745 10.7329 4.15295C10.9968 5.03404 11.0484 5.99121 10.9605 6.8468C10.8706 7.72074 10.6459 8.39072 10.4432 8.72426C9.99777 9.45729 9.18444 10.283 8.28452 11.0528C7.42138 11.7911 6.54621 12.4215 5.99997 12.7973C5.45373 12.4215 4.57854 11.7911 3.71541 11.0528C2.81549 10.283 2.00218 9.4573 1.55675 8.72429Z"
                         stroke="currentColor"
@@ -30,13 +44,24 @@
                     </svg>
                   </div>
                   <div class="connect__instances">
-                    <div
-                      class="connect__instance"
-                    >Республика Татарстан, Зеленодольский район, пгт. Васильево, ул. Совхоз, д. 10а</div>
+                    <div class="connect__instance">
+                      <editor
+                        data-placeholder="Введите адрес компании"
+                        :text="section.address || ''"
+                        :sectionId="section.id"
+                        editContent="html"
+                        field="address"
+                        v-if="isEdit"
+                      />
+                      <div v-else v-html="section.address"></div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="phones footer__phones connect__item">
+              <div
+                class="phones footer__phones connect__item"
+                v-if="phone || isEdit"
+              >
                 <div class="connect__row">
                   <div class="connect__icon">
                     <svg
@@ -51,17 +76,31 @@
                         stroke="currentColor"
                         stroke-width="2"
                       />
-                      <path d="M4.5 11.5V9.5H6.5V11.5H4.5Z" stroke="currentColor" />
+                      <path
+                        d="M4.5 11.5V9.5H6.5V11.5H4.5Z"
+                        stroke="currentColor"
+                      />
                     </svg>
                   </div>
                   <div class="connect__instances">
                     <div class="connect__instance">
-                      <a href="tel:+79002000600" class="connect__instance__link">+7 (900) 2000 600</a>
+                      <editor
+                        data-placeholder="+7 900 111-22-33"
+                        :text="section.phone || ''"
+                        :sectionId="section.id"
+                        editContent="html"
+                        field="phone"
+                        v-if="isEdit"
+                      />
+                      <div v-else v-html="section.phone"></div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="emails footer__emails connect__item">
+              <div
+                class="emails footer__emails connect__item"
+                v-if="email || isEdit"
+              >
                 <div class="connect__row">
                   <div class="connect__icon">
                     <svg
@@ -85,7 +124,15 @@
                   </div>
                   <div class="connect__instances">
                     <div class="connect__instance">
-                      <a href="mailto:mail@mail.ru" class="connect__instance__link">mail@mail.ru</a>
+                      <editor
+                        data-placeholder="info@mail.ru"
+                        :text="section.email || ''"
+                        :sectionId="section.id"
+                        editContent="html"
+                        field="email"
+                        v-if="isEdit"
+                      />
+                      <div v-else v-html="section.email"></div>
                     </div>
                   </div>
                 </div>
@@ -93,10 +140,9 @@
             </div>
           </div>
           <div class="cell cell-auto">
-            Ссылки на соцсети
-            <!-- <div class="social footer__social">
+            <div class="social footer__social">
               <social-list :section="section" :isEdit="isEdit"></social-list>
-            </div>-->
+            </div>
           </div>
         </div>
 
@@ -104,7 +150,11 @@
           <div class="copy">
             &copy;
             <div class="d-inline-flex" v-if="isEdit">
-              <editor :text="section.copy || computedCopy" :sectionId="section.id" field="copy" />
+              <editor
+                :text="section.copy || computedCopy"
+                :sectionId="section.id"
+                field="copy"
+              />
             </div>
             <span v-else>{{ section.copy || computedCopy }}</span>
           </div>
@@ -121,25 +171,23 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-//import SocialList from "@/components/sections/header/social/SocialList";
+import ButtonsSection from "@/components/admin/ButtonsSection";
+import SocialList from "@/components/sections/header/social/SocialList";
 export default {
   components: {
-    ButtonsSection: () => import("@/components/admin/ButtonsSection"),
-    //SocialList,
+    ButtonsSection,
+    SocialList
   },
   props: {
-    section: Object,
+    section: Object
   },
   data: () => ({
-    showToTop: false,
+    showToTop: false
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      isEdit: "isEdit"
     }),
-    styleDiv() {
-      return this.isEdit ? { position: "relative" } : null;
-    },
     view() {
       return this.section.settings.view || "view1";
     },
@@ -147,6 +195,15 @@ export default {
       let currentYear = new Date().getFullYear();
       return currentYear + ', "Название компании"';
     },
+    address() {
+      return this.cleanString(this.section.address) || null;
+    },
+    phone() {
+      return this.cleanString(this.section.phone) || null;
+    },
+    email() {
+      return this.cleanString(this.section.email) || null;
+    }
   },
   methods: {
     onScroll(e) {
@@ -159,6 +216,12 @@ export default {
       window.scrollTo({ top: 0, behavior: "smooth" });
       document.activeElement.blur();
     },
-  },
+    cleanString(str) {
+      if (!str) {
+        return null;
+      }
+      return str.replace(/(<([^>]+)>)/gi, "");
+    }
+  }
 };
 </script>
