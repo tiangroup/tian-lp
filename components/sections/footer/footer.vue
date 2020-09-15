@@ -1,5 +1,5 @@
 <template>
-  <footer :style="styleDiv" :id="section.id">
+  <footer :class="{ 'position-relative': isEdit }" :id="section.id">
     <buttons-section v-if="isEdit" :section="section"></buttons-section>
     <div
       class="footer bg-secondary"
@@ -19,7 +19,10 @@
         <div class="cells justify-content-between" v-if="view === 'view2'">
           <div class="cell cell-auto footer__contacts-wrap">
             <div class="footer__contacts">
-              <div class="addresses footer__addresses connect__item">
+              <div
+                class="addresses footer__addresses connect__item"
+                v-if="address || isEdit"
+              >
                 <div class="connect__row">
                   <div class="connect__icon">
                     <svg
@@ -42,13 +45,23 @@
                   </div>
                   <div class="connect__instances">
                     <div class="connect__instance">
-                      Республика Татарстан, Зеленодольский район, пгт.
-                      Васильево, ул. Совхоз, д. 10а
+                      <editor
+                        data-placeholder="Введите адрес компании"
+                        :text="section.address || ''"
+                        :sectionId="section.id"
+                        editContent="html"
+                        field="address"
+                        v-if="isEdit"
+                      />
+                      <div v-else v-html="section.address"></div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="phones footer__phones connect__item">
+              <div
+                class="phones footer__phones connect__item"
+                v-if="phone || isEdit"
+              >
                 <div class="connect__row">
                   <div class="connect__icon">
                     <svg
@@ -71,14 +84,23 @@
                   </div>
                   <div class="connect__instances">
                     <div class="connect__instance">
-                      <a href="tel:+79002000600" class="connect__instance__link"
-                        >+7 (900) 2000 600</a
-                      >
+                      <editor
+                        data-placeholder="+7 900 111-22-33"
+                        :text="section.phone || ''"
+                        :sectionId="section.id"
+                        editContent="html"
+                        field="phone"
+                        v-if="isEdit"
+                      />
+                      <div v-else v-html="section.phone"></div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="emails footer__emails connect__item">
+              <div
+                class="emails footer__emails connect__item"
+                v-if="email || isEdit"
+              >
                 <div class="connect__row">
                   <div class="connect__icon">
                     <svg
@@ -102,11 +124,15 @@
                   </div>
                   <div class="connect__instances">
                     <div class="connect__instance">
-                      <a
-                        href="mailto:mail@mail.ru"
-                        class="connect__instance__link"
-                        >mail@mail.ru</a
-                      >
+                      <editor
+                        data-placeholder="info@mail.ru"
+                        :text="section.email || ''"
+                        :sectionId="section.id"
+                        editContent="html"
+                        field="email"
+                        v-if="isEdit"
+                      />
+                      <div v-else v-html="section.email"></div>
                     </div>
                   </div>
                 </div>
@@ -114,10 +140,9 @@
             </div>
           </div>
           <div class="cell cell-auto">
-            Ссылки на соцсети
-            <!-- <div class="social footer__social">
+            <div class="social footer__social">
               <social-list :section="section" :isEdit="isEdit"></social-list>
-            </div>-->
+            </div>
           </div>
         </div>
 
@@ -146,7 +171,8 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-//import SocialList from "@/components/sections/header/social/SocialList";
+import ButtonsSection from "@/components/admin/ButtonsSection";
+import SocialList from "@/components/sections/header/social/SocialList";
 export default {
   components: {
     //SocialList,
@@ -161,15 +187,21 @@ export default {
     ...mapGetters({
       isEdit: "isEdit"
     }),
-    styleDiv() {
-      return this.isEdit ? { position: "relative" } : null;
-    },
     view() {
       return this.section.settings.view || "view1";
     },
     computedCopy() {
       let currentYear = new Date().getFullYear();
       return currentYear + ', "Название компании"';
+    },
+    address() {
+      return this.cleanString(this.section.address) || null;
+    },
+    phone() {
+      return this.cleanString(this.section.phone) || null;
+    },
+    email() {
+      return this.cleanString(this.section.email) || null;
     }
   },
   methods: {
@@ -182,6 +214,12 @@ export default {
       //this.$vuetify.goTo("#app", { duration: 500 });
       window.scrollTo({ top: 0, behavior: "smooth" });
       document.activeElement.blur();
+    },
+    cleanString(str) {
+      if (!str) {
+        return null;
+      }
+      return str.replace(/(<([^>]+)>)/gi, "");
     }
   }
 };

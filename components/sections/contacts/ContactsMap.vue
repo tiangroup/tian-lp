@@ -28,7 +28,8 @@ export default {
       "typeSelector",
       "zoomControl"
     ],
-    mapBehaviors: ["drag", "dblClickZoom", "multiTouch"]
+    mapBehaviors: ["drag", "dblClickZoom", "multiTouch"],
+    myMap: null
   }),
   computed: {
     settings() {
@@ -40,13 +41,27 @@ export default {
   },
   methods: {
     processMap(map) {
+      this.myMap = map;
+      this.placeMarkers(map);
+      this.$emit("map-ready", map);
+    },
+    placeMarkers(map) {
+      map.geoObjects.removeAll();
       for (var i = 0; i < this.items.length; i++) {
+        if (!this.items[i] || !this.items[i].coords) {
+          this.$emit("map-empty");
+          break;
+        }
         let place = this.items[i];
+        let coords = place.coords.replace(/\s+/g, "").split(",");
+        let title = place.title || "";
+        let address = place.address || "";
+        let phone = place.phone || "";
         var placemark = new ymaps.Placemark(
-          place.coords,
+          coords,
           {
-            balloonContentHeader: place.name,
-            balloonContentBody: place.address + "<br>" + place.phone
+            balloonContentHeader: title,
+            balloonContentBody: address + "<br>" + phone
           },
           {
             iconLayout: "default#image",
@@ -66,7 +81,11 @@ export default {
             }
           });
       }
-      this.$emit("map-ready", map);
+    }
+  },
+  watch: {
+    items: function() {
+      this.placeMarkers(this.myMap);
     }
   }
 };

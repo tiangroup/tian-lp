@@ -20,26 +20,69 @@
             <div
               class="cell"
               :class="{ 'position-relative': isEdit }"
-              v-for="n in 3"
-              :key="n"
+              v-for="item in section.items"
+              :key="item.id"
             >
+              <buttons-item
+                v-if="isEdit"
+                :itemId="item.id"
+                :sectionId="section.id"
+                @onAction="onItemsChange"
+              />
               <div class="contacts__item department">
-                <div class="department__title">Главный офис</div>
-                <div class="department__address">
-                  <div class="department__address__text">
-                    г. Челябинск, пр. Ленина 164, офис 307
+                <div class="department__title" v-if="item.title || isEdit">
+                  <editor
+                    data-placeholder="Филиал"
+                    :text="item.title || ''"
+                    :sectionId="section.id"
+                    field="title"
+                    :itemId="item.id"
+                    v-if="isEdit"
+                  />
+                  <span v-else>
+                    {{ item.title }}
+                  </span>
+                </div>
+                <div class="department__address" v-if="item.address || isEdit">
+                  <div class="department__address__text" v-if="isEdit">
+                    <editor
+                      data-placeholder="Введите адрес"
+                      :text="item.address || ''"
+                      :sectionId="section.id"
+                      field="address"
+                      :itemId="item.id"
+                    />
+                    <editor
+                      data-placeholder="55.159897, 61.402554"
+                      :text="item.coords || ''"
+                      :sectionId="section.id"
+                      field="coords"
+                      :itemId="item.id"
+                    />
+                  </div>
+                  <div v-else>
+                    {{ item.address }}
                   </div>
                   <a
                     href
                     class="department__address__link"
-                    @click.prevent="showItemOnMap([55.177028, 61.348218])"
+                    @click.prevent="showItemOnMap(getItemCoords(item.coords))"
                     v-if="view === 'view2'"
                     >Показать на карте</a
                   >
                 </div>
-                <div class="department__emails">
+                <div class="department__emails" v-if="item.email || isEdit">
                   <div class="department__email">
-                    <a href="mailto:mail@mail.ru">mail@mail.ru</a>
+                    <editor
+                      data-placeholder="Введите email"
+                      :text="item.email || ''"
+                      :sectionId="section.id"
+                      field="email"
+                      :itemId="item.id"
+                      editContent="html"
+                      v-if="isEdit"
+                    />
+                    <span v-else v-html="item.email"></span>
                   </div>
                 </div>
                 <div class="department__phones">
@@ -258,7 +301,7 @@
       </div>
     </div>
     <contacts-map
-      :items="addresses"
+      :items="section.items"
       v-if="view === 'view2'"
       @map-ready="defineMyMap"
       :map-key="section.map_key"
@@ -282,22 +325,6 @@ export default {
   },
   data() {
     return {
-      addresses: [
-        {
-          id: 0,
-          coords: [55.177028, 61.348218],
-          name: "Главный офис",
-          address: "ul. Kakaya-to, bld 100, apt 18",
-          phone: "+7 800 2000 600"
-        },
-        {
-          id: 1,
-          coords: [55.175315, 61.339782],
-          name: "Secondary офис",
-          address: "ul. Kakaya-to, bld 100, apt 120",
-          phone: "+7 800 2000 601"
-        }
-      ],
       isSlick: true,
       itemsQty: null,
       myMap: {},
@@ -340,21 +367,16 @@ export default {
     }
   },
   methods: {
-    // onItemsChange(event) {
-    //   this.restartSlick();
-    //   this.itemsQty = this.section.items.length;
-    // },
-    async restartSlick() {
-      let currSlideIndex = this.$refs[this.slickRef].currentSlide();
+    onItemsChange(event) {
+      this.restartSlick();
+      this.itemsQty = this.section.items.length;
+    },
+    restartSlick() {
       this.isSlick = false;
       const _this = this;
-      let enableSlick = new Promise(resolve => {
-        setTimeout(() => {
-          resolve((_this.isSlick = true));
-        }, 200);
-      });
-      await enableSlick;
-      this.$refs[this.slickRef].goTo(currSlideIndex, true);
+      setTimeout(() => {
+        _this.isSlick = true;
+      }, 200);
     },
     handleInit(event, slick) {
       if (!this.isEdit) {
@@ -386,6 +408,7 @@ export default {
     },
     showItemOnMap(coords) {
       if (this.myMap) {
+        this.$vuetify.goTo(".contacts__map", { duration: 500 });
         this.myMap.setCenter(coords);
         this.myMap.setZoom(16, {
           checkZoomRange: true
@@ -394,24 +417,27 @@ export default {
     },
     defineMyMap(inst) {
       this.myMap = inst;
+    },
+    getItemCoords(str) {
+      return str.replace(/\s+/g, "").split(",");
     }
   },
   mounted: function() {
-    //this.itemsQty = this.section.items.length;
+    this.itemsQty = this.section.items.length;
   },
   watch: {
     isEdit: function() {
       this.restartSlick();
+    },
+    section: function() {
+      if (
+        this.isEdit &&
+        this.itemsQty === 0 &&
+        this.section.items.length === 1
+      ) {
+        this.restartSlick();
+      }
     }
-    // section: function () {
-    //   if (
-    //     this.isEdit &&
-    //     this.itemsQty === 0 &&
-    //     this.section.items.length === 1
-    //   ) {
-    //     this.restartSlick();
-    //   }
-    // },
   }
 };
 </script>
