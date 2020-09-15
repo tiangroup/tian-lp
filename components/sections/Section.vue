@@ -21,7 +21,7 @@ import sections_contacts from "~/components/sections/contacts/contacts";
 import sections_footer from "~/components/sections/footer/footer";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   components: {
     sections_header,
@@ -38,18 +38,18 @@ export default {
     sections_reviews,
     sections_cta,
     sections_contacts,
-    sections_footer,
+    sections_footer
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      isEdit: "isEdit"
     }),
     isShow() {
       return this.isEdit || this.section.show === true;
     },
     comp() {
       return this.section.__component.replace(".", "_");
-    },
-  },
+    }
+  }
 };
 </script>

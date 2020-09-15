@@ -268,8 +268,6 @@
 
 <script>
 import ContactsMap from "./ContactsMap";
-import Editor from "@/components/admin/Editor";
-import ButtonsItem from "@/components/admin/ButtonsItem";
 export default {
   props: {
     section: Object,
@@ -280,9 +278,7 @@ export default {
     }
   },
   components: {
-    Editor,
-    ContactsMap,
-    ButtonsItem
+    ContactsMap
   },
   data() {
     return {

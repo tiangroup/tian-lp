@@ -3,11 +3,14 @@
 export default (context, inject) => {
   const { store, env, $env } = context;
 
+  const api_backend = $env.API_BACKEND || "https://api.tian-lp.ru";
+  const app_backend = $env.APP_BACKEND || "https://app.tian-lp.ru";
+
   inject("site_img", img => "/" + store.getters["sites/id"] + img);
 
-  inject("site_api", $env.API_BACKEND || "https://api.tian-lp.ru");
+  inject("site_api", api_backend);
 
-  inject("site_app", $env.APP_BACKEND || "https://app.tian-lp.ru");
+  inject("site_app", app_backend);
 
   inject("forms", {
     showMessage: message => {

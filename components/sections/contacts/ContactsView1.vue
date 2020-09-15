@@ -241,11 +241,9 @@
 
 <script>
 import ContactsMap from "./ContactsMap";
-import Editor from "@/components/admin/Editor";
 export default {
   components: {
-    ContactsMap,
-    Editor
+    ContactsMap
   },
   props: {
     section: Object,

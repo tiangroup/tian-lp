@@ -61,11 +61,6 @@ export default {
     loading: false,
     message: false
   }),
-  async fetch() {
-    // if (this.formId) {
-    //   await this.$store.dispatch("forms/loadForm", this.formId);
-    // }
-  },
   computed: {
     ...mapGetters({
       getForm: "forms/form",
@@ -130,8 +125,6 @@ export default {
       });
       await this.savePage();
       await this.loadForm(this.formId);
-    } else if (this.formId) {
-      this.loadForm(this.formId);
     }
   }
 };

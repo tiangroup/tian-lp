@@ -52,12 +52,8 @@
 
     <v-navigation-drawer app class="over" v-model="drawer" temporary>
       <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="title" v-text="slug"></v-list-item-title>
-          <!--
-          <v-list-item-subtitle>v 2.0</v-list-item-subtitle>
-          -->
-        </v-list-item-content>
+        <v-list-item-title>Страница</v-list-item-title>
+        <v-list-item-subtitle v-text="slug"></v-list-item-subtitle>
       </v-list-item>
 
       <v-divider></v-divider>
@@ -72,6 +68,13 @@
         <!--
         <menu-item-robots />
         -->
+        <v-subheader>Администрирование</v-subheader>
+        <v-list-item link @click="$router.push('/admin')">
+          <v-list-item-icon>
+            <v-icon>mdi-cog</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Панель управления</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -79,13 +82,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import MenuItemSeo from "~/components/admin/MenuItemSeo";
-import MenuItemSettings from "~/components/admin/MenuItemSettings";
 export default {
-  components: {
-    MenuItemSeo,
-    MenuItemSettings
-  },
   data: () => ({
     drawer: false
   }),

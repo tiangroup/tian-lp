@@ -98,10 +98,6 @@ export default {
   data: () => ({
     isCropped: false
   }),
-  components: {
-    Editor: () => import("@/components/admin/Editor"),
-    ButtonsItem: () => import("@/components/admin/ButtonsItem")
-  },
   computed: {
     computedReviewDate() {
       return this.item.date
