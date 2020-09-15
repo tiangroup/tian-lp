@@ -81,8 +81,7 @@ export default {
       return this.isEdit ? { position: "relative" } : null;
     },
     view() {
-      return "view2";
-      //return this.section.settings.view;
+      return this.section.settings.view;
     }
   },
   methods: {

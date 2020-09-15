@@ -19,6 +19,7 @@ import sections_reviews from "~/components/sections/reviews/reviews";
 import sections_cta from "~/components/sections/cta/cta";
 import sections_contacts from "~/components/sections/contacts/contacts";
 import sections_footer from "~/components/sections/footer/footer";
+import sections_products from "~/components/sections/products/products";
 export default {
   props: {
     section: Object
@@ -38,6 +39,7 @@ export default {
     sections_reviews,
     sections_cta,
     sections_contacts,
+    sections_products,
     sections_footer
   },
   computed: {
