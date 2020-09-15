@@ -11,11 +11,13 @@
 </template>
 
 <script>
+import Admin from "~/components/Admin";
+import AdminForm from "~/components/admin/AdminForm";
 export default {
   layout: "admin",
   components: {
-    Admin: () => import("~/components/Admin"),
-    AdminForm: () => import("~/components/admin/AdminForm")
+    Admin,
+    AdminForm
   },
   head: () => ({
     title: "Панель управления"

@@ -136,8 +136,21 @@ export default {
       }
     },
     redirect: false,
-    localStorage: false,
-    cookie: false
+    localStorage:
+      process.env.MODE_BUILD == "static"
+        ? false
+        : {
+            prefix: "auth."
+          },
+    cookie:
+      process.env.MODE_BUILD == "static"
+        ? false
+        : {
+            prefix: "auth.",
+            options: {
+              path: "/"
+            }
+          }
   },
   bootstrapVue: {
     icons: true // Install the IconsPlugin (in addition to BootStrapVue plugin
@@ -149,14 +162,15 @@ export default {
   build: {},
   serverMiddleware: ["~/api/upload", "~/api/sites", "~/api/forms"],
   generate: {
-    //dir: process.env.EXPORT_DIR || "dist",
     fallback: true,
     routes() {
-      console.log("!!! SITE_NAME: " + process.env.SITE_NAME);
-      console.log("!!! API_BACKEND: " + process.env.API_BACKEND);
+      const api_backend = process.env.API_BACKEND || "https://api.tian-lp.ru";
+      const site_name = process.env.SITE_NAME;
+      console.log("!!! API_BACKEND: " + api_backend);
+      console.log("!!! SITE_NAME: " + site_name);
       return axios
-        .get(`${process.env.API_BACKEND}/sites`, {
-          params: { name: process.env.SITE_NAME }
+        .get(`${api_backend}/sites`, {
+          params: { name: site_name }
         })
         .then(({ data }) => {
           if (data.length) {
