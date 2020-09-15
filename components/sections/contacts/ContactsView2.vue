@@ -16,11 +16,12 @@
             :ref="'slick' + section.id"
             :options="updatedSlickOptions"
             v-if="isSlick"
+            @init="handleInit"
           >
             <div
               class="cell"
               :class="{ 'position-relative': isEdit }"
-              v-for="item in section.items"
+              v-for="item in section.items.filter(i => i.id)"
               :key="item.id"
             >
               <buttons-item
@@ -64,6 +65,7 @@
                     {{ item.address }}
                   </div>
                   <a
+                    :data-coords="item.coords"
                     href
                     class="department__address__link"
                     @click.prevent="showItemOnMap(getItemCoords(item.coords))"
@@ -368,6 +370,9 @@ export default {
         infinite: !this.isEdit,
         draggable: !this.isEdit
       });
+    },
+    slickRef() {
+      return "slick" + this.section.id;
     }
   },
   methods: {
@@ -375,16 +380,20 @@ export default {
       this.restartSlick();
       this.itemsQty = this.section.items.length;
     },
-    restartSlick() {
+    async restartSlick() {
+      let currSlideIndex = this.$refs[this.slickRef].currentSlide();
       this.isSlick = false;
-      const _this = this;
-      setTimeout(() => {
-        _this.isSlick = true;
-      }, 200);
+      let enableSlick = new Promise(resolve => {
+        setTimeout(() => {
+          resolve(true);
+        }, 200);
+      });
+      this.isSlick = await enableSlick;
+      this.$refs[this.slickRef].goTo(currSlideIndex, true);
     },
     handleInit(event, slick) {
       if (!this.isEdit) {
-        const _this = this;
+        const showItemOnMap = this.showItemOnMap;
         const [slickTrack] = slick.$slideTrack;
         let slidesCloned = slickTrack.querySelectorAll(".slick-cloned");
         let slidesRealLength = slickTrack.querySelectorAll(
@@ -392,19 +401,14 @@ export default {
         ).length;
         for (let m = 0; m < slidesCloned.length; m++) {
           let slideItem = slidesCloned[m];
-          let slideIndex = Number(slideItem.getAttribute("data-slick-index"));
-          let slideId = null;
-          if (slideIndex > 0) {
-            slideId = slideIndex % slidesRealLength;
-          } else {
-            slideId = slidesRealLength + slideIndex;
-          }
           let slideDetailLink = slideItem.querySelector(
             ".department__address__link"
           );
           if (slideDetailLink) {
-            slideDetailLink.addEventListener("click", function() {
-              console.log("clone clicked");
+            slideDetailLink.addEventListener("click", function(e) {
+              e.preventDefault();
+              let slideCoords = this.getAttribute("data-coords");
+              showItemOnMap(slideCoords.replace(/\s+/g, "").split(","));
             });
           }
         }
