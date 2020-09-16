@@ -6,7 +6,13 @@ export default (context, inject) => {
   const api_backend = $env.API_BACKEND || "https://api.tian-lp.ru";
   const app_backend = $env.APP_BACKEND || "https://app.tian-lp.ru";
 
-  inject("site_img", img => "/" + store.getters["sites/id"] + img);
+  inject("site_img", img => {
+    let root = "/";
+    if (store.getters["isEdit"]) {
+      root = app_backend + "/";
+    }
+    return root + store.getters["sites/id"] + img;
+  });
 
   inject("site_api", api_backend);
 
@@ -22,7 +28,13 @@ export default (context, inject) => {
   });
 
   inject("images", {
-    src: img => "/" + store.getters["sites/id"] + img,
+    src: img => {
+      let root = "/";
+      if (store.getters["isEdit"]) {
+        root = app_backend + "/";
+      }
+      return root + store.getters["sites/id"] + img;
+    },
     upload: imageUpload => {
       store.dispatch("showImageUpload", imageUpload);
     },
