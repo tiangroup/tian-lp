@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import { yandexMap } from "vue-yandex-maps";
+import { yandexMap, loadYmap } from "vue-yandex-maps";
 export default {
   components: { yandexMap },
   props: {
@@ -48,44 +48,49 @@ export default {
     placeMarkers(map) {
       map.geoObjects.removeAll();
       for (var i = 0; i < this.items.length; i++) {
-        if (!this.items[i] || !this.items[i].coords) {
-          this.$emit("map-empty");
-          break;
-        }
-        let place = this.items[i];
-        let coords = place.coords.replace(/\s+/g, "").split(",");
-        let title = place.title || "";
-        let address = place.address || "";
-        let phone = place.phone || "";
-        var placemark = new ymaps.Placemark(
-          coords,
-          {
-            balloonContentHeader: title,
-            balloonContentBody: address + "<br>" + phone
-          },
-          {
-            iconLayout: "default#image",
-            iconImageHref: "/icon-loc.svg",
-            iconImageSize: [38, 45],
-            iconImageOffset: [-19, -40]
-          }
-        );
-        map.geoObjects.add(placemark);
-        map
-          .setBounds(map.geoObjects.getBounds(), {
-            checkZoomRange: true
-          })
-          .then(function() {
-            if (map.getZoom() > 16) {
-              map.setZoom(16);
+        if (this.items[i].coords) {
+          let place = this.items[i];
+          let coords = place.coords.replace(/\s+/g, "").split(",");
+          let title = place.title || "";
+          let address = place.address || "";
+          let phone = place.phone || "";
+          var placemark = new ymaps.Placemark(
+            coords,
+            {
+              balloonContentHeader: title,
+              balloonContentBody: address + "<br>" + phone
+            },
+            {
+              iconLayout: "default#image",
+              iconImageHref: "/icon-loc.svg",
+              iconImageSize: [38, 45],
+              iconImageOffset: [-19, -40]
             }
-          });
+          );
+          map.geoObjects.add(placemark);
+        }
       }
+      map
+        .setBounds(map.geoObjects.getBounds(), {
+          checkZoomRange: true
+        })
+        .then(function() {
+          if (map.getZoom() > 16) {
+            map.setZoom(16);
+          }
+        });
     }
   },
+  // async mounted() {
+  //   const settings = {};
+  //   await loadYmap(settings);
+  //   console.log(ymaps); // здесь доступен весь функционал ymaps
+  // },
   watch: {
     items: function() {
-      this.placeMarkers(this.myMap);
+      if (this.myMap) {
+        this.placeMarkers(this.myMap);
+      }
     }
   }
 };

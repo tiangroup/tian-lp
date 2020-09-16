@@ -10,12 +10,7 @@
       @onAction="$emit('item-update')"
     ></buttons-item>
     <div class="products__item">
-      <a
-        href="#popup-details"
-        class="products__details"
-        :class="{ 'no-hover': isEdit }"
-        @click="$emit('show-details')"
-      >
+      <div class="products__details no-hover" v-if="isEdit">
         <div class="products__image no-image"></div>
         <div class="products__title">
           <editor
@@ -24,20 +19,10 @@
             :sectionId="sectionId"
             field="title"
             :itemId="item.id"
-            v-if="isEdit"
           />
-          <span v-else>{{ item.title }}</span>
         </div>
-        <div class="products__description">
-          <editor
-            data-placeholder="Небольшое описание товара"
-            :text="item.short_description || ''"
-            :sectionId="sectionId"
-            field="short_description"
-            :itemId="item.id"
-            v-if="isEdit"
-          />
-          <span v-else>{{ item.short_description }}</span>
+        <div class="products__description" @click="$emit('update-description')">
+          {{ item.short_description || "Отредактируйте описание товара" }}
         </div>
         <div class="products__prices">
           <div class="products__prices__current">
@@ -47,9 +32,7 @@
               :sectionId="sectionId"
               field="price"
               :itemId="item.id"
-              v-if="isEdit"
             />
-            <span v-else>{{ item.price }}</span>
           </div>
           <div class="products__prices__old">
             <editor
@@ -58,9 +41,29 @@
               :sectionId="sectionId"
               field="old_price"
               :itemId="item.id"
-              v-if="isEdit"
             />
-            <span v-else>{{ item.old_price }}</span>
+          </div>
+        </div>
+      </div>
+      <a
+        href="#popup-details"
+        class="products__details"
+        @click="$emit('show-details')"
+        v-else
+      >
+        <div class="products__image no-image"></div>
+        <div class="products__title">
+          {{ item.title }}
+        </div>
+        <div class="products__description">
+          {{ item.short_description }}
+        </div>
+        <div class="products__prices">
+          <div class="products__prices__current">
+            {{ item.price }}
+          </div>
+          <div class="products__prices__old">
+            {{ item.old_price }}
           </div>
         </div>
       </a>

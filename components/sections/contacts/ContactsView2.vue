@@ -13,7 +13,7 @@
         </h2>
         <div class="contacts__list mx-ncell">
           <slick
-            :ref="'slick' + section.id"
+            ref="scontacts"
             :options="updatedSlickOptions"
             v-if="isSlick"
             @init="handleInit"
@@ -327,6 +327,7 @@ export default {
   },
   data() {
     return {
+      currentSlide: 0,
       isSlick: true,
       itemsQty: null,
       myMap: {},
@@ -373,11 +374,11 @@ export default {
   },
   methods: {
     onItemsChange(event) {
-      this.restartSlick();
       this.itemsQty = this.section.items.length;
+      this.restartSlick();
     },
     async restartSlick() {
-      let currSlideIndex = this.$refs[this.slickRef].currentSlide();
+      this.currentSlide = this.$refs.scontacts.currentSlide();
       this.isSlick = false;
       let enableSlick = new Promise(resolve => {
         setTimeout(() => {
@@ -385,10 +386,10 @@ export default {
         }, 200);
       });
       this.isSlick = await enableSlick;
-      this.$refs[this.slickRef].goTo(currSlideIndex, true);
     },
     handleInit(event, slick) {
-      if (!this.isEdit) {
+      slick.goTo(this.currentSlide, true);
+      if (!this.isEdit && this.view === "view2") {
         const showItemOnMap = this.showItemOnMap;
         const [slickTrack] = slick.$slideTrack;
         let slidesCloned = slickTrack.querySelectorAll(".slick-cloned");
