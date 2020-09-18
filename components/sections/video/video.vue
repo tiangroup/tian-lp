@@ -230,8 +230,7 @@ export default {
         document
           .getElementById(this.section.id)
           .addEventListener("click", function (e) {
-            console.log(e.target);
-            if (e.target.classList.contains("slick-cloned")) {
+            if (e.target.closest(".slick-cloned")) {
               let slideIndex = Number(
                 e.target.getAttribute("data-slick-index")
               );
