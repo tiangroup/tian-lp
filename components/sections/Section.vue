@@ -20,9 +20,10 @@ import sections_cta from "~/components/sections/cta/cta";
 import sections_contacts from "~/components/sections/contacts/contacts";
 import sections_footer from "~/components/sections/footer/footer";
 import sections_products from "~/components/sections/products/products";
+import sections_services from "~/components/sections/services/services";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   components: {
     sections_header,
@@ -40,18 +41,19 @@ export default {
     sections_cta,
     sections_contacts,
     sections_products,
-    sections_footer
+    sections_services,
+    sections_footer,
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      isEdit: "isEdit",
     }),
     isShow() {
       return this.isEdit || this.section.show === true;
     },
     comp() {
       return this.section.__component.replace(".", "_");
-    }
-  }
+    },
+  },
 };
 </script>
