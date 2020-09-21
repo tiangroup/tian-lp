@@ -1,5 +1,5 @@
 <template>
-  <div class="partners__item-wrap cell" :class="{ 'position-relative': isEdit }">
+  <div class="products__item-wrap cell" :class="{ 'position-relative': isEdit }">
     <buttons-item
       v-if="isEdit"
       :itemId="item.id"

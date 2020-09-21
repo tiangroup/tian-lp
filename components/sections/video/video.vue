@@ -56,7 +56,7 @@
                 })"
               ></video-item>
               <div
-                class="video__item-wrap cell"
+                class="video__item-wrap cell d-flex justify-center align-center"
                 v-if="isEdit && (!section.items || !section.items.length)"
               >
                 <buttons-item-add :sectionId="section.id" />
@@ -103,7 +103,6 @@ export default {
     currentSlide: 0,
     currentVideo: {},
     index: null,
-    itemsCount: null,
     slickOptions: {
       arrows: true,
       dots: true,
@@ -170,9 +169,17 @@ export default {
         for (var i = 0; i < this.itemsCount; i++) {
           key += this.section.items[i].id;
         }
-        console.log("services-slick key " + key);
       }
+      //console.log("video-slick key " + key);
       return key;
+    },
+    itemsCount() {
+      return this.section.items.length;
+    },
+    computedRealSlides() {
+      return document
+        .getElementById(this.section.id)
+        .querySelectorAll(".slick-slide:not(.slick-cloned)").length;
     },
   },
   methods: {
@@ -210,44 +217,34 @@ export default {
     handleInit(event, slick) {
       slick.goTo(this.currentSlide, true);
       if (!this.isEdit) {
-        const [slickTrack] = slick.$slideTrack;
-        const showGallery = this.showGallery;
-        let slidesCloned = slickTrack.querySelectorAll(".slick-cloned");
-        let slidesRealLength = slickTrack.querySelectorAll(
-          ".slick-slide:not(.slick-cloned)"
-        ).length;
-        // for (let m = 0; m < slidesCloned.length; m++) {
-        //   let slideItem = slidesCloned[m];
-        //   let slideIndex = Number(slideItem.getAttribute("data-slick-index"));
-        //   let slideId = null;
-        //   if (slideIndex > 0) {
-        //     slideId = slideIndex % slidesRealLength;
-        //   } else {
-        //     slideId = slidesRealLength + slideIndex;
-        //   }
-        //   slideItem.addEventListener("click", this.showGallery(slideId));
-        // }
         document
           .getElementById(this.section.id)
-          .addEventListener("click", function (e) {
-            if (e.target.closest(".slick-cloned")) {
-              let slideIndex = Number(
-                e.target.getAttribute("data-slick-index")
-              );
-              let slideId = 0;
-              if (slideIndex > 0) {
-                slideId = slideIndex % slidesRealLength;
-              } else {
-                slideId = slidesRealLength + slideIndex;
-              }
-              showGallery(slideId);
-            }
-          });
+          .addEventListener("click", this.showGalleryOnClones);
+      }
+    },
+    showGalleryOnClones(e) {
+      if (e.target.closest(".slick-cloned")) {
+        let slideIndex = Number(
+          e.target.closest(".slick-cloned").getAttribute("data-slick-index")
+        );
+        let slideId = 0;
+        if (slideIndex > 0) {
+          slideId = slideIndex % this.computedRealSlides;
+        } else if (slideIndex < 0) {
+          slideId = this.computedRealSlides + slideIndex;
+        }
+        this.showGallery(slideId);
       }
     },
   },
   beforeUpdate: function () {
-    this.currentSlide = this.$refs[this.slickRef].currentSlide;
+    if (this.$refs[this.slickRef]) {
+      this.currentSlide = this.$refs[this.slickRef].currentSlide;
+
+      //   document
+      //     .getElementById(this.section.id)
+      //     .removeEventListener("click", this.showGalleryOnClones);
+    }
   },
 };
 </script>

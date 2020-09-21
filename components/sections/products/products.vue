@@ -19,7 +19,6 @@
               :item="item"
               :sectionId="section.id"
               :isEdit="isEdit"
-              @item-update="onItemsChange"
               @show-order-form="showOrderForm(item)"
               @update-description="updateItemDescription(item)"
             ></products-item>
@@ -31,9 +30,10 @@
             </div>
           </div>
           <div v-else-if="section.items">
-            <div class="products__list cells">
+            <transition-group tag="div" name="products-appear" class="products__list cells">
               <products-item
                 class="cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
+                :id="item.id"
                 v-for="item in section.items.filter(showLimited)"
                 :key="item.id"
                 :item="item"
@@ -42,7 +42,7 @@
                 @show-details="showProductDetails(item)"
                 @show-order-form="showOrderForm(item)"
               ></products-item>
-            </div>
+            </transition-group>
             <div class="cells align-items-center justify-content-center justify-content-sm-between">
               <div
                 class="cell cell-auto products__count"
@@ -61,22 +61,21 @@
           </div>
         </div>
         <div class="products__list mx-ncell" v-if="view === 'view2'">
-          <slick :ref="slickRef" :options="updatedSlickOptions" v-if="isSlick" @init="handleInit">
-            <products-item
-              v-for="item in section.items.filter(i => i.id)"
-              :key="item.id"
-              :item="item"
-              :sectionId="section.id"
-              :isEdit="isEdit"
-              @item-update="onItemsChange"
-              @show-details="showProductDetails(item)"
-              @show-order-form="showOrderForm(item)"
-              @update-description="updateItemDescription(item)"
-            ></products-item>
-            <div class="products__item-wrap cell" v-if="isEdit && (!section.items || !itemsCount)">
-              <buttons-item-add :sectionId="section.id" />
-            </div>
-          </slick>
+          <!-- <slick :ref="slickRef" :options="updatedSlickOptions" @init="handleInit" :key="slickKey"> -->
+          <products-item
+            v-for="item in section.items.filter(i => i.id)"
+            :key="item.id"
+            :item="item"
+            :sectionId="section.id"
+            :isEdit="isEdit"
+            @show-details="showProductDetails(item)"
+            @show-order-form="showOrderForm(item)"
+            @update-description="updateItemDescription(item)"
+          ></products-item>
+          <div class="products__item-wrap cell" v-if="isEdit && (!section.items || !itemsCount)">
+            <buttons-item-add :sectionId="section.id" />
+          </div>
+          <!-- </slick> -->
         </div>
 
         <form-dialog :section="section" field="order_form" v-model="dialogOrderProduct">
@@ -335,26 +334,52 @@ export default {
         return "Загрузить еще";
       }
     },
+    slickKey() {
+      let key = "" + this.isEdit;
+      if (this.itemsCount) {
+        for (var i = 0; i < this.itemsCount; i++) {
+          key += this.section.items[i].id;
+        }
+      }
+      //console.log("products-slick key " + key);
+      return key;
+    },
   },
   methods: {
-    onItemsChange() {
-      if (this.view === "view2") {
-        this.restartSlick();
-        this.itemsQty = this.section.items.length;
-      }
-    },
-    async restartSlick(slideIndex) {
-      this.currentSlide = this.$refs[this.slickRef].currentSlide();
-      this.isSlick = false;
-      let enableSlick = new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(true);
-        }, 200);
-      });
-      this.isSlick = await enableSlick;
-    },
     handleInit(event, slick) {
       slick.goTo(this.currentSlide, true);
+      if (!this.isEdit) {
+        const [slickTrack] = slick.$slideTrack;
+        let slidesReal = slickTrack.querySelectorAll(
+          ".slick-slide:not(.slick-cloned)"
+        );
+        let slidesRealLength = slidesReal.length;
+        document
+          .getElementById(this.section.id)
+          .addEventListener("click", function (e) {
+            if (e.target.closest(".slick-cloned")) {
+              let slideIndex = Number(
+                e.target
+                  .closest(".slick-cloned")
+                  .getAttribute("data-slick-index")
+              );
+              let slideId = 0;
+              if (slideIndex > 0) {
+                slideId = slideIndex % slidesRealLength;
+              } else if (slideIndex < 0) {
+                slideId = slidesRealLength + slideIndex;
+              }
+
+              if (e.target.closest(".products__details")) {
+                slidesReal[slideId].querySelector(".products__details").click();
+              }
+
+              if (e.target.closest(".products__action")) {
+                slidesReal[slideId].querySelector(".button").click();
+              }
+            }
+          });
+      }
     },
     showProductDetails(item) {
       if (!this.isEdit) {
@@ -388,30 +413,35 @@ export default {
     showMoreItems() {
       if (this.itemsShown >= this.itemsCount) {
         this.itemsToShow -= 4;
+        let lastElem = document.getElementById(
+          this.section.items[this.itemsToShow - 1].id
+        );
+        //this.$vuetify.goTo(lastElem, { duration: 500 });
       } else {
         this.itemsToShow += 4;
       }
     },
   },
-  mounted: function () {
-    this.itemsQty = this.section.items.length;
-  },
-  watch: {
-    isEdit: function () {
-      if (this.view === "view2") {
-        this.restartSlick();
-      }
-    },
-    section: function () {
-      if (
-        this.view === "view2" &&
-        this.isEdit &&
-        this.itemsQty === 0 &&
-        this.section.items.length === 1
-      ) {
-        this.restartSlick();
-      }
-    },
+  beforeUpdate: function () {
+    if (this.$refs[this.slickRef]) {
+      this.currentSlide = this.$refs[this.slickRef].currentSlide;
+    }
   },
 };
 </script>
+<style>
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.products-appear-enter-active .products__item {
+  transition: min-height 2s ease;
+}
+.products-appear-leave-active .products__item {
+  transition: min-height 2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.products-appear-enter .products__item,
+.products-appear-leave-to .products__item {
+  height: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+</style>
