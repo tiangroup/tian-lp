@@ -47,6 +47,9 @@ export default {
   props: {
     menu: Array
   },
+  data: () => ({
+    items: []
+  }),
   methods: {
     handleResize: _.throttle(function() {
       this.items = this.items.map((item, index) => ({

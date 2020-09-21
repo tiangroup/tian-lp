@@ -20,7 +20,7 @@ export default {
     link: [
       {
         rel: "stylesheet",
-        href: "https://sharp-bartik-8c8c21.netlify.app/assets/css/style.css"
+        href: "/assets/css/style.css"
       }
     ]
   }
