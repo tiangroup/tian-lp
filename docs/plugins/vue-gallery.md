@@ -2,4 +2,4 @@
 
 Гитхаб компонента: [https://github.com/RobinCK/vue-gallery](https://github.com/RobinCK/vue-gallery)
 
-Настройка closeOnSlideClick: true не работает для видео.
+Настройка closeOnSlideClick: true не работает для видео. И если она активна, после просмотра видео не появляюца элементы управления!!!

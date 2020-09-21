@@ -7,43 +7,61 @@
     >
       <div class="landing__container">
         <h2 v-if="isEdit">
-          <editor
-            :text="section.title || ''"
-            :sectionId="section.id"
-            field="title"
-          />
+          <editor :text="section.title || ''" :sectionId="section.id" field="title" />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
-        <div
-          class="products__list cells"
-          v-if="section.items && section.settings.view === 'view1'"
-        >
-          <products-item
-            class="cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
-            v-for="item in section.items.filter(i => i.id)"
-            :key="item.id"
-            :item="item"
-            :sectionId="section.id"
-            :isEdit="isEdit"
-            @item-update="onItemsChange"
-            @show-details="showProductDetails(item)"
-            @show-order-form="showOrderForm(item)"
-            @update-description="updateItemDescription(item)"
-          ></products-item>
-          <div
-            class="products__item-wrap cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
-            v-if="isEdit && (!section.items || !section.items.length)"
-          >
-            <buttons-item-add :sectionId="section.id" />
+        <div v-if="section.settings.view === 'view1'">
+          <div class="products__list cells" v-if="section.items && isEdit">
+            <products-item
+              class="cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
+              v-for="item in section.items.filter(i => i.id)"
+              :key="item.id"
+              :item="item"
+              :sectionId="section.id"
+              :isEdit="isEdit"
+              @item-update="onItemsChange"
+              @show-order-form="showOrderForm(item)"
+              @update-description="updateItemDescription(item)"
+            ></products-item>
+            <div
+              class="products__item-wrap cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
+              v-if="!section.items || !itemsCount"
+            >
+              <buttons-item-add :sectionId="section.id" />
+            </div>
+          </div>
+          <div v-else-if="section.items">
+            <div class="products__list cells">
+              <products-item
+                class="cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
+                v-for="item in section.items.filter(showLimited)"
+                :key="item.id"
+                :item="item"
+                :sectionId="section.id"
+                :isEdit="isEdit"
+                @show-details="showProductDetails(item)"
+                @show-order-form="showOrderForm(item)"
+              ></products-item>
+            </div>
+            <div class="cells align-items-center justify-content-center justify-content-sm-between">
+              <div
+                class="cell cell-auto products__count"
+              >Товаров {{ itemsShown }} из {{ itemsCount }}</div>
+              <div class="cell cell-auto products__loadmore">
+                <button
+                  class="button button-primary button-more"
+                  :class="{'button-more--opened': (itemsShown >= itemsCount)}"
+                  @click="showMoreItems"
+                >
+                  <div class="button__body">{{ loadmoreText }}</div>
+                </button>
+              </div>
+              <div class="cell cell-auto display-none display-sm-block grow-sm-1"></div>
+            </div>
           </div>
         </div>
         <div class="products__list mx-ncell" v-if="view === 'view2'">
-          <slick
-            ref="sProducts"
-            :options="updatedSlickOptions"
-            v-if="isSlick"
-            @init="handleInit"
-          >
+          <slick :ref="slickRef" :options="updatedSlickOptions" v-if="isSlick" @init="handleInit">
             <products-item
               v-for="item in section.items.filter(i => i.id)"
               :key="item.id"
@@ -55,20 +73,13 @@
               @show-order-form="showOrderForm(item)"
               @update-description="updateItemDescription(item)"
             ></products-item>
-            <div
-              class="products__item-wrap cell"
-              v-if="isEdit && (!section.items || !section.items.length)"
-            >
+            <div class="products__item-wrap cell" v-if="isEdit && (!section.items || !itemsCount)">
               <buttons-item-add :sectionId="section.id" />
             </div>
           </slick>
         </div>
 
-        <form-dialog
-          :section="section"
-          field="order_form"
-          v-model="dialogOrderProduct"
-        >
+        <form-dialog :section="section" field="order_form" v-model="dialogOrderProduct">
           <div class="good-summary">
             <div class="good-summary__row">
               <div class="good-summary__image" v-if="currentItem.img">
@@ -80,12 +91,7 @@
               </div>
             </div>
             <div class="good-summary__status">
-              <svg
-                viewBox="0 0 24 24"
-                height="23"
-                width="23"
-                fill="currentColor"
-              >
+              <svg viewBox="0 0 24 24" height="23" width="23" fill="currentColor">
                 <path
                   d="M21 11.080v0.92c-0.001 2.485-1.009 4.733-2.64 6.362s-3.88 2.634-6.365 2.632-4.734-1.009-6.362-2.64-2.634-3.879-2.633-6.365 1.009-4.733 2.64-6.362 3.88-2.634 6.365-2.633c1.33 0.001 2.586 0.289 3.649 0.775 0.502 0.23 1.096 0.008 1.325-0.494s0.008-1.096-0.494-1.325c-1.327-0.606-2.866-0.955-4.479-0.956-3.037-0.002-5.789 1.229-7.78 3.217s-3.224 4.74-3.226 7.777 1.229 5.789 3.217 7.78 4.739 3.225 7.776 3.226 5.789-1.229 7.78-3.217 3.225-4.739 3.227-7.777v-0.92c0-0.552-0.448-1-1-1s-1 0.448-1 1zM21.293 3.293l-9.293 9.302-2.293-2.292c-0.391-0.391-1.024-0.391-1.414 0s-0.391 1.024 0 1.414l3 3c0.391 0.391 1.024 0.39 1.415 0l10-10.010c0.39-0.391 0.39-1.024-0.001-1.414s-1.024-0.39-1.414 0.001z"
                 />
@@ -98,10 +104,7 @@
           <div class="der-popup">
             <div class="der-popup__body">
               <div class="der-popup__close">
-                <button
-                  class="button button-icon button-close"
-                  @click="dialogDetailedItem = false"
-                >
+                <button class="button button-icon button-close" @click="dialogDetailedItem = false">
                   <span class="sr-only">Закрыть</span>
                   <svg
                     width="18"
@@ -122,9 +125,7 @@
               <div class="popup-order">
                 <div class="good">
                   <div class="good__details">
-                    <div class="good__title">
-                      {{ currentItem.title }}
-                    </div>
+                    <div class="good__title">{{ currentItem.title }}</div>
                     <!-- <div class="good__images illustrations">
                 <div class="illustrations__item illustrations__item--main">
                   <div class="illustrations__image">
@@ -147,44 +148,28 @@
                     </a>
                   </div>
                 </div>
-              </div> -->
-                    <div
-                      class="good__chars"
-                      v-html="currentItem.tech_chars"
-                    ></div>
-                    <div
-                      class="good__description"
-                      v-if="currentItem.description"
-                    >
+                    </div>-->
+                    <div class="good__chars" v-html="currentItem.tech_chars"></div>
+                    <div class="good__description" v-if="currentItem.description">
                       <div class="good__description__title">Описание</div>
-                      <div
-                        class="good__description__body"
-                        v-html="currentItem.description"
-                      ></div>
+                      <div class="good__description__body" v-html="currentItem.description"></div>
                     </div>
                   </div>
                   <div class="good__cta">
-                    <div
-                      class="cells justify-content-between align-items-center"
-                    >
+                    <div class="cells justify-content-between align-items-center">
                       <div class="cell cell-auto">
                         <div class="good__prices">
-                          <div class="good__prices__current">
-                            {{ currentItem.price }}
-                          </div>
-                          <div class="good__prices__old">
-                            {{ currentItem.old_price }}
-                          </div>
+                          <div class="good__prices__current">{{ currentItem.price }}</div>
+                          <div class="good__prices__old">{{ currentItem.old_price }}</div>
                         </div>
                       </div>
                       <div class="cell cell-auto">
                         <div class="good__action">
                           <a
-                            href=""
+                            href
                             class="button button-primary"
                             @click.prevent="initOrderForm(currentItem)"
-                            >Купить</a
-                          >
+                          >Купить</a>
                         </div>
                       </div>
                     </div>
@@ -195,11 +180,7 @@
           </div>
         </v-dialog>
 
-        <v-dialog
-          v-model="dialogUpdateDescription"
-          max-width="40rem"
-          v-if="isEdit"
-        >
+        <v-dialog v-model="dialogUpdateDescription" max-width="40rem" v-if="isEdit">
           <v-card>
             <v-card-title class="mb-10">
               Отредактируйте описание товара
@@ -223,13 +204,13 @@
               />
               <div class="mt-10">
                 <b>Технические характеристики товара</b>
-                <small
-                  >(краткая инфорация о товаре, которая появится в карточке
-                  товара)</small
-                >:
+                <small>
+                  (краткая инфорация о товаре, которая появится в карточке
+                  товара)
+                </small>:
               </div>
               <editor
-                data-placeholder="Технические характеристики товара"
+                data-placeholder="Габариты: 220 х 100 х 35 мм"
                 :text="currentItem.tech_chars || ''"
                 :sectionId="section.id"
                 field="tech_chars"
@@ -253,16 +234,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                depressed
-                text
-                color="gray"
-                @click="dialogUpdateDescription = false"
-                >Отменить</v-btn
-              >
-              <v-btn depressed color="green" dark @click="saveDescription()"
-                >Сохранить</v-btn
-              >
+              <v-btn depressed text color="gray" @click="dialogUpdateDescription = false">Отменить</v-btn>
+              <v-btn depressed color="green" dark @click="saveDescription()">Сохранить</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -276,10 +249,10 @@ import { mapMutations, mapGetters } from "vuex";
 import ProductsItem from "./ProductsItem";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   components: {
-    ProductsItem
+    ProductsItem,
   },
   data: () => ({
     currentItem: {},
@@ -288,6 +261,7 @@ export default {
     dialogOrderProduct: false,
     dialogUpdateDescription: false,
     itemsQty: null,
+    itemsToShow: 4,
     isSlick: true,
     slickOptions: {
       arrows: true,
@@ -306,36 +280,36 @@ export default {
           settings: {
             slidesToShow: 3,
             slidesToScroll: 1,
-            arrows: false
-          }
+            arrows: false,
+          },
         },
         {
           breakpoint: 1024,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false
-          }
+            arrows: false,
+          },
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false
-          }
-        }
-      ]
-    }
+            arrows: false,
+          },
+        },
+      ],
+    },
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      isEdit: "isEdit",
     }),
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit
+        draggable: !this.isEdit,
       });
     },
     view() {
@@ -343,19 +317,36 @@ export default {
     },
     slickRef() {
       return "slick" + this.section.id;
-    }
+    },
+    itemsShown() {
+      if (this.itemsToShow >= this.itemsCount) {
+        return this.itemsCount;
+      } else {
+        return this.itemsToShow;
+      }
+    },
+    itemsCount() {
+      return this.section.items.length;
+    },
+    loadmoreText() {
+      if (this.itemsShown >= this.itemsCount) {
+        return "Свернуть";
+      } else {
+        return "Загрузить еще";
+      }
+    },
   },
   methods: {
-    onItemsChange(event) {
+    onItemsChange() {
       if (this.view === "view2") {
         this.restartSlick();
         this.itemsQty = this.section.items.length;
       }
     },
-    async restartSlick() {
-      this.currentSlide = this.$refs.sProducts.currentSlide();
+    async restartSlick(slideIndex) {
+      this.currentSlide = this.$refs[this.slickRef].currentSlide();
       this.isSlick = false;
-      let enableSlick = new Promise(resolve => {
+      let enableSlick = new Promise((resolve) => {
         setTimeout(() => {
           resolve(true);
         }, 200);
@@ -388,18 +379,30 @@ export default {
     saveDescription() {
       this.dialogUpdateDescription = false;
       this.$store.dispatch("pages/savePage");
-    }
+    },
+    showLimited(item, itemIndex) {
+      if (item.id && itemIndex < this.itemsToShow) {
+        return true;
+      }
+    },
+    showMoreItems() {
+      if (this.itemsShown >= this.itemsCount) {
+        this.itemsToShow -= 4;
+      } else {
+        this.itemsToShow += 4;
+      }
+    },
   },
-  mounted: function() {
+  mounted: function () {
     this.itemsQty = this.section.items.length;
   },
   watch: {
-    isEdit: function() {
+    isEdit: function () {
       if (this.view === "view2") {
         this.restartSlick();
       }
     },
-    section: function() {
+    section: function () {
       if (
         this.view === "view2" &&
         this.isEdit &&
@@ -408,7 +411,7 @@ export default {
       ) {
         this.restartSlick();
       }
-    }
-  }
+    },
+  },
 };
 </script>

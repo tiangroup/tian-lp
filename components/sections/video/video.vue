@@ -1,5 +1,5 @@
 <template>
-  <div :style="styleDiv" :id="section.id">
+  <div :class="{'position-relative': isEdit}" :id="section.id">
     <buttons-section v-if="isEdit" :section="section" />
     <div
       class="video custom-v-spacing-2 bg-secondary"
@@ -26,7 +26,6 @@
             :images="videos"
             :index="index"
             :options="{
-              closeOnSlideClick: true,
               youTubeVideoIdProperty: 'youtube',
               youTubePlayerVars: undefined,
               youTubeClickToPlay: false
@@ -36,11 +35,11 @@
           ></v-gallery>
           <div class="mx-ncell">
             <slick
-              :ref="'slick' + section.id"
+              :ref="slickRef"
               :options="updatedSlickOptions"
               class="video__list"
-              v-if="isSlick"
               @init="handleInit"
+              :key="slickKey"
             >
               <video-item
                 v-for="(item, itemIndex) in section.items.filter(i => i.id)"
@@ -49,7 +48,6 @@
                 :sectionId="section.id"
                 :isEdit="isEdit"
                 @gallery-call="showGallery(itemIndex)"
-                @item-update="onItemUpdate"
                 @change-link="itemVideoInput({
                   sectionId:section.id,
                   itemId:item.id,
@@ -102,10 +100,10 @@ export default {
     VideoItem,
   },
   data: () => ({
+    currentSlide: 0,
     currentVideo: {},
     index: null,
-    isSlick: true,
-    itemsQty: null,
+    itemsCount: null,
     slickOptions: {
       arrows: true,
       dots: true,
@@ -143,9 +141,6 @@ export default {
     ...mapGetters({
       isEdit: "isEdit",
     }),
-    styleDiv() {
-      return this.isEdit ? { position: "relative" } : null;
-    },
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
@@ -166,15 +161,24 @@ export default {
       }
       return videosArray;
     },
+    slickRef() {
+      return "slick" + this.section.id;
+    },
+    slickKey() {
+      let key = "" + this.isEdit;
+      if (this.itemsCount) {
+        for (var i = 0; i < this.itemsCount; i++) {
+          key += this.section.items[i].id;
+        }
+        console.log("services-slick key " + key);
+      }
+      return key;
+    },
   },
   methods: {
     ...mapMutations({
       setItemField: "pages/SET_ITEM_FIELD",
     }),
-    onItemUpdate() {
-      this.restartSlick();
-      this.itemsQty = this.section.items.length;
-    },
     itemVideoInput(payload) {
       this.currentVideo = payload;
       this.userUrl = payload.value;
@@ -191,67 +195,59 @@ export default {
       this.$store.dispatch("pages/savePage");
       this.videoUrlDialog = false;
     },
-    restartSlick() {
-      this.isSlick = false;
-      const _this = this;
-      setTimeout(function () {
-        _this.isSlick = true;
-      }, 200);
-    },
     showGallery(itemIndex) {
-      if (this.isEdit) {
-        return;
+      if (!this.isEdit) {
+        this.index = itemIndex;
       }
-      this.index = itemIndex;
     },
     videoId(videoUrl) {
-      if (!videoUrl) {
-        return "";
+      if (videoUrl) {
+        const youtubeRegex = /^.*(youtu\.be\/|vi?\/|u\/\w\/|embed\/|\?vi?=|\&vi?=)([^#\&\?]*).*/;
+        const youtubeId = videoUrl.match(youtubeRegex);
+        return youtubeId[2];
       }
-      const youtubeRegex = /^.*(youtu\.be\/|vi?\/|u\/\w\/|embed\/|\?vi?=|\&vi?=)([^#\&\?]*).*/;
-      const youtubeId = videoUrl.match(youtubeRegex);
-      return youtubeId[2];
     },
     handleInit(event, slick) {
+      slick.goTo(this.currentSlide, true);
       if (!this.isEdit) {
-        const _this = this;
         const [slickTrack] = slick.$slideTrack;
+        const showGallery = this.showGallery;
         let slidesCloned = slickTrack.querySelectorAll(".slick-cloned");
         let slidesRealLength = slickTrack.querySelectorAll(
           ".slick-slide:not(.slick-cloned)"
         ).length;
-        for (let m = 0; m < slidesCloned.length; m++) {
-          let slideItem = slidesCloned[m];
-          let slideIndex = Number(slideItem.getAttribute("data-slick-index"));
-          let slideId = null;
-          if (slideIndex > 0) {
-            slideId = slideIndex % slidesRealLength;
-          } else {
-            slideId = slidesRealLength + slideIndex;
-          }
-          slideItem.addEventListener("click", function () {
-            _this.showGallery(slideId);
+        // for (let m = 0; m < slidesCloned.length; m++) {
+        //   let slideItem = slidesCloned[m];
+        //   let slideIndex = Number(slideItem.getAttribute("data-slick-index"));
+        //   let slideId = null;
+        //   if (slideIndex > 0) {
+        //     slideId = slideIndex % slidesRealLength;
+        //   } else {
+        //     slideId = slidesRealLength + slideIndex;
+        //   }
+        //   slideItem.addEventListener("click", this.showGallery(slideId));
+        // }
+        document
+          .getElementById(this.section.id)
+          .addEventListener("click", function (e) {
+            if (e.target.closest(".slick-cloned")) {
+              let slideIndex = Number(
+                e.target.getAttribute("data-slick-index")
+              );
+              let slideId = 0;
+              if (slideIndex > 0) {
+                slideId = slideIndex % slidesRealLength;
+              } else {
+                slideId = slidesRealLength + slideIndex;
+              }
+              showGallery(slideId);
+            }
           });
-        }
       }
     },
   },
-  mounted: function () {
-    this.itemsQty = this.section.items.length;
-  },
-  watch: {
-    isEdit: function () {
-      this.restartSlick();
-    },
-    section: function () {
-      if (
-        this.isEdit &&
-        this.itemsQty === 0 &&
-        this.section.items.length === 1
-      ) {
-        this.restartSlick();
-      }
-    },
+  beforeUpdate: function () {
+    this.currentSlide = this.$refs[this.slickRef].currentSlide;
   },
 };
 </script>
