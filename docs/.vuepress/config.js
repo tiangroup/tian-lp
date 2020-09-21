@@ -9,7 +9,12 @@ module.exports = {
     //   //{ text: "Компоненты", link: "/components/" }
     // ],
     sidebar: [
-      "/sections/",
+      //"/sections/",
+      {
+        title: "Блоки страницы",
+        path: "/sections/",
+        children: ["/sections/header", "/sections/promo"]
+      },
       {
         title: "Компоненты",
         children: [

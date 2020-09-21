@@ -47,50 +47,6 @@ export default {
   props: {
     menu: Array
   },
-  data: () => ({
-    items: [
-      /*{
-        title: "Преимущества",
-        show: true
-      },
-      {
-        title: "Товары",
-        show: true
-      },
-      {
-        title: "Услуги",
-        show: true
-      },
-      {
-        title: "О компании",
-        show: true
-      },
-      {
-        title: "Видео",
-        show: true
-      },
-      {
-        title: "Фотогалерея",
-        show: true
-      },
-      {
-        title: "Как мы работаем",
-        show: true
-      },
-      {
-        title: "Тарифы",
-        show: true
-      },
-      {
-        title: "Наша команда",
-        show: true
-      },
-      {
-        title: "Контакты",
-        show: true
-      }*/
-    ]
-  }),
   methods: {
     handleResize: _.throttle(function() {
       this.items = this.items.map((item, index) => ({
