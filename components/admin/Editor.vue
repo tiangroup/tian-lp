@@ -1,12 +1,14 @@
 <template>
-  <medium-editor
-    :text="_text"
-    :options="{
-      ...editorOptions,
-      editContent
-    }"
-    @edit="operation => applyItemTextEdit(operation)"
-  />
+  <client-only>
+    <medium-editor
+      :text="_text"
+      :options="{
+        ...editorOptions,
+        editContent
+      }"
+      @edit="operation => applyItemTextEdit(operation)"
+    />
+  </client-only>
 </template>
 
 <script>

@@ -230,9 +230,13 @@ export default {
       await this.$axios.post(`${this.$site_app}/api/upload/dir-remove`, {
         dir: this.section.id
       });
-      await this.$axios.put(`${this.$site_app}/forms/remove-section`, {
-        section: this.section.id
-      });
+      try {
+        await this.$axios.put(`${this.$site_app}/forms/remove-section`, {
+          section: this.section.id
+        });
+      } catch (error) {
+        console.log(error);
+      }
       this.deleteSection({
         sectionId: this.section.id
       });
