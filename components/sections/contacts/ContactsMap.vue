@@ -2,7 +2,7 @@
   <div class="contacts__map">
     <yandex-map
       :settings="settings"
-      :coords="mapCenter"
+      coords="mapCenter"
       zoom="10"
       class="contacts__map__container"
       @map-was-initialized="processMap"
@@ -14,10 +14,10 @@
 <script>
 import { yandexMap, loadYmap } from "vue-yandex-maps";
 export default {
-  components: { yandexMap },
+  components: { yandexMap, loadYmap },
   props: {
     items: Array,
-    mapKey: String
+    mapKey: String,
   },
   data: () => ({
     mapCenter: [55.159897, 61.402554],
@@ -26,18 +26,18 @@ export default {
       "routeEditor",
       "trafficControl",
       "typeSelector",
-      "zoomControl"
+      "zoomControl",
     ],
     mapBehaviors: ["drag", "dblClickZoom", "multiTouch"],
-    myMap: null
+    myMap: null,
   }),
   computed: {
     settings() {
       return {
         apiKey: this.mapKey || "",
-        lang: "ru_RU"
+        lang: "ru_RU",
       };
-    }
+    },
   },
   methods: {
     processMap(map) {
@@ -58,13 +58,13 @@ export default {
             coords,
             {
               balloonContentHeader: title,
-              balloonContentBody: address + "<br>" + phone
+              balloonContentBody: address + "<br>" + phone,
             },
             {
               iconLayout: "default#image",
-              iconImageHref: "/icon-loc.svg",
+              iconImageHref: "/assets/images/icon-loc.svg",
               iconImageSize: [38, 45],
-              iconImageOffset: [-19, -40]
+              iconImageOffset: [-19, -40],
             }
           );
           map.geoObjects.add(placemark);
@@ -72,27 +72,22 @@ export default {
       }
       map
         .setBounds(map.geoObjects.getBounds(), {
-          checkZoomRange: true
+          checkZoomRange: true,
         })
-        .then(function() {
+        .then(function () {
           if (map.getZoom() > 16) {
             map.setZoom(16);
           }
         });
-    }
+    },
   },
-  // async mounted() {
-  //   const settings = {};
-  //   await loadYmap(settings);
-  //   console.log(ymaps); // здесь доступен весь функционал ymaps
-  // },
   watch: {
-    items: function() {
+    items: function () {
       if (this.myMap) {
         this.placeMarkers(this.myMap);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

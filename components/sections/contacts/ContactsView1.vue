@@ -212,7 +212,7 @@
             <social-list :section="section" :isEdit="isEdit"></social-list>
           </div>
         </div>
-        <contacts-map :items="getMainOffice()" :map-key="section.map_key"></contacts-map>
+        <!-- <contacts-map :items="getMainOffice()" :map-key="section.map_key"></contacts-map> -->
       </div>
     </div>
   </div>

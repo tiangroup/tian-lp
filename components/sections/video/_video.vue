@@ -34,37 +34,34 @@
             :id="'gallery' + section.id"
           ></v-gallery>
           <div class="mx-ncell">
-            <v-slide-group
-              show-arrows
-              v-model="videoSlider"
-              prev-icon="mdi-minus"
-              next-icon="mdi-plus"
+            <slick
+              :ref="slickRef"
+              :options="updatedSlickOptions"
+              class="video__list"
+              @init="handleInit"
+              :key="slickKey"
             >
-              <v-slide-item
+              <video-item
                 v-for="(item, itemIndex) in section.items.filter(i => i.id)"
                 :key="item.id"
-                v-slot:default="{ active, toggle }"
-              >
-                <video-item
-                  :item="item"
-                  :sectionId="section.id"
-                  :isEdit="isEdit"
-                  @gallery-call="showGallery(itemIndex)"
-                  @change-link="itemVideoInput({
+                :item="item"
+                :sectionId="section.id"
+                :isEdit="isEdit"
+                @gallery-call="showGallery(itemIndex)"
+                @change-link="itemVideoInput({
                   sectionId:section.id,
                   itemId:item.id,
                   field:'link',
                   value:item.link
                 })"
-                ></video-item>
-                <!-- <div
+              ></video-item>
+              <div
                 class="video__item-wrap cell d-flex justify-center align-center"
                 v-if="isEdit && (!section.items || !section.items.length)"
               >
                 <buttons-item-add :sectionId="section.id" />
-                </div>-->
-              </v-slide-item>
-            </v-slide-group>
+              </div>
+            </slick>
 
             <v-dialog v-model="videoUrlDialog" max-width="33rem" v-if="isEdit">
               <v-card>
@@ -137,7 +134,6 @@ export default {
       ],
     },
     videoUrlDialog: false,
-    videoSlider: null,
     userUrl: "",
   }),
   computed: {

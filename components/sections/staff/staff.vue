@@ -7,94 +7,84 @@
     >
       <div class="landing__container">
         <h2 v-if="isEdit">
-          <editor
-            :text="section.title || ''"
-            :sectionId="section.id"
-            field="title"
-          />
+          <editor :text="section.title || ''" :sectionId="section.id" field="title" />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
         <div class="staff__list mx-ncell" v-if="section.items && isSlick">
-          <slick ref="slick" :options="updatedSlickOptions">
-            <div
-              class="staff__item-wrap cell"
-              :class="{ 'position-relative': isEdit }"
-              v-for="item in section.items.filter(i => i.id)"
-              :key="item.id"
-            >
-              <buttons-item
-                v-if="isEdit"
+          <!-- <slick :ref="slickRef" :options="updatedSlickOptions" :key="slickKey"> -->
+          <div
+            class="staff__item-wrap cell"
+            :class="{ 'position-relative': isEdit }"
+            v-for="item in section.items.filter(i => i.id)"
+            :key="item.id"
+          >
+            <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="section.id" />
+            <div class="staff__item">
+              <image-item
+                divClass="staff__image"
+                :img="item.img"
                 :itemId="item.id"
                 :sectionId="section.id"
-                @onAction="onItemsChange"
               />
-              <div class="staff__item">
-                <image-item
-                  divClass="staff__image"
-                  :img="item.img"
-                  :itemId="item.id"
-                  :sectionId="section.id"
-                />
-                <div class="staff__info">
-                  <div class="staff__name" v-if="isEdit">
-                    <editor
-                      data-placeholder="Имя Фамилия"
-                      :text="item.name || ''"
-                      :sectionId="section.id"
-                      field="name"
-                      :itemId="item.id"
-                    />
-                  </div>
-                  <div v-else class="staff__name">{{ item.name }}</div>
-                  <div class="staff__position" v-if="isEdit">
-                    <editor
-                      data-placeholder="должность"
-                      :text="item.position || ''"
-                      :sectionId="section.id"
-                      field="position"
-                      :itemId="item.id"
-                    />
-                  </div>
-                  <div v-else class="staff__position">{{ item.position }}</div>
+              <div class="staff__info">
+                <div class="staff__name" v-if="isEdit">
+                  <editor
+                    data-placeholder="Имя Фамилия"
+                    :text="item.name || ''"
+                    :sectionId="section.id"
+                    field="name"
+                    :itemId="item.id"
+                  />
                 </div>
-                <div class="staff__contacts">
-                  <div class="staff__phone" v-if="isEdit">
-                    <editor
-                      data-placeholder="+7 351 111-22-33"
-                      :text="item.phone || ''"
-                      editContent="html"
-                      :sectionId="section.id"
-                      field="phone"
-                      :itemId="item.id"
-                    />
-                  </div>
-                  <div v-else class="staff__phone" v-html="item.phone"></div>
-                  <div class="staff__email">
-                    <editor
-                      data-placeholder="mail@mail.ru"
-                      :text="item.email || ''"
-                      :sectionId="section.id"
-                      field="email"
-                      :itemId="item.id"
-                      v-if="isEdit"
-                    />
-                    <a
-                      v-else-if="isValidEmail(item.email)"
-                      :href="`mailto:${item.email}`"
-                      >{{ item.email }}</a
-                    >
-                    <span v-else>{{ item.email }}</span>
-                  </div>
+                <div v-else class="staff__name">{{ item.name }}</div>
+                <div class="staff__position" v-if="isEdit">
+                  <editor
+                    data-placeholder="должность"
+                    :text="item.position || ''"
+                    :sectionId="section.id"
+                    field="position"
+                    :itemId="item.id"
+                  />
+                </div>
+                <div v-else class="staff__position">{{ item.position }}</div>
+              </div>
+              <div class="staff__contacts">
+                <div class="staff__phone" v-if="isEdit">
+                  <editor
+                    data-placeholder="+7 351 111-22-33"
+                    :text="item.phone || ''"
+                    editContent="html"
+                    :sectionId="section.id"
+                    field="phone"
+                    :itemId="item.id"
+                  />
+                </div>
+                <div v-else class="staff__phone" v-html="item.phone"></div>
+                <div class="staff__email">
+                  <editor
+                    data-placeholder="mail@mail.ru"
+                    :text="item.email || ''"
+                    :sectionId="section.id"
+                    field="email"
+                    :itemId="item.id"
+                    v-if="isEdit"
+                  />
+                  <a
+                    v-else-if="isValidEmail(item.email)"
+                    :href="`mailto:${item.email}`"
+                  >{{ item.email }}</a>
+                  <span v-else>{{ item.email }}</span>
                 </div>
               </div>
             </div>
-            <div
-              class="staff__item-wrap cell"
-              v-if="isEdit && (!section.items || !section.items.length)"
-            >
-              <buttons-item-add :sectionId="section.id" />
-            </div>
-          </slick>
+          </div>
+          <div
+            class="staff__item-wrap cell"
+            v-if="isEdit && (!section.items || !section.items.length)"
+          >
+            <buttons-item-add :sectionId="section.id" />
+          </div>
+          <!-- </slick> -->
         </div>
       </div>
     </div>
@@ -105,11 +95,11 @@
 import { mapGetters } from "vuex";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   data: () => ({
+    currentSlide: 0,
     isSlick: true,
-    itemsQty: null,
     slickOptions: {
       arrows: true,
       dots: true,
@@ -127,23 +117,23 @@ export default {
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false
-          }
+            arrows: false,
+          },
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false
-          }
-        }
-      ]
-    }
+            arrows: false,
+          },
+        },
+      ],
+    },
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      isEdit: "isEdit",
     }),
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
@@ -151,43 +141,39 @@ export default {
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit
+        draggable: !this.isEdit,
       });
-    }
+    },
+    slickRef() {
+      return "slick" + this.section.id;
+    },
+    slickKey() {
+      let key = "" + this.isEdit;
+      if (this.itemsCount) {
+        for (var i = 0; i < this.itemsCount; i++) {
+          key += this.section.items[i].id;
+        }
+      }
+      //console.log("video-slick key " + key);
+      return key;
+    },
+    itemsCount() {
+      return this.section.items.length;
+    },
   },
   methods: {
     isValidEmail(emailString) {
       const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return pattern.test(emailString);
     },
-    onItemsChange(event) {
-      this.restartSlick();
-      this.itemsQty = this.section.items.length;
+    handleInit(event, slick) {
+      slick.goTo(this.currentSlide, true);
     },
-    restartSlick() {
-      this.isSlick = false;
-      const _this = this;
-      setTimeout(function() {
-        _this.isSlick = true;
-      }, 200);
+  },
+  beforeUpdate: function () {
+    if (this.$refs[this.slickRef]) {
+      this.currentSlide = this.$refs[this.slickRef].currentSlide;
     }
   },
-  mounted: function() {
-    this.itemsQty = this.section.items.length;
-  },
-  watch: {
-    isEdit: function() {
-      this.restartSlick();
-    },
-    section: function() {
-      if (
-        this.isEdit &&
-        this.itemsQty === 0 &&
-        this.section.items.length === 1
-      ) {
-        this.restartSlick();
-      }
-    }
-  }
 };
 </script>

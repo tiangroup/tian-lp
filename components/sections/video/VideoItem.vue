@@ -1,12 +1,7 @@
 <template>
-  <div class="video__item-wrap cell">
+  <div class="video__item-wrap cell cell-12 cell-sm-4 cell-lg-4">
     <div class="video__item" :class="{'position-relative': isEdit}" @click="$emit('gallery-call')">
-      <buttons-item
-        :itemId="item.id"
-        :sectionId="sectionId"
-        @onAction="$emit('item-update')"
-        v-if="isEdit"
-      />
+      <buttons-item :itemId="item.id" :sectionId="sectionId" v-if="isEdit" />
       <div
         v-if="isEdit"
         class="video__cover video__cover--editable"

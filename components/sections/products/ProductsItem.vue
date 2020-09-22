@@ -1,11 +1,6 @@
 <template>
-  <div class="partners__item-wrap cell" :class="{ 'position-relative': isEdit }">
-    <buttons-item
-      v-if="isEdit"
-      :itemId="item.id"
-      :sectionId="sectionId"
-      @onAction="$emit('item-update')"
-    ></buttons-item>
+  <div class="products__item-wrap cell" :class="{ 'position-relative': isEdit }">
+    <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="sectionId"></buttons-item>
     <div class="products__item">
       <div class="products__details no-hover" v-if="isEdit">
         <div class="products__image no-image"></div>
