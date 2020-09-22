@@ -13,7 +13,26 @@ module.exports = {
       {
         title: "Блоки страницы",
         path: "/sections/",
-        children: ["/sections/header", "/sections/promo"]
+        children: [
+          "/sections/header",
+          "/sections/promo",
+          "/sections/highlights",
+          "/sections/benefits",
+          "/sections/products",
+          "/sections/services",
+          "/sections/photoes",
+          "/sections/process",
+          "/sections/staff",
+          "/sections/reviews",
+          "/sections/about",
+          "/sections/partners",
+          "/sections/video",
+          "/sections/tarifs",
+          "/sections/cta",
+          "/sections/questions",
+          "/sections/contacts",
+          "/sections/footer"
+        ]
       },
       {
         title: "Компоненты",
@@ -29,7 +48,8 @@ module.exports = {
         children: [
           "/plugins/inject",
           "/plugins/vue-slick",
-          "/plugins/vue-gallery"
+          "/plugins/vue-gallery",
+          "/plugins/vue-yandex-maps"
         ]
       }
     ],

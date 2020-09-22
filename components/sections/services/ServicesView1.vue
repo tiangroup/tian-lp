@@ -153,7 +153,9 @@ export default {
     },
   },
   beforeUpdate: function () {
-    this.currentSlide = this.$refs[this.slickRef].currentSlide();
+    if (this.$refs[this.slickRef]) {
+      this.currentSlide = this.$refs[this.slickRef].currentSlide();
+    }
   },
 };
 </script>

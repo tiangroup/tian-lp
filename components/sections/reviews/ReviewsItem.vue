@@ -46,12 +46,12 @@
           </div>
         </div>
 
-        <div class="reviews__text" @click="$emit('change-desc')" v-if="isEdit">
-          {{ truncateText(item.text, 44) || "Введите текст отзыва" }}
-        </div>
-        <div class="reviews__text" v-else>
-          {{ truncateText(item.text, 44) }}
-        </div>
+        <div
+          class="reviews__text"
+          @click="$emit('change-desc')"
+          v-if="isEdit"
+        >{{ truncateText(item.text, 44) || "Введите текст отзыва" }}</div>
+        <div class="reviews__text" v-else>{{ truncateText(item.text, 44) }}</div>
 
         <div class="reviews__info" v-if="isEdit">
           <v-text-field
@@ -62,11 +62,7 @@
           ></v-text-field>
         </div>
         <div class="reviews__info align-items-center" v-else>
-          <button
-            class="reviews__readmore"
-            v-if="isCropped"
-            @click="$emit('show-review')"
-          >
+          <button class="reviews__readmore" v-if="isCropped" @click="$emit('show-review')">
             Читать полностью
             <svg
               width="5"
@@ -78,9 +74,7 @@
               <path d="M1 1L4 4L1 7" stroke="currentColor" />
             </svg>
           </button>
-          <div class="reviews__date" v-if="item.date">
-            {{ formatDate(item.date) }}
-          </div>
+          <div class="reviews__date" v-if="item.date">{{ formatDate(item.date) }}</div>
         </div>
       </div>
     </div>
@@ -93,17 +87,17 @@ export default {
     item: Object,
     sectionId: String,
     isEdit: Boolean,
-    view: String
+    view: String,
   },
   data: () => ({
-    isCropped: false
+    isCropped: false,
   }),
   computed: {
     computedReviewDate() {
       return this.item.date
         ? this.item.date
         : new Date().toISOString().substr(0, 10);
-    }
+    },
   },
   methods: {
     truncateText(textToTruncate, words) {
@@ -121,8 +115,8 @@ export default {
     formatDate(dateToFormat) {
       const [year, month, day] = dateToFormat.split("-");
       return `${day}.${month}.${year}`;
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
