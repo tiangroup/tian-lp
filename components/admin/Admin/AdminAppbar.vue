@@ -34,14 +34,13 @@
 
     <v-navigation-drawer app class="over" v-model="drawer" clipped>
       <v-list nav dense>
-        <!--
-      <v-list-item link @click="$emit('action', 'AdminForms')">
-        <v-list-item-icon>
-          <v-icon>mdi-text-box-multiple</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>Формы</v-list-item-title>
-      </v-list-item>
-      -->
+        <v-list-item selectable @click="$emit('action', { comp: 'AdminSite' })">
+          <v-list-item-icon>
+            <v-icon>mdi-web</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Сайт</v-list-item-title>
+        </v-list-item>
+
         <v-list-group prepend-icon="mdi-text-box-multiple" no-action>
           <template v-slot:activator>
             <v-list-item-content>

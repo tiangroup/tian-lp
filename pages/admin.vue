@@ -13,11 +13,13 @@
 <script>
 import Admin from "~/components/admin/Admin/Admin";
 import AdminForm from "~/components/admin/Admin/AdminForm";
+import AdminSite from "~/components/admin/Admin/AdminSite";
 export default {
   layout: "admin",
   components: {
     Admin,
-    AdminForm
+    AdminForm,
+    AdminSite
   },
   head: () => ({
     title: "Панель управления"
