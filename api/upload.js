@@ -200,7 +200,7 @@ async function getCatalog(req) {
       admin: req.userData.id
     }
   });
-  const catalog = data[0].name;
+  const catalog = `uploads/${data[0].name}`;
   return catalog;
 }
 
