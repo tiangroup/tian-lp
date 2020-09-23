@@ -2,7 +2,7 @@
   <v-menu v-if="isEdit" absolute offset-y>
     <template v-slot:activator="{ on, attrs }">
       <div :class="[divClass, { 'no-image': !img }]" v-bind="attrs" v-on="on">
-        <img v-if="img" :src="$site_img(img)" />
+        <nuxt-img v-if="img" :src="$site_img(img)" :image-style="imageStyle" />
       </div>
     </template>
     <v-list>
@@ -36,7 +36,8 @@ export default {
     field: { type: String, default: "img" },
     items: { type: String, default: "items" },
     fieldSvg: String,
-    svg: String
+    svg: String,
+    imageStyle: { type: String, default: null }
   },
   data: () => ({
     deleteDialog: false

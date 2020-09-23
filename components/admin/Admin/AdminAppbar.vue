@@ -36,7 +36,7 @@
       <v-list nav dense>
         <v-list-item selectable @click="$emit('action', { comp: 'AdminSite' })">
           <v-list-item-icon>
-            <v-icon>mdi-web</v-icon>
+            <v-icon>mdi-web-clock</v-icon>
           </v-list-item-icon>
           <v-list-item-title>Сайт</v-list-item-title>
         </v-list-item>
@@ -88,10 +88,6 @@ export default {
   },
   methods: {
     exit() {
-      // if (!this.isApp) {
-      //   this.$auth.logout();
-      // }
-      // this.$router.push("/");
       this.$auth.logout();
     }
   }

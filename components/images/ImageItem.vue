@@ -9,6 +9,7 @@
     :items="items"
     :fieldSvg="fieldSvg"
     :svg="svg"
+    :imageStyle="imageStyle"
   />
 </template>
 
@@ -27,7 +28,8 @@ export default {
     field: { type: String, default: "img" },
     items: { type: String, default: "items" },
     fieldSvg: { type: String, default: null },
-    svg: { type: String, default: null }
+    svg: { type: String, default: null },
+    imageStyle: { type: String, default: null }
   },
   components: {
     out,

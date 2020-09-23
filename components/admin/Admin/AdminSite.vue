@@ -7,5 +7,12 @@
 </template>
 
 <script>
-export default {};
+export default {
+  fetchOnServer: false,
+  props: {
+    params: {
+      type: Object
+    }
+  }
+};
 </script>

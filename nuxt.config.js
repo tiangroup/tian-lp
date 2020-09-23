@@ -75,27 +75,11 @@ export default {
       }
     ],
     [
-      "@reallifedigital/nuxt-image-loader-module",
+      "@pivale/nuxt-image-loader-module",
       {
         imagesBaseDir: "content",
         imageStyles: {
-          thumbnail: {
-            actions: [
-              "gravity|Center",
-              "resize|320|180^",
-              "extent|320|180|+0|+90"
-            ]
-          },
-          small: { macros: ["scaleAndCrop|160|90"] },
-          medium: { macros: ["scaleAndCrop|320|180"] },
-          large: { macros: ["scaleAndCrop|640|360"] }
-        },
-        // Optional responsive style profiles:
-        responsiveStyles: {
-          thumb: {
-            srcset: "small 160w, medium 320w, large 640w",
-            sizes: "(min-width: 1280px) 100vw, 50vw"
-          }
+          rect_lg: { macros: ["scaleAndCrop|592|391"] }
         }
       }
     ]
