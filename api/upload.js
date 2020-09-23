@@ -89,8 +89,11 @@ app.post("/image", checkAuth, async (req, res) => {
   }
 });
 
-async function downloadImage(url, path) {
-  const writer = fs.createWriteStream(path);
+async function downloadImage(url, file) {
+  var dir = path.dirname(file);
+  console.log(dir);
+  fs.mkdirSync(dir, { recursive: true });
+  const writer = fs.createWriteStream(file);
 
   const response = await axios({
     url,
