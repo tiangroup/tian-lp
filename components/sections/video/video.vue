@@ -21,31 +21,32 @@
           <div v-else v-html="section.description"></div>
         </div>
         <div v-if="section.items">
-          <v-gallery
-            v-if="!isEdit"
-            :images="videos"
-            :index="index"
-            :options="{
+          <no-ssr>
+            <v-gallery
+              v-if="!isEdit"
+              :images="videos"
+              :index="index"
+              :options="{
               youTubeVideoIdProperty: 'youtube',
               youTubePlayerVars: undefined,
               youTubeClickToPlay: false
             }"
-            @close="index = null"
-            :id="'gallery' + section.id"
-          ></v-gallery>
+              @close="index = null"
+              :id="'gallery' + section.id"
+            ></v-gallery>
+          </no-ssr>
           <div class="mx-ncell">
-            <v-slide-group
-              show-arrows
-              v-model="videoSlider"
-              prev-icon="mdi-minus"
-              next-icon="mdi-plus"
-            >
-              <v-slide-item
-                v-for="(item, itemIndex) in section.items.filter(i => i.id)"
-                :key="item.id"
-                v-slot:default="{ active, toggle }"
+            <no-ssr>
+              <slick
+                :ref="slickRef"
+                :options="updatedSlickOptions"
+                class="video__list"
+                @init="handleInit"
+                :key="slickKey"
               >
                 <video-item
+                  v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                  :key="item.id"
                   :item="item"
                   :sectionId="section.id"
                   :isEdit="isEdit"
@@ -57,15 +58,33 @@
                   value:item.link
                 })"
                 ></video-item>
-                <!-- <div
-                class="video__item-wrap cell d-flex justify-center align-center"
-                v-if="isEdit && (!section.items || !section.items.length)"
-              >
-                <buttons-item-add :sectionId="section.id" />
-                </div>-->
-              </v-slide-item>
-            </v-slide-group>
-
+                <div
+                  class="video__item-wrap cell"
+                  v-if="isEdit && (!section.items || !section.items.length)"
+                >
+                  <v-card class="d-flex flex-column" flat height="100%" width="100%">
+                    <v-spacer></v-spacer>
+                    <v-row class="mx-auto">
+                      <buttons-item-add :sectionId="section.id" />
+                    </v-row>
+                    <v-spacer></v-spacer>
+                    <v-skeleton-loader boilerplate type="list-item-two-line" width="100%"></v-skeleton-loader>
+                  </v-card>
+                </div>
+              </slick>
+              <template slot="placeholder">
+                <div class="cells fx-nw overflow-hidden">
+                  <video-item
+                    class="cell-12 cell-sm-6"
+                    v-for="item in section.items.filter(i => i.id)"
+                    :key="item.id"
+                    :item="item"
+                    :sectionId="section.id"
+                    :isEdit="false"
+                  ></video-item>
+                </div>
+              </template>
+            </no-ssr>
             <v-dialog v-model="videoUrlDialog" max-width="33rem" v-if="isEdit">
               <v-card>
                 <v-card-title class="mb-10">
@@ -137,7 +156,6 @@ export default {
       ],
     },
     videoUrlDialog: false,
-    videoSlider: null,
     userUrl: "",
   }),
   computed: {
@@ -244,18 +262,15 @@ export default {
   beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
       this.currentSlide = this.$refs[this.slickRef].currentSlide;
-
-      //   document
-      //     .getElementById(this.section.id)
-      //     .removeEventListener("click", this.showGalleryOnClones);
     }
   },
   beforeDestroy: function () {
     if (this.$refs[this.slickRef]) {
-      console.log("slick exists");
-    }
-    if (document.getElementById(this.section.id)) {
-      console.log("div exists");
+      if (document.getElementById(this.section.id)) {
+        document
+          .getElementById(this.section.id)
+          .removeEventListener("click", this.showGalleryOnClones);
+      }
     }
   },
 };

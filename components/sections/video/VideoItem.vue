@@ -1,5 +1,5 @@
 <template>
-  <div class="video__item-wrap cell cell-12 cell-sm-4 cell-lg-4">
+  <div class="video__item-wrap cell">
     <div class="video__item" :class="{'position-relative': isEdit}" @click="$emit('gallery-call')">
       <buttons-item :itemId="item.id" :sectionId="sectionId" v-if="isEdit" />
       <div
