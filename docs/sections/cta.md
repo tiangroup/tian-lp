@@ -1,4 +1,4 @@
-# Промо2
+# Промо2 [](https://proofs.app.tian-lp.ru/cta/)
 
 ::: tip Папка блока
 `/components/sections/cta`

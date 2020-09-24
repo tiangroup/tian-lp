@@ -1,4 +1,4 @@
-# Тарифы
+# Тарифы [](https://proofs.app.tian-lp.ru/tarifs/)
 
 ::: tip Папка блока
 `/components/sections/tarifs`

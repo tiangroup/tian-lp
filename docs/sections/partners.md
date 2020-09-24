@@ -1,4 +1,4 @@
-# Партнеры
+# Партнеры [](https://proofs.app.tian-lp.ru/partners/)
 
 ::: tip Папка блока
 `/components/sections/partners`
