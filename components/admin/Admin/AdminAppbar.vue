@@ -67,7 +67,7 @@ import { mapGetters } from "vuex";
 export default {
   fetchOnServer: false,
   data: () => ({
-    drawer: true,
+    drawer: null,
     forms: null
   }),
   async fetch() {
