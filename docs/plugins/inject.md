@@ -24,15 +24,21 @@
 
 `Object`
 
-Функция `src` возвращает ссылку на изображение для сайта, передается значение из поля картинки
+### src(img, [imageStyle])
+
+Функция `src` возвращает ссылку на изображение для сайта, в `img` передается значение из поля картинки, второй необязательный параметр `imageStyle` это стиль ресайза картинки
 
 ```js
 const src = this.$images.src(img);
+const src = this.$images.src(img, imageStyle);
 ```
 
 ```vue
 <img :src="$images.src(item.img)" />
+<img :src="$images.src(item.img, 'rect_lg')" />
 ```
+
+### upload(payload)
 
 Функция `upload` вызывает форму для загрузки изображения
 
@@ -46,17 +52,18 @@ this.$images.upload({
 });
 ```
 
-## site_img(img)
+## site_img(img, [imageStyle])
 
-Функция возвращает ссылку на изображение для сайта, передается значение из поля картинки, аналогична `$images.src(img)`
+Функция `site_img` возвращает ссылку на изображение для сайта, передается значение из поля картинки, аналогична `$images.src(img)`
 
 ```vue
 <img :src="$site_img(item.img)" />
+<img :src="$images.src(item.img, 'rect_lg')" />
 ```
 
 ## confirm(payload)
 
-Функция вызывает диалоговое окно подтверждение действия пользователем
+Функция `confirm` вызывает диалоговое окно подтверждение действия пользователем
 
 ```js
 methods: {
