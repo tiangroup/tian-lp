@@ -26,7 +26,20 @@
               class="products__item-wrap cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
               v-if="!section.items || !itemsCount"
             >
-              <buttons-item-add :sectionId="section.id" />
+              <div class="products__item">
+                <div class="item__add-button">
+                  <buttons-item-add :sectionId="section.id" />
+                </div>
+                <div class="products__details no-hover">
+                  <div class="products__image no-image"></div>
+                  <div class="products__title">
+                    <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
+                  </div>
+                </div>
+                <div class="products__action">
+                  <v-skeleton-loader boilerplate type="card-heading"></v-skeleton-loader>
+                </div>
+              </div>
             </div>
           </div>
           <div v-else-if="section.items">
@@ -61,21 +74,53 @@
           </div>
         </div>
         <div class="products__list mx-ncell" v-if="view === 'view2'">
-          <!-- <slick :ref="slickRef" :options="updatedSlickOptions" @init="handleInit" :key="slickKey"> -->
-          <products-item
-            v-for="item in section.items.filter(i => i.id)"
-            :key="item.id"
-            :item="item"
-            :sectionId="section.id"
-            :isEdit="isEdit"
-            @show-details="showProductDetails(item)"
-            @show-order-form="showOrderForm(item)"
-            @update-description="updateItemDescription(item)"
-          ></products-item>
-          <div class="products__item-wrap cell" v-if="isEdit && (!section.items || !itemsCount)">
-            <buttons-item-add :sectionId="section.id" />
-          </div>
-          <!-- </slick> -->
+          <no-ssr>
+            <slick
+              :ref="slickRef"
+              :options="updatedSlickOptions"
+              @init="handleInit"
+              :key="slickKey"
+            >
+              <products-item
+                v-for="item in section.items.filter(i => i.id)"
+                :key="item.id"
+                :item="item"
+                :sectionId="section.id"
+                :isEdit="isEdit"
+                @show-details="showProductDetails(item)"
+                @show-order-form="showOrderForm(item)"
+                @update-description="updateItemDescription(item)"
+              ></products-item>
+              <div class="products__item-wrap cell" v-if="!section.items || !itemsCount">
+                <div class="products__item">
+                  <div class="item__add-button">
+                    <buttons-item-add :sectionId="section.id" />
+                  </div>
+                  <div class="products__details no-hover">
+                    <div class="products__image no-image"></div>
+                    <div class="products__title">
+                      <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
+                    </div>
+                  </div>
+                  <div class="products__action">
+                    <v-skeleton-loader boilerplate type="card-heading"></v-skeleton-loader>
+                  </div>
+                </div>
+              </div>
+            </slick>
+            <template slot="placeholder">
+              <div class="cells fx-nw overflow-hidden">
+                <products-item
+                  class="cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
+                  v-for="item in section.items.filter(i => i.id)"
+                  :key="item.id"
+                  :item="item"
+                  :sectionId="section.id"
+                  :isEdit="false"
+                ></products-item>
+              </div>
+            </template>
+          </no-ssr>
         </div>
 
         <form-dialog :section="section" field="order_form" v-model="dialogOrderProduct">
@@ -259,9 +304,7 @@ export default {
     dialogDetailedItem: false,
     dialogOrderProduct: false,
     dialogUpdateDescription: false,
-    itemsQty: null,
     itemsToShow: 4,
-    isSlick: true,
     slickOptions: {
       arrows: true,
       dots: true,
@@ -344,41 +387,44 @@ export default {
       //console.log("products-slick key " + key);
       return key;
     },
+    computedRealSlides() {
+      return document
+        .getElementById(this.section.id)
+        .querySelectorAll(".slick-slide:not(.slick-cloned)");
+    },
   },
   methods: {
     handleInit(event, slick) {
-      slick.goTo(this.currentSlide, true);
+      if (this.currentSlide) {
+        slick.goTo(this.currentSlide, true);
+      }
       if (!this.isEdit) {
-        const [slickTrack] = slick.$slideTrack;
-        let slidesReal = slickTrack.querySelectorAll(
-          ".slick-slide:not(.slick-cloned)"
-        );
-        let slidesRealLength = slidesReal.length;
         document
           .getElementById(this.section.id)
-          .addEventListener("click", function (e) {
-            if (e.target.closest(".slick-cloned")) {
-              let slideIndex = Number(
-                e.target
-                  .closest(".slick-cloned")
-                  .getAttribute("data-slick-index")
-              );
-              let slideId = 0;
-              if (slideIndex > 0) {
-                slideId = slideIndex % slidesRealLength;
-              } else if (slideIndex < 0) {
-                slideId = slidesRealLength + slideIndex;
-              }
+          .addEventListener("click", this.handleClonedSlides);
+      }
+    },
+    handleClonedSlides(e) {
+      if (e.target.closest(".slick-cloned")) {
+        let slideIndex = Number(
+          e.target.closest(".slick-cloned").getAttribute("data-slick-index")
+        );
+        let slideId = 0;
+        if (slideIndex > 0) {
+          slideId = slideIndex % this.computedRealSlides.length;
+        } else if (slideIndex < 0) {
+          slideId = this.computedRealSlides.length + slideIndex;
+        }
 
-              if (e.target.closest(".products__details")) {
-                slidesReal[slideId].querySelector(".products__details").click();
-              }
+        if (e.target.closest(".products__details")) {
+          this.computedRealSlides[slideId]
+            .querySelector(".products__details")
+            .click();
+        }
 
-              if (e.target.closest(".products__action")) {
-                slidesReal[slideId].querySelector(".button").click();
-              }
-            }
-          });
+        if (e.target.closest(".products__action")) {
+          this.computedRealSlides[slideId].querySelector(".button").click();
+        }
       }
     },
     showProductDetails(item) {
@@ -427,21 +473,38 @@ export default {
       this.currentSlide = this.$refs[this.slickRef].currentSlide;
     }
   },
+  beforeDestroy: function () {
+    if (this.$refs[this.slickRef]) {
+      if (document.getElementById(this.section.id) && !this.isEdit) {
+        document
+          .getElementById(this.section.id)
+          .removeEventListener("click", this.handleClonedSlides);
+      }
+    }
+  },
 };
 </script>
 <style>
-/* Enter and leave animations can use different */
-/* durations and timing functions.              */
-.products-appear-enter-active .products__item {
-  transition: min-height 2s ease;
-}
-.products-appear-leave-active .products__item {
-  transition: min-height 2s cubic-bezier(1, 0.5, 0.8, 1);
-}
-.products-appear-enter .products__item,
-.products-appear-leave-to .products__item {
-  height: 0;
-  min-height: 0;
+.products-appear-enter-active,
+.products-appear-leave-active {
+  transition: max-height 1s;
+  max-height: 40rem;
   overflow: hidden;
+}
+.products-appear-leave-to {
+  margin-bottom: 0;
+}
+.products-appear-enter,
+.products-appear-leave-to {
+  max-height: 0;
+}
+.products .theme--light.v-skeleton-loader .v-skeleton-loader__avatar,
+.products .theme--light.v-skeleton-loader .v-skeleton-loader__button,
+.products .theme--light.v-skeleton-loader .v-skeleton-loader__chip,
+.products .theme--light.v-skeleton-loader .v-skeleton-loader__divider,
+.products .theme--light.v-skeleton-loader .v-skeleton-loader__heading,
+.products .theme--light.v-skeleton-loader .v-skeleton-loader__image,
+.products .theme--light.v-skeleton-loader .v-skeleton-loader__text {
+  background-color: var(--separator-color);
 }
 </style>

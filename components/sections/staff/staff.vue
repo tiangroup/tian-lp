@@ -1,5 +1,5 @@
 <template>
-  <div :style="styleDiv" :id="section.id">
+  <div :class="{'position-relative': isEdit}" :id="section.id">
     <buttons-section v-if="isEdit" :section="section" />
     <div
       class="staff custom-v-spacing custom-h-spacing bg-primary"
@@ -10,81 +10,44 @@
           <editor :text="section.title || ''" :sectionId="section.id" field="title" />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
-        <div class="staff__list mx-ncell" v-if="section.items && isSlick">
-          <!-- <slick :ref="slickRef" :options="updatedSlickOptions" :key="slickKey"> -->
-          <div
-            class="staff__item-wrap cell"
-            :class="{ 'position-relative': isEdit }"
-            v-for="item in section.items.filter(i => i.id)"
-            :key="item.id"
-          >
-            <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="section.id" />
-            <div class="staff__item">
-              <image-item
-                divClass="staff__image"
-                :img="item.img"
-                :itemId="item.id"
+        <div class="staff__list mx-ncell">
+          <no-ssr>
+            <slick :ref="slickRef" :options="updatedSlickOptions" :key="slickKey">
+              <staff-item
+                :item="item"
+                :isEdit="isEdit"
                 :sectionId="section.id"
-              />
-              <div class="staff__info">
-                <div class="staff__name" v-if="isEdit">
-                  <editor
-                    data-placeholder="Имя Фамилия"
-                    :text="item.name || ''"
-                    :sectionId="section.id"
-                    field="name"
-                    :itemId="item.id"
-                  />
-                </div>
-                <div v-else class="staff__name">{{ item.name }}</div>
-                <div class="staff__position" v-if="isEdit">
-                  <editor
-                    data-placeholder="должность"
-                    :text="item.position || ''"
-                    :sectionId="section.id"
-                    field="position"
-                    :itemId="item.id"
-                  />
-                </div>
-                <div v-else class="staff__position">{{ item.position }}</div>
-              </div>
-              <div class="staff__contacts">
-                <div class="staff__phone" v-if="isEdit">
-                  <editor
-                    data-placeholder="+7 351 111-22-33"
-                    :text="item.phone || ''"
-                    editContent="html"
-                    :sectionId="section.id"
-                    field="phone"
-                    :itemId="item.id"
-                  />
-                </div>
-                <div v-else class="staff__phone" v-html="item.phone"></div>
-                <div class="staff__email">
-                  <editor
-                    data-placeholder="mail@mail.ru"
-                    :text="item.email || ''"
-                    :sectionId="section.id"
-                    field="email"
-                    :itemId="item.id"
-                    v-if="isEdit"
-                  />
-                  <a
-                    v-else-if="isValidEmail(item.email)"
-                    :href="`mailto:${item.email}`"
-                  >{{ item.email }}</a>
-                  <span v-else>{{ item.email }}</span>
+                v-for="item in section.items.filter(i => i.id)"
+                :key="item.id"
+              ></staff-item>
+              <div
+                class="staff__item-wrap cell"
+                v-if="isEdit && (!section.items || !section.items.length)"
+              >
+                <div class="staff__item">
+                  <div class="item__add-button">
+                    <buttons-item-add :sectionId="section.id" />
+                  </div>
+                  <div class="staff__image no-image"></div>
+                  <div class="staff__info">
+                    <v-skeleton-loader boilerplate type="paragraph"></v-skeleton-loader>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div
-            class="staff__item-wrap cell"
-            v-if="isEdit && (!section.items || !section.items.length)"
-          >
-            <buttons-item-add :sectionId="section.id" />
-          </div>
-          <!-- </slick> -->
+            </slick>
+            <template slot="placeholder">
+              <div class="cells fx-nw overflow-hidden">
+                <staff-item
+                  class="cell-12 cell-sm-6 cell-lg-4"
+                  :item="item"
+                  :isEdit="false"
+                  :sectionId="section.id"
+                  v-for="item in section.items.filter(i => i.id)"
+                  :key="item.id"
+                ></staff-item>
+              </div>
+            </template>
+          </no-ssr>
         </div>
       </div>
     </div>
@@ -93,9 +56,13 @@
 
 <script>
 import { mapGetters } from "vuex";
+import StaffItem from "./StaffItem";
 export default {
   props: {
     section: Object,
+  },
+  components: {
+    StaffItem,
   },
   data: () => ({
     currentSlide: 0,
@@ -135,9 +102,6 @@ export default {
     ...mapGetters({
       isEdit: "isEdit",
     }),
-    styleDiv() {
-      return this.isEdit ? { position: "relative" } : null;
-    },
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
@@ -154,7 +118,7 @@ export default {
           key += this.section.items[i].id;
         }
       }
-      //console.log("video-slick key " + key);
+      //console.log("staff-slick key " + key);
       return key;
     },
     itemsCount() {
@@ -162,12 +126,10 @@ export default {
     },
   },
   methods: {
-    isValidEmail(emailString) {
-      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return pattern.test(emailString);
-    },
     handleInit(event, slick) {
-      slick.goTo(this.currentSlide, true);
+      if (this.currentSlide) {
+        slick.goTo(this.currentSlide, true);
+      }
     },
   },
   beforeUpdate: function () {
@@ -177,3 +139,14 @@ export default {
   },
 };
 </script>
+<style>
+.staff .theme--light.v-skeleton-loader .v-skeleton-loader__avatar,
+.staff .theme--light.v-skeleton-loader .v-skeleton-loader__button,
+.staff .theme--light.v-skeleton-loader .v-skeleton-loader__chip,
+.staff .theme--light.v-skeleton-loader .v-skeleton-loader__divider,
+.staff .theme--light.v-skeleton-loader .v-skeleton-loader__heading,
+.staff .theme--light.v-skeleton-loader .v-skeleton-loader__image,
+.staff .theme--light.v-skeleton-loader .v-skeleton-loader__text {
+  background-color: var(--separator-color);
+}
+</style>

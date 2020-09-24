@@ -44,7 +44,7 @@ export default {
     { src: "~/plugins/medium-editor", ssr: false },
     { src: "~/plugins/inject" },
     { src: "~/plugins/slick", ssr: false },
-    { src: "~/plugins/vue-gallery.client.js" },
+    { src: "~/plugins/vue-gallery.client.js", ssr: false },
     "~plugins/vue-js-modal.js"
   ],
   /*

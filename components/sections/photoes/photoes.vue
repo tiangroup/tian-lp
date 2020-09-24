@@ -1,5 +1,5 @@
 <template>
-  <div :style="styleDiv" :id="section.id">
+  <div :class="{'position-relative': isEdit}" :id="section.id">
     <buttons-section v-if="isEdit" :section="section" />
     <div
       class="gallery custom-v-spacing bg-primary"
@@ -10,57 +10,81 @@
           <editor :text="section.title || ''" :sectionId="section.id" field="title" />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
-        <div class="gallery__list" v-if="section.items && isSlick">
-          <v-gallery
-            :images="images"
-            :index="index"
-            @close="index = null"
-            v-if="!isEdit"
-            :id="'gallery' + section.id"
-            :options="{
+        <div class="gallery__list" v-if="section.items">
+          <no-ssr>
+            <v-gallery
+              :images="images"
+              :index="index"
+              @close="index = null"
+              v-if="!isEdit"
+              :id="'gallery' + section.id"
+              :options="{
               closeOnSlideClick: true
             }"
-          ></v-gallery>
+            ></v-gallery>
+          </no-ssr>
           <div class="fullwidth">
-            <slick :ref="slickRef" :options="updatedSlickOptions" @init="handleInit">
-              <div
-                class="gallery__item"
-                :class="{ 'position-relative': isEdit }"
-                v-for="(item, itemIndex) in section.items.filter(i => i.id)"
-                :key="item.id"
+            <no-ssr>
+              <slick
+                :ref="slickRef"
+                :options="updatedSlickOptions"
+                @init="handleInit"
+                :key="slickKey"
               >
-                <buttons-item
-                  v-if="isEdit"
-                  :itemId="item.id"
-                  :sectionId="section.id"
-                  @onAction="onItemsChange"
-                />
                 <div
-                  class="gallery__link"
-                  :class="{ 'pic-enlarge': !isEdit }"
-                  @click="showGallery(itemIndex)"
+                  class="gallery__item"
+                  :class="{ 'position-relative': isEdit }"
+                  v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                  :key="item.id"
                 >
-                  <image-item
-                    divClass="gallery__image"
-                    :img="item.img"
-                    :itemId="item.id"
-                    :sectionId="section.id"
-                  />
-                  <div class="gallery__text" v-if="isEdit">
-                    <editor
-                      data-placeholder="Краткое описание фотографии"
-                      :text="item.title || ''"
-                      :sectionId="section.id"
-                      field="title"
+                  <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="section.id" />
+                  <div
+                    class="gallery__link"
+                    :class="{ 'pic-enlarge': !isEdit }"
+                    @click="showGallery(itemIndex)"
+                  >
+                    <image-item
+                      divClass="gallery__image"
+                      :img="item.img"
                       :itemId="item.id"
+                      :sectionId="section.id"
                     />
+                    <div class="gallery__text" v-if="isEdit">
+                      <editor
+                        data-placeholder="Краткое описание фотографии"
+                        :text="item.title || ''"
+                        :sectionId="section.id"
+                        field="title"
+                        :itemId="item.id"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="gallery__item" v-if="isEdit && (!section.items || !section.items.length)">
-                <buttons-item-add :sectionId="section.id" />
-              </div>
-            </slick>
+                <div
+                  class="gallery__item"
+                  v-if="isEdit && (!section.items || !section.items.length)"
+                >
+                  <div class="gallery__link">
+                    <div class="gallery__image no-image"></div>
+                    <div class="item__add-button">
+                      <buttons-item-add :sectionId="section.id" />
+                    </div>
+                  </div>
+                </div>
+              </slick>
+              <template slot="placeholder">
+                <div class="cells fx-nw overflow-hidden">
+                  <div
+                    class="gallery__link cell-12 cell-sm-6 cell-lg-3"
+                    v-for="item in section.items.filter(i => i.id)"
+                    :key="item.id"
+                    :item="item"
+                    :sectionId="section.id"
+                    :isEdit="false"
+                  ></div>
+                </div>
+              </template>
+            </no-ssr>
           </div>
         </div>
       </div>
@@ -76,14 +100,12 @@ export default {
   },
   data: () => ({
     index: null,
-    isSlick: true,
-    itemsQty: null,
     slickOptions: {
       arrows: true,
       dots: true,
-      slidesToShow: 3,
+      slidesToShow: 2,
       slidesToScroll: 1,
-      centerMode: true,
+      centerMode: false,
       centerPadding: "18.3333%",
       draggable: false,
       infinite: false,
@@ -123,22 +145,24 @@ export default {
       return this.isEdit ? { position: "relative" } : null;
     },
     updatedSlickOptions() {
-      const slidesQty = this.isEdit ? 2 : 2;
       let slidesStart = 0;
-      if (this.section.items.length > 3) {
+      let slickCenter = false;
+      if (this.itemsCount > 2) {
         slidesStart = 1;
+        slickCenter = true;
       }
+      let slidesQty = this.isEdit && this.itemsCount < 3 ? 3 : 2;
       return Object.assign(this.slickOptions, {
         initialSlide: slidesStart,
         slidesToShow: slidesQty,
-        //centerMode: !this.isEdit,
+        centerMode: slickCenter,
         infinite: !this.isEdit,
         draggable: !this.isEdit,
       });
     },
     images() {
       var imagesArray = [];
-      for (let n = 0; n < this.section.items.length; n++) {
+      for (let n = 0; n < this.itemsCount; n++) {
         var pic = this.section.items[n];
         var imagesItem = {
           title: pic.title,
@@ -149,27 +173,29 @@ export default {
       }
       return imagesArray;
     },
+    itemsCount() {
+      return this.section.items.length;
+    },
     slickRef() {
       return "slick" + this.section.id;
     },
+    slickKey() {
+      let key = "" + this.isEdit;
+      if (this.itemsCount) {
+        for (var i = 0; i < this.itemsCount; i++) {
+          key += this.section.items[i].id;
+        }
+      }
+      //console.log("photoes-slick key " + key);
+      return key;
+    },
+    computedRealSlides() {
+      return document
+        .getElementById(this.section.id)
+        .querySelectorAll(".slick-slide:not(.slick-cloned)").length;
+    },
   },
   methods: {
-    onItemsChange(event) {
-      this.restartSlick();
-      this.itemsQty = this.section.items.length;
-    },
-    async restartSlick() {
-      let currSlideIndex = this.$refs[this.slickRef].currentSlide();
-      this.isSlick = false;
-      const _this = this;
-      let enableSlick = new Promise((resolve) => {
-        setTimeout(() => {
-          resolve((_this.isSlick = true));
-        }, 200);
-      });
-      await enableSlick;
-      this.$refs[this.slickRef].goTo(currSlideIndex, true);
-    },
     showGallery(itemIndex) {
       if (this.isEdit) {
         return;
@@ -177,45 +203,43 @@ export default {
       this.index = itemIndex;
     },
     handleInit(event, slick) {
+      if (this.currentSlide) {
+        slick.goTo(this.currentSlide, true);
+      }
       if (!this.isEdit) {
-        const showGallery = this.showGallery;
-        const [slickTrack] = slick.$slideTrack;
-        let slidesCloned = slickTrack.querySelectorAll(".slick-cloned");
-        let slidesRealLength = slickTrack.querySelectorAll(
-          ".slick-slide:not(.slick-cloned)"
-        ).length;
-        for (let m = 0; m < slidesCloned.length; m++) {
-          let slideItem = slidesCloned[m];
-          let slideIndex = Number(slideItem.getAttribute("data-slick-index"));
-          let slideId = null;
-          if (slideIndex > 0) {
-            slideId = slideIndex % slidesRealLength;
-          } else {
-            slideId = slidesRealLength + slideIndex;
-          }
-          slideItem.addEventListener("click", function () {
-            showGallery(slideId);
-          });
+        document
+          .getElementById(this.section.id)
+          .addEventListener("click", this.handleClonedSlides);
+      }
+    },
+    handleClonedSlides(e) {
+      if (e.target.closest(".slick-cloned")) {
+        let slideIndex = Number(
+          e.target.closest(".slick-cloned").getAttribute("data-slick-index")
+        );
+        let slideId = 0;
+        if (slideIndex > 0) {
+          slideId = slideIndex % this.computedRealSlides;
+        } else if (slideIndex < 0) {
+          slideId = this.computedRealSlides + slideIndex;
         }
+        this.showGallery(slideId);
       }
     },
   },
-  mounted: function () {
-    this.itemsQty = this.section.items.length;
+  beforeUpdate: function () {
+    if (this.$refs[this.slickRef]) {
+      this.currentSlide = this.$refs[this.slickRef].currentSlide;
+    }
   },
-  watch: {
-    isEdit: function () {
-      this.restartSlick();
-    },
-    section: function () {
-      if (
-        this.isEdit &&
-        this.itemsQty === 0 &&
-        this.section.items.length === 1
-      ) {
-        this.restartSlick();
+  beforeDestroy: function () {
+    if (this.$refs[this.slickRef]) {
+      if (document.getElementById(this.section.id) && !this.isEdit) {
+        document
+          .getElementById(this.section.id)
+          .removeEventListener("click", this.handleClonedSlides);
       }
-    },
+    }
   },
 };
 </script>

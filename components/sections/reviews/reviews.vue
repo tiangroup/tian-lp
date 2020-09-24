@@ -1,5 +1,5 @@
 <template>
-  <div :style="styleDiv" :id="section.id">
+  <div :class="{'position-relative': isEdit}" :id="section.id">
     <buttons-section v-if="isEdit" :section="section"></buttons-section>
 
     <div
@@ -8,66 +8,89 @@
     >
       <div class="landing__container">
         <h2 v-if="isEdit">
-          <editor
-            :text="section.title || ''"
-            :sectionId="section.id"
-            field="title"
-          />
+          <editor :text="section.title || ''" :sectionId="section.id" field="title" />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
-
-        <v-gallery
-          :images="reviewImages"
-          :index="index"
-          @close="index = null"
-          v-if="!isEdit && section.items && view === 'view2'"
-          :id="'gallery' + section.id"
-          :options="{
+        <no-ssr>
+          <v-gallery
+            :images="reviewImages"
+            :index="index"
+            @close="index = null"
+            v-if="!isEdit && section.items && view === 'view2'"
+            :id="'gallery' + section.id"
+            :options="{
             closeOnSlideClick: true
           }"
-        ></v-gallery>
-        <div
-          class="reviews__list mx-ncell"
-          :class="computedSectionClass"
-          v-if="section.items"
-        >
+          ></v-gallery>
+        </no-ssr>
+        <div class="reviews__list mx-ncell" :class="computedSectionClass" v-if="section.items">
           <div :class="{ fullwidth: view === 'view2' }">
-            <slick
-              ref="slick"
-              :options="updatedSlickOptions"
-              v-if="isSlick"
-              @init="handleInit"
-            >
-              <reviews-item
-                v-for="(item, itemIndex) in section.items.filter(i => i.id)"
-                @item-update="onItemsChange"
-                @change-desc="
+            <no-ssr>
+              <slick
+                :ref="slickRef"
+                :options="updatedSlickOptions"
+                @init="handleInit"
+                :key="slickKey"
+              >
+                <reviews-item
+                  v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                  @change-desc="
                   updateReviewDesc({
                     id: item.id,
                     text: item.text
                   })
                 "
-                @change-date="
+                  @change-date="
                   updateReviewDate({
                     id: item.id,
                     date: item.date
                   })
                 "
-                @show-review="showReview(item)"
-                @show-gallery="showGallery(itemIndex)"
-                :key="item.id"
-                :item="item"
-                :sectionId="section.id"
-                :isEdit="isEdit"
-                :view="view"
-              ></reviews-item>
-              <div
-                class="reviews__item-wrap cell"
-                v-if="isEdit && (!section.items || !section.items.length)"
-              >
-                <buttons-item-add :sectionId="section.id" />
-              </div>
-            </slick>
+                  @show-review="showReview(item)"
+                  @show-gallery="showGallery(itemIndex)"
+                  :key="item.id"
+                  :item="item"
+                  :sectionId="section.id"
+                  :isEdit="isEdit"
+                  :view="view"
+                ></reviews-item>
+                <div
+                  class="reviews__item-wrap cell"
+                  v-if="isEdit && (!section.items || !section.items.length)"
+                >
+                  <div class="reviews__item">
+                    <div class="item__add-button">
+                      <buttons-item-add :sectionId="section.id" />
+                    </div>
+                    <div class="reviews__image-wrap" v-if="view === 'view2'">
+                      <div class="reviews__image no-image"></div>
+                    </div>
+                    <div class="reviews__body">
+                      <div class="reviews__text">
+                        <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
+                      </div>
+                      <div class="reviews__info">
+                        <v-skeleton-loader boilerplate type="actions"></v-skeleton-loader>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </slick>
+              <template slot="placeholder">
+                <div class="cells fx-nw overflow-hidden">
+                  <reviews-item
+                    class="cell-12"
+                    :class="{'cell-lg-6': view === 'view1'}"
+                    v-for="item in section.items.filter(i => i.id)"
+                    :key="item.id"
+                    :item="item"
+                    :sectionId="section.id"
+                    :isEdit="false"
+                    :view="view"
+                  ></reviews-item>
+                </div>
+              </template>
+            </no-ssr>
           </div>
         </div>
         <v-dialog v-model="dialogReviewDesc" max-width="30rem" v-if="isEdit">
@@ -91,16 +114,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                depressed
-                text
-                color="gray"
-                @click="dialogReviewDesc = false"
-                >Отменить</v-btn
-              >
-              <v-btn depressed color="green" dark @click="saveReviewDesc"
-                >Сохранить</v-btn
-              >
+              <v-btn depressed text color="gray" @click="dialogReviewDesc = false">Отменить</v-btn>
+              <v-btn depressed color="green" dark @click="saveReviewDesc">Сохранить</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -108,26 +123,20 @@
         <v-dialog v-model="dialogReviewDate" width="290px">
           <v-date-picker v-model="currentReview.date" scrollable>
             <v-spacer></v-spacer>
-            <v-btn depressed text color="gray" @click="dialogReviewDate = false"
-              >Отменить</v-btn
-            >
+            <v-btn depressed text color="gray" @click="dialogReviewDate = false">Отменить</v-btn>
             <v-btn
               depressed
               text
               color="primary"
               @click="saveReviewDate(currentReview.date)"
-              >Сохранить</v-btn
-            >
+            >Сохранить</v-btn>
           </v-date-picker>
         </v-dialog>
 
         <v-dialog v-model="dialogShowReview" max-width="30rem">
           <div class="der-popup">
             <div class="der-popup__close">
-              <button
-                class="button button-icon button-close"
-                @click="dialogShowReview = false"
-              >
+              <button class="button button-icon button-close" @click="dialogShowReview = false">
                 <span class="sr-only">Закрыть</span>
                 <svg
                   width="18"
@@ -149,12 +158,8 @@
               <div class="popup-reviews">
                 <div class="reviews__body--full">
                   <div class="reviews__person">
-                    <div class="reviews__person__name">
-                      {{ currentReview.name }}
-                    </div>
-                    <div class="reviews__person__position">
-                      {{ currentReview.position }}
-                    </div>
+                    <div class="reviews__person__name">{{ currentReview.name }}</div>
+                    <div class="reviews__person__position">{{ currentReview.position }}</div>
                   </div>
                   <div class="reviews__text">{{ currentReview.text }}</div>
                   <div class="reviews__info">
@@ -174,21 +179,19 @@
 import { mapMutations, mapGetters } from "vuex";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   data: () => ({
     currentReview: {
       id: null,
       name: "",
       position: "",
-      date: ""
+      date: "",
     },
     dialogShowReview: false,
     dialogReviewDate: false,
     dialogReviewDesc: false,
     index: null,
-    itemsQty: 0,
-    isSlick: true,
     modalReviewDate: false,
     slickOptions: {
       arrows: true,
@@ -209,8 +212,8 @@ export default {
           settings: {
             arrows: false,
             centerMode: false,
-            centerPadding: 0
-          }
+            centerPadding: 0,
+          },
         },
         {
           breakpoint: 576,
@@ -219,49 +222,43 @@ export default {
             slidesToScroll: 1,
             arrows: false,
             centerMode: false,
-            centerPadding: 0
-          }
-        }
-      ]
-    }
+            centerPadding: 0,
+          },
+        },
+      ],
+    },
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      isEdit: "isEdit",
     }),
-    styleDiv() {
-      return this.isEdit ? { position: "relative" } : null;
-    },
     view() {
       return this.section.settings.view;
     },
     updatedSlickOptions() {
       const slidesQty = this.view === "view1" ? 2 : 1;
-      var slickCenterMode;
-      var slickCenterPadding;
+      var slickCenterMode = false;
+      var slickCenterPadding = 0;
       if (this.view === "view2") {
         slickCenterMode = true;
         slickCenterPadding = "18.333%";
-      } else {
-        slickCenterPadding = 0;
-        slickCenterMode = false;
       }
       return Object.assign(this.slickOptions, {
         slidesToShow: slidesQty,
         centerMode: slickCenterMode,
         centerPadding: slickCenterPadding,
         infinite: !this.isEdit,
-        draggable: !this.isEdit
+        draggable: !this.isEdit,
       });
     },
     reviewImages() {
       var imagesArray = [];
-      for (let n = 0; n < this.section.items.length; n++) {
+      for (let n = 0; n < this.itemsCount; n++) {
         var pic = this.section.items[n];
         var imagesItem = {
           title: "Отзыв " + pic.name,
           href: this.$images.src(pic.img),
-          type: "image/jpeg"
+          type: "image/jpeg",
         };
         imagesArray.push(imagesItem);
       }
@@ -271,23 +268,33 @@ export default {
       return this.view === "view1"
         ? "reviews__list--style1"
         : "reviews__list--style2";
-    }
+    },
+    slickRef() {
+      return "slick" + this.section.id;
+    },
+    slickKey() {
+      let key = "" + this.isEdit;
+      if (this.itemsCount) {
+        for (var i = 0; i < this.itemsCount; i++) {
+          key += this.section.items[i].id;
+        }
+      }
+      //console.log("reviews-slick key " + key);
+      return key;
+    },
+    itemsCount() {
+      return this.section.items.length;
+    },
+    computedRealSlides() {
+      return document
+        .getElementById(this.section.id)
+        .querySelectorAll(".slick-slide:not(.slick-cloned)").length;
+    },
   },
   methods: {
     ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD"
+      setItemField: "pages/SET_ITEM_FIELD",
     }),
-    onItemsChange(event) {
-      this.restartSlick();
-      this.itemsQty = this.section.items.length;
-    },
-    restartSlick() {
-      this.isSlick = false;
-      const _this = this;
-      setTimeout(function() {
-        _this.isSlick = true;
-      }, 200);
-    },
     updateReviewDate(item) {
       if (this.isEdit) {
         this.currentReview.id = item.id;
@@ -316,7 +323,7 @@ export default {
         itemId: this.currentReview.id,
         items: "items",
         field: field,
-        value: value
+        value: value,
       });
       this.$store.dispatch("pages/savePage");
     },
@@ -333,57 +340,54 @@ export default {
       }
     },
     handleInit(event, slick) {
+      if (this.currentSlide) {
+        slick.goTo(this.currentSlide, true);
+      }
       if (!this.isEdit) {
-        const _this = this;
-        const [slickTrack] = slick.$slideTrack;
-        let slidesCloned = slickTrack.querySelectorAll(".slick-cloned");
-        let slidesRealLength = slickTrack.querySelectorAll(
-          ".slick-slide:not(.slick-cloned)"
-        ).length;
-        for (let m = 0; m < slidesCloned.length; m++) {
-          let slideItem = slidesCloned[m];
-          let slideIndex = Number(slideItem.getAttribute("data-slick-index"));
-          let slideId = null;
-          if (slideIndex > 0) {
-            slideId = slideIndex % slidesRealLength;
-          } else {
-            slideId = slidesRealLength + slideIndex;
-          }
-          let slideImg = slideItem.querySelector(".reviews__image-wrap");
-          if (slideImg) {
-            slideImg.addEventListener("click", function() {
-              _this.showGallery(slideId);
-            });
-          }
-          let slideDetailLink = slideItem.querySelector(".reviews__readmore");
-          if (slideDetailLink) {
-            slideDetailLink.addEventListener("click", function() {
-              _this.showReview(_this.section.items[slideId]);
-            });
-          }
+        document
+          .getElementById(this.section.id)
+          .addEventListener("click", this.handleClonedSlides);
+      }
+    },
+    handleClonedSlides(e) {
+      if (e.target.closest(".slick-cloned")) {
+        let slideIndex = Number(
+          e.target.closest(".slick-cloned").getAttribute("data-slick-index")
+        );
+        let slideId = 0;
+        if (slideIndex > 0) {
+          slideId = slideIndex % this.computedRealSlides.length;
+        } else if (slideIndex < 0) {
+          slideId = this.computedRealSlides.length + slideIndex;
+        }
+
+        if (e.target.closest(".reviews__image-wrap")) {
+          this.computedRealSlides[slideId]
+            .querySelector(".reviews__image-wrap")
+            .click();
+        }
+
+        if (e.target.classList.contains("reviews__readmore")) {
+          this.computedRealSlides[slideId]
+            .querySelector(".reviews__readmore")
+            .click();
         }
       }
+    },
+  },
+  beforeUpdate: function () {
+    if (this.$refs[this.slickRef]) {
+      this.currentSlide = this.$refs[this.slickRef].currentSlide;
     }
   },
-  mounted() {
-    this.itemsQty = this.section.items.length || 0;
-  },
-  watch: {
-    isEdit: function() {
-      this.restartSlick();
-    },
-    view: function() {
-      this.restartSlick();
-    },
-    section: function() {
-      if (
-        this.isEdit &&
-        this.itemsQty === 0 &&
-        this.section.items.length === 1
-      ) {
-        this.restartSlick();
+  beforeDestroy: function () {
+    if (this.$refs[this.slickRef]) {
+      if (document.getElementById(this.section.id) && !this.isEdit) {
+        document
+          .getElementById(this.section.id)
+          .removeEventListener("click", this.handleClonedSlides);
       }
     }
-  }
+  },
 };
 </script>

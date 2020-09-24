@@ -1,11 +1,6 @@
 <template>
   <div class="reviews__item-wrap cell" :class="{ 'position-relative': isEdit }">
-    <buttons-item
-      v-if="isEdit"
-      :itemId="item.id"
-      :sectionId="sectionId"
-      @onAction="$emit('item-update')"
-    />
+    <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="sectionId" />
     <div class="reviews__item">
       <div
         class="reviews__image-wrap"
