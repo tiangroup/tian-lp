@@ -1,4 +1,4 @@
-# Схема работы
+# Схема работы [](https://proofs.app.tian-lp.ru/process/)
 
 ::: tip Папка блока
 `/components/sections/process`

@@ -9,7 +9,7 @@ module.exports = {
     //   //{ text: "Компоненты", link: "/components/" }
     // ],
     sidebar: [
-      //"/sections/",
+      "/",
       {
         title: "Блоки страницы",
         path: "/sections/",
@@ -44,7 +44,6 @@ module.exports = {
       },
       {
         title: "Плагины",
-        //path: "/plugins/",
         children: [
           "/plugins/inject",
           "/plugins/vue-slick",

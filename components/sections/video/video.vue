@@ -62,11 +62,17 @@
                   class="video__item-wrap cell"
                   v-if="isEdit && (!section.items || !section.items.length)"
                 >
-                  <v-card class="d-flex flex-column" flat height="100%" width="100%">
-                    <v-spacer></v-spacer>
-                    <v-row class="mx-auto">
+                  <v-card
+                    class="d-flex flex-column"
+                    dark
+                    flat
+                    rounded="0"
+                    width="100%"
+                    height="100%"
+                  >
+                    <div class="item__add-button">
                       <buttons-item-add :sectionId="section.id" />
-                    </v-row>
+                    </div>
                     <v-spacer></v-spacer>
                     <v-skeleton-loader boilerplate type="list-item-two-line" width="100%"></v-skeleton-loader>
                   </v-card>

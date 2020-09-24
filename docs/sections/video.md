@@ -1,4 +1,4 @@
-# Видео
+# Видео [](https://proofs.app.tian-lp.ru/video/)
 
 ::: tip Папка блока
 `/components/sections/video`

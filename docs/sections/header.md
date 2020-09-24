@@ -1,4 +1,4 @@
-# Шапка страницы
+# Шапка страницы [](https://proofs.app.tian-lp.ru/header/)
 
 ::: tip Папка блока
 `/components/sections/header`

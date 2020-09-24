@@ -1,4 +1,4 @@
-# Отзывы
+# Отзывы [](https://proofs.app.tian-lp.ru/reviews/)
 
 ::: tip Папка блока
 `/components/sections/reviews`

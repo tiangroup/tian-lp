@@ -2,79 +2,130 @@
   <div class="custom-h-spacing contacts--style2">
     <div>
       <div class="services__list mx-ncell">
-        <!-- <slick :ref="slickRef" :options="updatedSlickOptions" @init="handleInit" :key="slickKey"> -->
-        <div
-          class="services__item-wrap cell"
-          :class="{ 'position-relative': isEdit }"
-          v-for="item in section.items.filter(i => i.id)"
-          :key="item.id"
-        >
-          <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="section.id" />
-          <div class="services__item">
-            <image-item
-              divClass="services__image"
-              :img="item.img"
-              :itemId="item.id"
-              :sectionId="section.id"
-            />
-            <div class="services__body body-copy">
-              <div class="services__title">
-                <editor
-                  data-placeholder="Название услуги"
-                  :text="item.title || ''"
-                  :sectionId="section.id"
-                  field="title"
+        <no-ssr>
+          <slick :ref="slickRef" :options="updatedSlickOptions" @init="handleInit" :key="slickKey">
+            <div
+              class="services__item-wrap cell"
+              :class="{ 'position-relative': isEdit }"
+              v-for="item in section.items.filter(i => i.id)"
+              :key="item.id"
+            >
+              <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="section.id" />
+              <div class="services__item">
+                <image-item
+                  divClass="services__image"
+                  :img="item.img"
                   :itemId="item.id"
-                  v-if="isEdit"
-                />
-                <span v-else>{{ item.title }}</span>
-              </div>
-              <div class="services__description">
-                <editor
-                  data-placeholder="Описание услуги"
-                  :text="item.description || ''"
                   :sectionId="section.id"
-                  field="description"
-                  :itemId="item.id"
-                  editContent="html"
-                  v-if="isEdit"
                 />
-                <div v-else v-html="item.description"></div>
-              </div>
+                <div class="services__body body-copy">
+                  <div class="services__title">
+                    <editor
+                      data-placeholder="Название услуги"
+                      :text="item.title || ''"
+                      :sectionId="section.id"
+                      field="title"
+                      :itemId="item.id"
+                      v-if="isEdit"
+                    />
+                    <span v-else>{{ item.title }}</span>
+                  </div>
+                  <div class="services__description">
+                    <editor
+                      data-placeholder="Описание услуги"
+                      :text="item.description || ''"
+                      :sectionId="section.id"
+                      field="description"
+                      :itemId="item.id"
+                      editContent="html"
+                      v-if="isEdit"
+                    />
+                    <div v-else v-html="item.description"></div>
+                  </div>
 
-              <div class="services__cta">
-                <div class="cells align-items-center">
-                  <div class="cell cell-auto">
-                    <div class="services__price">
-                      <editor
-                        data-placeholder="от 5 000 руб."
-                        :text="item.price || ''"
-                        :sectionId="section.id"
-                        field="price"
-                        :itemId="item.id"
-                        v-if="isEdit"
-                      />
-                      <span v-else>{{ item.price }}</span>
-                    </div>
-                    <div class="cell cell-auto">
-                      <div class="services__action">
-                        <a href class="button button-primary">Заказать услугу</a>
+                  <div class="services__cta">
+                    <div class="cells align-items-center">
+                      <div class="cell cell-auto">
+                        <div class="services__price">
+                          <editor
+                            data-placeholder="от 5 000 руб."
+                            :text="item.price || ''"
+                            :sectionId="section.id"
+                            field="price"
+                            :itemId="item.id"
+                            v-if="isEdit"
+                          />
+                          <span v-else>{{ item.price }}</span>
+                        </div>
+                      </div>
+                      <div class="cell cell-auto">
+                        <div class="services__action">
+                          <a href class="button button-primary">Заказать услугу</a>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div
-          class="services__item-wrap cell"
-          v-if="isEdit && (!section.items || !section.items.length)"
-        >
-          <buttons-item-add :sectionId="section.id" />
-        </div>
-        <!-- </slick> -->
+            <div
+              class="services__item-wrap cell"
+              v-if="isEdit && (!section.items || !section.items.length)"
+            >
+              <div class="services__item">
+                <div class="item__add-button">
+                  <buttons-item-add :sectionId="section.id" />
+                </div>
+                <div class="services__image no-image"></div>
+                <div class="services__body body-copy">
+                  <div class="services__description">
+                    <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
+                  </div>
+                  <div class="services__cta">
+                    <v-skeleton-loader boilerplate type="actions"></v-skeleton-loader>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </slick>
+
+          <template slot="placeholder">
+            <div class="cells fx-nw overflow-hidden">
+              <div class="services__item-wrap cell cell-12">
+                <div
+                  class="services__item"
+                  v-for="item in section.items.filter(i => i.id)"
+                  :key="item.id"
+                >
+                  <image-item
+                    divClass="services__image"
+                    :img="item.img"
+                    :itemId="item.id"
+                    :sectionId="section.id"
+                  />
+                  <div class="services__body body-copy">
+                    <div class="services__title">{{ item.title }}</div>
+                    <div class="services__description" v-html="item.description"></div>
+
+                    <div class="services__cta">
+                      <div class="cells align-items-center">
+                        <div class="cell cell-auto">
+                          <div class="services__price">{{ item.price }}</div>
+                        </div>
+                        <div class="cell cell-auto">
+                          <div class="services__action">
+                            <a href class="button button-primary">Заказать услугу</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </no-ssr>
       </div>
     </div>
   </div>
@@ -143,13 +194,6 @@ export default {
   methods: {
     handleInit(event, slick) {
       slick.goTo(this.currentSlide, true);
-      if (!this.isEdit) {
-        const [slickTrack] = slick.$slideTrack;
-        let slidesCloned = slickTrack.querySelectorAll(".slick-cloned");
-        let slidesRealLength = slickTrack.querySelectorAll(
-          ".slick-slide:not(.slick-cloned)"
-        ).length;
-      }
     },
   },
   beforeUpdate: function () {

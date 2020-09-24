@@ -26,13 +26,20 @@
               class="products__item-wrap cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
               v-if="!section.items || !itemsCount"
             >
-              <div class="item__add-button">
-                <buttons-item-add :sectionId="section.id" />
+              <div class="products__item">
+                <div class="item__add-button">
+                  <buttons-item-add :sectionId="section.id" />
+                </div>
+                <div class="products__details no-hover">
+                  <div class="products__image no-image"></div>
+                  <div class="products__title">
+                    <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
+                  </div>
+                </div>
+                <div class="products__action">
+                  <v-skeleton-loader boilerplate type="card-heading"></v-skeleton-loader>
+                </div>
               </div>
-              <v-skeleton-loader
-                boilerplate
-                type="image, list-item, list-item-three-line, card-heading"
-              ></v-skeleton-loader>
             </div>
           </div>
           <div v-else-if="section.items">
@@ -84,17 +91,21 @@
                 @show-order-form="showOrderForm(item)"
                 @update-description="updateItemDescription(item)"
               ></products-item>
-              <div
-                class="products__item-wrap cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
-                v-if="!section.items || !itemsCount"
-              >
-                <div class="item__add-button">
-                  <buttons-item-add :sectionId="section.id" />
+              <div class="products__item-wrap cell" v-if="!section.items || !itemsCount">
+                <div class="products__item">
+                  <div class="item__add-button">
+                    <buttons-item-add :sectionId="section.id" />
+                  </div>
+                  <div class="products__details no-hover">
+                    <div class="products__image no-image"></div>
+                    <div class="products__title">
+                      <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
+                    </div>
+                  </div>
+                  <div class="products__action">
+                    <v-skeleton-loader boilerplate type="card-heading"></v-skeleton-loader>
+                  </div>
                 </div>
-                <v-skeleton-loader
-                  boilerplate
-                  type="image, list-item, list-item-three-line, card-heading"
-                ></v-skeleton-loader>
               </div>
             </slick>
             <template slot="placeholder">
@@ -474,10 +485,24 @@ export default {
 <style>
 .products-appear-enter-active,
 .products-appear-leave-active {
-  transition: transform 1s;
+  transition: max-height 1s;
+  max-height: 40rem;
+  overflow: hidden;
+}
+.products-appear-leave-to {
+  margin-bottom: 0;
 }
 .products-appear-enter,
 .products-appear-leave-to {
-  transform: translateY(100px);
+  max-height: 0;
+}
+.products .theme--light.v-skeleton-loader .v-skeleton-loader__avatar,
+.products .theme--light.v-skeleton-loader .v-skeleton-loader__button,
+.products .theme--light.v-skeleton-loader .v-skeleton-loader__chip,
+.products .theme--light.v-skeleton-loader .v-skeleton-loader__divider,
+.products .theme--light.v-skeleton-loader .v-skeleton-loader__heading,
+.products .theme--light.v-skeleton-loader .v-skeleton-loader__image,
+.products .theme--light.v-skeleton-loader .v-skeleton-loader__text {
+  background-color: var(--separator-color);
 }
 </style>
