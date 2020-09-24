@@ -1,4 +1,4 @@
-# Товары
+# Товары [](https://proofs.app.tian-lp.ru/products/)
 
 ::: tip Папка блока
 `/components/sections/products`
