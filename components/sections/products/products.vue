@@ -395,7 +395,9 @@ export default {
   },
   methods: {
     handleInit(event, slick) {
-      slick.goTo(this.currentSlide, true);
+      if (this.currentSlide) {
+        slick.goTo(this.currentSlide, true);
+      }
       if (!this.isEdit) {
         document
           .getElementById(this.section.id)
@@ -473,7 +475,7 @@ export default {
   },
   beforeDestroy: function () {
     if (this.$refs[this.slickRef]) {
-      if (document.getElementById(this.section.id)) {
+      if (document.getElementById(this.section.id) && !this.isEdit) {
         document
           .getElementById(this.section.id)
           .removeEventListener("click", this.handleClonedSlides);

@@ -25,11 +25,11 @@
                 v-if="isEdit && (!section.items || !section.items.length)"
               >
                 <div class="staff__item">
-                  <div class="staff__image">
-                    <v-skeleton-loader boilerplate type="image"></v-skeleton-loader>
-                  </div>
-                  <div class="staff__info">
+                  <div class="item__add-button">
                     <buttons-item-add :sectionId="section.id" />
+                  </div>
+                  <div class="staff__image no-image"></div>
+                  <div class="staff__info">
                     <v-skeleton-loader boilerplate type="paragraph"></v-skeleton-loader>
                   </div>
                 </div>
@@ -118,7 +118,7 @@ export default {
           key += this.section.items[i].id;
         }
       }
-      //console.log("video-slick key " + key);
+      //console.log("staff-slick key " + key);
       return key;
     },
     itemsCount() {
@@ -127,7 +127,9 @@ export default {
   },
   methods: {
     handleInit(event, slick) {
-      slick.goTo(this.currentSlide, true);
+      if (this.currentSlide) {
+        slick.goTo(this.currentSlide, true);
+      }
     },
   },
   beforeUpdate: function () {
@@ -137,3 +139,14 @@ export default {
   },
 };
 </script>
+<style>
+.staff .theme--light.v-skeleton-loader .v-skeleton-loader__avatar,
+.staff .theme--light.v-skeleton-loader .v-skeleton-loader__button,
+.staff .theme--light.v-skeleton-loader .v-skeleton-loader__chip,
+.staff .theme--light.v-skeleton-loader .v-skeleton-loader__divider,
+.staff .theme--light.v-skeleton-loader .v-skeleton-loader__heading,
+.staff .theme--light.v-skeleton-loader .v-skeleton-loader__image,
+.staff .theme--light.v-skeleton-loader .v-skeleton-loader__text {
+  background-color: var(--separator-color);
+}
+</style>

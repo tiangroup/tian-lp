@@ -186,7 +186,7 @@ export default {
           key += this.section.items[i].id;
         }
       }
-      //console.log("products-slick key " + key);
+      //console.log("photoes-slick key " + key);
       return key;
     },
     computedRealSlides() {
@@ -234,7 +234,7 @@ export default {
   },
   beforeDestroy: function () {
     if (this.$refs[this.slickRef]) {
-      if (document.getElementById(this.section.id)) {
+      if (document.getElementById(this.section.id) && !this.isEdit) {
         document
           .getElementById(this.section.id)
           .removeEventListener("click", this.handleClonedSlides);

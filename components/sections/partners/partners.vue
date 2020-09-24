@@ -1,5 +1,5 @@
 <template>
-  <div :style="styleDiv" :id="section.id">
+  <div :class="{'position-relative': isEdit}" :id="section.id">
     <buttons-section v-if="isEdit" :section="section" />
     <div
       class="partners custom-v-spacing bg-primary"
@@ -15,7 +15,7 @@
           v-if="section.items && section.settings.view === 'list'"
         >
           <partners-item
-            class="partners__item-wrap cell cell-6 cell-sm-4 cell-md-3 cell-xl-2"
+            class="cell-6 cell-sm-4 cell-md-3 cell-xl-2"
             v-for="item in section.items.filter(i => i.id)"
             :key="item.id"
             :item="item"
@@ -33,33 +33,67 @@
             class="partners__item-wrap cell cell-6 cell-sm-4 cell-md-3 cell-xl-2"
             v-if="isEdit && (!section.items || !section.items.length)"
           >
-            <buttons-item-add :sectionId="section.id" />
+            <div class="partners__item">
+              <div class="item__add-button">
+                <buttons-item-add :sectionId="section.id" />
+              </div>
+              <div class="partners__image no-image"></div>
+              <div class="partners__text">
+                <v-skeleton-loader boilerplate type="text"></v-skeleton-loader>
+              </div>
+            </div>
           </div>
         </div>
         <div class="partners__list mx-ncell" v-if="view === 'slider'">
-          <slick ref="slickPartners" :options="updatedSlickOptions" v-if="isSlick">
-            <partners-item
-              class="partners__item-wrap cell"
-              v-for="item in section.items.filter(i => i.id)"
-              :key="item.id"
-              :item="item"
-              :sectionId="section.id"
-              :isEdit="isEdit"
-              @item-update="onItemsChange"
-              @change-link="updatePartnerLink({
+          <np-ssr>
+            <slick
+              :ref="slickRef"
+              :options="updatedSlickOptions"
+              :key="slickKey"
+              @init="handleInit"
+            >
+              <partners-item
+                v-for="item in section.items.filter(i => i.id)"
+                :key="item.id"
+                :item="item"
+                :sectionId="section.id"
+                :isEdit="isEdit"
+                @change-link="updatePartnerLink({
               itemId: item.id,
               sectionId: section.id,
               field: 'link',
               value:item.link
             })"
-            ></partners-item>
-            <div
-              class="partners__item-wrap cell"
-              v-if="isEdit && (!section.items || !section.items.length)"
-            >
-              <buttons-item-add :sectionId="section.id" />
-            </div>
-          </slick>
+              ></partners-item>
+              <div
+                class="partners__item-wrap cell cell-6 cell-sm-4 cell-md-3 cell-xl-2"
+                v-if="isEdit && (!section.items || !section.items.length)"
+              >
+                <div class="partners__item">
+                  <div class="item__add-button">
+                    <buttons-item-add :sectionId="section.id" />
+                  </div>
+                  <div class="partners__image no-image"></div>
+                  <div class="partners__text">
+                    <v-skeleton-loader boilerplate type="text"></v-skeleton-loader>
+                  </div>
+                </div>
+              </div>
+            </slick>
+            <template slot="placeholder">
+              <div class="cells fx-nw overflow-hidden">
+                <partners-item
+                  class="cell-6 cell-sm-4 cell-md-3 cell-xl-2"
+                  v-for="item in section.items.filter(i => i.id)"
+                  :key="item.id"
+                  :item="item"
+                  :sectionId="section.id"
+                  :isEdit="false"
+                  :view="view"
+                ></partners-item>
+              </div>
+            </template>
+          </np-ssr>
         </div>
 
         <v-dialog v-model="partnerLinkDialog" max-width="33rem" v-if="isEdit">
@@ -98,9 +132,6 @@ export default {
   },
   data: () => ({
     currentItem: {},
-    firstItemAdded: false,
-    itemsQty: null,
-    isSlick: true,
     slickOptions: {
       arrows: true,
       dots: true,
@@ -138,9 +169,6 @@ export default {
     ...mapGetters({
       isEdit: "isEdit",
     }),
-    styleDiv() {
-      return this.isEdit ? { position: "relative" } : null;
-    },
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
@@ -150,25 +178,32 @@ export default {
     view() {
       return this.section.settings.view;
     },
+    slickRef() {
+      return "slick" + this.section.id;
+    },
+    slickKey() {
+      let key = "" + this.isEdit;
+      if (this.itemsCount) {
+        for (var i = 0; i < this.itemsCount; i++) {
+          key += this.section.items[i].id;
+        }
+      }
+      //console.log("partners-slick key " + key);
+      return key;
+    },
+    itemsCount() {
+      return this.section.items.length;
+    },
+    computedRealSlides() {
+      return document
+        .getElementById(this.section.id)
+        .querySelectorAll(".slick-slide:not(.slick-cloned)").length;
+    },
   },
   methods: {
     ...mapMutations({
       setItemField: "pages/SET_ITEM_FIELD",
     }),
-    onItemsChange(event) {
-      if (this.section.items.length < 1) {
-        this.restartSlick();
-      } else {
-        this.itemsQty = this.section.items.length;
-      }
-    },
-    restartSlick() {
-      this.isSlick = false;
-      const _this = this;
-      setTimeout(function () {
-        _this.isSlick = true;
-      }, 200);
-    },
     updatePartnerLink(payload) {
       this.currentItem = payload;
       this.userUrl = payload.value;
@@ -185,18 +220,16 @@ export default {
       this.$store.dispatch("pages/savePage");
       this.partnerLinkDialog = false;
     },
-  },
-  mounted: function () {
-    this.itemsQty = this.section.items.length;
-  },
-  watch: {
-    isEdit: function () {
-      this.restartSlick();
+    handleInit(event, slick) {
+      if (this.currentSlide) {
+        slick.goTo(this.currentSlide, true);
+      }
     },
-    section: function () {
-      this.itemsQty = this.section.items.length;
-      this.restartSlick();
-    },
+  },
+  beforeUpdate: function () {
+    if (this.$refs[this.slickRef]) {
+      this.currentSlide = this.$refs[this.slickRef].currentSlide;
+    }
   },
 };
 </script>

@@ -243,7 +243,9 @@ export default {
       }
     },
     handleInit(event, slick) {
-      slick.goTo(this.currentSlide, true);
+      if (this.currentSlide) {
+        slick.goTo(this.currentSlide, true);
+      }
       if (!this.isEdit) {
         document
           .getElementById(this.section.id)

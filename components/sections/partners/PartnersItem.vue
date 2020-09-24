@@ -1,11 +1,6 @@
 <template>
-  <div class="partners__item-wrap" :class="{ 'position-relative': isEdit }">
-    <buttons-item
-      v-if="isEdit"
-      :itemId="item.id"
-      :sectionId="sectionId"
-      @onAction="$emit('item-update')"
-    >
+  <div class="partners__item-wrap cell" :class="{ 'position-relative': isEdit }">
+    <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="sectionId">
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -24,12 +19,7 @@
       </v-tooltip>
     </buttons-item>
     <div class="partners__item">
-      <a
-        v-if="item.link && !isEdit"
-        :href="item.link"
-        class="partners__link"
-        target="_blank"
-      ></a>
+      <a v-if="item.link && !isEdit" :href="item.link" class="partners__link" target="_blank"></a>
       <image-item
         divClass="partners__image"
         :img="item.img"
@@ -54,9 +44,9 @@ export default {
   props: {
     item: Object,
     sectionId: String,
-    isEdit: Boolean
+    isEdit: Boolean,
   },
   data: () => ({}),
-  methods: {}
+  methods: {},
 };
 </script>
