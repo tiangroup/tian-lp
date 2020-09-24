@@ -2,7 +2,7 @@
   <v-menu v-if="isEdit" absolute offset-y>
     <template v-slot:activator="{ on, attrs }">
       <div :class="[divClass, { 'no-image': !img }]" v-bind="attrs" v-on="on">
-        <nuxt-img v-if="img" :src="$site_img(img)" :image-style="imageStyle" />
+        <img v-if="img" :src="$site_img(img, imageStyle)" />
       </div>
     </template>
     <v-list>
@@ -63,7 +63,8 @@ export default {
         id: this.itemId,
         field: this.field,
         items: this.items,
-        value: this.img
+        value: this.img,
+        imageStyle: this.imageStyle
       });
     },
     svgSelect() {
