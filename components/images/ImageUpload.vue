@@ -13,7 +13,10 @@
         >
           <v-container fluid pl-6>
             <v-row justify="center">
-              <nuxt-img :src="$site_img(origImage)" v-if="!inputLink" />
+              <nuxt-img
+                :src="$site_img(origImage, imageStyle)"
+                v-if="!inputLink"
+              />
               <v-text-field
                 v-else
                 label="Cсылка на картинку"
@@ -157,6 +160,9 @@ export default {
     },
     origImage() {
       return this.itemImageEdit.value;
+    },
+    imageStyle() {
+      return this.itemImageEdit.imageStyle;
     }
   },
   methods: {
