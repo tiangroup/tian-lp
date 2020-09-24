@@ -9,7 +9,7 @@ export default (context, inject) => {
     if (store.getters["isEdit"]) {
       root = app_backend + "/";
     }
-    return root + store.getters["sites/id"] + img;
+    return root + "uploads/" + store.getters["sites/name"] + img;
   });
 
   inject("site_api", api_backend);
@@ -31,7 +31,7 @@ export default (context, inject) => {
       if (store.getters["isEdit"]) {
         root = app_backend + "/";
       }
-      return root + store.getters["sites/id"] + img;
+      return root + "uploads/" + store.getters["sites/name"] + img;
     },
     upload: imageUpload => {
       store.dispatch("showImageUpload", imageUpload);

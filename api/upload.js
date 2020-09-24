@@ -89,8 +89,11 @@ app.post("/image", checkAuth, async (req, res) => {
   }
 });
 
-async function downloadImage(url, path) {
-  const writer = fs.createWriteStream(path);
+async function downloadImage(url, file) {
+  var dir = path.dirname(file);
+  console.log(dir);
+  fs.mkdirSync(dir, { recursive: true });
+  const writer = fs.createWriteStream(file);
 
   const response = await axios({
     url,
@@ -116,9 +119,12 @@ app.post("/image-link", checkAuth, async (req, res) => {
   try {
     const image_link = req.body.image_link;
 
-    const filename =
+    let filename =
       /*uuid.v4()*/ random_gen(7) + path.extname(image_link).toLowerCase();
 
+    if (req.body.path) {
+      filename = req.body.path + "/" + filename;
+    }
     //const catalog = req.body.catalog;
     const catalog = await getCatalog(req);
 
@@ -197,7 +203,7 @@ async function getCatalog(req) {
       admin: req.userData.id
     }
   });
-  const catalog = data[0].id;
+  const catalog = `uploads/${data[0].name}`;
   return catalog;
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div :class="[divClass, { 'no-image': !img }]">
-    <img v-if="img" :src="$site_img(img)" />
+    <nuxt-img v-if="img" :src="$site_img(img)" :image-style="imageStyle" />
   </div>
 </template>
 
@@ -8,7 +8,8 @@
 export default {
   props: {
     divClass: { type: String, default: "" },
-    img: String
+    img: String,
+    imageStyle: { type: String, default: null }
   }
 };
 </script>

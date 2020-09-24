@@ -39,6 +39,7 @@
               :img="item.img"
               :itemId="item.id"
               :sectionId="section.id"
+              imageStyle="rect_lg"
             />
 
             <div class="benefits__body">
