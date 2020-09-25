@@ -7,14 +7,18 @@
     >
       <div class="landing__container">
         <h2 v-if="isEdit">
-          <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+          <editor
+            :text="section.title || ''"
+            :sectionId="section.id"
+            field="title"
+          />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
         <div v-if="section.settings.view === 'view1'">
           <div class="products__list cells" v-if="section.items && isEdit">
             <products-item
               class="cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
-              v-for="item in section.items.filter(i => i.id)"
+              v-for="item in section.items.filter((i) => i.id)"
               :key="item.id"
               :item="item"
               :sectionId="section.id"
@@ -33,17 +37,27 @@
                 <div class="products__details no-hover">
                   <div class="products__image no-image"></div>
                   <div class="products__title">
-                    <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
+                    <v-skeleton-loader
+                      boilerplate
+                      type="article"
+                    ></v-skeleton-loader>
                   </div>
                 </div>
                 <div class="products__action">
-                  <v-skeleton-loader boilerplate type="card-heading"></v-skeleton-loader>
+                  <v-skeleton-loader
+                    boilerplate
+                    type="card-heading"
+                  ></v-skeleton-loader>
                 </div>
               </div>
             </div>
           </div>
           <div v-else-if="section.items">
-            <transition-group tag="div" name="products-appear" class="products__list cells">
+            <transition-group
+              tag="div"
+              name="products-appear"
+              class="products__list cells"
+            >
               <products-item
                 class="cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
                 :id="item.id"
@@ -56,20 +70,24 @@
                 @show-order-form="showOrderForm(item)"
               ></products-item>
             </transition-group>
-            <div class="cells align-items-center justify-content-center justify-content-sm-between">
-              <div
-                class="cell cell-auto products__count"
-              >Товаров {{ itemsShown }} из {{ itemsCount }}</div>
+            <div
+              class="cells align-items-center justify-content-center justify-content-sm-between"
+            >
+              <div class="cell cell-auto products__count">
+                Товаров {{ itemsShown }} из {{ itemsCount }}
+              </div>
               <div class="cell cell-auto products__loadmore">
                 <button
                   class="button button-primary button-more"
-                  :class="{'button-more--opened': (itemsShown >= itemsCount)}"
+                  :class="{ 'button-more--opened': itemsShown >= itemsCount }"
                   @click="showMoreItems"
                 >
                   <div class="button__body">{{ loadmoreText }}</div>
                 </button>
               </div>
-              <div class="cell cell-auto display-none display-sm-block grow-sm-1"></div>
+              <div
+                class="cell cell-auto display-none display-sm-block grow-sm-1"
+              ></div>
             </div>
           </div>
         </div>
@@ -82,7 +100,7 @@
               :key="slickKey"
             >
               <products-item
-                v-for="item in section.items.filter(i => i.id)"
+                v-for="item in section.items.filter((i) => i.id)"
                 :key="item.id"
                 :item="item"
                 :sectionId="section.id"
@@ -91,7 +109,10 @@
                 @show-order-form="showOrderForm(item)"
                 @update-description="updateItemDescription(item)"
               ></products-item>
-              <div class="products__item-wrap cell" v-if="!section.items || !itemsCount">
+              <div
+                class="products__item-wrap cell"
+                v-if="!section.items || !itemsCount"
+              >
                 <div class="products__item">
                   <div class="item__add-button">
                     <buttons-item-add :sectionId="section.id" />
@@ -99,11 +120,17 @@
                   <div class="products__details no-hover">
                     <div class="products__image no-image"></div>
                     <div class="products__title">
-                      <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
+                      <v-skeleton-loader
+                        boilerplate
+                        type="article"
+                      ></v-skeleton-loader>
                     </div>
                   </div>
                   <div class="products__action">
-                    <v-skeleton-loader boilerplate type="card-heading"></v-skeleton-loader>
+                    <v-skeleton-loader
+                      boilerplate
+                      type="card-heading"
+                    ></v-skeleton-loader>
                   </div>
                 </div>
               </div>
@@ -112,7 +139,7 @@
               <div class="cells fx-nw overflow-hidden">
                 <products-item
                   class="cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
-                  v-for="item in section.items.filter(i => i.id)"
+                  v-for="item in section.items.filter((i) => i.id)"
                   :key="item.id"
                   :item="item"
                   :sectionId="section.id"
@@ -123,7 +150,11 @@
           </no-ssr>
         </div>
 
-        <form-dialog :section="section" field="order_form" v-model="dialogOrderProduct">
+        <form-dialog
+          :section="section"
+          field="order_form"
+          v-model="dialogOrderProduct"
+        >
           <div class="good-summary">
             <div class="good-summary__row">
               <div class="good-summary__image" v-if="currentItem.img">
@@ -135,7 +166,12 @@
               </div>
             </div>
             <div class="good-summary__status">
-              <svg viewBox="0 0 24 24" height="23" width="23" fill="currentColor">
+              <svg
+                viewBox="0 0 24 24"
+                height="23"
+                width="23"
+                fill="currentColor"
+              >
                 <path
                   d="M21 11.080v0.92c-0.001 2.485-1.009 4.733-2.64 6.362s-3.88 2.634-6.365 2.632-4.734-1.009-6.362-2.64-2.634-3.879-2.633-6.365 1.009-4.733 2.64-6.362 3.88-2.634 6.365-2.633c1.33 0.001 2.586 0.289 3.649 0.775 0.502 0.23 1.096 0.008 1.325-0.494s0.008-1.096-0.494-1.325c-1.327-0.606-2.866-0.955-4.479-0.956-3.037-0.002-5.789 1.229-7.78 3.217s-3.224 4.74-3.226 7.777 1.229 5.789 3.217 7.78 4.739 3.225 7.776 3.226 5.789-1.229 7.78-3.217 3.225-4.739 3.227-7.777v-0.92c0-0.552-0.448-1-1-1s-1 0.448-1 1zM21.293 3.293l-9.293 9.302-2.293-2.292c-0.391-0.391-1.024-0.391-1.414 0s-0.391 1.024 0 1.414l3 3c0.391 0.391 1.024 0.39 1.415 0l10-10.010c0.39-0.391 0.39-1.024-0.001-1.414s-1.024-0.39-1.414 0.001z"
                 />
@@ -148,7 +184,10 @@
           <div class="der-popup">
             <div class="der-popup__body">
               <div class="der-popup__close">
-                <button class="button button-icon button-close" @click="dialogDetailedItem = false">
+                <button
+                  class="button button-icon button-close"
+                  @click="dialogDetailedItem = false"
+                >
                   <span class="sr-only">Закрыть</span>
                   <svg
                     width="18"
@@ -193,18 +232,33 @@
                   </div>
                 </div>
                     </div>-->
-                    <div class="good__chars" v-html="currentItem.tech_chars"></div>
-                    <div class="good__description" v-if="currentItem.description">
+                    <div
+                      class="good__chars"
+                      v-html="currentItem.tech_chars"
+                    ></div>
+                    <div
+                      class="good__description"
+                      v-if="currentItem.description"
+                    >
                       <div class="good__description__title">Описание</div>
-                      <div class="good__description__body" v-html="currentItem.description"></div>
+                      <div
+                        class="good__description__body"
+                        v-html="currentItem.description"
+                      ></div>
                     </div>
                   </div>
                   <div class="good__cta">
-                    <div class="cells justify-content-between align-items-center">
+                    <div
+                      class="cells justify-content-between align-items-center"
+                    >
                       <div class="cell cell-auto">
                         <div class="good__prices">
-                          <div class="good__prices__current">{{ currentItem.price }}</div>
-                          <div class="good__prices__old">{{ currentItem.old_price }}</div>
+                          <div class="good__prices__current">
+                            {{ currentItem.price }}
+                          </div>
+                          <div class="good__prices__old">
+                            {{ currentItem.old_price }}
+                          </div>
                         </div>
                       </div>
                       <div class="cell cell-auto">
@@ -213,7 +267,8 @@
                             href
                             class="button button-primary"
                             @click.prevent="initOrderForm(currentItem)"
-                          >Купить</a>
+                            >Купить</a
+                          >
                         </div>
                       </div>
                     </div>
@@ -224,7 +279,11 @@
           </div>
         </v-dialog>
 
-        <v-dialog v-model="dialogUpdateDescription" max-width="40rem" v-if="isEdit">
+        <v-dialog
+          v-model="dialogUpdateDescription"
+          max-width="40rem"
+          v-if="isEdit"
+        >
           <v-card>
             <v-card-title class="mb-10">
               Отредактируйте описание товара
@@ -250,8 +309,8 @@
                 <b>Технические характеристики товара</b>
                 <small>
                   (краткая инфорация о товаре, которая появится в карточке
-                  товара)
-                </small>:
+                  товара) </small
+                >:
               </div>
               <editor
                 data-placeholder="Габариты: 220 х 100 х 35 мм"
@@ -278,8 +337,16 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn depressed text color="gray" @click="dialogUpdateDescription = false">Отменить</v-btn>
-              <v-btn depressed color="green" dark @click="saveDescription()">Сохранить</v-btn>
+              <v-btn
+                depressed
+                text
+                color="gray"
+                @click="dialogUpdateDescription = false"
+                >Отменить</v-btn
+              >
+              <v-btn depressed color="green" dark @click="saveDescription()"
+                >Сохранить</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -484,7 +551,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .products-appear-enter-active,
 .products-appear-leave-active {
   transition: max-height 1s;
@@ -506,5 +573,8 @@ export default {
 .products .theme--light.v-skeleton-loader .v-skeleton-loader__image,
 .products .theme--light.v-skeleton-loader .v-skeleton-loader__text {
   background-color: var(--separator-color);
+}
+.products a {
+  color: inherit;
 }
 </style>

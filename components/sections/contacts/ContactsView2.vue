@@ -3,11 +3,16 @@
     <div class="landing__container">
       <div class="contacts__body">
         <h2>
-          <editor :text="section.title || ''" :sectionId="section.id" field="title" v-if="isEdit" />
+          <editor
+            :text="section.title || ''"
+            :sectionId="section.id"
+            field="title"
+            v-if="isEdit"
+          />
           <span v-else>{{ section.title }}</span>
         </h2>
         <div class="contacts__list mx-ncell">
-          <no-ssr>
+          <client-only>
             <slick
               :ref="slickRef"
               :options="updatedSlickOptions"
@@ -17,7 +22,7 @@
               <div
                 class="cell"
                 :class="{ 'position-relative': isEdit }"
-                v-for="item in section.items.filter(i => i.id)"
+                v-for="item in section.items.filter((i) => i.id)"
                 :key="item.id"
               >
                 <buttons-item
@@ -38,7 +43,10 @@
                     />
                     <span v-else>{{ item.title }}</span>
                   </div>
-                  <div class="department__address" v-if="item.address || isEdit">
+                  <div
+                    class="department__address"
+                    v-if="item.address || isEdit"
+                  >
                     <div class="department__address__text" v-if="isEdit">
                       <editor
                         data-placeholder="Введите адрес"
@@ -62,7 +70,8 @@
                       class="department__address__link"
                       @click.prevent="showItemOnMap(getItemCoords(item.coords))"
                       v-if="view === 'view2'"
-                    >Показать на карте</a>
+                      >Показать на карте</a
+                    >
                   </div>
                   <div class="department__emails" v-if="item.email || isEdit">
                     <div class="department__email">
@@ -86,8 +95,13 @@
                       <div class="department__messenger messenger">
                         <ul class="messenger__list">
                           <li class="messenger__item">
-                            <a href="tg://resolve?domain=username" class="messenger__link">
-                              <span class="sr-only">Ссылка на чат в Телеграм</span>
+                            <a
+                              href="tg://resolve?domain=username"
+                              class="messenger__link"
+                            >
+                              <span class="sr-only"
+                                >Ссылка на чат в Телеграм</span
+                              >
                               <svg
                                 height="24"
                                 viewBox="0 0 24 24"
@@ -102,7 +116,10 @@
                             </a>
                           </li>
                           <li class="messenger__item">
-                            <a href="skype:USERNAME?chat" class="messenger__link">
+                            <a
+                              href="skype:USERNAME?chat"
+                              class="messenger__link"
+                            >
                               <span class="sr-only">Ссылка на чат в Skype</span>
                               <svg
                                 height="24"
@@ -118,7 +135,10 @@
                             </a>
                           </li>
                           <li class="messenger__item">
-                            <a href="viber://add?number=%2Bnumber" class="messenger__link">
+                            <a
+                              href="viber://add?number=%2Bnumber"
+                              class="messenger__link"
+                            >
                               <span class="sr-only">Ссылка на чат в Viber</span>
                               <svg
                                 width="40"
@@ -136,8 +156,13 @@
                             </a>
                           </li>
                           <li class="messenger__item">
-                            <a href="https://wa.me/79991112233" class="messenger__link">
-                              <span class="sr-only">Ссылка на чат в Whatsapp</span>
+                            <a
+                              href="https://wa.me/79991112233"
+                              class="messenger__link"
+                            >
+                              <span class="sr-only"
+                                >Ссылка на чат в Whatsapp</span
+                              >
                               <svg
                                 width="24"
                                 height="24"
@@ -174,8 +199,13 @@
                       <div class="department__messenger messenger">
                         <ul class="messenger__list">
                           <li class="messenger__item">
-                            <a href="tg://resolve?domain=username" class="messenger__link">
-                              <span class="sr-only">Ссылка на чат в Телеграм</span>
+                            <a
+                              href="tg://resolve?domain=username"
+                              class="messenger__link"
+                            >
+                              <span class="sr-only"
+                                >Ссылка на чат в Телеграм</span
+                              >
                               <svg
                                 height="24"
                                 viewBox="0 0 24 24"
@@ -190,7 +220,10 @@
                             </a>
                           </li>
                           <li class="messenger__item">
-                            <a href="skype:USERNAME?chat" class="messenger__link">
+                            <a
+                              href="skype:USERNAME?chat"
+                              class="messenger__link"
+                            >
                               <span class="sr-only">Ссылка на чат в Skype</span>
                               <svg
                                 height="24"
@@ -206,7 +239,10 @@
                             </a>
                           </li>
                           <li class="messenger__item">
-                            <a href="viber://add?number=%2Bnumber" class="messenger__link">
+                            <a
+                              href="viber://add?number=%2Bnumber"
+                              class="messenger__link"
+                            >
                               <span class="sr-only">Ссылка на чат в Viber</span>
                               <svg
                                 width="40"
@@ -224,8 +260,13 @@
                             </a>
                           </li>
                           <li class="messenger__item">
-                            <a href="https://wa.me/79991112233" class="messenger__link">
-                              <span class="sr-only">Ссылка на чат в Whatsapp</span>
+                            <a
+                              href="https://wa.me/79991112233"
+                              class="messenger__link"
+                            >
+                              <span class="sr-only"
+                                >Ссылка на чат в Whatsapp</span
+                              >
                               <svg
                                 width="24"
                                 height="24"
@@ -265,7 +306,7 @@
               </div>
             </slick>
             <!-- placeholder here -->
-          </no-ssr>
+          </client-only>
         </div>
       </div>
     </div>
