@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'position-relative': isEdit}" :id="section.id">
+  <div :class="{ 'position-relative': isEdit }" :id="section.id">
     <buttons-section v-if="isEdit" :section="section"></buttons-section>
     <div
       class="services custom-v-spacing-2 bg-secondary"
@@ -7,12 +7,16 @@
         mDark: section.settings.background === 'dark',
         'services--style1': view === 'view1',
         'services--style2': view === 'view2',
-        'services--style3': view === 'view3'
+        'services--style3': view === 'view3',
       }"
     >
       <div class="landing__container">
         <h2 v-if="isEdit">
-          <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+          <editor
+            :text="section.title || ''"
+            :sectionId="section.id"
+            field="title"
+          />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
         <component :is="view" :section="section" :isEdit="isEdit" />
@@ -50,4 +54,13 @@ export default {
 };
 </script>
 <style>
+.services .theme--light.v-skeleton-loader .v-skeleton-loader__avatar,
+.services .theme--light.v-skeleton-loader .v-skeleton-loader__button,
+.services .theme--light.v-skeleton-loader .v-skeleton-loader__chip,
+.services .theme--light.v-skeleton-loader .v-skeleton-loader__divider,
+.services .theme--light.v-skeleton-loader .v-skeleton-loader__heading,
+.services .theme--light.v-skeleton-loader .v-skeleton-loader__image,
+.services .theme--light.v-skeleton-loader .v-skeleton-loader__text {
+  background-color: var(--separator-color);
+}
 </style>

@@ -1,8 +1,13 @@
 <template>
   <div :class="{ 'position-relative': isEdit }" class="staff__item-wrap cell">
     <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="sectionId" />
-    <div class="staff__item">
-      <image-item divClass="staff__image" :img="item.img" :itemId="item.id" :sectionId="sectionId" />
+    <div class="staff__item h-100">
+      <image-item
+        divClass="staff__image"
+        :img="item.img"
+        :itemId="item.id"
+        :sectionId="sectionId"
+      />
       <div class="staff__info">
         <div class="staff__name" v-if="isEdit">
           <editor
@@ -46,7 +51,11 @@
             :itemId="item.id"
             v-if="isEdit"
           />
-          <a v-else-if="isValidEmail(item.email)" :href="`mailto:${item.email}`">{{ item.email }}</a>
+          <a
+            v-else-if="isValidEmail(item.email)"
+            :href="`mailto:${item.email}`"
+            >{{ item.email }}</a
+          >
           <span v-else>{{ item.email }}</span>
         </div>
       </div>

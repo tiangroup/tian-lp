@@ -2,15 +2,26 @@
   <div class="custom-h-spacing contacts--style2">
     <div>
       <div class="services__list mx-ncell">
-        <no-ssr>
-          <slick :ref="slickRef" :options="updatedSlickOptions" @init="handleInit" :key="slickKey">
+        <client-only>
+          <slick
+            :class="slickClass"
+            :ref="slickRef"
+            :options="updatedSlickOptions"
+            @init="handleInit"
+            @afterChange="syncSliders"
+            :key="slickKey"
+          >
             <div
               class="services__item-wrap cell"
               :class="{ 'position-relative': isEdit }"
-              v-for="item in section.items.filter(i => i.id)"
+              v-for="item in section.items.filter((i) => i.id)"
               :key="item.id"
             >
-              <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="section.id" />
+              <buttons-item
+                v-if="isEdit"
+                :itemId="item.id"
+                :sectionId="section.id"
+              />
               <div class="services__item">
                 <image-item
                   divClass="services__image"
@@ -60,7 +71,9 @@
                       </div>
                       <div class="cell cell-auto">
                         <div class="services__action">
-                          <a href class="button button-primary">Заказать услугу</a>
+                          <a href class="button button-primary"
+                            >Заказать услугу</a
+                          >
                         </div>
                       </div>
                     </div>
@@ -80,10 +93,16 @@
                 <div class="services__image no-image"></div>
                 <div class="services__body body-copy">
                   <div class="services__description">
-                    <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
+                    <v-skeleton-loader
+                      boilerplate
+                      type="article"
+                    ></v-skeleton-loader>
                   </div>
                   <div class="services__cta">
-                    <v-skeleton-loader boilerplate type="actions"></v-skeleton-loader>
+                    <v-skeleton-loader
+                      boilerplate
+                      type="actions"
+                    ></v-skeleton-loader>
                   </div>
                 </div>
               </div>
@@ -92,21 +111,21 @@
 
           <template slot="placeholder">
             <div class="cells fx-nw overflow-hidden">
-              <div class="services__item-wrap cell cell-12">
-                <div
-                  class="services__item"
-                  v-for="item in section.items.filter(i => i.id)"
-                  :key="item.id"
-                >
-                  <image-item
-                    divClass="services__image"
-                    :img="item.img"
-                    :itemId="item.id"
-                    :sectionId="section.id"
-                  />
+              <div
+                class="services__item-wrap cell cell-12"
+                v-for="item in section.items.filter((i) => i.id)"
+                :key="item.id"
+              >
+                <div class="services__item">
+                  <div class="services__image">
+                    <img :src="$images.src(item.img)" />
+                  </div>
                   <div class="services__body body-copy">
                     <div class="services__title">{{ item.title }}</div>
-                    <div class="services__description" v-html="item.description"></div>
+                    <div
+                      class="services__description"
+                      v-html="item.description"
+                    ></div>
 
                     <div class="services__cta">
                       <div class="cells align-items-center">
@@ -115,7 +134,9 @@
                         </div>
                         <div class="cell cell-auto">
                           <div class="services__action">
-                            <a href class="button button-primary">Заказать услугу</a>
+                            <a href class="button button-primary"
+                              >Заказать услугу</a
+                            >
                           </div>
                         </div>
                       </div>
@@ -125,8 +146,32 @@
               </div>
             </div>
           </template>
-        </no-ssr>
+        </client-only>
       </div>
+      <client-only>
+        <slick
+          class="services__navigation"
+          :class="slickNavClass"
+          :ref="slickRefNav"
+          :options="updatedSlickNavOptions"
+          @init="handleInitNav"
+          @afterChange="syncSliders"
+          :key="'nav' + slickKey"
+        >
+          <div
+            class="services__navigation__item"
+            v-for="item in section.items.filter((i) => i.id)"
+            :key="'nav' + item.id"
+          >
+            <div
+              class="services__navigation__image"
+              :class="{ 'no-image': !item.img }"
+            >
+              <img :src="$images.src(item.img)" v-if="item.img" />
+            </div>
+          </div>
+        </slick>
+      </client-only>
     </div>
   </div>
 </template>
@@ -165,6 +210,24 @@ export default {
           },
         ],
       },
+      slickNavOptions: {
+        arrows: false,
+        dots: false,
+        slidesToScroll: 1,
+        slidesToShow: 7,
+        centerMode: true,
+        centerPadding: 0,
+        draggable: false,
+        infinite: false,
+        responsive: [
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 3,
+            },
+          },
+        ],
+      },
     };
   },
   computed: {
@@ -174,8 +237,17 @@ export default {
         draggable: !this.isEdit,
       });
     },
+    updatedSlickNavOptions() {
+      return Object.assign(this.slickNavOptions, {
+        infinite: !this.isEdit,
+        draggable: !this.isEdit,
+      });
+    },
     slickRef() {
       return "slick" + this.section.id;
+    },
+    slickRefNav() {
+      return "navslick" + this.section.id;
     },
     itemsCount() {
       return this.section.items.length;
@@ -190,10 +262,30 @@ export default {
       //console.log("services-slick key " + key);
       return key;
     },
+    slickClass() {
+      return "s" + this.section.id;
+    },
+    slickNavClass() {
+      return "n" + this.section.id;
+    },
   },
   methods: {
     handleInit(event, slick) {
-      slick.goTo(this.currentSlide, true);
+      console.log("init");
+      if (this.currentSlide) {
+        slick.goTo(this.currentSlide, true);
+      }
+    },
+    handleInitNav(event, slick) {},
+    syncSliders(e, slick, currPos) {
+      if (
+        this.$refs[this.slickRef] &&
+        this.$refs[this.slickRefNav] &&
+        this.section.items[currPos]
+      ) {
+        this.$refs[this.slickRef].goTo(currPos);
+        this.$refs[this.slickRefNav].goTo(currPos);
+      }
     },
   },
   beforeUpdate: function () {
@@ -203,5 +295,3 @@ export default {
   },
 };
 </script>
-<style>
-</style>

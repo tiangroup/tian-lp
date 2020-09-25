@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'position-relative': isEdit}" :id="section.id">
+  <div :class="{ 'position-relative': isEdit }" :id="section.id">
     <buttons-section v-if="isEdit" :section="section" />
     <div
       class="staff custom-v-spacing custom-h-spacing bg-primary"
@@ -7,17 +7,25 @@
     >
       <div class="landing__container">
         <h2 v-if="isEdit">
-          <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+          <editor
+            :text="section.title || ''"
+            :sectionId="section.id"
+            field="title"
+          />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
         <div class="staff__list mx-ncell">
           <no-ssr>
-            <slick :ref="slickRef" :options="updatedSlickOptions" :key="slickKey">
+            <slick
+              :ref="slickRef"
+              :options="updatedSlickOptions"
+              :key="slickKey"
+            >
               <staff-item
                 :item="item"
                 :isEdit="isEdit"
                 :sectionId="section.id"
-                v-for="item in section.items.filter(i => i.id)"
+                v-for="item in section.items.filter((i) => i.id)"
                 :key="item.id"
               ></staff-item>
               <div
@@ -30,19 +38,22 @@
                   </div>
                   <div class="staff__image no-image"></div>
                   <div class="staff__info">
-                    <v-skeleton-loader boilerplate type="paragraph"></v-skeleton-loader>
+                    <v-skeleton-loader
+                      boilerplate
+                      type="article"
+                    ></v-skeleton-loader>
                   </div>
                 </div>
               </div>
             </slick>
             <template slot="placeholder">
-              <div class="cells fx-nw overflow-hidden">
+              <div class="cells fx-nw overflow-hidden align-items-stretch">
                 <staff-item
                   class="cell-12 cell-sm-6 cell-lg-4"
                   :item="item"
                   :isEdit="false"
                   :sectionId="section.id"
-                  v-for="item in section.items.filter(i => i.id)"
+                  v-for="item in section.items.filter((i) => i.id)"
                   :key="item.id"
                 ></staff-item>
               </div>
@@ -139,7 +150,10 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
+.staff a {
+  color: var(--theme-color);
+}
 .staff .theme--light.v-skeleton-loader .v-skeleton-loader__avatar,
 .staff .theme--light.v-skeleton-loader .v-skeleton-loader__button,
 .staff .theme--light.v-skeleton-loader .v-skeleton-loader__chip,

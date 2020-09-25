@@ -436,7 +436,7 @@ img {
 .button--loading.button-more::after {
   opacity: 0;
 }
-.button-icon {
+.button.button-icon {
   border: 0;
   border-radius: 50%;
   height: 44px;
@@ -875,6 +875,9 @@ nav ul li,
     padding-top: 5.625rem;
     padding-bottom: 5.625rem;
   }
+}
+.h-100 {
+  height: 100%;
 }
 .reveal {
   position: relative;
@@ -2748,7 +2751,8 @@ nav ul li,
 .reviews__list .slick-track,
 .contacts__list .slick-track,
 .video__list .slick-track,
-.products__list .slick-track {
+.products__list .slick-track,
+.services .slick-track {
   display: flex;
   align-items: stretch;
 }
@@ -2756,7 +2760,8 @@ nav ul li,
 .reviews__list .slick-slide,
 .contacts__list .slick-slide,
 .video__list .slick-slide,
-.products__list .slick-slide {
+.products__list .slick-slide,
+.services .slick-slide {
   height: auto;
 }
 .staff__list .slick-slide > div,
@@ -2772,7 +2777,10 @@ nav ul li,
 .video__list .slick-slide .video__item,
 .products__list .slick-slide > div,
 .products__list .slick-slide .products__item-wrap,
-.products__list .slick-slide .products__item {
+.products__list .slick-slide .products__item,
+.services__list .slick-slide > div,
+.services__list .slick-slide .services__item-wrap,
+.services__list .slick-slide .services__item {
   height: 100%;
 }
 .services__list {
@@ -2899,7 +2907,8 @@ nav ul li,
 }
 .services__navigation__item--active .services__navigation__image::after,
 .services__navigation__item:hover .services__navigation__image::after,
-.services__navigation__item:focus .services__navigation__image::after {
+.services__navigation__item:focus .services__navigation__image::after,
+.slick-current .services__navigation__image::after {
   content: none;
 }
 @media (min-width: 576px) {
@@ -2926,9 +2935,6 @@ nav ul li,
     height: 100%;
     padding-left: 2rem;
   }
-  .services__navigation {
-    max-width: none;
-  }
   .services--style2 .services__image {
     float: right;
     margin-left: 2rem;
@@ -2940,6 +2946,13 @@ nav ul li,
   .services--style2 .services__description {
     padding-left: 0;
     padding-right: 0;
+  }
+  .services__navigation {
+    max-width: 469px;
+    margin-left: auto;
+  }
+  .services__navigation .slick-track {
+    justify-content: flex-end;
   }
 }
 @media (min-width: 768px) {
@@ -3024,9 +3037,6 @@ nav ul li,
   .services__description {
     margin-bottom: 3.4375rem;
   }
-  .services__navigation {
-    justify-content: flex-end;
-  }
 }
 @media (min-width: 1280px) {
   .services,
@@ -3045,7 +3055,6 @@ nav ul li,
   }
   .services--style1 .services__item {
     align-items: stretch;
-    min-height: 514px;
     padding: 0;
   }
   .services--style2 .services__item {
@@ -3302,12 +3311,9 @@ nav ul li,
 .staff__email a {
   text-decoration: none;
 }
-.staff__phone a,
-.staff__phone a:hover,
-.staff__phone a:focus,
-.landing .staff__phone a,
-.landing .staff__phone a:hover,
-.landing .staff__phone a:focus {
+.staff .staff__phone a,
+.staff .staff__phone a:hover,
+.staff .staff__phone a:focus {
   color: inherit;
 }
 .staff__phone a:hover,
@@ -5641,11 +5647,11 @@ nav ul li,
   padding: 1.25rem;
   text-align: center;
 }
-.tuning-sort .button-icon {
+.tuning-sort .button.button-icon {
   filter: saturate(0) brightness(2.15);
 }
-.tuning-sort .button-icon:hover,
-.tuning-sort .button-icon:focus {
+.tuning-sort .button.button-icon:hover,
+.tuning-sort .button.button-icon:focus {
   filter: none;
 }
 @media (min-width: 1280px) {
@@ -5746,45 +5752,41 @@ nav ul li,
   color: #303339;
   color: var(--text-color);
 }
-.button-primary,
-.button-primary:active,
-.landing .button-primary,
-.landing .button-primary:active,
-.form__submit {
+.button.button-primary,
+.button.button-primary:active,
+.button.form__submit {
   background-color: #245ef5;
   background-color: var(--theme-color);
   color: #fff;
 }
-.button-primary:hover,
-.landing .button-primary:hover {
+.button.button-primary:hover,
+.button.form__submit:hover {
   background-color: #093dc3;
   background-color: var(--theme-hover-color);
   border-color: #093dc3;
   border-color: var(--theme-hover-color);
+  color: #fff;
 }
-.button-secondary,
-.button-secondary:active,
-.landing .button-secondary,
-.landing .button-secondary:active {
+.button.button-secondary,
+.button.button-secondary:active {
   border-color: currentColor;
   color: #245ef5;
   color: var(--theme-color);
 }
-.button-secondary:hover,
-.landing .button-secondary:hover {
+.button.button-secondary:hover {
   background-color: #245ef5;
   background-color: var(--theme-color);
   border-color: #245ef5;
   border-color: var(--theme-color);
   color: #fff;
 }
-.bg-theme .form__submit {
+.bg-theme .button.form__submit {
   background-color: transparent;
   border-color: currentColor;
   color: #fff;
 }
-.bg-theme .form__submit:hover,
-.bg-theme .button-secondary:hover {
+.bg-theme .button.form__submit:hover,
+.bg-theme .button.button-secondary:hover {
   background-color: #093dc3;
   background-color: var(--theme-hover-color);
   border-color: #093dc3;
@@ -5804,6 +5806,7 @@ nav ul li,
   background-color: var(--theme-color);
 }
 .services__navigation__item--active .services__navigation__image,
+.slick-current .services__navigation__image,
 .social__link,
 .social__link:hover,
 .nav__toggle:focus::before,
@@ -5823,7 +5826,7 @@ a:active,
 .landing .logo__link,
 .landing .logo__link:active,
 .header__menu__toggle,
-.button-icon,
+.button.button-icon,
 .fake-file__button,
 .connect__icon,
 .timer,
@@ -5871,8 +5874,8 @@ a:active,
 .social__link:hover,
 .tarifs__item--selected .tarifs__title,
 .form__status,
-.button-icon.button-primary:hover,
-.button-icon.button-primary:focus {
+.button.button-icon.button-primary:hover,
+.button.button-icon.button-primary:focus {
   color: #fff;
 }
 .ascend__link:hover,
@@ -5894,10 +5897,10 @@ a:active,
 }
 a:hover,
 a:focus,
-.staff__email a:hover,
-.staff__email a:focus,
-.button-icon:hover,
-.button-icon:focus,
+.staff .staff__email a:hover,
+.staff .staff__email a:focus,
+.button.button-icon:hover,
+.button.button-icon:focus,
 .reveal__input:focus ~ .reveal__toggle,
 .landing .primary-nav__link:focus,
 .connect__instance a:focus,
@@ -5912,7 +5915,7 @@ a:focus,
 .department__phone__link a:hover,
 .partners__link:hover ~ .partners__text,
 .partners__link:focus ~ .partners__text,
-.landing .reviews__readmore:hover,
+.reviews .reviews__readmore:hover,
 .landing .logo__link:hover,
 .landing .logo__link:focus {
   color: #093dc3;
@@ -5988,19 +5991,6 @@ hr,
   color: #eb5757;
   color: var(--fail-color);
 }
-/* .no-image,
-.benefits__image,
-.products__image,
-.illustrations__image,
-.good-summary__image,
-.services__image,
-.services__navigation__image,
-.gallery__link,
-.staff__image,
-.video__cover {
-  background-color: #e8ecf0;
-  background-color: var(--separator-color);
-} */
 .no-image {
   background-color: #e8ecf0;
   background-color: var(--separator-color);
@@ -6076,8 +6066,7 @@ hr,
 }
 .bg-theme .connect__icon,
 .bg-theme .timer,
-.bg-theme a,
-.landing .bg-theme a {
+.bg-theme a {
   color: #fff;
   color: var(--text-color);
 }
@@ -6139,12 +6128,12 @@ hr,
   .mTheme a:active {
     color: var(--theme-hover-color);
   }
-  .mTheme .button-secondary {
+  .mTheme .button.button-secondary {
     border-color: currentColor;
     color: #fff;
   }
-  .mTheme .button-secondary:hover,
-  .mTheme .button-secondary:focus {
+  .mTheme .button.button-secondary:hover,
+  .mTheme .button.button-secondary:focus {
     background-color: var(--theme-hover-color);
     border-color: var(--theme-hover-color);
     color: #fff;
