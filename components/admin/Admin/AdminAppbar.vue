@@ -34,7 +34,12 @@
 
     <v-navigation-drawer app class="over" v-model="drawer" clipped>
       <v-list nav dense>
-        <v-list-item selectable @click="$emit('action', { comp: 'AdminSite' })">
+        <v-list-item
+          selectable
+          @click="
+            $emit('action', { comp: 'AdminSite', params: { forms: forms } })
+          "
+        >
           <v-list-item-icon>
             <v-icon>mdi-web-clock</v-icon>
           </v-list-item-icon>
@@ -62,7 +67,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   fetchOnServer: false,
@@ -80,6 +85,7 @@ export default {
         params: item
       }
     }));
+    this.reloadSite();
   },
   computed: {
     ...mapGetters({
@@ -87,6 +93,9 @@ export default {
     })
   },
   methods: {
+    ...mapActions({
+      reloadSite: "sites/reloadSite"
+    }),
     exit() {
       this.$auth.logout();
     }

@@ -65,7 +65,7 @@ app.post("/pages", checkAuth, async (req, res) => {
       });
     }
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).json({ err });
   }
 });
 
@@ -161,9 +161,12 @@ app.put("/pages/delete", checkAuth, async (req, res) => {
       });
     }
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).json({ err });
   }
 });
+
+// обновление деплоя sites
+app.put("/deploy/sites", checkAuth, async (req, res) => {});
 
 module.exports = {
   path: "/api/sites",

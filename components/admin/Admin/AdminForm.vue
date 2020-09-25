@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card flat>
     <v-toolbar>
       <v-toolbar-title>Форма: {{ params.form.title }}</v-toolbar-title>
     </v-toolbar>

@@ -16,6 +16,18 @@ export const actions = {
     } catch (error) {
       console.error(error);
     }
+  },
+  async reloadSite({ commit, state }) {
+    if (state.site) {
+      try {
+        const site = await this.$axios.$get(
+          `${this.$site_api}/sites/${state.site.id}`
+        );
+        commit("SET_SITE", site);
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 };
 

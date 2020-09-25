@@ -1,0 +1,127 @@
+<template>
+  <v-card flat>
+    <v-toolbar>
+      <v-toolbar-title>Сайт</v-toolbar-title>
+    </v-toolbar>
+    <v-tabs>
+      <v-tab>Информация</v-tab>
+      <v-tab>Публикации</v-tab>
+      <v-tab-item>
+        <v-container fluid>
+          <v-row>
+            <v-col cols="12" md="4">
+              <v-card>
+                <v-list dense>
+                  <v-list-item>
+                    <v-list-item-content>Опубликован:</v-list-item-content>
+                    <v-list-item-content>
+                      {{ publish }}
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>Страниц:</v-list-item-content>
+                    <v-list-item-content>
+                      {{ pages.count }}
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item v-if="params.forms">
+                    <v-list-item-content>Форм:</v-list-item-content>
+                    <v-list-item-content>
+                      {{ forms.count }}
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-tab-item>
+      <v-tab-item>
+        <v-container fluid>
+          <v-btn color="primary" dark>
+            Опубликовать
+            <v-icon right dark>mdi-cloud-upload</v-icon>
+          </v-btn>
+          <v-row>
+            <v-col cols="12" md="4">
+              <admin-site-sites />
+            </v-col>
+            <v-col cols="12" md="4">
+              <v-card>
+                <v-card-title>Свой хостинг</v-card-title>
+                <v-card-text>
+                  <v-checkbox label="Публиковать"></v-checkbox>
+                  <v-select
+                    :items="['SFTP', 'FTP']"
+                    label="Протокол передачи"
+                  ></v-select>
+                  <v-row>
+                    <v-col cols="12" md="8">
+                      <v-text-field label="Имя хоста" />
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-text-field label="Порт" />
+                    </v-col>
+                  </v-row>
+                  <v-text-field label="Имя пользователя" />
+                  <v-text-field label="Пароль" type="password" />
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text>
+                    Сохранить
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+            <v-col cols="12" md="4">
+              <v-card>
+                <v-card-title>Архив сайта</v-card-title>
+                <v-card-text>
+                  Скачать архив сайта
+                  <span class="font-weight-bold">{{ site.name }}.tar.gz</span>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text>
+                    Скачать
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-tab-item>
+    </v-tabs>
+  </v-card>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+const moment = require("moment");
+export default {
+  fetchOnServer: false,
+  props: {
+    params: {
+      type: Object
+    }
+  },
+  computed: {
+    ...mapGetters({
+      site: "sites/site"
+    }),
+    publish() {
+      moment.locale("RU");
+      return this.site.deploy && this.site.deploy.publish
+        ? moment(this.site.deploy.publish).format("LLL")
+        : "Нет";
+    },
+    pages() {
+      return { count: this.site.pages.length };
+    },
+    forms() {
+      return { count: this.params.forms.length };
+    }
+  }
+};
+</script>
