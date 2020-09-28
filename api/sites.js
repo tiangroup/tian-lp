@@ -166,7 +166,59 @@ app.put("/pages/delete", checkAuth, async (req, res) => {
 });
 
 // обновление деплоя sites
-app.put("/deploy/sites", checkAuth, async (req, res) => {});
+app.put("/deploy/sites", checkAuth, async (req, res) => {
+  const { site_id } = req.body;
+  const { id: user_id } = req.userData;
+  const token = req.header("Authorization");
+  try {
+    // получение сайта
+    const { data: site } = await axios.get(`${api_backend}/sites/${site_id}`, {
+      params: {
+        token: admin_token
+      }
+    });
+    // проверка принадлежности
+    if (site.admin == user_id) {
+      if (!site.deploy) {
+        site.deploy = {
+          sites: {
+            active: false
+          }
+        };
+      }
+      if (!site.deploy.sites) {
+        site.deploy.sites = {
+          active: true
+        };
+      }
+      // обновление deploy.sites
+      const { active, domain, https } = req.body;
+      site.deploy.sites.active = active;
+      site.deploy.sites.domain = domain;
+      site.deploy.sites.https = https;
+      const { data: update_site } = await axios.put(
+        `${api_backend}/sites/${site.id}`,
+        site,
+        {
+          params: {
+            token: admin_token
+          }
+        }
+      );
+      res.send({
+        status: true,
+        data: update_site
+      });
+    } else {
+      res.status(401).json({
+        message: "Deny access"
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ error });
+    console.error(error);
+  }
+});
 
 module.exports = {
   path: "/api/sites",

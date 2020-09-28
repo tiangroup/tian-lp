@@ -12,7 +12,13 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="blue darken-1" text :disabled="!isSave">
+      <v-btn
+        color="blue darken-1"
+        text
+        :disabled="!isSave"
+        @click="save"
+        :loading="process"
+      >
         Сохранить
       </v-btn>
     </v-card-actions>
@@ -20,14 +26,15 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   data: () => ({
     edit: {
       active: undefined,
       domain: undefined,
       https: undefined
-    }
+    },
+    process: false
   }),
   computed: {
     ...mapGetters({
@@ -71,6 +78,36 @@ export default {
     },
     isHttps() {
       return (this.domain && this.edit.domain == undefined) || this.edit.domain;
+    }
+  },
+  methods: {
+    ...mapActions({
+      reloadSite: "sites/reloadSite"
+    }),
+    async save() {
+      this.process = true;
+      try {
+        const { data: update_site } = await this.$axios.$put(
+          `${this.$site_app}/api/sites/deploy/sites`,
+          {
+            site_id: this.site.id,
+            active:
+              this.edit.active != undefined ? this.edit.active : this.active,
+            domain:
+              this.edit.domain != undefined ? this.edit.domain : this.domain,
+            https: this.edit.https != undefined ? this.edit.https : this.https
+          }
+        );
+        await this.reloadSite();
+        this.edit = {
+          active: undefined,
+          domain: undefined,
+          https: undefined
+        };
+      } catch (error) {
+        console.error(error);
+      }
+      this.process = false;
     }
   }
 };
