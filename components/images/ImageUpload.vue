@@ -13,10 +13,7 @@
         >
           <v-container fluid pl-6>
             <v-row justify="center">
-              <nuxt-img
-                :src="$site_img(origImage, imageStyle)"
-                v-if="!inputLink"
-              />
+              <img :src="$site_img(origImage, imageStyle)" v-if="!inputLink" />
               <v-text-field
                 v-else
                 label="Cсылка на картинку"
