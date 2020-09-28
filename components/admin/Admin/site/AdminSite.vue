@@ -15,7 +15,7 @@
                   <v-list-item>
                     <v-list-item-content>Опубликован:</v-list-item-content>
                     <v-list-item-content>
-                      {{ publish }}
+                      {{ publishes }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -30,6 +30,12 @@
                       {{ forms.count }}
                     </v-list-item-content>
                   </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>Изменен:</v-list-item-content>
+                    <v-list-item-content>
+                      {{ updates }}
+                    </v-list-item-content>
+                  </v-list-item>
                 </v-list>
               </v-card>
             </v-col>
@@ -38,7 +44,7 @@
       </v-tab-item>
       <v-tab-item>
         <v-container fluid>
-          <v-btn color="primary" dark>
+          <v-btn color="primary" dark @click="publish">
             Опубликовать
             <v-icon right dark>mdi-cloud-upload</v-icon>
           </v-btn>
@@ -110,17 +116,45 @@ export default {
     ...mapGetters({
       site: "sites/site"
     }),
-    publish() {
+    publishes() {
       moment.locale("RU");
       return this.site.deploy && this.site.deploy.publish
         ? moment(this.site.deploy.publish).format("LLL")
         : "Нет";
+    },
+    updates() {
+      moment.locale("RU");
+      return this.site.updates
+        ? moment(this.site.updates).format("LLL")
+        : "Нет";
+    },
+    overdate() {
+      if (this.site.deploy && this.site.deploy.publish && this.site.updates) {
+        return this.site.updates > this.site.deploy.publish;
+      } else {
+        return false;
+      }
     },
     pages() {
       return { count: this.site.pages.length };
     },
     forms() {
       return { count: this.params.forms.length };
+    }
+  },
+  methods: {
+    async publish() {
+      try {
+        const data = await this.$axios.$post(
+          `${this.$site_app}/api/sites/publish`,
+          {
+            site_id: this.site.id
+          }
+        );
+        //console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 };

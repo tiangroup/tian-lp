@@ -141,7 +141,7 @@ export const actions = {
       console.error(error);
     }
   },
-  async savePage({ commit, state }) {
+  async savePage({ commit, state, rootGetters }) {
     try {
       commit("SET_SAVE_LOADING", true);
       const page = state.page;
@@ -149,6 +149,9 @@ export const actions = {
         `${this.$site_api}/pages/${page.id}`,
         page
       );
+      await this.$axios.$put(`${this.$site_app}/api/sites/updates`, {
+        site_id: rootGetters["sites/site"].id
+      });
       commit("SET_PAGE", response);
       commit("SET_SAVE_LOADING", false);
       commit("SET_CHANGE", false);

@@ -1,6 +1,7 @@
 <template>
   <v-card>
-    <v-card-title>Хостинг tian-lp.ru</v-card-title>
+    <v-card-title>Хостинг</v-card-title>
+    <v-card-subtitle>{{ site.name }}.tian-lp.ru</v-card-subtitle>
     <v-card-text>
       <v-checkbox v-model="active" label="публиковать"></v-checkbox>
       <v-text-field v-model="domain" label="Свой домен" />

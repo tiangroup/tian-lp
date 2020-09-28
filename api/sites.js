@@ -6,6 +6,7 @@ const cors = require("cors");
 
 const api_backend = process.env.API_BACKEND;
 const admin_token = process.env.ADMIN_TOKEN;
+const admin_backend = process.env.ADMIN_BACKEND;
 
 const app = express();
 
@@ -214,6 +215,66 @@ app.put("/deploy/sites", checkAuth, async (req, res) => {
         message: "Deny access"
       });
     }
+  } catch (error) {
+    res.status(500).json({ error });
+    console.error(error);
+  }
+});
+
+app.put("/updates", checkAuth, async (req, res) => {
+  const { site_id } = req.body;
+  const { id: user_id } = req.userData;
+  const token = req.header("Authorization");
+  try {
+    // получение сайта
+    const { data: site } = await axios.get(`${api_backend}/sites/${site_id}`, {
+      params: {
+        token: admin_token
+      }
+    });
+    if (site.admin == user_id) {
+      site.updates = Date.now();
+      const { data: update_site } = await axios.put(
+        `${api_backend}/sites/${site.id}`,
+        site,
+        {
+          params: {
+            token: admin_token
+          }
+        }
+      );
+      res.send({
+        status: true,
+        site: update_site
+      });
+    } else {
+      res.status(401).json({
+        message: "Deny access"
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ error });
+    console.error(error);
+  }
+});
+
+app.post("/publish", checkAuth, async (req, res) => {
+  const { site_id } = req.body;
+  const { id: user_id } = req.userData;
+  const token = req.header("Authorization");
+  try {
+    const data = await axios.post(
+      `${admin_backend}/api/sites/${site_id}/export`,
+      {},
+      {
+        headers: {
+          Authorization: token
+        }
+      }
+    );
+    res.send({
+      status: true
+    });
   } catch (error) {
     res.status(500).json({ error });
     console.error(error);

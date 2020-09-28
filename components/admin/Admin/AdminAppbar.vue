@@ -41,7 +41,8 @@
           "
         >
           <v-list-item-icon>
-            <v-icon>mdi-web-clock</v-icon>
+            <v-icon v-if="overdate">mdi-web-clock</v-icon>
+            <v-icon v-else>mdi-web</v-icon>
           </v-list-item-icon>
           <v-list-item-title>Сайт</v-list-item-title>
         </v-list-item>
@@ -89,8 +90,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isApp: "isApp"
-    })
+      isApp: "isApp",
+      site: "sites/site"
+    }),
+    overdate() {
+      if (this.site.deploy && this.site.deploy.publish && this.site.updates) {
+        return this.site.updates > this.site.deploy.publish;
+      } else {
+        return false;
+      }
+    }
   },
   methods: {
     ...mapActions({
