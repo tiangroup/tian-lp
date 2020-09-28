@@ -92,7 +92,7 @@
           </div>
         </div>
         <div class="products__list mx-ncell" v-if="view === 'view2'">
-          <no-ssr>
+          <client-only>
             <slick
               :ref="slickRef"
               :options="updatedSlickOptions"
@@ -147,7 +147,7 @@
                 ></products-item>
               </div>
             </template>
-          </no-ssr>
+          </client-only>
         </div>
 
         <form-dialog

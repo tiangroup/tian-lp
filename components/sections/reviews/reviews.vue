@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'position-relative': isEdit}" :id="section.id">
+  <div :class="{ 'position-relative': isEdit }" :id="section.id">
     <buttons-section v-if="isEdit" :section="section"></buttons-section>
 
     <div
@@ -8,10 +8,14 @@
     >
       <div class="landing__container">
         <h2 v-if="isEdit">
-          <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+          <editor
+            :text="section.title || ''"
+            :sectionId="section.id"
+            field="title"
+          />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
-        <no-ssr>
+        <client-only>
           <v-gallery
             :images="reviewImages"
             :index="index"
@@ -19,13 +23,17 @@
             v-if="!isEdit && section.items && view === 'view2'"
             :id="'gallery' + section.id"
             :options="{
-            closeOnSlideClick: true
-          }"
+              closeOnSlideClick: true,
+            }"
           ></v-gallery>
-        </no-ssr>
-        <div class="reviews__list mx-ncell" :class="computedSectionClass" v-if="section.items">
+        </client-only>
+        <div
+          class="reviews__list mx-ncell"
+          :class="computedSectionClass"
+          v-if="section.items"
+        >
           <div :class="{ fullwidth: view === 'view2' }">
-            <no-ssr>
+            <client-only>
               <slick
                 :ref="slickRef"
                 :options="updatedSlickOptions"
@@ -33,19 +41,19 @@
                 :key="slickKey"
               >
                 <reviews-item
-                  v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                  v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
                   @change-desc="
-                  updateReviewDesc({
-                    id: item.id,
-                    text: item.text
-                  })
-                "
+                    updateReviewDesc({
+                      id: item.id,
+                      text: item.text,
+                    })
+                  "
                   @change-date="
-                  updateReviewDate({
-                    id: item.id,
-                    date: item.date
-                  })
-                "
+                    updateReviewDate({
+                      id: item.id,
+                      date: item.date,
+                    })
+                  "
                   @show-review="showReview(item)"
                   @show-gallery="showGallery(itemIndex)"
                   :key="item.id"
@@ -67,10 +75,16 @@
                     </div>
                     <div class="reviews__body">
                       <div class="reviews__text">
-                        <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
+                        <v-skeleton-loader
+                          boilerplate
+                          type="article"
+                        ></v-skeleton-loader>
                       </div>
                       <div class="reviews__info">
-                        <v-skeleton-loader boilerplate type="actions"></v-skeleton-loader>
+                        <v-skeleton-loader
+                          boilerplate
+                          type="actions"
+                        ></v-skeleton-loader>
                       </div>
                     </div>
                   </div>
@@ -80,8 +94,8 @@
                 <div class="cells fx-nw overflow-hidden">
                   <reviews-item
                     class="cell-12"
-                    :class="{'cell-lg-6': view === 'view1'}"
-                    v-for="item in section.items.filter(i => i.id)"
+                    :class="{ 'cell-lg-6': view === 'view1' }"
+                    v-for="item in section.items.filter((i) => i.id)"
                     :key="item.id"
                     :item="item"
                     :sectionId="section.id"
@@ -90,7 +104,7 @@
                   ></reviews-item>
                 </div>
               </template>
-            </no-ssr>
+            </client-only>
           </div>
         </div>
         <v-dialog v-model="dialogReviewDesc" max-width="30rem" v-if="isEdit">
@@ -114,8 +128,16 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn depressed text color="gray" @click="dialogReviewDesc = false">Отменить</v-btn>
-              <v-btn depressed color="green" dark @click="saveReviewDesc">Сохранить</v-btn>
+              <v-btn
+                depressed
+                text
+                color="gray"
+                @click="dialogReviewDesc = false"
+                >Отменить</v-btn
+              >
+              <v-btn depressed color="green" dark @click="saveReviewDesc"
+                >Сохранить</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -123,20 +145,26 @@
         <v-dialog v-model="dialogReviewDate" width="290px">
           <v-date-picker v-model="currentReview.date" scrollable>
             <v-spacer></v-spacer>
-            <v-btn depressed text color="gray" @click="dialogReviewDate = false">Отменить</v-btn>
+            <v-btn depressed text color="gray" @click="dialogReviewDate = false"
+              >Отменить</v-btn
+            >
             <v-btn
               depressed
               text
               color="primary"
               @click="saveReviewDate(currentReview.date)"
-            >Сохранить</v-btn>
+              >Сохранить</v-btn
+            >
           </v-date-picker>
         </v-dialog>
 
         <v-dialog v-model="dialogShowReview" max-width="30rem">
           <div class="der-popup">
             <div class="der-popup__close">
-              <button class="button button-icon button-close" @click="dialogShowReview = false">
+              <button
+                class="button button-icon button-close"
+                @click="dialogShowReview = false"
+              >
                 <span class="sr-only">Закрыть</span>
                 <svg
                   width="18"
@@ -158,8 +186,12 @@
               <div class="popup-reviews">
                 <div class="reviews__body--full">
                   <div class="reviews__person">
-                    <div class="reviews__person__name">{{ currentReview.name }}</div>
-                    <div class="reviews__person__position">{{ currentReview.position }}</div>
+                    <div class="reviews__person__name">
+                      {{ currentReview.name }}
+                    </div>
+                    <div class="reviews__person__position">
+                      {{ currentReview.position }}
+                    </div>
                   </div>
                   <div class="reviews__text">{{ currentReview.text }}</div>
                   <div class="reviews__info">

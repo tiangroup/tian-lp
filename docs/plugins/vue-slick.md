@@ -4,19 +4,19 @@
 
 У слика проблемы с динамически добавляемыми элементами и прочими реактивностями. Есть 2 пути решения.
 
-## no-ssr
+## client-only
 
-Слик нужно оборачивать в `<no-ssr>`. Для компонентов, для которых критична индексация содержимого слайдера задаем placeholder
+Слик нужно оборачивать в `<client-only>`. Для компонентов, для которых критична индексация содержимого слайдера задаем placeholder
 
 ```vue
-<no-ssr>
+<client-only>
   <slick>
     <video-item></video-item>
   </slick>
   <template slot="placeholder">
     <video-item :isEdit="false"></video-item>
   </template>
-</no-ssr>
+</client-only>
 ```
 
 ## Директива :key для динамически пересоздаваемого слика

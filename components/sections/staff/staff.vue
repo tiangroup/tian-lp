@@ -15,7 +15,7 @@
         </h2>
         <h2 v-else>{{ section.title }}</h2>
         <div class="staff__list mx-ncell">
-          <no-ssr>
+          <client-only>
             <slick
               :ref="slickRef"
               :options="updatedSlickOptions"
@@ -58,7 +58,7 @@
                 ></staff-item>
               </div>
             </template>
-          </no-ssr>
+          </client-only>
         </div>
       </div>
     </div>
