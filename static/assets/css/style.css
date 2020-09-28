@@ -2699,6 +2699,9 @@ nav ul li,
 .slick-next svg {
   left: 55%;
 }
+.slick-slide:focus {
+  outline: none;
+}
 .slick-slide > div {
   height: 100%;
 }
@@ -2833,6 +2836,7 @@ nav ul li,
 }
 .services--style2 .services__body {
   padding: 0;
+  width: 100%;
 }
 .services--style1 .services__item-wrap {
   min-height: 15rem;
@@ -3083,6 +3087,7 @@ nav ul li,
   }
   .services--style2 .services__title {
     margin-bottom: 3.875rem;
+    max-width: calc(100% - 170px);
   }
   .services__description {
     margin-bottom: 2.5rem;
