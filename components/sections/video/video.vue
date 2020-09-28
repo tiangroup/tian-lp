@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'position-relative': isEdit}" :id="section.id">
+  <div :class="{ 'position-relative': isEdit }" :id="section.id">
     <buttons-section v-if="isEdit" :section="section" />
     <div
       class="video custom-v-spacing-2 bg-secondary"
@@ -7,7 +7,11 @@
     >
       <div class="landing__container">
         <h2 v-if="isEdit">
-          <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+          <editor
+            :text="section.title || ''"
+            :sectionId="section.id"
+            field="title"
+          />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
         <div class="video__intro">
@@ -21,22 +25,22 @@
           <div v-else v-html="section.description"></div>
         </div>
         <div v-if="section.items">
-          <no-ssr>
+          <client-only>
             <v-gallery
               v-if="!isEdit"
               :images="videos"
               :index="index"
               :options="{
-              youTubeVideoIdProperty: 'youtube',
-              youTubePlayerVars: undefined,
-              youTubeClickToPlay: false
-            }"
+                youTubeVideoIdProperty: 'youtube',
+                youTubePlayerVars: undefined,
+                youTubeClickToPlay: false,
+              }"
               @close="index = null"
               :id="'gallery' + section.id"
             ></v-gallery>
-          </no-ssr>
+          </client-only>
           <div class="mx-ncell">
-            <no-ssr>
+            <client-only>
               <slick
                 :ref="slickRef"
                 :options="updatedSlickOptions"
@@ -45,18 +49,20 @@
                 :key="slickKey"
               >
                 <video-item
-                  v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                  v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
                   :key="item.id"
                   :item="item"
                   :sectionId="section.id"
                   :isEdit="isEdit"
                   @gallery-call="showGallery(itemIndex)"
-                  @change-link="itemVideoInput({
-                  sectionId:section.id,
-                  itemId:item.id,
-                  field:'link',
-                  value:item.link
-                })"
+                  @change-link="
+                    itemVideoInput({
+                      sectionId: section.id,
+                      itemId: item.id,
+                      field: 'link',
+                      value: item.link,
+                    })
+                  "
                 ></video-item>
                 <div
                   class="video__item-wrap cell"
@@ -74,7 +80,11 @@
                       <buttons-item-add :sectionId="section.id" />
                     </div>
                     <v-spacer></v-spacer>
-                    <v-skeleton-loader boilerplate type="list-item-two-line" width="100%"></v-skeleton-loader>
+                    <v-skeleton-loader
+                      boilerplate
+                      type="list-item-two-line"
+                      width="100%"
+                    ></v-skeleton-loader>
                   </v-card>
                 </div>
               </slick>
@@ -82,7 +92,7 @@
                 <div class="cells fx-nw overflow-hidden">
                   <video-item
                     class="cell-12 cell-sm-6"
-                    v-for="item in section.items.filter(i => i.id)"
+                    v-for="item in section.items.filter((i) => i.id)"
                     :key="item.id"
                     :item="item"
                     :sectionId="section.id"
@@ -90,7 +100,7 @@
                   ></video-item>
                 </div>
               </template>
-            </no-ssr>
+            </client-only>
             <v-dialog v-model="videoUrlDialog" max-width="33rem" v-if="isEdit">
               <v-card>
                 <v-card-title class="mb-10">
@@ -101,12 +111,28 @@
                   </v-btn>
                 </v-card-title>
                 <v-card-text>
-                  <v-text-field label="Ссылка" outlined v-model="userUrl"></v-text-field>
+                  <v-text-field
+                    label="Ссылка"
+                    outlined
+                    v-model="userUrl"
+                  ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn depressed color="gray" text @click="videoUrlDialog = false">Отменить</v-btn>
-                  <v-btn depressed color="green" dark @click="setVideoUrl(userUrl)">Сохранить</v-btn>
+                  <v-btn
+                    depressed
+                    color="gray"
+                    text
+                    @click="videoUrlDialog = false"
+                    >Отменить</v-btn
+                  >
+                  <v-btn
+                    depressed
+                    color="green"
+                    dark
+                    @click="setVideoUrl(userUrl)"
+                    >Сохранить</v-btn
+                  >
                 </v-card-actions>
               </v-card>
             </v-dialog>

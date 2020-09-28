@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'position-relative': isEdit}" :id="section.id">
+  <div :class="{ 'position-relative': isEdit }" :id="section.id">
     <buttons-section v-if="isEdit" :section="section" />
     <div
       class="gallery custom-v-spacing bg-primary"
@@ -7,11 +7,15 @@
     >
       <div class="landing__container">
         <h2 v-if="isEdit">
-          <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+          <editor
+            :text="section.title || ''"
+            :sectionId="section.id"
+            field="title"
+          />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
         <div class="gallery__list" v-if="section.items">
-          <no-ssr>
+          <client-only>
             <v-gallery
               :images="images"
               :index="index"
@@ -19,12 +23,12 @@
               v-if="!isEdit"
               :id="'gallery' + section.id"
               :options="{
-              closeOnSlideClick: true
-            }"
+                closeOnSlideClick: true,
+              }"
             ></v-gallery>
-          </no-ssr>
+          </client-only>
           <div class="fullwidth">
-            <no-ssr>
+            <client-only>
               <slick
                 :ref="slickRef"
                 :options="updatedSlickOptions"
@@ -34,10 +38,14 @@
                 <div
                   class="gallery__item"
                   :class="{ 'position-relative': isEdit }"
-                  v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                  v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
                   :key="item.id"
                 >
-                  <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="section.id" />
+                  <buttons-item
+                    v-if="isEdit"
+                    :itemId="item.id"
+                    :sectionId="section.id"
+                  />
                   <div
                     class="gallery__link"
                     :class="{ 'pic-enlarge': !isEdit }"
@@ -76,7 +84,7 @@
                 <div class="cells fx-nw overflow-hidden">
                   <div
                     class="gallery__link cell-12 cell-sm-6 cell-lg-3"
-                    v-for="item in section.items.filter(i => i.id)"
+                    v-for="item in section.items.filter((i) => i.id)"
                     :key="item.id"
                     :item="item"
                     :sectionId="section.id"
@@ -84,7 +92,7 @@
                   ></div>
                 </div>
               </template>
-            </no-ssr>
+            </client-only>
           </div>
         </div>
       </div>
