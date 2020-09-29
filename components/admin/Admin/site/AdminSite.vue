@@ -44,7 +44,12 @@
       </v-tab-item>
       <v-tab-item>
         <v-container fluid>
-          <v-btn color="primary" dark @click="publish">
+          <v-btn
+            color="primary"
+            @click="publish"
+            :loading="processPublish"
+            :disabled="!isPublish"
+          >
             Опубликовать
             <v-icon right dark>mdi-cloud-upload</v-icon>
           </v-btn>
@@ -52,6 +57,7 @@
             <v-col cols="12" md="4">
               <admin-site-sites />
             </v-col>
+            <!--
             <v-col cols="12" md="4">
               <v-card>
                 <v-card-title>Свой хостинг</v-card-title>
@@ -80,16 +86,22 @@
                 </v-card-actions>
               </v-card>
             </v-col>
+            -->
             <v-col cols="12" md="4">
               <v-card>
                 <v-card-title>Архив сайта</v-card-title>
                 <v-card-text>
-                  Скачать архив сайта
-                  <span class="font-weight-bold">{{ site.name }}.tar.gz</span>
+                  Создать и скачать сайт в архиве
+                  <span class="font-weight-bold">*.tar.gz</span>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="getArchive"
+                    :loading="processArchive"
+                  >
                     Скачать
                   </v-btn>
                 </v-card-actions>
@@ -103,7 +115,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 const moment = require("moment");
 export default {
   fetchOnServer: false,
@@ -112,6 +124,10 @@ export default {
       type: Object
     }
   },
+  data: () => ({
+    processPublish: false,
+    processArchive: false
+  }),
   computed: {
     ...mapGetters({
       site: "sites/site"
@@ -140,10 +156,25 @@ export default {
     },
     forms() {
       return { count: this.params.forms.length };
+    },
+    isPublish() {
+      if (
+        this.site.deploy &&
+        this.site.deploy.sites &&
+        this.site.deploy.sites.active
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
   methods: {
+    ...mapActions({
+      reloadSite: "sites/reloadSite"
+    }),
     async publish() {
+      this.processPublish = true;
       try {
         const data = await this.$axios.$post(
           `${this.$site_app}/api/sites/publish`,
@@ -151,10 +182,34 @@ export default {
             site_id: this.site.id
           }
         );
-        //console.log(data);
+        if (data.status) {
+          this.reloadSite();
+        }
+        console.log(data);
       } catch (error) {
         console.error(error);
       }
+      this.processPublish = false;
+    },
+    async getArchive() {
+      this.processArchive = true;
+      try {
+        const data = await this.$axios.$get(
+          `${this.$site_app}/api/sites/${this.site.id}/archive`
+        );
+        console.log(data);
+        if (data.status) {
+          let link = document.createElement("a");
+          link.setAttribute("href", data.file);
+          link.setAttribute("download", "download");
+          //link.setAttribute("target", "_blank");
+          //document.body.appendChild(link);
+          link.click();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      this.processArchive = false;
     }
   }
 };

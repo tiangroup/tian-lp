@@ -99,6 +99,11 @@ export default {
             https: this.edit.https != undefined ? this.edit.https : this.https
           }
         );
+        if (this.edit.active === false) {
+          await this.$axios.$post(`${this.$site_app}/api/sites/publish`, {
+            site_id: this.site.id
+          });
+        }
         await this.reloadSite();
         this.edit = {
           active: undefined,

@@ -96,6 +96,8 @@ export default {
     overdate() {
       if (this.site.deploy && this.site.deploy.publish && this.site.updates) {
         return this.site.updates > this.site.deploy.publish;
+      } else if (this.site.deploy && !this.site.deploy.publish) {
+        return true;
       } else {
         return false;
       }

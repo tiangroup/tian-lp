@@ -3,6 +3,7 @@ const axios = require("axios");
 const bodyParser = require("body-parser");
 const checkAuth = require("./middleware/check-auth");
 const cors = require("cors");
+const path = require("path");
 
 const api_backend = process.env.API_BACKEND;
 const admin_token = process.env.ADMIN_TOKEN;
@@ -260,10 +261,9 @@ app.put("/updates", checkAuth, async (req, res) => {
 
 app.post("/publish", checkAuth, async (req, res) => {
   const { site_id } = req.body;
-  const { id: user_id } = req.userData;
   const token = req.header("Authorization");
   try {
-    const data = await axios.post(
+    const { data } = await axios.post(
       `${admin_backend}/api/sites/${site_id}/export`,
       {},
       {
@@ -273,7 +273,31 @@ app.post("/publish", checkAuth, async (req, res) => {
       }
     );
     res.send({
-      status: true
+      status: data.status,
+      data: data
+    });
+  } catch (error) {
+    res.status(500).json({ error });
+    console.error(error);
+  }
+});
+
+app.get("/:id/archive", checkAuth, async (req, res) => {
+  const site_id = req.params.id;
+  const token = req.header("Authorization");
+  try {
+    const { data } = await axios.post(
+      `${admin_backend}/api/sites/${site_id}/archive`,
+      {},
+      {
+        headers: {
+          Authorization: token
+        }
+      }
+    );
+    res.send({
+      status: data.status,
+      file: `https://downloads.tian-lp.ru/${data.file}`
     });
   } catch (error) {
     res.status(500).json({ error });
