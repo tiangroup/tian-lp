@@ -206,7 +206,7 @@ export default {
           '<button type="button" class="slick-arrow slick-next"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L15 13.9706L1.03398 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
         responsive: [
           {
-            breakpoint: 1280,
+            breakpoint: 1024,
             settings: {
               slidesToShow: 1,
               arrows: false,
@@ -247,9 +247,14 @@ export default {
   },
   methods: {
     handleInit(event, slick) {
-      document
-        .getElementById(this.section.id)
-        .addEventListener("click", this.handleClonedSlides);
+      if (this.currentSlide) {
+        slick.goTo(this.currentSlide, true);
+      }
+      if (!this.isEdit) {
+        document
+          .getElementById(this.section.id)
+          .addEventListener("click", this.handleClonedSlides);
+      }
     },
     handleClonedSlides(e) {
       if (e.target.closest(".slick-cloned")) {
@@ -271,6 +276,11 @@ export default {
       this.currentItem = item;
       this.dialogOrderService = true;
     },
+  },
+  beforeUpdate: function () {
+    if (this.$refs[this.slickRef]) {
+      this.currentSlide = this.$refs[this.slickRef].currentSlide;
+    }
   },
   beforeDestroy: function () {
     if (this.$refs[this.slickRef]) {
