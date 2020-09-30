@@ -282,13 +282,16 @@ app.post("/publish", checkAuth, async (req, res) => {
   }
 });
 
-app.get("/:id/archive", checkAuth, async (req, res) => {
+app.post("/:id/archive", checkAuth, async (req, res) => {
   const site_id = req.params.id;
+  const { type } = req.body;
   const token = req.header("Authorization");
   try {
     const { data } = await axios.post(
       `${admin_backend}/api/sites/${site_id}/archive`,
-      {},
+      {
+        type: type
+      },
       {
         headers: {
           Authorization: token
