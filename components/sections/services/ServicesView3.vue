@@ -2,8 +2,14 @@
   <div class="services__tbps tbps">
     <div class="services__reveal">
       <div class="reveal">
-        <input class="reveal__input" type="checkbox" id="RAND1" />
-        <label class="reveal__toggle" for="RAND1"> Выберите из списка </label>
+        <input
+          class="reveal__input"
+          type="checkbox"
+          :id="'sr' + this.section.id"
+        />
+        <label class="reveal__toggle" :for="'sr' + this.section.id">
+          Выберите из списка
+        </label>
         <div class="reveal__content">
           <div class="services__reveal__content">
             <div class="tbps__labels">
@@ -18,7 +24,7 @@
                   :class="{
                     'tbps__label__link--active': isActiveItem(itemIndex),
                   }"
-                  @click="changeActiveItem(itemIndex)"
+                  @click.prevent="changeActiveItem(itemIndex)"
                   >{{ item.title || "Новая услуга" }}</a
                 >
               </div>
@@ -28,79 +34,94 @@
       </div>
     </div>
 
-    <div class="tbps__panels cells">
+    <div class="services__panels">
       <div
-        v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
-        :key="item.id"
-        :id="item.id"
-        class="tbps__panel cell cell-12"
-        :class="{
-          'position-relative': isEdit,
-          'tbps__panel--active': isActiveItem(itemIndex),
-        }"
+        class="tbps__panels display-flex align-items-stretch justify-content-start"
       >
-        <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="section.id" />
-        <div class="services__item">
-          <div class="cells grow-lg-1 cell-12">
-            <div class="cell cell-12 cell-sm-3 order-sm-2">
-              <image-item
-                divClass="services__image"
-                :img="item.img"
-                :itemId="item.id"
-                :sectionId="section.id"
-              />
-            </div>
-            <div class="cell cell-12 cell-sm-9 order-sm-1">
-              <div class="services__body body-copy">
-                <div class="services__title">
-                  <editor
-                    data-placeholder="Название услуги"
-                    :text="item.title || ''"
-                    :sectionId="section.id"
-                    field="title"
-                    :itemId="item.id"
-                    v-if="isEdit"
-                  />
-                  <span v-else>{{ item.title }}</span>
-                </div>
-                <div class="services__description">
-                  <editor
-                    data-placeholder="Описание услуги"
-                    :text="item.description || ''"
-                    :sectionId="section.id"
-                    field="description"
-                    :itemId="item.id"
-                    editContent="html"
-                    v-if="isEdit"
-                  />
-                  <div v-else v-html="item.description"></div>
+        <div
+          v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
+          :key="item.id"
+          :id="item.id"
+          class="tbps__panel"
+          :class="{
+            'position-relative': isEdit,
+            'tbps__panel--active': isActiveItem(itemIndex),
+            'tbps__panel--in': isTransitioning,
+          }"
+        >
+          <buttons-item
+            v-if="isEdit"
+            :itemId="item.id"
+            :sectionId="section.id"
+          />
+          <div class="cell h-100">
+            <div class="services__item">
+              <div class="cell-12 mb-15px">
+                <div class="cells">
+                  <div class="cell cell-12 cell-sm-3 order-sm-2">
+                    <image-item
+                      divClass="services__image"
+                      :img="item.img"
+                      :itemId="item.id"
+                      :sectionId="section.id"
+                    />
+                  </div>
+                  <div class="cell cell-12 cell-sm-9 order-sm-1">
+                    <div class="services__body body-copy">
+                      <div class="services__title">
+                        <editor
+                          data-placeholder="Название услуги"
+                          :text="item.title || ''"
+                          :sectionId="section.id"
+                          field="title"
+                          :itemId="item.id"
+                          v-if="isEdit"
+                        />
+                        <span v-else>{{ item.title }}</span>
+                      </div>
+                      <div class="services__description">
+                        <editor
+                          data-placeholder="Описание услуги"
+                          :text="item.description || ''"
+                          :sectionId="section.id"
+                          field="description"
+                          :itemId="item.id"
+                          editContent="html"
+                          v-if="isEdit"
+                        />
+                        <div v-else v-html="item.description"></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="services__cta">
-            <div class="cells justify-content-between align-items-center">
-              <div class="cell cell-auto">
-                <div class="services__price">
-                  <editor
-                    data-placeholder="от 5 000 руб."
-                    :text="item.price || ''"
-                    :sectionId="section.id"
-                    field="price"
-                    :itemId="item.id"
-                    v-if="isEdit"
-                  />
-                  <span v-else>{{ item.price }}</span>
-                </div>
-              </div>
-              <div class="cell cell-auto">
-                <div class="services__action">
-                  <button
-                    class="button button-primary"
-                    @click="showOrderDialog(item)"
-                  >
-                    Заказать
-                  </button>
+              <div class="cell-12 mt-a">
+                <div class="services__cta">
+                  <div class="cells justify-content-between align-items-center">
+                    <div class="cell cell-auto">
+                      <div class="services__price">
+                        <editor
+                          data-placeholder="от 5 000 руб."
+                          :text="item.price || ''"
+                          :sectionId="section.id"
+                          field="price"
+                          :itemId="item.id"
+                          v-if="isEdit"
+                        />
+                        <span v-else>{{ item.price }}</span>
+                      </div>
+                    </div>
+                    <div class="cell cell-auto">
+                      <div class="services__action">
+                        <button
+                          class="button button-primary"
+                          @click="showOrderDialog(item)"
+                        >
+                          Заказать
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -150,6 +171,7 @@ export default {
     return {
       currentItem: {},
       dialogOrderService: false,
+      isTransitioning: false,
       itemToShow: 0,
     };
   },
@@ -157,10 +179,23 @@ export default {
     itemsCount() {
       return this.section.items.length;
     },
+    currentSection() {
+      return document.getElementById(this.section.id);
+    },
   },
   methods: {
     changeActiveItem(index) {
       this.itemToShow = index;
+      if (this.currentSection.querySelector(".reveal__input").checked) {
+        this.currentSection.querySelector(".reveal__input").checked = false;
+      }
+      console.log("start");
+      this.isTransitioning = true;
+      setTimeout(() => {
+        this.isTransitioning = false;
+        console.log("inside");
+      }, 400);
+      console.log("finished");
     },
     isActiveItem(itemIndex) {
       return itemIndex === this.itemToShow ? true : false;
@@ -172,3 +207,22 @@ export default {
   },
 };
 </script>
+<style scoped>
+.services .tbps__panel {
+  flex-basis: 0;
+  flex-grow: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: flex-basis 0.4s;
+}
+.services .tbps__panel--active,
+.services .tbps__panel--active + .tbps__panel {
+  flex-basis: 100%;
+}
+@media (min-width: 1280px) {
+  .services .tbps__panel--active,
+  .services .tbps__panel--active + .tbps__panel {
+    flex-basis: 56rem;
+  }
+}
+</style>
