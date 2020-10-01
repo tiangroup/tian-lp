@@ -1,8 +1,14 @@
+variables:
+  IMAGE_TAG: $REGISTRY/tian-lp
+
 stages:
   - build
 
 build:
   stage: build
+  image: docker
+  service:
+    - docker:dind
   script:
-    - echo "Build docker-image !!!"
+    - echo "Build docker-image $IMAGE_TAG"
   when: manual
