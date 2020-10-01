@@ -7,7 +7,7 @@ stages:
 build:
   stage: build
   image: docker
-  service:
+  services:
     - docker:dind
   script:
     - echo "Build docker-image $IMAGE_TAG"
