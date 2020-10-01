@@ -10,5 +10,5 @@ build:
   services:
     - docker:dind
   script:
-    - echo "Build docker-image $IMAGE_TAG"
+    - echo $IMAGE_TAG
   when: manual
