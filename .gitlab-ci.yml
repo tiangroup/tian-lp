@@ -4,5 +4,5 @@ stages:
 build:
   stage: build
   script:
-    - echo "Build docker-image with sources"
+    - echo "Build docker-image !!!"
   when: manual
