@@ -3,7 +3,7 @@
     <v-card-title>Архив сайта</v-card-title>
     <v-card-text>
       Создать и скачать сайт в архиве
-      <v-select :items="['tar', 'zip']" v-model="archive_type"></v-select>
+      <v-select :items="['tar.gz', 'zip']" v-model="archive_type"></v-select>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
@@ -24,7 +24,7 @@ import { mapGetters } from "vuex";
 export default {
   data: () => ({
     processArchive: false,
-    archive_type: "tar",
+    archive_type: "tar.gz",
     file: null
   }),
   computed: {
