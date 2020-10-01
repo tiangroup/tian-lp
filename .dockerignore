@@ -6,3 +6,4 @@ Dockerfile-export
 .dockerignore
 .git
 .gitignore
+.gitlab-ci.yml
