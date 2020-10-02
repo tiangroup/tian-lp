@@ -24,10 +24,10 @@ build:
     - docker build --cache-from $IMAGE_EXPORT -f ./Dockerfile-export -t $IMAGE_EXPORT .
     - docker push $IMAGE_EXPORT
     - echo "done"
-  # only:
-  #   - deploy
-  rules:
-    - if: '$CI_COMMIT_MESSAGE == "deploy"'
+  only:
+    - deploy
+  # rules:
+  #   - if: '$CI_COMMIT_MESSAGE == "deploy"'
 
 deploy:
   stage: deploy
@@ -45,5 +45,5 @@ deploy:
     - ssh $HOST_USER@$HOST "cd /var/docker/tian-lp && docker pull $IMAGE && docker pull $IMAGE_EXPORT && docker-compose rm --force --stop app && docker-compose up -d app && exit"
   # only:
   #   - deploy
-  # rules:
-  #   - if: '$CI_COMMIT_MESSAGE == "deploy"'
+  rules:
+    - if: '$CI_COMMIT_MESSAGE == "dep2"'
