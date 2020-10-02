@@ -6,7 +6,7 @@ stages:
 
 build:
   stage: build
-  image: docker
+  # image: docker
   services:
     - name: docker:19.03.1-dind
       alias: docker
