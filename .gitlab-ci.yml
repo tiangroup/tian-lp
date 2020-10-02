@@ -16,16 +16,25 @@ build:
   before_script:
     - docker login $DOCKER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD
   script:
-    - echo "start build"
     - docker pull $IMAGE:latest || true
     - docker build --cache-from $IMAGE:latest -t $IMAGE .
     - docker push $IMAGE
+  rules:
+    - if: $CI_COMMIT_MESSAGE =~ /deploy/
+
+build:
+  stage: build
+  image: docker:19.03.8
+  services:
+    - docker:19.03.8-dind
+  before_script:
+    - docker login $DOCKER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD
+  script:
     - docker pull $IMAGE_EXPORT || true
     - docker build --cache-from $IMAGE_EXPORT -f ./Dockerfile-export -t $IMAGE_EXPORT .
     - docker push $IMAGE_EXPORT
-    - echo "done"
   rules:
-    - if: $CI_COMMIT_MESSAGE =~ /deploy/
+    - if: $CI_COMMIT_MESSAGE =~ /deploy/    
 
 deploy:
   stage: deploy
