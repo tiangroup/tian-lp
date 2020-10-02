@@ -6,9 +6,9 @@ stages:
 
 build:
   stage: build
-  image: docker
+  image: docker:19.03.0
   services:
-    - docker:dind
+    - docker:19.03.0-dind
   before_script:
     - docker login $DOCKER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD
   script:
