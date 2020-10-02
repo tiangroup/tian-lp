@@ -25,8 +25,7 @@ build:
     - docker push $IMAGE_EXPORT
     - echo "done"
   only:
-    - dev
-  when: manual
+    - deploy
 
 deploy:
   stage: deploy
@@ -42,4 +41,4 @@ deploy:
   script:
     - ssh $HOST_USER@$HOST "cd /var/docker/tian-lp && docker pull $IMAGE && docker pull $IMAGE_EXPORT && docker-compose rm --force --stop app && docker-compose up -d app && exit"
   only:
-    - dev
+    - deploy
