@@ -10,7 +10,6 @@ build:
   services:
     - docker:dind
   script:
-    - echo "$IMAGE_TAG"
-    - echo $IMAGE_TAG
+    - echo "start build"
   only:
     - dev
