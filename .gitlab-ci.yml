@@ -40,8 +40,6 @@ deploy:
     - ssh-keyscan $HOST >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - ssh $HOST_USER@$HOST
-    - cd /var/docker/tian-lp
-    - docker-compose ps
+    - ssh $HOST_USER@$HOST "cd /var/docker/tian-lp && docker-compose ps"
   only:
     - dev
