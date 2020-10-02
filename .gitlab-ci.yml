@@ -41,6 +41,7 @@ deploy:
     - chmod 644 ~/.ssh/known_hosts
   script:
     - ssh $HOST_USER@$HOST
-    - ll /var/docker
+    - cd /var/docker/tian-lp
+    - docker-compose ps
   only:
     - dev
