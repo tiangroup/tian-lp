@@ -1,5 +1,5 @@
 variables:
-  IMAGE_TAG: $REGISTRY/tian-lp
+  IMAGE: $DOCKER_REGISTRY/tian-lp
 
 stages:
   - build
@@ -9,7 +9,12 @@ build:
   image: docker
   services:
     - docker:dind
+  before_script:
+    - docker login $DOCKER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD
   script:
     - echo "start build"
+    - docker build -t $IMAGE .
+    - docker push $IMAGE
+    - echo "done"
   only:
     - dev
