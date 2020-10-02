@@ -1,15 +1,45 @@
 variables:
-  IMAGE_TAG: $REGISTRY/tian-lp
+  # DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+  IMAGE: $DOCKER_REGISTRY/tian-lp
+  IMAGE_EXPORT: $DOCKER_REGISTRY/tian-lp:export
 
 stages:
   - build
+  - deploy
 
 build:
   stage: build
-  image: docker
+  image: docker:19.03.8
   services:
-    - docker:dind
+    - docker:19.03.8-dind
+  before_script:
+    - docker login $DOCKER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD
   script:
     - echo "start build"
+    - docker pull $IMAGE:latest || true
+    - docker build --cache-from $IMAGE:latest -t $IMAGE .
+    - docker push $IMAGE
+    - docker pull $IMAGE_EXPORT || true
+    - docker build --cache-from $IMAGE_EXPORT -f ./Dockerfile-export -t $IMAGE_EXPORT .
+    - docker push $IMAGE_EXPORT
+    - echo "done"
+  only:
+    - dev
+  when: manual
+
+deploy:
+  stage: deploy
+  image: ubuntu
+  before_script:
+    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )"
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $HOST >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - ssh $HOST_USER@$HOST "cd /var/docker/tian-lp && docker pull $IMAGE && docker pull $IMAGE_EXPORT && docker-compose rm --force --stop app && docker-compose up -d app && exit"
   only:
     - dev
