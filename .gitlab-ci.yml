@@ -9,7 +9,8 @@ build:
   image: docker
   services:
     - docker:dind
-      alias: docker
+  variables:
+    DOCKER_HOST: tcp://localhost:2375
   before_script:
     - docker login $DOCKER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD
   script:
