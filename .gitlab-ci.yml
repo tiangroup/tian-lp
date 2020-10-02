@@ -18,9 +18,11 @@ build:
     - docker login $DOCKER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD
   script:
     - echo "start build"
-    # - docker build -t $IMAGE .
-    # - docker push $IMAGE
-    - docker build -f ./Dockerfile-export -t $IMAGE_EXPORT .
+    - docker pull $IMAGE:latest || true
+    - docker build --cache-from $IMAGE:latest -t $IMAGE .
+    - docker push $IMAGE
+    - docker pull $IMAGE_EXPORT || true
+    - docker build --cache-from $IMAGE_EXPORT -f ./Dockerfile-export -t $IMAGE_EXPORT .
     - docker push $IMAGE_EXPORT
     - echo "done"
   only:
