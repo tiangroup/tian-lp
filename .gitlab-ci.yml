@@ -11,4 +11,5 @@ build:
     - docker:dind
   script:
     - echo $IMAGE_TAG
-  when: manual
+  only:
+    - dev
