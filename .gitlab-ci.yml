@@ -1,7 +1,3 @@
-image: docker:19.03.8
-services:
-  - docker:19.03.8-dind
-
 variables:
   # DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
@@ -10,10 +6,13 @@ variables:
 
 stages:
   - build
-  #- deploy
+  - deploy
 
 build:
   stage: build
+  image: docker:19.03.8
+  services:
+    - docker:19.03.8-dind
   before_script:
     - docker login $DOCKER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD
   script:
@@ -28,3 +27,20 @@ build:
   only:
     - dev
   when: manual
+
+deploy:
+  stage: deploy
+  image: ubuntu
+  before_script:
+    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )"
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $HOST >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - ssh $HOST_USER@$HOST
+    - ll /var/docker
+  only:
+    - dev
