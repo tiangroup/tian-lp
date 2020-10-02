@@ -46,5 +46,4 @@ deploy:
   # only:
   #   - deploy
   rules:
-    - if: '$CI_COMMIT_MESSAGE == "dep2"'
-      when: always
+    if: '$CI_COMMIT_MESSAGE == "dep2"'
