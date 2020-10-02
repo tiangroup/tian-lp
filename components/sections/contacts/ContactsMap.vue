@@ -1,20 +1,33 @@
 <template>
   <div class="contacts__map">
-    <yandex-map
-      :settings="settings"
-      coords="mapCenter"
-      zoom="10"
-      class="contacts__map__container"
-      @map-was-initialized="processMap"
-      :controls="mapControls"
-      :behaviors="mapBehaviors"
-    ></yandex-map>
+    <client-only>
+      <yandex-map
+        :settings="settings"
+        :coords="mapCenter"
+        zoom="10"
+        class="contacts__map__container"
+        @map-was-initialized="processMap"
+        :controls="mapControls"
+        :behaviors="mapBehaviors"
+        v-if="showMap"
+      >
+        <ymap-marker
+          v-for="item in items.filter((i) => i.id)"
+          :key="item.id"
+          :coords="getCoords(item.coords)"
+          :icon="markerIcon"
+          marker-id="item.id"
+          :hint-content="item.title"
+          :balloon-template="balloonTemplate"
+        />
+      </yandex-map>
+    </client-only>
   </div>
 </template>
 <script>
-import { yandexMap, loadYmap } from "vue-yandex-maps";
+import { yandexMap, ymapMarker, loadYmap } from "vue-yandex-maps";
 export default {
-  components: { yandexMap, loadYmap },
+  components: { yandexMap, ymapMarker, loadYmap },
   props: {
     items: Array,
     mapKey: String,
@@ -30,6 +43,13 @@ export default {
     ],
     mapBehaviors: ["drag", "dblClickZoom", "multiTouch"],
     myMap: null,
+    markerIcon: {
+      layout: "default#image",
+      iconImageHref: "/assets/images/icon-loc.svg",
+      iconImageSize: [38, 45],
+      iconImageOffset: [-19, -40],
+    },
+    showMap: false,
   }),
   computed: {
     settings() {
@@ -38,56 +58,71 @@ export default {
         lang: "ru_RU",
       };
     },
+    balloonTemplate(item) {
+      return `
+        <p>${item.title}</p>
+        <p>${item.address}</p>
+        <p>${item.phone}</p>
+      `;
+    },
   },
   methods: {
     processMap(map) {
-      this.myMap = map;
-      this.placeMarkers(map);
-      this.$emit("map-ready", map);
+      if (map) {
+        this.myMap = map;
+        this.placeMarkers(map);
+        this.$emit("map-ready", map);
+      }
     },
     placeMarkers(map) {
-      map.geoObjects.removeAll();
-      for (var i = 0; i < this.items.length; i++) {
-        if (this.items[i].coords) {
-          let place = this.items[i];
-          let coords = place.coords.replace(/\s+/g, "").split(",");
-          let title = place.title || "";
-          let address = place.address || "";
-          let phone = place.phone || "";
-          var placemark = new ymaps.Placemark(
-            coords,
-            {
-              balloonContentHeader: title,
-              balloonContentBody: address + "<br>" + phone,
-            },
-            {
-              iconLayout: "default#image",
-              iconImageHref: "/assets/images/icon-loc.svg",
-              iconImageSize: [38, 45],
-              iconImageOffset: [-19, -40],
-            }
-          );
-          map.geoObjects.add(placemark);
-        }
-      }
-      map
-        .setBounds(map.geoObjects.getBounds(), {
-          checkZoomRange: true,
-        })
-        .then(function () {
-          if (map.getZoom() > 16) {
-            map.setZoom(16);
-          }
-        });
+      // map.geoObjects.removeAll();
+      // for (var i = 0; i < this.items.length; i++) {
+      //   if (this.items[i].coords) {
+      //     let place = this.items[i];
+      //     let coords = place.coords.replace(/\s+/g, "").split(",");
+      //     let title = place.title || "";
+      //     let address = place.address || "";
+      //     let phone = place.phone || "";
+      //     var placemark = new ymaps.Placemark(
+      //       coords,
+      //       {
+      //         balloonContentHeader: title,
+      //         balloonContentBody: address + "<br>" + phone,
+      //       },
+      //       {
+      //         iconLayout: "default#image",
+      //         iconImageHref: "/assets/images/icon-loc.svg",
+      //         iconImageSize: [38, 45],
+      //         iconImageOffset: [-19, -40],
+      //       }
+      //     );
+      //     map.geoObjects.add(placemark);
+      //   }
+      // }
+      // map
+      //   .setBounds(map.geoObjects.getBounds(), {
+      //     checkZoomRange: true,
+      //   })
+      //   .then(function () {
+      //     if (map.getZoom() > 16) {
+      //       map.setZoom(16);
+      //     }
+      //   });
+    },
+    getCoords(coords) {
+      return coords.replace(/\s+/g, "").split(",");
     },
   },
-  watch: {
-    items: function () {
-      if (this.myMap) {
-        this.placeMarkers(this.myMap);
-      }
-    },
+  mounted: function () {
+    this.showMap = true;
   },
+  // watch: {
+  //   items: function () {
+  //     if (this.myMap) {
+  //       this.placeMarkers(this.myMap);
+  //     }
+  //   },
+  // },
 };
 </script>
 
