@@ -26,8 +26,8 @@ build:
     - echo "done"
   # only:
   #   - deploy
-  # rules:
-  #   - if: '$CI_COMMIT_MESSAGE == "deploy"'
+  rules:
+    - if: '$CI_COMMIT_MESSAGE == "deploy"'
 
 deploy:
   stage: deploy
@@ -41,8 +41,9 @@ deploy:
     - ssh-keyscan $HOST >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
+    - echo $CI_COMMIT_MESSAGE
     - ssh $HOST_USER@$HOST "cd /var/docker/tian-lp && docker pull $IMAGE && docker pull $IMAGE_EXPORT && docker-compose rm --force --stop app && docker-compose up -d app && exit"
   # only:
   #   - deploy
-  rules:
-    - if: '$CI_COMMIT_MESSAGE == "deploy"'
+  # rules:
+  #   - if: '$CI_COMMIT_MESSAGE == "deploy"'
