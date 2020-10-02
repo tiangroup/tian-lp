@@ -27,7 +27,7 @@ build:
   # only:
   #   - deploy
   rules:
-    - if: $CI_COMMIT_MESSAGE == "deploy"
+    - if: '$CI_COMMIT_MESSAGE == "deploy"'
 
 deploy:
   stage: deploy
@@ -45,4 +45,4 @@ deploy:
   # only:
   #   - deploy
   rules:
-    - if: $CI_COMMIT_MESSAGE == "deploy"
+    - if: '$CI_COMMIT_MESSAGE == "deploy"'
