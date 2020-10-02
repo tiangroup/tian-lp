@@ -24,8 +24,6 @@ build:
     - docker build --cache-from $IMAGE_EXPORT -f ./Dockerfile-export -t $IMAGE_EXPORT .
     - docker push $IMAGE_EXPORT
     - echo "done"
-  # only:
-  #   - deploy
   rules:
     - if: $CI_COMMIT_MESSAGE =~ /deploy/
 
