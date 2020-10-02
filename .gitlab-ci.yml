@@ -18,8 +18,8 @@ build:
     - docker login $DOCKER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD
   script:
     - echo "start build"
-    - docker build -t $IMAGE .
-    - docker push $IMAGE
+    # - docker build -t $IMAGE .
+    # - docker push $IMAGE
     - docker build -f ./Dockerfile-export -t $IMAGE_EXPORT .
     - docker push $IMAGE_EXPORT
     - echo "done"
