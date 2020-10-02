@@ -7,8 +7,8 @@ stages:
 build:
   stage: build
   image: docker
-  services:
-    - docker:dind
+  # services:
+  #   - docker:dind
   before_script:
     - docker login $DOCKER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD
   script:
