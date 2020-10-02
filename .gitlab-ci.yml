@@ -40,6 +40,6 @@ deploy:
     - ssh-keyscan $HOST >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - ssh $HOST_USER@$HOST "cd /var/docker/tian-lp && docker pull $IMAGE && docker pull IMAGE_EXPORT && docker-compose rm --force --stop app && docker-compose up -d app && exit"
+    - ssh $HOST_USER@$HOST "cd /var/docker/tian-lp && docker pull $IMAGE && docker pull $IMAGE_EXPORT && docker-compose rm --force --stop app && docker-compose up -d app && exit"
   only:
     - dev
