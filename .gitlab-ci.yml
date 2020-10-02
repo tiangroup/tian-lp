@@ -1,4 +1,6 @@
 variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
   IMAGE: $DOCKER_REGISTRY/tian-lp
 
 stages:
@@ -6,11 +8,11 @@ stages:
 
 build:
   stage: build
-  # image: docker
+  image: docker:19.03.8
   services:
-    - name: docker:19.03.1-dind
-      alias: docker
+    - docker:19.03.8-dind
   before_script:
+    - docker info
     - docker login $DOCKER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD
   script:
     - echo "start build"
