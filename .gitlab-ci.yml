@@ -22,7 +22,7 @@ build:
   rules:
     - if: $CI_COMMIT_MESSAGE =~ /deploy/
 
-build:
+build-export:
   stage: build
   image: docker:19.03.8
   services:
@@ -34,7 +34,7 @@ build:
     - docker build --cache-from $IMAGE_EXPORT -f ./Dockerfile-export -t $IMAGE_EXPORT .
     - docker push $IMAGE_EXPORT
   rules:
-    - if: $CI_COMMIT_MESSAGE =~ /deploy/    
+    - if: $CI_COMMIT_MESSAGE =~ /deploy/
 
 deploy:
   stage: deploy
