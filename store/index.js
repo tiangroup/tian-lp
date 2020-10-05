@@ -61,7 +61,7 @@ export const actions = {
   async nuxtServerInit({ commit }, { req }) {
     try {
       let hostname = process.env.SITE_NAME;
-      if (process.server) {
+      if (!process.static && process.server) {
         if (!hostname) {
           const reg = "(.*).app.tian-lp.ru";
           const regexp = new RegExp(reg, "ig");

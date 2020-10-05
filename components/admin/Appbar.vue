@@ -201,7 +201,8 @@ export default {
     ...mapActions({
       savePage: "pages/savePage",
       saveForms: "forms/saveForms",
-      reloadPage: "pages/reloadPage"
+      reloadPage: "pages/reloadPage",
+      reloadSite: "sites/reloadSite"
     }),
     ...mapMutations({
       setPreview: "SET_IS_PREVIEW"
@@ -236,7 +237,8 @@ export default {
           }
         );
         if (data.status) {
-          this.reloadSite();
+          await this.reloadPage();
+          await this.reloadSite();
         }
       } catch (error) {
         console.error(error);
