@@ -12,8 +12,26 @@
             v-bind="attrs"
             v-on="on"
             class="ml-2"
+            :loading="reloading"
+            @click="undo"
+            :disabled="saveLoading"
+          >
+            <v-icon>mdi-undo</v-icon>
+          </v-btn>
+        </template>
+        <span>Отменить изменения</span>
+      </v-tooltip>
+
+      <v-tooltip bottom v-if="change">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            v-bind="attrs"
+            v-on="on"
+            class="ml-2"
             :loading="saveLoading"
-            @click="savePage"
+            :disabled="reloading"
+            @click="save"
           >
             <v-icon>mdi-content-save</v-icon>
           </v-btn>
@@ -21,11 +39,44 @@
         <span>Сохранить изменения</span>
       </v-tooltip>
 
+      <v-btn
+        text
+        class="ml-2"
+        @click="publish"
+        :loading="processPublish"
+        v-if="isPublish && !change"
+      >
+        Опубликовать
+        <v-icon right>mdi-cloud-upload</v-icon>
+      </v-btn>
+
       <v-spacer></v-spacer>
 
+      <!--
+      <v-tooltip bottom v-if="isPublish">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            color="primary"
+            v-bind="attrs"
+            v-on="on"
+            @click="setPreview(true)"
+          >
+            Опубликовать
+            <v-icon right>mdi-cloud-upload</v-icon>
+          </v-btn>
+        </template>
+        <span>Опубликовать</span>
+      </v-tooltip>
+      -->
       <v-tooltip bottom v-if="!isPreview">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on" @click="setPreview(true)">
+          <v-btn
+            icon
+            v-bind="attrs"
+            v-on="on"
+            @click="setPreview(true)"
+            :disabled="reloading"
+          >
             <v-icon>mdi-monitor-eye</v-icon>
           </v-btn>
         </template>
@@ -33,7 +84,13 @@
       </v-tooltip>
       <v-tooltip bottom v-if="isPreview">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on" @click="setPreview(false)">
+          <v-btn
+            icon
+            v-bind="attrs"
+            v-on="on"
+            @click="setPreview(false)"
+            :disabled="reloading"
+          >
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
         </template>
@@ -52,22 +109,44 @@
 
     <v-navigation-drawer app class="over" v-model="drawer" temporary>
       <v-list-item>
-        <v-list-item-title>Страница</v-list-item-title>
+        <v-list-item-title>{{ slug }}</v-list-item-title>
+        <!--
+        <v-list-item-title>{{ slug }}</v-list-item-title>
+        
         <v-list-item-subtitle v-text="slug"></v-list-item-subtitle>
+        -->
       </v-list-item>
 
+      <!--
       <v-divider></v-divider>
+      -->
 
       <v-list nav dense>
-        <menu-item-export v-if="slug == '/'" />
-        <menu-item-settings v-else />
+        <v-subheader>Страница</v-subheader>
+        <menu-item-settings />
         <menu-item-seo />
+        <!--
         <v-subheader>Страницы</v-subheader>
         <menu-item-pages />
         <menu-item-add-page />
+        -->
         <!--
         <menu-item-robots />
         -->
+
+        <v-subheader>Сайт</v-subheader>
+
+        <v-list-group prepend-icon="mdi-text-box-multiple" no-action>
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>Страницы</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <menu-item-pages @routes="onRoutes" />
+        </v-list-group>
+
+        <menu-item-add-page />
+
         <v-subheader>Администрирование</v-subheader>
         <v-list-item link @click="$router.push('/admin')">
           <v-list-item-icon>
@@ -81,10 +160,11 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   data: () => ({
-    drawer: false
+    drawer: false,
+    processPublish: false
   }),
   computed: {
     ...mapGetters({
@@ -94,7 +174,8 @@ export default {
       saveLoadingForm: "forms/saveLoading",
       isPreview: "isPreview",
       page: "pages/page",
-      site: "sites/site"
+      site: "sites/site",
+      reloading: "pages/reloading"
     }),
     change() {
       return this.changePage || this.changeForm;
@@ -105,19 +186,66 @@ export default {
     slug() {
       const page = this.site.pages.find(p => p.page == this.page.id);
       return page ? page.slug : null;
+    },
+    isPublish() {
+      if (this.site.deploy && this.site.deploy.publish && this.site.updates) {
+        return this.site.updates > this.site.deploy.publish;
+      } else if (this.site.deploy && !this.site.deploy.publish) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
   methods: {
+    ...mapActions({
+      savePage: "pages/savePage",
+      saveForms: "forms/saveForms",
+      reloadPage: "pages/reloadPage"
+    }),
     ...mapMutations({
       setPreview: "SET_IS_PREVIEW"
     }),
-    savePage() {
+    save() {
       if (this.changePage) {
-        this.$store.dispatch("pages/savePage");
+        this.savePage();
       }
       if (this.changeForm) {
-        this.$store.dispatch("forms/saveForms");
+        this.saveForms();
       }
+    },
+    async undo() {
+      if (this.changePage) {
+        this.setPreview(true);
+        await this.reloadPage();
+        this.setPreview(false);
+      }
+      if (this.changeForm) {
+      }
+    },
+    onRoutes() {
+      this.drawer = false;
+    },
+    async publish() {
+      this.processPublish = true;
+      try {
+        const data = await this.$axios.$post(
+          `${this.$site_app}/api/sites/publish`,
+          {
+            site_id: this.site.id
+          }
+        );
+        if (data.status) {
+          this.reloadSite();
+        }
+      } catch (error) {
+        console.error(error);
+        this.$error({
+          message:
+            "Произошла непредвиденная ошибка, попробуйте повторить позже."
+        });
+      }
+      this.processPublish = false;
     }
   }
 };

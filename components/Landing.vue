@@ -21,6 +21,8 @@
       <form-editor v-if="isEdit" />
 
       <dialog-confirm v-if="isEdit" />
+
+      <dialog-error />
     </div>
   </div>
 </template>

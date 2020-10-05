@@ -56,4 +56,6 @@ export default (context, inject) => {
   inject("confirm", confirm => store.dispatch("showConfirm", confirm));
 
   inject("overlay", show => store.commit("SET_OVERLAY", show));
+
+  inject("error", error => store.dispatch("showError", error));
 };

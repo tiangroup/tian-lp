@@ -1,7 +1,8 @@
 export const state = () => ({
   page: null,
   change: false,
-  saveLoading: false
+  saveLoading: false,
+  reloading: false
 });
 
 export const mutations = {
@@ -22,6 +23,9 @@ export const mutations = {
   },
   SET_SAVE_LOADING(state, saveLoading) {
     state.saveLoading = saveLoading;
+  },
+  SET_RELOADING(state, reloading) {
+    state.reloading = reloading;
   },
   SET_SECTION_FIELD(state, data) {
     const section = state.page.sections.find(s => s.id === data.id);
@@ -141,9 +145,22 @@ export const actions = {
       console.error(error);
     }
   },
-  async savePage({ commit, state, rootGetters }) {
+  async reloadPage({ commit, state }) {
+    commit("SET_RELOADING", true);
     try {
-      commit("SET_SAVE_LOADING", true);
+      const page = await this.$axios.$get(
+        `${this.$site_api}/pages/${state.page.id}`
+      );
+      commit("SET_PAGE", page);
+      commit("SET_CHANGE", false);
+    } catch (error) {
+      console.error(error);
+    }
+    commit("SET_RELOADING", false);
+  },
+  async savePage({ commit, state, rootGetters }) {
+    commit("SET_SAVE_LOADING", true);
+    try {
       const page = state.page;
       const response = await this.$axios.$put(
         `${this.$site_api}/pages/${page.id}`,
@@ -153,11 +170,11 @@ export const actions = {
         site_id: rootGetters["sites/site"].id
       });
       commit("SET_PAGE", response);
-      commit("SET_SAVE_LOADING", false);
       commit("SET_CHANGE", false);
     } catch (error) {
       console.error(error);
     }
+    commit("SET_SAVE_LOADING", false);
   }
 };
 
@@ -165,5 +182,6 @@ export const getters = {
   page: state => state.page,
   change: state => state.change,
   saveLoading: state => state.saveLoading,
+  reloading: state => state.reloading,
   head: state => (state.page ? state.page.head : null)
 };

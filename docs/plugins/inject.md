@@ -85,6 +85,24 @@ methods: {
 }
 ```
 
+## error(payload)
+
+Функция `error` показывает сообщение об ошибке
+
+```js
+methods: {
+  save(){
+    try{
+      ...
+    }catch(error){
+      this.$error({
+        message: "Сообщение об ошибке...";
+      });
+    }
+  }
+}
+```
+
 ## overlay(show)
 
 Показ оверлея(загрузки) на всю страницу
