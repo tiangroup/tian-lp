@@ -52,15 +52,15 @@ export const mutations = {
 export const actions = {
   async nuxtServerInit({ commit }, { req }) {
     try {
-      let hostname = null;
-      if (process.static) {
-        hostname = process.env.SITE_NAME;
-      } else if (process.server) {
-        const reg = "(.*).app.tian-lp.ru";
-        const regexp = new RegExp(reg, "ig");
-        hostname = req.headers.host.split(":")[0];
-        const result = regexp.exec(hostname);
-        hostname = result ? result[1] : null;
+      let hostname = process.env.SITE_NAME;
+      if (process.server) {
+        if (!hostname) {
+          const reg = "(.*).app.tian-lp.ru";
+          const regexp = new RegExp(reg, "ig");
+          hostname = req.headers.host.split(":")[0];
+          const result = regexp.exec(hostname);
+          hostname = result ? result[1] : null;
+        }
         if (hostname) {
           commit("SET_IS_APP", true);
         }
