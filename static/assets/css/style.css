@@ -5330,6 +5330,30 @@ nav ul li,
     border-radius: 50%;
   }
 }
+.map__balloon {
+  padding: 0.5rem;
+}
+.map__balloon__title {
+  font-size: 0.9375rem;
+  font-weight: bold;
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+  margin-bottom: 0.625rem;
+}
+.map__balloon .connect__item {
+  margin-bottom: 0.5rem;
+}
+.map__balloon .connect__instance {
+  font-size: 0.8125rem;
+  letter-spacing: 0.1px;
+  opacity: 0.8;
+}
+.map__balloon .connect__icon {
+  flex-basis: 0.75rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.5rem;
+}
 .no-image {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 32 32'%3E%3Cpath d='M29.996 4c0.001 0.001 0.003 0.002 0.004 0.004v23.993c-0.001 0.001-0.002 0.003-0.004 0.004h-27.993c-0.001-0.001-0.003-0.002-0.004-0.004v-23.993c0.001-0.001 0.002-0.003 0.004-0.004h27.993zM30 2h-28c-1.1 0-2 0.9-2 2v24c0 1.1 0.9 2 2 2h28c1.1 0 2-0.9 2-2v-24c0-1.1-0.9-2-2-2v0z'%3E%3C/path%3E%3Cpath d='M26 9c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z'%3E%3C/path%3E%3Cpath d='M28 26h-24v-4l7-12 8 10h2l7-6z'%3E%3C/path%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -5973,7 +5997,8 @@ a:focus,
 .department__title,
 .department__phone__link a,
 .good__title,
-.video__item {
+.video__item,
+.map__balloon {
   color: #303339;
   color: var(--text-color);
 }

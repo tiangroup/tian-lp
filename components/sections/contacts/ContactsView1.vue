@@ -249,28 +249,24 @@ import { mapMutations, mapActions } from "vuex";
 import ContactsMap from "./ContactsMap";
 export default {
   components: {
-    ContactsMap,
+    ContactsMap
   },
   props: {
     section: Object,
-    isEdit: Boolean,
+    isEdit: Boolean
   },
   data() {
     return {
-      myMap: {},
+      myMap: {}
     };
   },
-  computed: {
-    styleDiv() {
-      return this.isEdit ? { position: "relative" } : null;
-    },
-  },
+  computed: {},
   methods: {
     getMainOffice() {
       var mainOffice = [];
       mainOffice.push(this.section.items[0]);
       return mainOffice;
-    },
-  },
+    }
+  }
 };
 </script>
