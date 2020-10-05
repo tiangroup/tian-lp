@@ -1,10 +1,12 @@
 <template>
   <v-list-item link @click="dialog = true">
+    <!--
     <v-list-item-icon>
       <v-icon>mdi-plus</v-icon>
     </v-list-item-icon>
+    -->
     <v-list-item-title>Добавить страницу</v-list-item-title>
-    <v-dialog v-model="dialog" persistent max-width="500px">
+    <v-dialog v-model="dialog" persistent max-width="400px">
       <v-card>
         <v-card-title>
           <span class="headline">Добавить страницу</span>

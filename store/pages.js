@@ -158,7 +158,7 @@ export const actions = {
     }
     commit("SET_RELOADING", false);
   },
-  async savePage({ commit, state, rootGetters }) {
+  async savePage({ commit, state, rootGetters, dispatch }) {
     commit("SET_SAVE_LOADING", true);
     try {
       const page = state.page;
@@ -169,6 +169,7 @@ export const actions = {
       await this.$axios.$put(`${this.$site_app}/api/sites/updates`, {
         site_id: rootGetters["sites/site"].id
       });
+      await dispatch("sites/reloadSite", null, { root: true });
       commit("SET_PAGE", response);
       commit("SET_CHANGE", false);
     } catch (error) {

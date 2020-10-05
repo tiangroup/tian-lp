@@ -39,6 +39,23 @@
         <span>Сохранить изменения</span>
       </v-tooltip>
 
+      <v-tooltip bottom v-if="isPublish && !change">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            v-bind="attrs"
+            v-on="on"
+            class="ml-2"
+            :loading="processPublish"
+            @click="publish"
+          >
+            <v-icon>mdi-cloud-upload</v-icon>
+          </v-btn>
+        </template>
+        <span>Опубликовать</span>
+      </v-tooltip>
+
+      <!--
       <v-btn
         text
         class="ml-2"
@@ -49,6 +66,7 @@
         Опубликовать
         <v-icon right>mdi-cloud-upload</v-icon>
       </v-btn>
+      -->
 
       <v-spacer></v-spacer>
 
@@ -109,20 +127,30 @@
 
     <v-navigation-drawer app class="over" v-model="drawer" temporary>
       <v-list-item>
+        <span>Страница</span>
+        <v-spacer></v-spacer>
+        <v-btn icon @click="drawer = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-list-item>
+
+      <!--
+      <v-list-item>
         <v-list-item-title>{{ slug }}</v-list-item-title>
-        <!--
+        
         <v-list-item-title>{{ slug }}</v-list-item-title>
         
         <v-list-item-subtitle v-text="slug"></v-list-item-subtitle>
-        -->
+        
       </v-list-item>
+      -->
 
       <!--
       <v-divider></v-divider>
       -->
 
       <v-list nav dense>
-        <v-subheader>Страница</v-subheader>
+        <v-subheader>{{ slug }}</v-subheader>
         <menu-item-settings />
         <menu-item-seo />
         <!--
@@ -136,6 +164,13 @@
 
         <v-subheader>Сайт</v-subheader>
 
+        <v-list-item link @click="publish" v-if="isPublish && !change">
+          <v-list-item-icon>
+            <v-icon>mdi-cloud-upload</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Опубликовать</v-list-item-title>
+        </v-list-item>
+
         <v-list-group prepend-icon="mdi-text-box-multiple" no-action>
           <template v-slot:activator>
             <v-list-item-content>
@@ -143,9 +178,8 @@
             </v-list-item-content>
           </template>
           <menu-item-pages @routes="onRoutes" />
+          <menu-item-add-page />
         </v-list-group>
-
-        <menu-item-add-page />
 
         <v-subheader>Администрирование</v-subheader>
         <v-list-item link @click="$router.push('/admin')">

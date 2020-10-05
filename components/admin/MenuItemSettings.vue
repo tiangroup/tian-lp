@@ -4,7 +4,7 @@
       <v-icon>mdi-application</v-icon>
     </v-list-item-icon>
     <v-list-item-title>Настройки страницы</v-list-item-title>
-    <v-dialog v-model="dialog" persistent max-width="500px">
+    <v-dialog v-model="dialog" persistent max-width="400px">
       <v-card>
         <v-card-title>
           <span class="headline">Настройки страницы</span>
