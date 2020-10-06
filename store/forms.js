@@ -6,7 +6,8 @@ export const state = () => ({
   message: null,
   isMessage: false,
   editor: null,
-  isEditor: false
+  isEditor: false,
+  reloading: false
 });
 
 export const mutations = {
@@ -27,6 +28,9 @@ export const mutations = {
   },
   SET_SAVE_LOADING(state, saveLoading) {
     state.saveLoading = saveLoading;
+  },
+  SET_RELOADING(state, reloading) {
+    state.reloading = reloading;
   },
   SET_FORM_FIELD(state, payload) {
     const form = state.forms.find(f => f.id == payload.formId);
@@ -121,7 +125,7 @@ export const mutations = {
 };
 
 export const actions = {
-  async loadForm({ commit, state }, formId) {
+  async loadForm({ commit }, formId) {
     try {
       if (formId) {
         const form = await this.$axios.$get(
@@ -133,6 +137,20 @@ export const actions = {
     } catch (error) {
       console.error(error);
     }
+  },
+  async reloadForms({ commit, state }) {
+    commit("SET_RELOADING", true);
+    try {
+      let resp;
+      for (let form of state.forms) {
+        resp = await this.$axios.$get(`${this.$site_api}/forms/${form.id}`);
+        commit("SET_FORM", resp);
+      }
+      commit("SET_CHANGE", false);
+    } catch (error) {
+      console.error(error);
+    }
+    commit("SET_RELOADING", false);
   },
   async saveForm({ commit, state }, payload) {
     try {
@@ -219,6 +237,7 @@ export const getters = {
   forms: state => state.forms,
   change: state => state.change,
   saveLoading: state => state.saveLoading,
+  reloading: state => state.reloading,
   form: state => id => state.forms.find(f => f.id == id),
   message: state => state.message,
   isMessage: state => state.isMessage,

@@ -13,9 +13,14 @@
               <v-card>
                 <v-list dense>
                   <v-list-item>
-                    <v-list-item-content>Опубликован:</v-list-item-content>
+                    <v-list-item-content>Публикация:</v-list-item-content>
                     <v-list-item-content>
                       {{ publishes }}
+                      <div v-if="overdate">
+                        <v-chip color="pink" label text-color="white" small>
+                          устарела
+                        </v-chip>
+                      </div>
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -167,9 +172,12 @@ export default {
         if (data.status) {
           this.reloadSite();
         }
-        console.log(data);
       } catch (error) {
         console.error(error);
+        this.$error({
+          message:
+            "Произошла непредвиденная ошибка, попробуйте повторить позже."
+        });
       }
       this.processPublish = false;
     }

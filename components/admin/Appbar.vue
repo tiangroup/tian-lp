@@ -5,7 +5,7 @@
 
       <v-toolbar-title>Редактирование</v-toolbar-title>
 
-      <v-tooltip bottom v-if="change">
+      <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             icon
@@ -15,6 +15,7 @@
             :loading="reloading"
             @click="undo"
             :disabled="saveLoading"
+            v-show="change"
           >
             <v-icon>mdi-undo</v-icon>
           </v-btn>
@@ -22,7 +23,7 @@
         <span>Отменить изменения</span>
       </v-tooltip>
 
-      <v-tooltip bottom v-if="change">
+      <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             icon
@@ -32,6 +33,7 @@
             :loading="saveLoading"
             :disabled="reloading"
             @click="save"
+            v-show="change"
           >
             <v-icon>mdi-content-save</v-icon>
           </v-btn>
@@ -39,7 +41,7 @@
         <span>Сохранить изменения</span>
       </v-tooltip>
 
-      <v-tooltip bottom v-if="isPublish && !change">
+      <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             icon
@@ -48,6 +50,7 @@
             class="ml-2"
             :loading="processPublish"
             @click="publish"
+            v-show="isPublish && !change"
           >
             <v-icon>mdi-cloud-upload</v-icon>
           </v-btn>
@@ -209,7 +212,8 @@ export default {
       isPreview: "isPreview",
       page: "pages/page",
       site: "sites/site",
-      reloading: "pages/reloading"
+      reloadingPage: "pages/reloading",
+      reloadingForms: "forms/reloading"
     }),
     change() {
       return this.changePage || this.changeForm;
@@ -217,18 +221,21 @@ export default {
     saveLoading() {
       return this.saveLoadingPage || this.saveLoadingForm;
     },
+    reloading() {
+      return this.reloadingPage || this.reloadingForms;
+    },
     slug() {
       const page = this.site.pages.find(p => p.page == this.page.id);
       return page ? page.slug : null;
     },
     isPublish() {
-      if (this.site.deploy && this.site.deploy.publish && this.site.updates) {
-        return this.site.updates > this.site.deploy.publish;
-      } else if (this.site.deploy && !this.site.deploy.publish) {
-        return true;
-      } else {
-        return false;
-      }
+      return (
+        this.site.deploy &&
+        this.site.deploy.sites &&
+        this.site.deploy.sites.active &&
+        this.site.updates &&
+        this.site.updates > this.site.deploy.publish
+      );
     }
   },
   methods: {
@@ -236,7 +243,8 @@ export default {
       savePage: "pages/savePage",
       saveForms: "forms/saveForms",
       reloadPage: "pages/reloadPage",
-      reloadSite: "sites/reloadSite"
+      reloadSite: "sites/reloadSite",
+      reloadForms: "forms/reloadForms"
     }),
     ...mapMutations({
       setPreview: "SET_IS_PREVIEW"
@@ -256,6 +264,7 @@ export default {
         this.setPreview(false);
       }
       if (this.changeForm) {
+        await this.reloadForms();
       }
     },
     onRoutes() {
@@ -271,7 +280,7 @@ export default {
           }
         );
         if (data.status) {
-          await this.reloadPage();
+          //await this.reloadPage();
           await this.reloadSite();
         }
       } catch (error) {

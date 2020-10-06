@@ -5,6 +5,7 @@
       <v-main>
         <component :is="comp" :params="params" />
       </v-main>
+      <dialog-error />
     </v-app>
     <Login v-else />
   </div>
