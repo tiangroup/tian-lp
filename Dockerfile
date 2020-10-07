@@ -1,6 +1,11 @@
 FROM node:14-alpine
 
-RUN apk add --no-cache imagemagick ffmpeg graphicsmagick
+#RUN apk add --no-cache imagemagick ffmpeg graphicsmagick
+RUN apk add --no-cache graphicsmagick \
+    && apk --no-cache --virtual build-dependencies add \
+    python \
+    make \
+    g++ 
 
 RUN mkdir -p /app
 
@@ -8,12 +13,7 @@ WORKDIR /app
 
 COPY ./package*.json ./
 
-RUN apk --no-cache --virtual build-dependencies add \
-    python \
-    make \
-    g++ \
-    && npm install \
-    && apk del build-dependencies
+RUN npm install
 
 COPY . .
 
