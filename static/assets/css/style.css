@@ -682,6 +682,9 @@ img {
 .fx-nw {
   flex-wrap: nowrap;
 }
+.grow-1 {
+  flex-grow: 1;
+}
 @media (min-width: 576px) {
   .grow-sm-1 {
     flex-grow: 1;

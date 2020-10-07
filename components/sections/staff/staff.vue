@@ -25,7 +25,7 @@
                 :item="item"
                 :isEdit="isEdit"
                 :sectionId="section.id"
-                v-for="item in section.items.filter((i) => i.id)"
+                v-for="item in section.items.filter(i => i.id)"
                 :key="item.id"
               ></staff-item>
               <div
@@ -53,7 +53,7 @@
                   :item="item"
                   :isEdit="false"
                   :sectionId="section.id"
-                  v-for="item in section.items.filter((i) => i.id)"
+                  v-for="item in section.items.filter(i => i.id)"
                   :key="item.id"
                 ></staff-item>
               </div>
@@ -70,10 +70,10 @@ import { mapGetters } from "vuex";
 import StaffItem from "./StaffItem";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   components: {
-    StaffItem,
+    StaffItem
   },
   data: () => ({
     currentSlide: 0,
@@ -95,28 +95,28 @@ export default {
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false,
-          },
+            arrows: false
+          }
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false,
-          },
-        },
-      ],
-    },
+            arrows: false
+          }
+        }
+      ]
+    }
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      isEdit: "isEdit"
     }),
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     slickRef() {
@@ -134,33 +134,33 @@ export default {
     },
     itemsCount() {
       return this.section.items.length;
-    },
+    }
   },
   methods: {
     handleInit(event, slick) {
       if (this.currentSlide) {
         slick.goTo(this.currentSlide, true);
       }
-    },
+    }
   },
-  beforeUpdate: function () {
+  beforeUpdate: function() {
     if (this.$refs[this.slickRef]) {
       this.currentSlide = this.$refs[this.slickRef].currentSlide;
     }
-  },
+  }
 };
 </script>
 <style scoped>
 .staff a {
   color: var(--theme-color);
 }
-.staff .theme--light.v-skeleton-loader .v-skeleton-loader__avatar,
-.staff .theme--light.v-skeleton-loader .v-skeleton-loader__button,
-.staff .theme--light.v-skeleton-loader .v-skeleton-loader__chip,
-.staff .theme--light.v-skeleton-loader .v-skeleton-loader__divider,
-.staff .theme--light.v-skeleton-loader .v-skeleton-loader__heading,
-.staff .theme--light.v-skeleton-loader .v-skeleton-loader__image,
-.staff .theme--light.v-skeleton-loader .v-skeleton-loader__text {
+.staff >>> .v-skeleton-loader__avatar,
+.staff >>> .v-skeleton-loader__button,
+.staff >>> .v-skeleton-loader__chip,
+.staff >>> .v-skeleton-loader__divider,
+.staff >>> .v-skeleton-loader__heading,
+.staff >>> .v-skeleton-loader__image,
+.staff >>> .v-skeleton-loader__text {
   background-color: var(--separator-color);
 }
 </style>

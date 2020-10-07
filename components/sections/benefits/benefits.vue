@@ -33,3 +33,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+.benefits >>> .v-skeleton-loader__heading,
+.benefits >>> .v-skeleton-loader__text {
+  background-color: var(--separator-color);
+}
+</style>

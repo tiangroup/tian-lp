@@ -21,15 +21,14 @@
         />
       </div>
       <div class="benefits__intro" v-else v-html="section.description"></div>
-      <!-- benefits__list--style3 -->
       <div class="benefits__list cells benefits__list--style3">
-        <div class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3">
-          <div
-            class="benefits__item benefits__item--lg-right"
-            v-for="item in items1.filter(i => i.id)"
-            :key="item.id"
-            :style="styleDiv"
-          >
+        <div
+          class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
+          v-for="item in items1.filter(i => i.id)"
+          :key="item.id"
+          :style="styleDiv"
+        >
+          <div class="benefits__item benefits__item--lg-right">
             <buttons-item
               v-if="isEdit"
               :itemId="item.id"
@@ -81,7 +80,12 @@
           class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
           v-if="isEdit && (!section.items || !section.items.length)"
         >
-          <buttons-item-add :sectionId="section.id" />
+          <div class="item__add-button">
+            <buttons-item-add :sectionId="section.id" />
+          </div>
+          <div class="benefits__body">
+            <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
+          </div>
         </div>
         <div
           class="cell cell-12 benefits__illustration-wrap cell-lg-4 cell-xl-6"
@@ -94,13 +98,13 @@
             :sectionId="section.id"
           />
         </div>
-        <div class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3">
-          <div
-            class="benefits__item"
-            v-for="item in items2.filter(i => i.id)"
-            :key="item.id"
-            :style="styleDiv"
-          >
+        <div
+          class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
+          v-for="item in items2.filter(i => i.id)"
+          :key="item.id"
+          :style="styleDiv"
+        >
+          <div class="benefits__item">
             <buttons-item
               v-if="isEdit"
               :itemId="item.id"
@@ -148,8 +152,15 @@
             </div>
           </div>
         </div>
+        <div
+          class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
+          v-if="isEdit && (!section.items || !section.items.length)"
+        >
+          <div class="benefits__body">
+            <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
+          </div>
+        </div>
       </div>
-      <!-- benefits__list--style3 -->
     </div>
   </div>
 </template>

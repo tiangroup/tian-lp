@@ -145,7 +145,11 @@ export default {
       return false;
     },
     mapCenter() {
-      return this.getCoords(this.items[0].coords) || [55.159897, 61.402554];
+      if (this.items.length && this.items[0].coords) {
+        return this.getCoords(this.items[0].coords);
+      } else {
+        return [55.159897, 61.402554];
+      }
     }
   },
   methods: {
@@ -165,7 +169,9 @@ export default {
       }
     },
     getCoords(coords) {
-      return coords.replace(/\s+/g, "").split(",");
+      if (coords) {
+        return coords.replace(/\s+/g, "").split(",");
+      }
     }
   },
   mounted: function() {

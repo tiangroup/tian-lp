@@ -73,7 +73,11 @@
           class="cell cell-12 cell-sm-6 cell-lg-3"
           v-if="isEdit && (!section.items || !section.items.length)"
         >
-          <buttons-item-add :sectionId="section.id" />
+          <div class="item__add-button">
+            <buttons-item-add :sectionId="section.id" />
+          </div>
+          <div class="benefits__image no-image"></div>
+          <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
         </div>
       </div>
     </div>
