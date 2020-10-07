@@ -1965,6 +1965,9 @@ nav ul li,
   height: 100%;
   width: 100%;
 }
+.connect__instance {
+  min-width: 12rem;
+}
 .connect__instance + .connect__instance {
   margin-top: 0.3125rem;
 }
@@ -4760,9 +4763,13 @@ nav ul li,
     align-self: center;
     margin-top: 0;
   }
-  .contacts__phones .connect__instance {
+  .contacts__phones .connect__instances {
     display: flex;
     align-items: center;
+  }
+  .contacts__phones .connect__instance,
+  .contacts__phones .phones__messenger {
+    min-width: 11rem;
   }
   .contacts__phones .phones__messenger {
     margin-top: 0;
@@ -4813,6 +4820,7 @@ nav ul li,
 .department__phone__link {
   display: inline-block;
   margin-bottom: 0.55rem;
+  min-width: 12rem;
   white-space: nowrap;
 }
 .department__phone__link a:hover,
@@ -4856,17 +4864,17 @@ nav ul li,
     font-size: 1.5rem;
     line-height: 1.3;
   }
-  .department__phones {
+  /* .department__phones {
     display: flex;
     flex-wrap: wrap;
     margin-left: -1.5625rem;
     margin-right: -1.5625rem;
-  }
+  } */
   .department__phone {
     border-bottom: 0;
-    flex: 1 0 0%;
+    /* flex: 1 0 0%;
     padding-left: 1.5625rem;
-    padding-right: 1.5625rem;
+    padding-right: 1.5625rem; */
     position: relative;
   }
   /* .department__phone:nth-child(odd)::after {
