@@ -1,6 +1,7 @@
 FROM node:14-alpine
 
-RUN apk add --no-cache imagemagick ffmpeg graphicsmagick
+#RUN apk add --no-cache imagemagick ffmpeg graphicsmagick
+RUN apk add --no-cache graphicsmagick
 
 RUN mkdir -p /app
 
