@@ -14,16 +14,6 @@
 
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on" @click="$router.push('/')">
-            <v-icon>mdi-pencil</v-icon>
-          </v-btn>
-        </template>
-        <span>Редактировать сайт</span>
-      </v-tooltip>
-      <v-divider vertical inset class="ml-4"></v-divider>
-
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on, attrs }">
           <v-btn icon @click="exit" v-bind="attrs" v-on="on">
             <v-icon>mdi-exit-to-app</v-icon>
           </v-btn>
@@ -47,7 +37,11 @@
           <v-list-item-title>Сайт</v-list-item-title>
         </v-list-item>
 
-        <v-list-group prepend-icon="mdi-text-box-multiple" no-action>
+        <v-list-group
+          prepend-icon="mdi-text-box-multiple"
+          no-action
+          v-if="isForms"
+        >
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title>Формы</v-list-item-title>
@@ -62,6 +56,13 @@
             <v-list-item-title v-text="item.title"></v-list-item-title>
           </v-list-item>
         </v-list-group>
+
+        <v-list-item selectable @click="$router.push('/')">
+          <v-list-item-icon>
+            <v-icon>mdi-pencil</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Редактировать сайт</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -93,6 +94,9 @@ export default {
       isApp: "isApp",
       site: "sites/site"
     }),
+    isForms() {
+      return this.forms && this.forms.length;
+    },
     overdate() {
       if (this.site.deploy && this.site.deploy.publish && this.site.updates) {
         return this.site.updates > this.site.deploy.publish;

@@ -11,7 +11,7 @@
         </v-card-title>
 
         <v-card-text>
-          <v-textarea outlined></v-textarea>
+          <v-textarea outlined v-model="content"></v-textarea>
         </v-card-text>
 
         <v-card-actions>
@@ -29,29 +29,51 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   data: () => ({
     dialog: false,
-    robots: ""
+    content: ""
   }),
   computed: {
     ...mapGetters({
-      head: "pages/head"
+      site: "sites/site"
     })
   },
   methods: {
-    ...mapMutations({
-      setHead: "pages/SET_HEAD"
+    ...mapActions({
+      reloadSite: "sites/reloadSite"
     }),
-    save: function() {
+    async save() {
+      this.$overlay(true);
+      try {
+        await this.$axios.$post(`${this.$site_app}/api/robots`, {
+          content: this.content
+        });
+        await this.$axios.$put(`${this.$site_app}/api/sites/updates`, {
+          site_id: this.site.id
+        });
+        this.reloadSite();
+        this.$overlay(false);
+        this.dialog = false;
+      } catch (error) {
+        this.$overlay(false);
+        this.$error(error);
+      }
+    },
+    cancel() {
       this.dialog = false;
     },
-    cancel: function() {
-      this.dialog = false;
-    },
-    openForm() {
-      this.dialog = true;
+    async openForm() {
+      this.$overlay(true);
+      try {
+        this.content = await this.$axios.$get(`${this.$site_app}/api/robots`);
+        this.$overlay(false);
+        this.dialog = true;
+      } catch (error) {
+        this.$overlay(false);
+        this.$error(error);
+      }
     }
   }
 };

@@ -161,9 +161,6 @@
         <menu-item-pages />
         <menu-item-add-page />
         -->
-        <!--
-        <menu-item-robots />
-        -->
 
         <v-subheader>Сайт</v-subheader>
 
@@ -183,6 +180,8 @@
           <menu-item-pages @routes="onRoutes" />
           <menu-item-add-page />
         </v-list-group>
+
+        <menu-item-robots />
 
         <v-subheader>Администрирование</v-subheader>
         <v-list-item link @click="$router.push('/admin')">

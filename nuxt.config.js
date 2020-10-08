@@ -63,7 +63,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     "@nuxtjs/axios",
     "@nuxtjs/auth",
-    "@nuxtjs/robots",
+    // "@nuxtjs/robots",
     [
       "nuxt-env",
       {
@@ -144,14 +144,19 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {},
-  serverMiddleware: ["~/api/upload", "~/api/sites", "~/api/forms"],
+  serverMiddleware: [
+    "~/api/upload",
+    "~/api/sites",
+    "~/api/forms",
+    "~/api/robots"
+  ],
   generate: {
     fallback: true,
     routes() {
       const api_backend = process.env.API_BACKEND || "https://api.tian-lp.ru";
       const site_name = process.env.SITE_NAME;
-      console.log("!!! API_BACKEND: " + api_backend);
-      console.log("!!! SITE_NAME: " + site_name);
+      // console.log("!!! API_BACKEND: " + api_backend);
+      // console.log("!!! SITE_NAME: " + site_name);
       return axios
         .get(`${api_backend}/sites`, {
           params: { name: site_name }
@@ -165,8 +170,15 @@ export default {
         });
     }
   },
-  robots: {
-    UserAgent: "*",
-    Disallow: "/"
+  robots: async () => {
+    // const api_backend = process.env.API_BACKEND || "https://api.tian-lp.ru";
+    // const site_name = process.env.SITE_NAME;
+    // const { data } = await axios.get(`${api_backend}/sites`, {
+    //   params: { name: site_name }
+    // });
+    return {
+      UserAgent: "*",
+      Disallow: "/"
+    };
   }
 };
