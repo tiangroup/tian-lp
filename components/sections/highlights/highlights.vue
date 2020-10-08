@@ -42,7 +42,17 @@
             class="highlights__item cell cell-12 cell-sm-6 cell-lg-3"
             v-if="isEdit && (!section.items || !section.items.length)"
           >
-            <buttons-item-add :sectionId="section.id" />
+            <div class="item__add-button">
+              <buttons-item-add :sectionId="section.id" />
+            </div>
+            <div class="highlights__icon no-image"></div>
+            <div class="highlights__text grow-1">
+              <v-skeleton-loader
+                boilerplate
+                type="paragraph"
+                width="100%"
+              ></v-skeleton-loader>
+            </div>
           </div>
         </div>
       </div>
@@ -66,3 +76,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.highlights >>> .v-skeleton-loader__text {
+  background-color: var(--separator-color);
+}
+</style>

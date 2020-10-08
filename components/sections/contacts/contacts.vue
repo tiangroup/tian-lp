@@ -104,8 +104,13 @@ export default {
   }
 };
 </script>
-<style>
-.contacts a {
+<style scoped>
+.contacts >>> a {
   color: var(--theme-color);
+}
+.contacts >>> .v-skeleton-loader__text,
+.contacts >>> .v-skeleton-loader__heading {
+  background-color: var(--separator-color);
+  margin-bottom: 1rem;
 }
 </style>

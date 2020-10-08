@@ -11,8 +11,17 @@
             />
           </h2>
           <h2 v-else>{{ section.title }}</h2>
-          <div v-if="isEdit && (!section.items || !section.items.length)">
-            <buttons-item-add :sectionId="section.id" />
+          <div
+            :class="{ 'position-relative': isEdit }"
+            v-if="isEdit && (!section.items || !section.items.length)"
+          >
+            <div class="item__add-button">
+              <buttons-item-add :sectionId="section.id" />
+            </div>
+            <v-skeleton-loader
+              boilerplate
+              type="paragraph@2"
+            ></v-skeleton-loader>
           </div>
           <div v-else>
             <div
@@ -137,12 +146,6 @@
                     />
                     <span v-else v-html="section.items[0].phone"></span>
                   </div>
-                  <messenger-list
-                    class="phones__messenger"
-                    :section="section"
-                    :is-edit="isEdit"
-                    :item-index="0"
-                  ></messenger-list>
                 </div>
               </div>
             </div>
@@ -164,11 +167,9 @@
 <script>
 import { mapMutations, mapActions } from "vuex";
 import ContactsMap from "./ContactsMap";
-import MessengerList from "./messenger/MessengerList";
 export default {
   components: {
-    ContactsMap,
-    MessengerList
+    ContactsMap
   },
   props: {
     section: Object,
@@ -182,11 +183,11 @@ export default {
   computed: {},
   methods: {
     getMainOffice() {
+      var mainOffice = [];
       if (this.section.items && this.section.items.length) {
-        var mainOffice = [];
         mainOffice.push(this.section.items[0]);
-        return mainOffice;
       }
+      return mainOffice;
     }
   }
 };

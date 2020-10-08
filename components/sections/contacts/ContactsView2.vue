@@ -22,7 +22,7 @@
               <div
                 class="cell"
                 :class="{ 'position-relative': isEdit }"
-                v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                v-for="item in section.items.filter(i => i.id)"
                 :key="item.id"
               >
                 <buttons-item
@@ -100,14 +100,24 @@
                         />
                         <div v-else v-html="item.phone"></div>
                       </div>
-                      <messenger-list
-                        class="department__messenger"
-                        :section="section"
-                        :is-edit="isEdit"
-                        :item-index="itemIndex"
-                      ></messenger-list>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div
+                class="cell"
+                :class="{ 'position-relative': isEdit }"
+                v-if="isEdit && (!section.items || !section.items.length)"
+              >
+                <div class="item__add-button">
+                  <buttons-item-add :sectionId="section.id" />
+                </div>
+
+                <div class="contacts__item department">
+                  <v-skeleton-loader
+                    boilerplate
+                    type="heading, paragraph"
+                  ></v-skeleton-loader>
                 </div>
               </div>
             </slick>
@@ -115,7 +125,7 @@
               <div class="cells fx-nw overflow-hidden">
                 <div
                   class="cell cell-12 cell-sm-6"
-                  v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                  v-for="item in section.items.filter(i => i.id)"
                   :key="item.id"
                 >
                   <div class="contacts__item department">
@@ -142,12 +152,6 @@
                           class="department__phone__link"
                           v-html="item.phone"
                         ></div>
-                        <messenger-list
-                          class="department__messenger"
-                          :section="section"
-                          :is-edit="false"
-                          :item-index="itemIndex"
-                        ></messenger-list>
                       </div>
                     </div>
                   </div>
@@ -306,7 +310,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .department__phone__link a {
   color: var(--text-color);
 }
