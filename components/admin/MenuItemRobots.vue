@@ -11,7 +11,7 @@
         </v-card-title>
 
         <v-card-text>
-          <v-textarea outlined v-model="content"></v-textarea>
+          <v-textarea outlined v-model="robots"></v-textarea>
         </v-card-text>
 
         <v-card-actions>
@@ -19,7 +19,13 @@
           <v-btn color="blue darken-1" text @click="cancel">
             Отмена
           </v-btn>
-          <v-btn color="blue darken-1" text @click="save">
+          <v-btn
+            color="blue darken-1"
+            text
+            :disabled="!isSave"
+            :loading="process"
+            @click="save"
+          >
             Сохранить
           </v-btn>
         </v-card-actions>
@@ -29,51 +35,53 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   data: () => ({
     dialog: false,
-    content: ""
+    process: false,
+    content: undefined
   }),
   computed: {
     ...mapGetters({
       site: "sites/site"
-    })
+    }),
+    robots: {
+      get() {
+        return this.content == undefined ? this.site.robots : this.content;
+      },
+      set(value) {
+        this.content = value === this.site.robots ? undefined : value;
+      }
+    },
+    isSave() {
+      return this.content != undefined;
+    }
   },
   methods: {
     ...mapActions({
-      reloadSite: "sites/reloadSite"
+      reloadSite: "sites/reloadSite",
+      saveSite: "sites/saveSite"
+    }),
+    ...mapMutations({
+      setUpdates: "sites/SET_UPDATES",
+      setRobots: "sites/SET_ROBOTS"
     }),
     async save() {
-      this.$overlay(true);
-      try {
-        await this.$axios.$post(`${this.$site_app}/api/robots`, {
-          content: this.content
-        });
-        await this.$axios.$put(`${this.$site_app}/api/sites/updates`, {
-          site_id: this.site.id
-        });
-        this.reloadSite();
-        this.$overlay(false);
-        this.dialog = false;
-      } catch (error) {
-        this.$overlay(false);
-        this.$error(error);
-      }
+      this.process = true;
+      this.setRobots(this.content);
+      this.setUpdates();
+      await this.saveSite();
+      this.process = false;
+      this.dialog = false;
+      this.content = undefined;
     },
     cancel() {
       this.dialog = false;
+      this.content = undefined;
     },
     async openForm() {
-      this.$overlay(true);
-      try {
-        this.content = await this.$axios.$get(`${this.$site_app}/api/robots`);
-        this.$overlay(false);
-        this.dialog = true;
-      } catch (error) {
-        this.$overlay(false);
-        this.$error(error);
-      }
+      this.dialog = true;
     }
   }
 };

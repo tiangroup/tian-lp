@@ -63,7 +63,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     "@nuxtjs/axios",
     "@nuxtjs/auth",
-    // "@nuxtjs/robots",
+    "~modules/robots",
     [
       "nuxt-env",
       {
@@ -79,6 +79,13 @@ export default {
       {
         imagesBaseDir: "content",
         imageStyles: {
+          icon_sm: { macros: ["scaleAndCrop|46|46"] },
+          icon_md: { macros: ["scaleAndCrop|63|63"] },
+          sq_sm: { macros: ["scaleAndCrop|176|176"] },
+          sq_md: { macros: ["scaleAndCrop|244|244"] },
+          sq_lg: { macros: ["scaleAndCrop|520|520"] },
+          rect_sm: { macros: ["scaleAndCrop|158|82"] },
+          rect_md: { macros: ["scaleAndCrop|397|262"] },
           rect_lg: { macros: ["scaleAndCrop|592|391"] }
         }
       }
@@ -169,16 +176,5 @@ export default {
           }
         });
     }
-  },
-  robots: async () => {
-    // const api_backend = process.env.API_BACKEND || "https://api.tian-lp.ru";
-    // const site_name = process.env.SITE_NAME;
-    // const { data } = await axios.get(`${api_backend}/sites`, {
-    //   params: { name: site_name }
-    // });
-    return {
-      UserAgent: "*",
-      Disallow: "/"
-    };
   }
 };

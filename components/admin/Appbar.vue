@@ -181,6 +181,8 @@
           <menu-item-add-page />
         </v-list-group>
 
+        <menu-item-counter />
+
         <menu-item-robots />
 
         <v-subheader>Администрирование</v-subheader>
