@@ -1,34 +1,38 @@
 <template>
   <v-app>
-    <v-card min-width="350" class="mx-auto mt-4">
-      <v-card-title>Авторизация</v-card-title>
-      <v-card-text>
-        <v-alert type="error" :value="error" transition="scale-transition"
-          >Неверный логин или пароль
-        </v-alert>
-        <v-form @submit.prevent="login">
-          <v-text-field
-            v-model="username"
-            label="Логин"
-            required
-          ></v-text-field>
-          <v-text-field
-            type="password"
-            v-model="password"
-            label="Пароль"
-            required
-          ></v-text-field>
-          <v-btn
-            type="submit"
-            color="success"
-            :loading="process"
-            block
-            class="mt-4"
-            >Войти</v-btn
-          >
-        </v-form>
-      </v-card-text>
-    </v-card>
+    <div class="login">
+      <v-card min-width="350">
+        <v-card-title>Авторизация</v-card-title>
+        <v-card-subtitle>Панель управления</v-card-subtitle>
+        <v-card-text>
+          <v-alert type="error" :value="error" transition="scale-transition"
+            >Неверный логин или пароль
+          </v-alert>
+          <v-form @submit.prevent="login">
+            <v-text-field
+              v-model="username"
+              label="Логин"
+              required
+            ></v-text-field>
+            <v-text-field
+              type="password"
+              v-model="password"
+              label="Пароль"
+              required
+            ></v-text-field>
+            <v-btn
+              type="submit"
+              color="success"
+              :loading="process"
+              block
+              class="mt-4"
+            >
+              Войти
+            </v-btn>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </div>
   </v-app>
 </template>
 
@@ -76,3 +80,13 @@ export default {
   // }
 };
 </script>
+
+<style scoped>
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+}
+</style>

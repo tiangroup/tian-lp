@@ -7,7 +7,8 @@ export const state = () => ({
   isMessage: false,
   editor: null,
   isEditor: false,
-  reloading: false
+  reloading: false,
+  licence: false
 });
 
 export const mutations = {
@@ -121,6 +122,9 @@ export const mutations = {
   },
   SET_IS_EDITOR(state, isEditor) {
     state.isEditor = isEditor;
+  },
+  SET_LICENCE(state, licence) {
+    state.licence = licence;
   }
 };
 
@@ -230,6 +234,9 @@ export const actions = {
   },
   hideEditor({ commit }) {
     commit("SET_IS_EDITOR", false);
+  },
+  showLicence({ commit }, show) {
+    commit("SET_LICENCE", show);
   }
 };
 
@@ -242,5 +249,6 @@ export const getters = {
   message: state => state.message,
   isMessage: state => state.isMessage,
   editor: state => state.editor,
-  isEditor: state => state.isEditor
+  isEditor: state => state.isEditor,
+  licence: state => state.licence
 };

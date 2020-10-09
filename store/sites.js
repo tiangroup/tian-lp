@@ -1,5 +1,6 @@
 export const state = () => ({
-  site: null
+  site: null,
+  change: false
 });
 
 export const mutations = {
@@ -11,9 +12,18 @@ export const mutations = {
   },
   SET_ROBOTS(state, content) {
     state.site.robots = content;
+    state.change = true;
   },
   SET_COUNTER(state, content) {
     state.site.counter = content;
+    state.change = true;
+  },
+  SET_LICENCE(state, content) {
+    state.site.licence = content;
+    state.change = true;
+  },
+  SET_CHANGE(state, change) {
+    state.change = change;
   }
 };
 
@@ -33,6 +43,7 @@ export const actions = {
           `${this.$site_api}/sites/${state.site.id}`
         );
         commit("SET_SITE", site);
+        commit("SET_CHANGE", false);
       } catch (error) {
         console.error(error);
       }
@@ -45,7 +56,8 @@ export const actions = {
           `${this.$site_api}/sites/${state.site.id}`,
           state.site
         );
-        commit("SET_PAGE", site);
+        commit("SET_SITE", site);
+        commit("SET_CHANGE", false);
       } catch (error) {
         console.error(error);
       }
@@ -57,5 +69,6 @@ export const getters = {
   site: state => state.site,
   name: state => state.site.name,
   id: state => state.site.id,
-  pages: state => state.site.pages
+  pages: state => state.site.pages,
+  change: state => state.change
 };

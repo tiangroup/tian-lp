@@ -24,6 +24,8 @@
 
       <dialog-error />
 
+      <forms-licence />
+
       <div v-if="counter" v-html="counter"></div>
     </div>
   </div>

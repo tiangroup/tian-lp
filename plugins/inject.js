@@ -28,6 +28,9 @@ export default (context, inject) => {
     },
     showEditor: editor => {
       store.dispatch("forms/showEditor", editor);
+    },
+    licence: show => {
+      store.dispatch("forms/showLicence", show);
     }
   });
 

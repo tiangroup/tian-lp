@@ -12,7 +12,7 @@
       </div>
       <slot></slot>
       <component
-        v-for="item in form.fields.filter((i) => i.id)"
+        v-for="item in form.fields.filter(i => i.id)"
         :key="item.id"
         :is="`input_${item.type}`"
         :item="item"
@@ -29,8 +29,10 @@
         </button>
       </div>
       <div class="form__text">
-        Нажимая на&nbsp;кнопку, подтверждаю свое согласие с&nbsp;
-        <a href>условиями обработки персональных данных</a>
+        Нажимая на кнопку, подтверждаю свое согласие с
+        <a href @click.prevent="$forms.licence(true)"
+          >условиями обработки персональных данных</a
+        >
       </div>
     </div>
   </form>
@@ -43,9 +45,9 @@ export default {
     section: Object,
     field: {
       type: String,
-      default: "form",
+      default: "form"
     },
-    hiddenData: String,
+    hiddenData: String
   },
   components: {
     input_text: () => import("./inputs/FormInputText"),
@@ -54,22 +56,22 @@ export default {
     input_textarea: () => import("./inputs/FormInputTextarea"),
     input_check: () => import("./inputs/FormInputCheck"),
     input_radio: () => import("./inputs/FormInputRadio"),
-    input_select: () => import("./inputs/FormInputSelect"),
+    input_select: () => import("./inputs/FormInputSelect")
   },
   data: () => ({
     formData: {},
     loading: false,
-    message: false,
+    message: false
   }),
   computed: {
     ...mapGetters({
       getForm: "forms/form",
-      isEdit: "isEdit",
+      isEdit: "isEdit"
     }),
     styleDiv() {
       return this.isEdit
         ? {
-            position: "relative",
+            position: "relative"
           }
         : null;
     },
@@ -78,13 +80,13 @@ export default {
     },
     formId() {
       return this.section[this.field];
-    },
+    }
   },
   methods: {
     ...mapActions({
       savePage: "pages/savePage",
       addForm: "forms/addForm",
-      loadForm: "forms/loadForm",
+      loadForm: "forms/loadForm"
     }),
     async onSubmit() {
       if (this.loading) return;
@@ -107,26 +109,26 @@ export default {
         this.$emit("send", {
           text: this.form.form.successMessage,
           //caption: "Форма отправлена",
-          error: false,
+          error: false
         });
       } catch (err) {
         this.loading = false;
         this.$emit("send", {
-          error: true,
+          error: true
         });
       }
-    },
+    }
   },
   async mounted() {
     if (!this.formId && this.isEdit) {
       await this.addForm({
         sectionId: this.section.id,
-        field: this.field,
+        field: this.field
       });
       await this.savePage();
       await this.loadForm(this.formId);
     }
-  },
+  }
 };
 </script>
 <style scoped>
