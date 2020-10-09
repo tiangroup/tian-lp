@@ -65,7 +65,16 @@
             class="process__item cell cell-12 cell-sm-6 cell-lg-3"
             v-if="isEdit && (!section.items || !section.items.length)"
           >
-            <buttons-item-add :sectionId="section.id" />
+            <div class="item__add-button">
+              <buttons-item-add :sectionId="section.id" />
+            </div>
+            <div class="process__image no-image"></div>
+            <div class="process__body">
+              <v-skeleton-loader
+                boilerplate
+                type="heading, paragraph"
+              ></v-skeleton-loader>
+            </div>
           </div>
         </div>
       </div>
@@ -89,3 +98,12 @@ export default {
   }
 };
 </script>
+<style scoped>
+.process >>> .v-skeleton-loader__heading,
+.process >>> .v-skeleton-loader__text {
+  background-color: var(--separator-color);
+}
+.process >>> .v-skeleton-loader__heading {
+  margin-bottom: 1rem;
+}
+</style>

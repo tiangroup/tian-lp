@@ -1,9 +1,6 @@
 <template>
   <div>
     <ul class="social__list">
-      <li class="social__item" v-if="isEdit">
-        <social-list-button @click="showEditor = true"></social-list-button>
-      </li>
       <li
         class="social__item"
         v-for="social in section.socials.filter(i => i.id)"
@@ -14,6 +11,15 @@
           class="social__link"
           v-html="icons[social.type]"
         ></a>
+      </li>
+      <li class="social__item" v-if="isEdit">
+        <v-skeleton-loader
+          boilerplate
+          type="avatar@3"
+          v-if="!section.socials.length"
+          @click="showEditor = true"
+        ></v-skeleton-loader>
+        <social-list-button @click="showEditor = true"></social-list-button>
       </li>
     </ul>
     <social-list-editor
@@ -108,3 +114,13 @@ export default {
   })
 };
 </script>
+<style scoped>
+.social__list >>> .v-skeleton-loader {
+  display: inline-block;
+}
+.social__list >>> .v-skeleton-loader__avatar {
+  background-color: var(--separator-color);
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+</style>

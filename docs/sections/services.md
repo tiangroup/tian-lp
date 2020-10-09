@@ -1,7 +1,5 @@
 # Товары и услуги [](https://proofs.app.tian-lp.ru/services/)
 
-В ПРОЦЕССЕ
-
 ::: tip Папка блока
 `/components/sections/services`
 :::
@@ -26,3 +24,5 @@
 | price       | цена            |
 
 ## Форма заказа
+
+Находица в общем компоненте services.vue, вызываеца через \$emit дочернего компонента (обрабатываем событие call-order-dialog)

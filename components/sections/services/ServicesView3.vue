@@ -15,14 +15,14 @@
             <div class="tbps__labels">
               <div
                 class="tbps__label"
-                v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
+                v-for="(item, itemIndex) in section.items.filter(i => i.id)"
                 :key="'nav-' + item.id"
               >
                 <a
                   :href="'#' + item.id"
                   class="tbps__label__link"
                   :class="{
-                    'tbps__label__link--active': isActiveItem(itemIndex),
+                    'tbps__label__link--active': isActiveItem(itemIndex)
                   }"
                   @click.prevent="changeActiveItem(itemIndex)"
                   >{{ item.title || "Новая услуга" }}</a
@@ -53,13 +53,13 @@
             :key="slickKey"
           >
             <div
-              v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
+              v-for="(item, itemIndex) in section.items.filter(i => i.id)"
               :key="item.id"
               :id="item.id"
               class="tbps__panel h-100"
               :class="{
                 'position-relative': isEdit,
-                'tbps__panel--active': isActiveItem(itemIndex),
+                'tbps__panel--active': isActiveItem(itemIndex)
               }"
               @click="gotoClickedSlide(itemIndex)"
             >
@@ -130,7 +130,7 @@
                         <div class="services__action">
                           <button
                             class="button button-primary"
-                            @click="showOrderDialog(item)"
+                            @click="$emit('call-order-dialog', item)"
                           >
                             Заказать
                           </button>
@@ -184,11 +184,11 @@
           <template slot="placeholder">
             <div class="display-flex align-items-stretch">
               <div
-                v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
+                v-for="(item, itemIndex) in section.items.filter(i => i.id)"
                 :key="item.id"
                 class="tbps__panel"
                 :class="{
-                  'tbps__panel--active': isActiveItem(itemIndex),
+                  'tbps__panel--active': isActiveItem(itemIndex)
                 }"
               >
                 <div class="services__item h-100">
@@ -235,30 +235,6 @@
         </client-only>
       </div>
     </div>
-    <form-dialog
-      :section="section"
-      field="form_order"
-      v-model="dialogOrderService"
-    >
-      <div class="good-summary">
-        <div class="good-summary__row">
-          <div class="good-summary__image" v-if="currentItem.img">
-            <img :src="$images.src(currentItem.img)" />
-          </div>
-          <div class="good-summary__body">
-            <div class="good-summary__title">{{ currentItem.title }}</div>
-            <div class="good-summary__price">{{ currentItem.price }}</div>
-          </div>
-        </div>
-        <div class="good-summary__status">
-          <svg viewBox="0 0 24 24" height="23" width="23" fill="currentColor">
-            <path
-              d="M21 11.080v0.92c-0.001 2.485-1.009 4.733-2.64 6.362s-3.88 2.634-6.365 2.632-4.734-1.009-6.362-2.64-2.634-3.879-2.633-6.365 1.009-4.733 2.64-6.362 3.88-2.634 6.365-2.633c1.33 0.001 2.586 0.289 3.649 0.775 0.502 0.23 1.096 0.008 1.325-0.494s0.008-1.096-0.494-1.325c-1.327-0.606-2.866-0.955-4.479-0.956-3.037-0.002-5.789 1.229-7.78 3.217s-3.224 4.74-3.226 7.777 1.229 5.789 3.217 7.78 4.739 3.225 7.776 3.226 5.789-1.229 7.78-3.217 3.225-4.739 3.227-7.777v-0.92c0-0.552-0.448-1-1-1s-1 0.448-1 1zM21.293 3.293l-9.293 9.302-2.293-2.292c-0.391-0.391-1.024-0.391-1.414 0s-0.391 1.024 0 1.414l3 3c0.391 0.391 1.024 0.39 1.415 0l10-10.010c0.39-0.391 0.39-1.024-0.001-1.414s-1.024-0.39-1.414 0.001z"
-            />
-          </svg>
-        </div>
-      </div>
-    </form-dialog>
   </div>
 </template>
 
@@ -269,8 +245,8 @@ export default {
     isEdit: Boolean,
     view: {
       type: String,
-      default: "view2",
-    },
+      default: "view2"
+    }
   },
   components: {},
   data() {
@@ -288,8 +264,8 @@ export default {
         prevArrow:
           '<button type="button" class="slick-arrow slick-prev"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 1L2 13.9706L15.966 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
         nextArrow:
-          '<button type="button" class="slick-arrow slick-next"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L15 13.9706L1.03398 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
-      },
+          '<button type="button" class="slick-arrow slick-next"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L15 13.9706L1.03398 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>'
+      }
     };
   },
   computed: {
@@ -301,7 +277,7 @@ export default {
     },
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     slickRef() {
@@ -324,7 +300,7 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)");
-    },
+    }
   },
   methods: {
     changeActiveItem(index) {
@@ -342,21 +318,16 @@ export default {
       this.dialogOrderService = true;
     },
     handleInit(event, slick) {
-      if (this.currentSlide) {
-        slick.goTo(this.currentSlide, true);
+      if (this.itemToShow) {
+        slick.goTo(this.itemToShow, true);
       }
     },
     gotoClickedSlide(itemIndex) {
       if (!this.isActiveItem(itemIndex)) {
         this.changeActiveItem(itemIndex);
       }
-    },
-  },
-  beforeUpdate: function () {
-    if (this.$refs[this.slickRef]) {
-      this.currentSlide = this.$refs[this.slickRef].currentSlide;
     }
-  },
+  }
 };
 </script>
 <style scoped>
