@@ -60,7 +60,6 @@ export default {
   },
   methods: {
     ...mapActions({
-      reloadSite: "sites/reloadSite",
       saveSite: "sites/saveSite"
     }),
     ...mapMutations({

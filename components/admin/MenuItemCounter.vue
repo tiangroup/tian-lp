@@ -11,7 +11,7 @@
         </v-card-title>
 
         <v-card-text>
-          <v-textarea outlined v-model="content"></v-textarea>
+          <v-textarea outlined v-model="counter"></v-textarea>
         </v-card-text>
 
         <v-card-actions>
@@ -19,7 +19,13 @@
           <v-btn color="blue darken-1" text @click="cancel">
             Отмена
           </v-btn>
-          <v-btn color="blue darken-1" text @click="save">
+          <v-btn
+            color="blue darken-1"
+            text
+            :disabled="!isSave"
+            :loading="process"
+            @click="save"
+          >
             Сохранить
           </v-btn>
         </v-card-actions>
@@ -29,40 +35,49 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   data: () => ({
     dialog: false,
-    content: ""
+    process: false,
+    content: undefined
   }),
   computed: {
     ...mapGetters({
       site: "sites/site"
-    })
+    }),
+    counter: {
+      get() {
+        return this.content == undefined ? this.site.counter : this.content;
+      },
+      set(value) {
+        this.content = value === this.site.counter ? undefined : value;
+      }
+    },
+    isSave() {
+      return this.content != undefined;
+    }
   },
   methods: {
     ...mapActions({
-      reloadSite: "sites/reloadSite"
+      saveSite: "sites/saveSite"
+    }),
+    ...mapMutations({
+      setUpdates: "sites/SET_UPDATES",
+      setCounter: "sites/SET_COUNTER"
     }),
     async save() {
-      // this.$overlay(true);
-      // try {
-      //   this.dialog = false;
-      //   await this.$axios.$post(`${this.$site_app}/api/robots`, {
-      //     content: this.content
-      //   });
-      //   await this.$axios.$put(`${this.$site_app}/api/sites/updates`, {
-      //     site_id: this.site.id
-      //   });
-      //   this.reloadSite();
-      //   this.$overlay(false);
-      // } catch (error) {
-      //   this.$overlay(false);
-      //   this.$error(error);
-      // }
+      this.process = true;
+      this.setCounter(this.content);
+      this.setUpdates();
+      await this.saveSite();
+      this.process = false;
+      this.dialog = false;
+      this.content = undefined;
     },
     cancel() {
       this.dialog = false;
+      this.content = undefined;
     },
     async openForm() {
       this.dialog = true;

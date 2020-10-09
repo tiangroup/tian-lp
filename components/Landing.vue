@@ -23,6 +23,8 @@
       <dialog-confirm v-if="isEdit" />
 
       <dialog-error />
+
+      <div v-if="counter" v-html="counter"></div>
     </div>
   </div>
 </template>
@@ -40,10 +42,16 @@ export default {
       isApp: "isApp",
       isEdit: "isEdit",
       dialogImageUpload: "dialogImageUpload",
-      dialogImageSvg: "dialogImageSvg"
+      dialogImageSvg: "dialogImageSvg",
+      site: "sites/site"
     }),
     isLogin() {
       return this.isApp && !this.$auth.loggedIn;
+    },
+    counter() {
+      return !this.isEdit && this.site && this.site.counter
+        ? this.site.counter
+        : null;
     }
   },
   methods: {

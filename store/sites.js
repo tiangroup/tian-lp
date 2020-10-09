@@ -11,6 +11,9 @@ export const mutations = {
   },
   SET_ROBOTS(state, content) {
     state.site.robots = content;
+  },
+  SET_COUNTER(state, content) {
+    state.site.counter = content;
   }
 };
 
