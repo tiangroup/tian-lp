@@ -23,7 +23,7 @@
             v-if="!isEdit && section.items && view === 'view2'"
             :id="'gallery' + section.id"
             :options="{
-              closeOnSlideClick: true,
+              closeOnSlideClick: true
             }"
           ></v-gallery>
         </client-only>
@@ -41,17 +41,17 @@
                 :key="slickKey"
               >
                 <reviews-item
-                  v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
+                  v-for="(item, itemIndex) in section.items.filter(i => i.id)"
                   @change-desc="
                     updateReviewDesc({
                       id: item.id,
-                      text: item.text,
+                      text: item.text
                     })
                   "
                   @change-date="
                     updateReviewDate({
                       id: item.id,
-                      date: item.date,
+                      date: item.date
                     })
                   "
                   @show-review="showReview(item)"
@@ -74,18 +74,10 @@
                       <div class="reviews__image no-image"></div>
                     </div>
                     <div class="reviews__body">
-                      <div class="reviews__text">
-                        <v-skeleton-loader
-                          boilerplate
-                          type="article"
-                        ></v-skeleton-loader>
-                      </div>
-                      <div class="reviews__info">
-                        <v-skeleton-loader
-                          boilerplate
-                          type="actions"
-                        ></v-skeleton-loader>
-                      </div>
+                      <v-skeleton-loader
+                        boilerplate
+                        type="article"
+                      ></v-skeleton-loader>
                     </div>
                   </div>
                 </div>
@@ -95,7 +87,7 @@
                   <reviews-item
                     class="cell-12"
                     :class="{ 'cell-lg-6': view === 'view1' }"
-                    v-for="item in section.items.filter((i) => i.id)"
+                    v-for="item in section.items.filter(i => i.id)"
                     :key="item.id"
                     :item="item"
                     :sectionId="section.id"
@@ -211,14 +203,14 @@
 import { mapMutations, mapGetters } from "vuex";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   data: () => ({
     currentReview: {
       id: null,
       name: "",
       position: "",
-      date: "",
+      date: ""
     },
     dialogShowReview: false,
     dialogReviewDate: false,
@@ -230,8 +222,6 @@ export default {
       dots: true,
       slidesToShow: 1,
       slidesToScroll: 1,
-      centerMode: false,
-      centerPadding: 0,
       draggable: false,
       infinite: false,
       prevArrow:
@@ -242,45 +232,33 @@ export default {
         {
           breakpoint: 1280,
           settings: {
-            arrows: false,
-            centerMode: false,
-            centerPadding: 0,
-          },
+            arrows: false
+          }
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false,
-            centerMode: false,
-            centerPadding: 0,
-          },
-        },
-      ],
-    },
+            arrows: false
+          }
+        }
+      ]
+    }
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      isEdit: "isEdit"
     }),
     view() {
       return this.section.settings.view;
     },
     updatedSlickOptions() {
       const slidesQty = this.view === "view1" ? 2 : 1;
-      var slickCenterMode = false;
-      var slickCenterPadding = 0;
-      if (this.view === "view2") {
-        slickCenterMode = true;
-        slickCenterPadding = "18.333%";
-      }
       return Object.assign(this.slickOptions, {
         slidesToShow: slidesQty,
-        centerMode: slickCenterMode,
-        centerPadding: slickCenterPadding,
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     reviewImages() {
@@ -290,7 +268,7 @@ export default {
         var imagesItem = {
           title: "Отзыв " + pic.name,
           href: this.$images.src(pic.img),
-          type: "image/jpeg",
+          type: "image/jpeg"
         };
         imagesArray.push(imagesItem);
       }
@@ -305,7 +283,7 @@ export default {
       return "slick" + this.section.id;
     },
     slickKey() {
-      let key = "" + this.isEdit;
+      let key = "" + this.isEdit + this.view;
       if (this.itemsCount) {
         for (var i = 0; i < this.itemsCount; i++) {
           key += this.section.items[i].id;
@@ -321,11 +299,11 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)").length;
-    },
+    }
   },
   methods: {
     ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD",
+      setItemField: "pages/SET_ITEM_FIELD"
     }),
     updateReviewDate(item) {
       if (this.isEdit) {
@@ -355,7 +333,7 @@ export default {
         itemId: this.currentReview.id,
         items: "items",
         field: field,
-        value: value,
+        value: value
       });
       this.$store.dispatch("pages/savePage");
     },
@@ -405,14 +383,14 @@ export default {
             .click();
         }
       }
-    },
+    }
   },
-  beforeUpdate: function () {
+  beforeUpdate: function() {
     if (this.$refs[this.slickRef]) {
       this.currentSlide = this.$refs[this.slickRef].currentSlide;
     }
   },
-  beforeDestroy: function () {
+  beforeDestroy: function() {
     if (this.$refs[this.slickRef]) {
       if (document.getElementById(this.section.id) && !this.isEdit) {
         document
@@ -420,6 +398,12 @@ export default {
           .removeEventListener("click", this.handleClonedSlides);
       }
     }
-  },
+  }
 };
 </script>
+<style scoped>
+.reviews >>> .v-skeleton-loader__heading,
+.reviews >>> .v-skeleton-loader__text {
+  background-color: var(--separator-color);
+}
+</style>

@@ -33,7 +33,7 @@
               :options="{
                 youTubeVideoIdProperty: 'youtube',
                 youTubePlayerVars: undefined,
-                youTubeClickToPlay: false,
+                youTubeClickToPlay: false
               }"
               @close="index = null"
               :id="'gallery' + section.id"
@@ -49,7 +49,7 @@
                 :key="slickKey"
               >
                 <video-item
-                  v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
+                  v-for="(item, itemIndex) in section.items.filter(i => i.id)"
                   :key="item.id"
                   :item="item"
                   :sectionId="section.id"
@@ -60,7 +60,7 @@
                       sectionId: section.id,
                       itemId: item.id,
                       field: 'link',
-                      value: item.link,
+                      value: item.link
                     })
                   "
                 ></video-item>
@@ -68,31 +68,21 @@
                   class="video__item-wrap cell"
                   v-if="isEdit && (!section.items || !section.items.length)"
                 >
-                  <v-card
-                    class="d-flex flex-column"
-                    dark
-                    flat
-                    rounded="0"
-                    width="100%"
-                    height="100%"
-                  >
-                    <div class="item__add-button">
-                      <buttons-item-add :sectionId="section.id" />
-                    </div>
-                    <v-spacer></v-spacer>
+                  <div class="video__container no-image"></div>
+                  <div class="video__title">
                     <v-skeleton-loader
                       boilerplate
-                      type="list-item-two-line"
+                      type="sentences"
                       width="100%"
                     ></v-skeleton-loader>
-                  </v-card>
+                  </div>
                 </div>
               </slick>
               <template slot="placeholder">
                 <div class="cells fx-nw overflow-hidden">
                   <video-item
                     class="cell-12 cell-sm-6"
-                    v-for="item in section.items.filter((i) => i.id)"
+                    v-for="item in section.items.filter(i => i.id)"
                     :key="item.id"
                     :item="item"
                     :sectionId="section.id"
@@ -148,10 +138,10 @@ import { mapMutations, mapGetters } from "vuex";
 import VideoItem from "./VideoItem";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   components: {
-    VideoItem,
+    VideoItem
   },
   data: () => ({
     currentSlide: 0,
@@ -174,30 +164,30 @@ export default {
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false,
-          },
+            arrows: false
+          }
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false,
-          },
-        },
-      ],
+            arrows: false
+          }
+        }
+      ]
     },
     videoUrlDialog: false,
-    userUrl: "",
+    userUrl: ""
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      isEdit: "isEdit"
     }),
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     videos() {
@@ -208,7 +198,7 @@ export default {
           title: vid.title,
           href: vid.link,
           type: "text/html",
-          youtube: this.videoId(vid.link),
+          youtube: this.videoId(vid.link)
         };
         videosArray.push(videoItem);
       }
@@ -234,11 +224,11 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)").length;
-    },
+    }
   },
   methods: {
     ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD",
+      setItemField: "pages/SET_ITEM_FIELD"
     }),
     itemVideoInput(payload) {
       this.currentVideo = payload;
@@ -251,7 +241,7 @@ export default {
         itemId: this.currentVideo.itemId,
         items: "items",
         field: this.currentVideo.field,
-        value: userUrl,
+        value: userUrl
       });
       this.$store.dispatch("pages/savePage");
       this.videoUrlDialog = false;
@@ -291,14 +281,14 @@ export default {
         }
         this.showGallery(slideId);
       }
-    },
+    }
   },
-  beforeUpdate: function () {
+  beforeUpdate: function() {
     if (this.$refs[this.slickRef]) {
       this.currentSlide = this.$refs[this.slickRef].currentSlide;
     }
   },
-  beforeDestroy: function () {
+  beforeDestroy: function() {
     if (this.$refs[this.slickRef]) {
       if (document.getElementById(this.section.id)) {
         document
@@ -306,6 +296,11 @@ export default {
           .removeEventListener("click", this.showGalleryOnClones);
       }
     }
-  },
+  }
 };
 </script>
+<style scoped>
+.video >>> .v-skeleton-loader__text {
+  background-color: var(--bg-color);
+}
+</style>

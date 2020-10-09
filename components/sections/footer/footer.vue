@@ -1,5 +1,11 @@
 <template>
-  <footer :class="{ 'position-relative': isEdit }" :id="section.id">
+  <footer
+    :class="{
+      'position-relative': isEdit,
+      mDark: section.settings.background === 'dark'
+    }"
+    :id="section.id"
+  >
     <buttons-section v-if="isEdit" :section="section"></buttons-section>
     <div
       class="footer bg-secondary"
@@ -16,7 +22,10 @@
         </div>
       </v-fab-transition>
       <div class="landing__container">
-        <div class="cells justify-content-between" v-if="view === 'view2'">
+        <div
+          class="cells justify-content-between align-items-center"
+          v-if="view === 'view2'"
+        >
           <div class="cell cell-auto footer__contacts-wrap">
             <div class="footer__contacts">
               <div

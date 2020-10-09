@@ -23,10 +23,13 @@
               type="paragraph@2"
             ></v-skeleton-loader>
           </div>
-          <div v-else>
+          <div
+            v-for="item in section.items.filter(isMainOffice)"
+            :key="item.id"
+          >
             <div
               class="addresses contacts__addresses connect__item"
-              v-if="section.items[0].address || isEdit"
+              v-if="item.address || isEdit"
             >
               <div class="connect__row">
                 <div class="connect__icon">
@@ -52,21 +55,21 @@
                   <div class="connect__instance">
                     <editor
                       data-placeholder="Введите адрес"
-                      :text="section.items[0].address || ''"
+                      :text="item.address || ''"
                       :sectionId="section.id"
                       field="address"
-                      :itemId="section.items[0].id"
+                      :itemId="item.id"
                       v-if="isEdit"
                     />
-                    <span v-else>{{ section.items[0].address }}</span>
+                    <span v-else>{{ item.address }}</span>
                   </div>
                   <div class="connect__instance" v-if="isEdit">
                     <editor
                       data-placeholder="55.159897, 61.402554"
-                      :text="section.items[0].coords || ''"
+                      :text="item.coords || ''"
                       :sectionId="section.id"
                       field="coords"
-                      :itemId="section.items[0].id"
+                      :itemId="item.id"
                     />
                   </div>
                 </div>
@@ -74,7 +77,7 @@
             </div>
             <div
               class="emails contacts__emails connect__item"
-              v-if="section.items[0].email || isEdit"
+              v-if="item.email || isEdit"
             >
               <div class="connect__row">
                 <div class="connect__icon">
@@ -101,14 +104,14 @@
                   <div class="connect__instance">
                     <editor
                       data-placeholder="Введите email"
-                      :text="section.items[0].email || ''"
+                      :text="item.email || ''"
                       :sectionId="section.id"
                       field="email"
-                      :itemId="section.items[0].id"
+                      :itemId="item.id"
                       editContent="html"
                       v-if="isEdit"
                     />
-                    <div v-else v-html="section.items[0].email"></div>
+                    <div v-else v-html="item.email"></div>
                   </div>
                 </div>
               </div>
@@ -138,13 +141,13 @@
                   <div class="connect__instance">
                     <editor
                       data-placeholder="+7 900 111-22-33"
-                      :text="section.items[0].phone || ''"
+                      :text="item.phone || ''"
                       :sectionId="section.id"
                       field="phone"
-                      :itemId="section.items[0].id"
+                      :itemId="item.id"
                       v-if="isEdit"
                     />
-                    <span v-else v-html="section.items[0].phone"></span>
+                    <span v-else v-html="item.phone"></span>
                   </div>
                 </div>
               </div>
@@ -188,6 +191,11 @@ export default {
         mainOffice.push(this.section.items[0]);
       }
       return mainOffice;
+    },
+    isMainOffice(item, itemIndex) {
+      if (item.id && itemIndex === 0) {
+        return true;
+      }
     }
   }
 };

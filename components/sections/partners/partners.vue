@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'position-relative': isEdit}" :id="section.id">
+  <div :class="{ 'position-relative': isEdit }" :id="section.id">
     <buttons-section v-if="isEdit" :section="section" />
     <div
       class="partners custom-v-spacing bg-primary"
@@ -7,7 +7,11 @@
     >
       <div class="landing__container">
         <h2 v-if="isEdit">
-          <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+          <editor
+            :text="section.title || ''"
+            :sectionId="section.id"
+            field="title"
+          />
         </h2>
         <h2 v-else>{{ section.title }}</h2>
         <div
@@ -22,12 +26,14 @@
             :sectionId="section.id"
             :isEdit="isEdit"
             @item-update="onItemsChange"
-            @change-link="updatePartnerLink({
-              itemId: item.id,
-              sectionId: section.id,
-              field: 'link',
-              value:item.link
-            })"
+            @change-link="
+              updatePartnerLink({
+                itemId: item.id,
+                sectionId: section.id,
+                field: 'link',
+                value: item.link
+              })
+            "
           ></partners-item>
           <div
             class="partners__item-wrap cell cell-6 cell-sm-4 cell-md-3 cell-xl-2"
@@ -39,13 +45,16 @@
               </div>
               <div class="partners__image no-image"></div>
               <div class="partners__text">
-                <v-skeleton-loader boilerplate type="text"></v-skeleton-loader>
+                <v-skeleton-loader
+                  boilerplate
+                  type="sentences"
+                ></v-skeleton-loader>
               </div>
             </div>
           </div>
         </div>
         <div class="partners__list mx-ncell" v-if="view === 'slider'">
-          <np-ssr>
+          <client-only>
             <slick
               :ref="slickRef"
               :options="updatedSlickOptions"
@@ -58,15 +67,17 @@
                 :item="item"
                 :sectionId="section.id"
                 :isEdit="isEdit"
-                @change-link="updatePartnerLink({
-              itemId: item.id,
-              sectionId: section.id,
-              field: 'link',
-              value:item.link
-            })"
+                @change-link="
+                  updatePartnerLink({
+                    itemId: item.id,
+                    sectionId: section.id,
+                    field: 'link',
+                    value: item.link
+                  })
+                "
               ></partners-item>
               <div
-                class="partners__item-wrap cell cell-6 cell-sm-4 cell-md-3 cell-xl-2"
+                class="partners__item-wrap cell"
                 v-if="isEdit && (!section.items || !section.items.length)"
               >
                 <div class="partners__item">
@@ -75,7 +86,10 @@
                   </div>
                   <div class="partners__image no-image"></div>
                   <div class="partners__text">
-                    <v-skeleton-loader boilerplate type="text"></v-skeleton-loader>
+                    <v-skeleton-loader
+                      boilerplate
+                      type="sentences"
+                    ></v-skeleton-loader>
                   </div>
                 </div>
               </div>
@@ -93,7 +107,7 @@
                 ></partners-item>
               </div>
             </template>
-          </np-ssr>
+          </client-only>
         </div>
 
         <v-dialog v-model="partnerLinkDialog" max-width="33rem" v-if="isEdit">
@@ -106,12 +120,28 @@
               </v-btn>
             </v-card-title>
             <v-card-text>
-              <v-text-field label="Ссылка" outlined v-model="userUrl"></v-text-field>
+              <v-text-field
+                label="Ссылка"
+                outlined
+                v-model="userUrl"
+              ></v-text-field>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn depressed color="gray" text @click="partnerLinkDialog = false">Отменить</v-btn>
-              <v-btn depressed color="green" dark @click="setPartnerField(userUrl)">Сохранить</v-btn>
+              <v-btn
+                depressed
+                color="gray"
+                text
+                @click="partnerLinkDialog = false"
+                >Отменить</v-btn
+              >
+              <v-btn
+                depressed
+                color="green"
+                dark
+                @click="setPartnerField(userUrl)"
+                >Сохранить</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -125,10 +155,10 @@ import { mapMutations, mapGetters } from "vuex";
 import PartnersItem from "./PartnersItem";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   components: {
-    PartnersItem,
+    PartnersItem
   },
   data: () => ({
     currentItem: {},
@@ -149,30 +179,30 @@ export default {
           settings: {
             slidesToShow: 4,
             slidesToScroll: 1,
-            arrows: false,
-          },
+            arrows: false
+          }
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false,
-          },
-        },
-      ],
+            arrows: false
+          }
+        }
+      ]
     },
     partnerLinkDialog: false,
-    userUrl: "",
+    userUrl: ""
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      isEdit: "isEdit"
     }),
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     view() {
@@ -198,11 +228,11 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)").length;
-    },
+    }
   },
   methods: {
     ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD",
+      setItemField: "pages/SET_ITEM_FIELD"
     }),
     updatePartnerLink(payload) {
       this.currentItem = payload;
@@ -215,7 +245,7 @@ export default {
         itemId: this.currentItem.itemId,
         items: "items",
         field: this.currentItem.field,
-        value: value,
+        value: value
       });
       this.$store.dispatch("pages/savePage");
       this.partnerLinkDialog = false;
@@ -224,12 +254,17 @@ export default {
       if (this.currentSlide) {
         slick.goTo(this.currentSlide, true);
       }
-    },
+    }
   },
-  beforeUpdate: function () {
+  beforeUpdate: function() {
     if (this.$refs[this.slickRef]) {
       this.currentSlide = this.$refs[this.slickRef].currentSlide;
     }
-  },
+  }
 };
 </script>
+<style scoped>
+.partners >>> .v-skeleton-loader__text {
+  background-color: var(--separator-color);
+}
+</style>
