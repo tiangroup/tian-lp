@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import _ from "lodash";
 export default {
   props: {
@@ -56,7 +57,7 @@ export default {
         ...item,
         show: true
       }));
-      setTimeout(this.onResize, 50);
+      setTimeout(this.onResize, 100);
     }, 300),
     onResize() {
       if (this.$refs.menu) {
@@ -76,13 +77,31 @@ export default {
     this.handleResize();
   },
   computed: {
+    ...mapGetters({
+      page: "pages/page"
+    }),
     itemsHide() {
       return this.items.filter(item => !item.show);
+    },
+    _menu() {
+      if (this.menu && this.menu.length > 0) {
+        return this.menu;
+      } else {
+        const menu = this.page.sections
+          .filter(s => s.show && s.title)
+          .map(s => ({
+            id: s.id,
+            title: s.title || "Пункт",
+            type: "anchor",
+            link: s.slug ? `#${s.slug}` : `#${s.id}`
+          }));
+        return menu;
+      }
     },
     menuItems: {
       get: function() {
         let _this = this;
-        const items = this.menu.map(i => ({
+        const items = this._menu.map(i => ({
           id: i.id,
           title: i.title,
           type: i.type,

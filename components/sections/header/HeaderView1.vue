@@ -122,7 +122,12 @@
           </div>
         </div>
         <div class="header__action">
-          <a href="#" class="button button-secondary">Заказать звонок</a>
+          <form-popup
+            :section="section"
+            field="form"
+            buttonClass="button-secondary"
+            popupClass="popup-callback"
+          />
         </div>
         <div class="header__menu__toggle">
           <a
