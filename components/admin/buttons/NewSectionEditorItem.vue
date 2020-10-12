@@ -20,6 +20,9 @@
         <span>Добавить на страницу</span>
       </v-tooltip>
     </v-card-title>
+    <v-card-text>
+      <img v-if="section.preview" :src="`${$site_api}${section.preview.url}`" />
+    </v-card-text>
   </v-card>
 </template>
 
