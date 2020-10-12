@@ -19,13 +19,12 @@
           v-if="section.items && section.settings.view === 'list'"
         >
           <partners-item
-            class="cell-6 cell-sm-4 cell-md-3 cell-xl-2"
+            :class="computedItemClass"
             v-for="item in section.items.filter(i => i.id)"
             :key="item.id"
             :item="item"
             :sectionId="section.id"
             :isEdit="isEdit"
-            @item-update="onItemsChange"
             @change-link="
               updatePartnerLink({
                 itemId: item.id,
@@ -36,7 +35,8 @@
             "
           ></partners-item>
           <div
-            class="partners__item-wrap cell cell-6 cell-sm-4 cell-md-3 cell-xl-2"
+            class="partners__item-wrap cell"
+            :class="computedItemClass"
             v-if="isEdit && (!section.items || !section.items.length)"
           >
             <div class="partners__item">
@@ -200,7 +200,9 @@ export default {
       isEdit: "isEdit"
     }),
     updatedSlickOptions() {
+      let slickSlidesToShow = this.isEdit ? 4 : 6;
       return Object.assign(this.slickOptions, {
+        slidesToShow: slickSlidesToShow,
         infinite: !this.isEdit,
         draggable: !this.isEdit
       });
@@ -228,6 +230,12 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)").length;
+    },
+    computedItemClass() {
+      let classes = this.isEdit
+        ? "cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
+        : "cell-6 cell-sm-4 cell-md-3 cell-xl-2";
+      return classes;
     }
   },
   methods: {

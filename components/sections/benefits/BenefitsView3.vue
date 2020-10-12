@@ -24,13 +24,13 @@
       <div class="benefits__intro" v-else v-html="section.description"></div>
 
       <div class="benefits__list cells benefits__list--style3">
-        <div
-          class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
-          v-for="item in items1.filter(i => i.id)"
-          :key="item.id"
-          :style="styleDiv"
-        >
-          <div class="benefits__item benefits__item--lg-right">
+        <div class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3">
+          <div
+            class="benefits__item benefits__item--lg-right"
+            v-for="item in items1.filter(i => i.id)"
+            :key="item.id"
+            :style="styleDiv"
+          >
             <buttons-item
               v-if="isEdit"
               :itemId="item.id"
@@ -89,13 +89,13 @@
             :sectionId="section.id"
           />
         </div>
-        <div
-          class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
-          v-for="item in items2.filter(i => i.id)"
-          :key="item.id"
-          :style="styleDiv"
-        >
-          <div class="benefits__item">
+        <div class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3">
+          <div
+            class="benefits__item"
+            v-for="item in items2.filter(i => i.id)"
+            :key="item.id"
+            :style="styleDiv"
+          >
             <buttons-item
               v-if="isEdit"
               :itemId="item.id"
