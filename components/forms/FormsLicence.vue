@@ -13,7 +13,15 @@
 
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-bind="attrs" v-on="on" v-show="isChange">
+              <v-btn
+                icon
+                v-bind="attrs"
+                v-on="on"
+                v-show="isChange"
+                v-if="isEdit"
+                @click="save"
+                :loading="processSave"
+              >
                 <v-icon>mdi-content-save</v-icon>
               </v-btn>
             </template>
@@ -25,7 +33,10 @@
           </v-btn>
         </v-card-title>
         <v-card-text>
-          <editor-ext v-model="editText" editContent="html" />
+          <div v-if="isEdit">
+            <editor-ext v-model="editText" editContent="html" />
+          </div>
+          <div v-else v-html="editText"></div>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -33,13 +44,15 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   data: () => ({
-    text: undefined
+    text: undefined,
+    processSave: false
   }),
   computed: {
     ...mapGetters({
+      isEdit: "isEdit",
       show: "forms/licence",
       site: "sites/site"
     }),
@@ -51,8 +64,6 @@ export default {
         return this.site.licence || "";
       },
       set(value) {
-        //console.log(value);
-        //this.setLicence(value);
         this.text = value;
       }
     }
@@ -60,7 +71,17 @@ export default {
   methods: {
     ...mapMutations({
       setLicence: "sites/SET_LICENCE"
-    })
+    }),
+    ...mapActions({
+      saveSite: "sites/saveSite"
+    }),
+    async save() {
+      this.processSave = true;
+      this.setLicence(this.text);
+      await this.saveSite();
+      this.text = undefined;
+      this.processSave = false;
+    }
   }
 };
 </script>

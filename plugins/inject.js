@@ -5,17 +5,21 @@ export default (context, inject) => {
   const app_backend = $env.APP_BACKEND || "https://app.tian-lp.ru";
 
   inject("site_img", (img, imageStyle) => {
-    let root = "/";
-    if (store.getters["isEdit"]) {
-      root = app_backend + "/";
+    if (img.indexOf("http") === 0) {
+      return img;
+    } else {
+      let root = "/";
+      if (store.getters["isEdit"]) {
+        root = app_backend + "/";
+      }
+      return (
+        root +
+        "uploads/" +
+        store.getters["sites/name"] +
+        img +
+        (imageStyle ? `?style=${imageStyle}` : "")
+      );
     }
-    return (
-      root +
-      "uploads/" +
-      store.getters["sites/name"] +
-      img +
-      (imageStyle ? `?style=${imageStyle}` : "")
-    );
   });
 
   inject("site_api", api_backend);
@@ -36,17 +40,21 @@ export default (context, inject) => {
 
   inject("images", {
     src: (img, imageStyle) => {
-      let root = "/";
-      if (store.getters["isEdit"]) {
-        root = app_backend + "/";
+      if (img.indexOf("http") === 0) {
+        return img;
+      } else {
+        let root = "/";
+        if (store.getters["isEdit"]) {
+          root = app_backend + "/";
+        }
+        return (
+          root +
+          "uploads/" +
+          store.getters["sites/name"] +
+          img +
+          (imageStyle ? `?style=${imageStyle}` : "")
+        );
       }
-      return (
-        root +
-        "uploads/" +
-        store.getters["sites/name"] +
-        img +
-        (imageStyle ? `?style=${imageStyle}` : "")
-      );
     },
     upload: imageUpload => {
       store.dispatch("showImageUpload", imageUpload);

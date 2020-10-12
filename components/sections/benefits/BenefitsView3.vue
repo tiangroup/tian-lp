@@ -12,6 +12,7 @@
         />
       </h2>
       <h2 v-else>{{ section.title }}</h2>
+
       <div class="benefits__intro" v-if="isEdit">
         <editor
           :text="section.description || ''"
@@ -21,6 +22,7 @@
         />
       </div>
       <div class="benefits__intro" v-else v-html="section.description"></div>
+
       <div class="benefits__list cells benefits__list--style3">
         <div
           class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
@@ -74,17 +76,6 @@
                 {{ item.description }}
               </div>
             </div>
-          </div>
-        </div>
-        <div
-          class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
-          v-if="isEdit && (!section.items || !section.items.length)"
-        >
-          <div class="item__add-button">
-            <buttons-item-add :sectionId="section.id" />
-          </div>
-          <div class="benefits__body">
-            <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
           </div>
         </div>
         <div
@@ -150,14 +141,6 @@
                 {{ item.description }}
               </div>
             </div>
-          </div>
-        </div>
-        <div
-          class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
-          v-if="isEdit && (!section.items || !section.items.length)"
-        >
-          <div class="benefits__body">
-            <v-skeleton-loader boilerplate type="article"></v-skeleton-loader>
           </div>
         </div>
       </div>
