@@ -69,6 +69,22 @@ export default {
       {
         name: "Instagram",
         value: "instagram"
+      },
+      {
+        name: "Viber",
+        value: "viber"
+      },
+      {
+        name: "Whatsapp",
+        value: "whatsapp"
+      },
+      {
+        name: "Skype",
+        value: "skype"
+      },
+      {
+        name: "Telegram",
+        value: "tg"
       }
     ]
   }),
