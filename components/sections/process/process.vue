@@ -26,6 +26,7 @@
               :itemId="item.id"
               :sectionId="section.id"
             />
+
             <image-item
               divClass="process__image"
               :svg="item.svg"

@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
   props: {
     section: Object,
@@ -36,12 +36,20 @@ export default {
       default: null
     }
   },
+  computed: {
+    ...mapGetters({
+      site: "sites/site",
+      page: "pages/page"
+    })
+  },
   methods: {
     ...mapMutations({
       addSection: "pages/ADD_SECTION"
     }),
     ...mapActions({
-      savePage: "pages/savePage"
+      savePage: "pages/savePage",
+      addForm: "forms/addForm",
+      loadForm: "forms/loadForm"
     }),
     async add() {
       this.addSection({
@@ -51,6 +59,33 @@ export default {
       this.$emit("onAdd");
       this.$overlay(true);
       await this.savePage();
+      // создание форм
+      if (this.section.forms) {
+        let section;
+        if (this.sectionId) {
+          const top_section = this.page.sections.find(
+            s => s.id === this.sectionId
+          );
+          const index = this.page.sections.indexOf(top_section);
+          if (index > -1) {
+            section = this.page.sections[index + 1];
+          }
+        } else {
+          section = this.page.sections[0];
+        }
+        if (section) {
+          for (let form of this.section.forms) {
+            await this.addForm({
+              template: form.template,
+              siteId: this.site.id,
+              sectionId: section.id,
+              field: form.name
+            });
+            await this.loadForm(section[form.name]);
+            await this.savePage();
+          }
+        }
+      }
       this.$overlay(false);
     }
   }

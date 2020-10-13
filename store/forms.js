@@ -199,7 +199,6 @@ export const actions = {
       };
       const form = await this.$axios.$post(`${this.$site_api}/forms`, {
         ...template,
-        //mail: {},
         admin: this.$auth.user.id,
         section: payload.sectionId,
         site: payload.siteId

@@ -65,10 +65,14 @@ export default {
         const menu_items = this.$refs.menu_items;
         this.menuItems = this.items.map((item, index) => ({
           ...item,
-          show: !(
-            menu_items[index].offsetLeft + menu_items[index].clientWidth + 15 >
-            menuWidth
-          )
+          show:
+            menu_items[index] &&
+            !(
+              menu_items[index].offsetLeft +
+                menu_items[index].clientWidth +
+                15 >
+              menuWidth
+            )
         }));
       }
     }

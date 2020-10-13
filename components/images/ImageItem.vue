@@ -15,10 +15,10 @@
 
 <script>
 import { mapGetters } from "vuex";
-import out from "./ImageItemOut";
-import edit from "./ImageItemEdit";
-import outSvg from "./ImageItemOutSvg";
-import editSvg from "./ImageItemEditSvg";
+import out from "~/components/images/ImageItemOut";
+import edit from "~/components/images/ImageItemEdit";
+import outSvg from "~/components/images/ImageItemOutSvg";
+import editSvg from "~/components/images/ImageItemEditSvg";
 export default {
   props: {
     divClass: { type: String, default: "" },
