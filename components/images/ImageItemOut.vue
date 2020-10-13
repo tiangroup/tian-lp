@@ -1,6 +1,7 @@
 <template>
   <div :class="[divClass, { 'no-image': !img }]">
-    <nuxt-img v-if="img" :src="$site_img(img)" :image-style="imageStyle" />
+    <img v-if="img && img.indexOf('http') === 0" :src="$site_img(img)" />
+    <nuxt-img v-else-if="img" :src="$site_img(img)" :image-style="imageStyle" />
   </div>
 </template>
 
