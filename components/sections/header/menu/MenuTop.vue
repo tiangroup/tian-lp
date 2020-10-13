@@ -74,7 +74,9 @@ export default {
     }
   },
   mounted() {
-    this.handleResize();
+    this.$nextTick(() => {
+      this.handleResize();
+    });
   },
   computed: {
     ...mapGetters({

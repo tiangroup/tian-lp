@@ -108,13 +108,15 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.get("/", checkAuth, async (req, res) => {
+app.get("/:id", checkAuth, async (req, res) => {
   try {
     const { id: user_id } = req.userData;
+    const site_id = req.params.id;
     const { data: forms } = await axios.get(`${api_backend}/forms`, {
       params: {
         token: admin_token,
-        admin: user_id
+        admin: user_id,
+        site: site_id
       }
     });
     res.send(forms);

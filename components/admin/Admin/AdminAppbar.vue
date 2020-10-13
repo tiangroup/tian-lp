@@ -78,7 +78,9 @@ export default {
     forms: null
   }),
   async fetch() {
-    const forms = await this.$axios.$get(`${this.$site_app}/forms`);
+    const forms = await this.$axios.$get(
+      `${this.$site_app}/forms/${this.site.id}`
+    );
     this.forms = forms.map(item => ({
       id: item.id,
       title: item.form.title,

@@ -22,5 +22,8 @@ export const actions = {
 };
 
 export const getters = {
-  sections: state => state.sections
+  sections: state => state.sections,
+  section: state => component => {
+    return state.sections.find(s => s.component == component);
+  }
 };

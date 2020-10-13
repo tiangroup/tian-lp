@@ -191,14 +191,18 @@ export const actions = {
   },
   async addForm({ commit, state }, payload) {
     try {
-      const form = await this.$axios.$post(`${this.$site_api}/forms`, {
+      const template = payload.template || {
         form: {
           title: "Заголовок формы",
           button: "Отправить"
-        },
-        mail: {},
+        }
+      };
+      const form = await this.$axios.$post(`${this.$site_api}/forms`, {
+        ...template,
+        //mail: {},
         admin: this.$auth.user.id,
-        section: payload.sectionId
+        section: payload.sectionId,
+        site: payload.siteId
       });
       if (payload.sectionId && payload.field) {
         commit(
