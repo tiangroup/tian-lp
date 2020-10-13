@@ -23,7 +23,7 @@
             v-if="!isEdit && section.items && view === 'view2'"
             :id="'gallery' + section.id"
             :options="{
-              closeOnSlideClick: true
+              closeOnSlideClick: true,
             }"
           ></v-gallery>
         </client-only>
@@ -41,17 +41,17 @@
                 :key="slickKey"
               >
                 <reviews-item
-                  v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                  v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
                   @change-desc="
                     updateReviewDesc({
                       id: item.id,
-                      text: item.text
+                      text: item.text,
                     })
                   "
                   @change-date="
                     updateReviewDate({
                       id: item.id,
-                      date: item.date
+                      date: item.date,
                     })
                   "
                   @show-review="showReview(item)"
@@ -87,7 +87,7 @@
                   <reviews-item
                     class="cell-12"
                     :class="{ 'cell-lg-6': view === 'view1' }"
-                    v-for="item in section.items.filter(i => i.id)"
+                    v-for="item in section.items.filter((i) => i.id)"
                     :key="item.id"
                     :item="item"
                     :sectionId="section.id"
@@ -203,14 +203,14 @@
 import { mapMutations, mapGetters } from "vuex";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   data: () => ({
     currentReview: {
       id: null,
       name: "",
       position: "",
-      date: ""
+      date: "",
     },
     dialogShowReview: false,
     dialogReviewDate: false,
@@ -232,23 +232,23 @@ export default {
         {
           breakpoint: 1280,
           settings: {
-            arrows: false
-          }
+            arrows: false,
+          },
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false
-          }
-        }
-      ]
-    }
+            arrows: false,
+          },
+        },
+      ],
+    },
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      isEdit: "isEdit",
     }),
     view() {
       return this.section.settings.view;
@@ -258,7 +258,7 @@ export default {
       return Object.assign(this.slickOptions, {
         slidesToShow: slidesQty,
         infinite: !this.isEdit,
-        draggable: !this.isEdit
+        draggable: !this.isEdit,
       });
     },
     reviewImages() {
@@ -268,7 +268,7 @@ export default {
         var imagesItem = {
           title: "Отзыв " + pic.name,
           href: this.$images.src(pic.img),
-          type: "image/jpeg"
+          type: "image/jpeg",
         };
         imagesArray.push(imagesItem);
       }
@@ -298,12 +298,12 @@ export default {
     computedRealSlides() {
       return document
         .getElementById(this.section.id)
-        .querySelectorAll(".slick-slide:not(.slick-cloned)").length;
-    }
+        .querySelectorAll(".slick-slide:not(.slick-cloned)");
+    },
   },
   methods: {
     ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD"
+      setItemField: "pages/SET_ITEM_FIELD",
     }),
     updateReviewDate(item) {
       if (this.isEdit) {
@@ -333,7 +333,7 @@ export default {
         itemId: this.currentReview.id,
         items: "items",
         field: field,
-        value: value
+        value: value,
       });
       this.$store.dispatch("pages/savePage");
     },
@@ -383,14 +383,14 @@ export default {
             .click();
         }
       }
-    }
+    },
   },
-  beforeUpdate: function() {
+  beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
       this.currentSlide = this.$refs[this.slickRef].currentSlide;
     }
   },
-  beforeDestroy: function() {
+  beforeDestroy: function () {
     if (this.$refs[this.slickRef]) {
       if (document.getElementById(this.section.id) && !this.isEdit) {
         document
@@ -398,7 +398,7 @@ export default {
           .removeEventListener("click", this.handleClonedSlides);
       }
     }
-  }
+  },
 };
 </script>
 <style scoped>
