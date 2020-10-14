@@ -1,6 +1,6 @@
 <template>
-  <header :style="styleDiv" :id="section.id">
-    <buttons-section v-if="isEdit" :section="section">
+  <header :class="{ 'position-relative': _isEdit }" :id="section.id">
+    <buttons-section v-if="_isEdit" :section="section">
       <menu-editor-button
         v-if="isEdit"
         @click="showMenuEditor = true"
@@ -41,8 +41,12 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      _isEdit: "isEdit",
+      isSectionEdit: "isSectionEdit"
     }),
+    isEdit() {
+      return this._isEdit && this.isSectionEdit(this.section);
+    },
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
     },

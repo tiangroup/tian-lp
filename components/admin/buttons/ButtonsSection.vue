@@ -10,9 +10,11 @@
       :left="left"
       direction="left"
       transition="slide-x-reverse-transition"
+      open-on-hover
+      v-if="isEdit"
     >
       <template v-slot:activator>
-        <v-btn v-model="fab" color="blue" x-small dark fab>
+        <v-btn v-model="fab" color="green" small dark fab>
           <v-icon v-if="fab">mdi-close</v-icon>
           <v-icon v-else>mdi-pencil</v-icon>
         </v-btn>
@@ -35,6 +37,7 @@
         <span>Настройки блока</span>
       </v-tooltip>
 
+      <!--
       <v-tooltip bottom v-if="section.show">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -67,6 +70,7 @@
         </template>
         <span>Скрытый на сайте</span>
       </v-tooltip>
+      -->
 
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -139,36 +143,64 @@
       <slot></slot>
     </v-speed-dial>
 
-    <v-navigation-drawer
-      app
-      class="over"
-      v-model="settingsDrawer"
-      right
-      temporary
-      width="400"
-    >
-      <v-list-item>
-        <v-btn icon @click="settingsDrawer = false">
-          <v-icon>mdi-close</v-icon>
+    <v-tooltip bottom v-else>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          class="over2 btn-edit"
+          absolute
+          :top="top"
+          :right="right"
+          :bottom="bottom"
+          :left="left"
+          fab
+          dark
+          x-small
+          color="blue"
+          v-bind="attrs"
+          v-on="on"
+          @click="setSectionEdit(section.id)"
+        >
+          <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <span>Настройки блока</span>
-      </v-list-item>
-      <settings
-        :component="section.__component"
+      </template>
+      <span>Редактировать блок</span>
+    </v-tooltip>
+
+    <div v-if="isEdit">
+      <v-navigation-drawer
+        app
+        class="over"
+        v-model="settingsDrawer"
+        right
+        temporary
+        width="400"
+      >
+        <v-list-item>
+          <v-btn icon @click="settingsDrawer = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <span>Настройки блока</span>
+        </v-list-item>
+        <settings
+          :component="section.__component"
+          :sectionId="section.id"
+          :settings="section.settings"
+        />
+        <v-list-item>
+          <v-switch v-model="show" label="Показывать на сайте"></v-switch>
+        </v-list-item>
+      </v-navigation-drawer>
+      <new-section-editor
+        :show="showNewSectionEditor"
+        @onClose="showNewSectionEditor = false"
         :sectionId="section.id"
-        :settings="section.settings"
       />
-    </v-navigation-drawer>
-    <new-section-editor
-      :show="showNewSectionEditor"
-      @onClose="showNewSectionEditor = false"
-      :sectionId="section.id"
-    />
+    </div>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
   props: {
     section: Object,
@@ -198,12 +230,33 @@ export default {
     fab: false,
     showNewSectionEditor: false
   }),
+  computed: {
+    ...mapGetters({
+      isSectionEdit: "isSectionEdit"
+    }),
+    isEdit() {
+      return this.isSectionEdit(this.section);
+    },
+    show: {
+      get() {
+        return this.section.show;
+      },
+      set(value) {
+        this.setSectionField({
+          id: this.section.id,
+          field: "show",
+          value: value
+        });
+      }
+    }
+  },
   methods: {
     ...mapMutations({
       setSectionField: "pages/SET_SECTION_FIELD",
       downSection: "pages/DOWN_SECTION",
       upSection: "pages/UP_SECTION",
-      deleteSection: "pages/DELETE_SECTION"
+      deleteSection: "pages/DELETE_SECTION",
+      setSectionEdit: "SET_SECTION_EDIT"
     }),
     ...mapActions({
       savePage: "pages/savePage"
@@ -268,5 +321,8 @@ export default {
 }
 .over2 {
   z-index: 1010;
+}
+.btn-edit {
+  top: 16px !important;
 }
 </style>

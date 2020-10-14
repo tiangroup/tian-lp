@@ -1,6 +1,6 @@
 <template>
-  <div :style="styleDiv" :id="section.id">
-    <buttons-section v-if="isEdit" :section="section">
+  <div :class="{ 'position-relative': _isEdit }" :id="section.id">
+    <buttons-section v-if="_isEdit" :section="section">
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -80,16 +80,23 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import Timer from "../cta/Timer.vue";
 export default {
   components: {
     Timer
   },
   props: {
-    section: Object,
-    isEdit: Boolean
+    section: Object
   },
   computed: {
+    ...mapGetters({
+      _isEdit: "isEdit",
+      isSectionEdit: "isSectionEdit"
+    }),
+    isEdit() {
+      return this._isEdit && this.isSectionEdit(this.section);
+    },
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
     },

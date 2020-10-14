@@ -1,6 +1,6 @@
 <template>
-  <div :class="{ 'position-relative': isEdit }" :id="section.id">
-    <buttons-section v-if="isEdit" :section="section" />
+  <div :class="{ 'position-relative': _isEdit }" :id="section.id">
+    <buttons-section v-if="_isEdit" :section="section" />
     <div
       class="partners custom-v-spacing bg-primary"
       :class="{ mDark: section.settings.background === 'dark' }"
@@ -197,8 +197,12 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      _isEdit: "isEdit",
+      isSectionEdit: "isSectionEdit"
     }),
+    isEdit() {
+      return this._isEdit && this.isSectionEdit(this.section);
+    },
     updatedSlickOptions() {
       let slickSlidesToShow = this.isEdit ? 4 : 6;
       return Object.assign(this.slickOptions, {

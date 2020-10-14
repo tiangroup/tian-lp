@@ -59,25 +59,7 @@
         <v-container fluid>
           <v-row>
             <v-col cols="12" md="4">
-              <v-card>
-                <v-card-title>Почтовое уведомление</v-card-title>
-                <v-card-text>
-                  <v-text-field
-                    label="Заголовок письма"
-                    v-model="params.mail.subject"
-                  />
-                  <v-text-field
-                    label="E-mail отправки"
-                    v-model="params.mail.to"
-                  />
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="saveMail">
-                    Сохранить
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
+              <admin-form-mail :form="params"></admin-form-mail>
             </v-col>
           </v-row>
         </v-container>
@@ -106,7 +88,7 @@ export default {
         sortable: false
       },
       {
-        text: "Отправлено",
+        text: "Отправлено на",
         value: "email"
       }
     ],
@@ -123,7 +105,7 @@ export default {
       }
     );
     this.count = count;
-    const items = await this.$axios.$get(`${this.$site_app}/forms/items`, {
+    const items = await this.$axios.$get(`${this.$site_app}/forms/items/list`, {
       params: {
         form: this.params.id
       }

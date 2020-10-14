@@ -71,16 +71,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      _isEdit: "isEdit",
+      isSectionEdit: "isSectionEdit",
       getForm: "forms/form",
       isEditor: "forms/isEditor"
     }),
+    isEdit() {
+      return this._isEdit && this.isSectionEdit(this.section);
+    },
     styleDiv() {
-      return this.isEdit
-        ? {
-            position: "relative"
-          }
-        : null;
+      return this.isEdit ? { position: "relative" } : null;
     }
   },
   methods: {

@@ -33,8 +33,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      _isEdit: "isEdit",
+      isSectionEdit: "isSectionEdit"
     }),
+    isEdit() {
+      return this._isEdit && this.isSectionEdit(this.section);
+    },
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
     }

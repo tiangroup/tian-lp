@@ -1,6 +1,6 @@
 <template>
-  <div :style="styleDiv" :id="section.id">
-    <buttons-section v-if="isEdit" :section="section"></buttons-section>
+  <div :class="{ 'position-relative': _isEdit }" :id="section.id">
+    <buttons-section v-if="_isEdit" :section="section"></buttons-section>
 
     <component :is="view" :section="section" :isEdit="isEdit" />
   </div>
@@ -22,10 +22,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      _isEdit: "isEdit",
+      isSectionEdit: "isSectionEdit"
     }),
-    styleDiv() {
-      return this.isEdit ? { position: "relative" } : null;
+    isEdit() {
+      return this._isEdit && this.isSectionEdit(this.section);
     },
     view() {
       return this.section.settings.view;

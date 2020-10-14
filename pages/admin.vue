@@ -13,7 +13,7 @@
 
 <script>
 import Admin from "~/components/admin/Admin/Admin";
-import AdminForm from "~/components/admin/Admin/AdminForm";
+import AdminForm from "~/components/admin/Admin/form/AdminForm";
 import AdminSite from "~/components/admin/Admin/site/AdminSite";
 export default {
   layout: "admin",

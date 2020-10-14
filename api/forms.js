@@ -126,7 +126,7 @@ app.get("/:id", checkAuth, async (req, res) => {
   }
 });
 
-app.get("/items", checkAuth, async (req, res) => {
+app.get("/items/list", checkAuth, async (req, res) => {
   try {
     const { id: user_id } = req.userData;
     const form_id = req.query.form;
@@ -191,10 +191,6 @@ app.put("/remove-section", checkAuth, async (req, res) => {
     console.log(error);
     res.status(500).json({ error });
   }
-});
-
-app.get("/test", (req, res) => {
-  res.send(api_backend);
 });
 
 module.exports = {

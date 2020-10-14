@@ -9,7 +9,8 @@ export const state = () => ({
   dialogImageSvg: false,
   imageSvg: {},
   dialogError: false,
-  error: {}
+  error: {},
+  sectionEdit: null
 });
 
 export const mutations = {
@@ -54,6 +55,9 @@ export const mutations = {
   },
   SET_ERROR(state, error) {
     state.error = error;
+  },
+  SET_SECTION_EDIT(state, section_id) {
+    state.sectionEdit = section_id;
   }
 };
 
@@ -105,6 +109,7 @@ export const actions = {
   },
   hideImageSvg({ commit }) {
     commit("SET_DIALOG_IMAGE_SVG", false);
+    commit("SET_IMAGE_SVG", {});
   },
   showError({ commit }, error) {
     commit("SET_ERROR", error);
@@ -120,6 +125,9 @@ export const getters = {
   isPreview: state => state.isPreview,
   isEdit: state => {
     return state.auth.loggedIn /*&& state.isApp*/ && !state.isPreview;
+  },
+  isSectionEdit: state => section => {
+    return section.id == state.sectionEdit;
   },
   overlay: state => state.overlay,
   dialogImageUpload: state => state.dialogImageUpload,

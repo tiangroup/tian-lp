@@ -1,5 +1,5 @@
 <template>
-  <component :is="comp" :section="section" :isEdit="isEdit" v-if="isShow" />
+  <component :is="comp" :section="section" v-if="isShow" />
 </template>
 
 <script>
@@ -23,7 +23,7 @@ import sections_products from "~/components/sections/products/products";
 import sections_services from "~/components/sections/services/services";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   components: {
     sections_header,
@@ -42,18 +42,18 @@ export default {
     sections_contacts,
     sections_products,
     sections_services,
-    sections_footer,
+    sections_footer
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      isEdit: "isEdit"
     }),
     isShow() {
       return this.isEdit || this.section.show === true;
     },
     comp() {
       return this.section.__component.replace(".", "_");
-    },
-  },
+    }
+  }
 };
 </script>
