@@ -270,7 +270,7 @@ export default {
   },
   beforeUpdate: function() {
     if (this.$refs[this.slickRef]) {
-      this.currentSlide = this.$refs[this.slickRef].currentSlide;
+      this.currentSlide = this.$refs[this.slickRef].currentSlide();
     }
   }
 };

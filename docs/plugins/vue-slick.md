@@ -90,7 +90,7 @@ watch: {
 ```js
 beforeUpdate: function () {
   if (this.$refs.slick) {
-    this.currentSlide = this.$refs.click.currentSlide;
+    this.currentSlide = this.$refs.click.currentSlide();
   }
 },
 ```

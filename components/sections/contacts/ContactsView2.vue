@@ -22,7 +22,7 @@
               <div
                 class="cell"
                 :class="{ 'position-relative': isEdit }"
-                v-for="item in section.items.filter(i => i.id)"
+                v-for="item in section.items.filter((i) => i.id)"
                 :key="item.id"
               >
                 <buttons-item
@@ -125,7 +125,7 @@
               <div class="cells fx-nw overflow-hidden">
                 <div
                   class="cell cell-12 cell-sm-6"
-                  v-for="item in section.items.filter(i => i.id)"
+                  v-for="item in section.items.filter((i) => i.id)"
                   :key="item.id"
                 >
                   <div class="contacts__item department">
@@ -179,11 +179,11 @@ export default {
     isEdit: Boolean,
     view: {
       type: String,
-      default: "view2"
-    }
+      default: "view2",
+    },
   },
   components: {
-    ContactsMap
+    ContactsMap,
   },
   data() {
     return {
@@ -204,26 +204,26 @@ export default {
           {
             breakpoint: 1280,
             settings: {
-              arrows: false
-            }
+              arrows: false,
+            },
           },
           {
             breakpoint: 576,
             settings: {
               slidesToShow: 1,
               slidesToScroll: 1,
-              arrows: false
-            }
-          }
-        ]
-      }
+              arrows: false,
+            },
+          },
+        ],
+      },
     };
   },
   computed: {
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit
+        draggable: !this.isEdit,
       });
     },
     slickRef() {
@@ -246,7 +246,7 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)");
-    }
+    },
   },
   methods: {
     handleInit(event, slick) {
@@ -283,7 +283,7 @@ export default {
         this.$vuetify.goTo(".contacts__map", { duration: 500 });
         this.myMap.setCenter(coords);
         this.myMap.setZoom(16, {
-          checkZoomRange: true
+          checkZoomRange: true,
         });
       }
     },
@@ -292,14 +292,14 @@ export default {
     },
     getItemCoords(str) {
       return str.replace(/\s+/g, "").split(",");
-    }
+    },
   },
-  beforeUpdate: function() {
+  beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
-      this.currentSlide = this.$refs[this.slickRef].currentSlide;
+      this.currentSlide = this.$refs[this.slickRef].currentSlide();
     }
   },
-  beforeDestroy: function() {
+  beforeDestroy: function () {
     if (this.$refs[this.slickRef]) {
       if (document.getElementById(this.section.id) && !this.isEdit) {
         document
@@ -307,7 +307,7 @@ export default {
           .removeEventListener("click", this.handleClonedSlides);
       }
     }
-  }
+  },
 };
 </script>
 <style scoped>

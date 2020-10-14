@@ -18,7 +18,7 @@
           <div class="products__list cells" v-if="section.items && isEdit">
             <products-item
               class="cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
-              v-for="item in section.items.filter(i => i.id)"
+              v-for="item in section.items.filter((i) => i.id)"
               :key="item.id"
               :item="item"
               :sectionId="section.id"
@@ -100,7 +100,7 @@
               :key="slickKey"
             >
               <products-item
-                v-for="item in section.items.filter(i => i.id)"
+                v-for="item in section.items.filter((i) => i.id)"
                 :key="item.id"
                 :item="item"
                 :sectionId="section.id"
@@ -139,7 +139,7 @@
               <div class="cells fx-nw overflow-hidden">
                 <products-item
                   class="cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
-                  v-for="item in section.items.filter(i => i.id)"
+                  v-for="item in section.items.filter((i) => i.id)"
                   :key="item.id"
                   :item="item"
                   :sectionId="section.id"
@@ -360,10 +360,10 @@ import { mapMutations, mapGetters } from "vuex";
 import ProductsItem from "./ProductsItem";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   components: {
-    ProductsItem
+    ProductsItem,
   },
   data: () => ({
     currentItem: {},
@@ -389,36 +389,36 @@ export default {
           settings: {
             slidesToShow: 3,
             slidesToScroll: 1,
-            arrows: false
-          }
+            arrows: false,
+          },
         },
         {
           breakpoint: 1024,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false
-          }
+            arrows: false,
+          },
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false
-          }
-        }
-      ]
-    }
+            arrows: false,
+          },
+        },
+      ],
+    },
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      isEdit: "isEdit",
     }),
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit
+        draggable: !this.isEdit,
       });
     },
     view() {
@@ -458,7 +458,7 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)");
-    }
+    },
   },
   methods: {
     handleInit(event, slick) {
@@ -533,14 +533,14 @@ export default {
       } else {
         this.itemsToShow += 4;
       }
-    }
+    },
   },
-  beforeUpdate: function() {
+  beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
-      this.currentSlide = this.$refs[this.slickRef].currentSlide;
+      this.currentSlide = this.$refs[this.slickRef].currentSlide();
     }
   },
-  beforeDestroy: function() {
+  beforeDestroy: function () {
     if (this.$refs[this.slickRef]) {
       if (document.getElementById(this.section.id) && !this.isEdit) {
         document
@@ -548,7 +548,7 @@ export default {
           .removeEventListener("click", this.handleClonedSlides);
       }
     }
-  }
+  },
 };
 </script>
 <style scoped>
