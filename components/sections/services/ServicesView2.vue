@@ -11,7 +11,7 @@
           <div
             class="services__item-wrap cell"
             :class="{ 'position-relative': isEdit }"
-            v-for="item in section.items.filter(i => i.id)"
+            v-for="item in section.items.filter((i) => i.id)"
             :key="item.id"
           >
             <buttons-item
@@ -114,7 +114,7 @@
           <div class="cells fx-nw overflow-hidden">
             <div
               class="services__item-wrap cell cell-12 cell-lg-6"
-              v-for="item in section.items.filter(i => i.id)"
+              v-for="item in section.items.filter((i) => i.id)"
               :key="item.id"
             >
               <div class="services__item">
@@ -157,8 +157,8 @@ export default {
     isEdit: Boolean,
     view: {
       type: String,
-      default: "view2"
-    }
+      default: "view2",
+    },
   },
   components: {},
   data() {
@@ -182,18 +182,18 @@ export default {
             breakpoint: 1024,
             settings: {
               slidesToShow: 1,
-              arrows: false
-            }
-          }
-        ]
-      }
+              arrows: false,
+            },
+          },
+        ],
+      },
     };
   },
   computed: {
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit
+        draggable: !this.isEdit,
       });
     },
     slickRef() {
@@ -216,7 +216,7 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)");
-    }
+    },
   },
   methods: {
     handleInit(event, slick) {
@@ -246,14 +246,14 @@ export default {
           this.computedRealSlides[slideId].querySelector(".button").click();
         }
       }
-    }
+    },
   },
-  beforeUpdate: function() {
+  beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
-      this.currentSlide = this.$refs[this.slickRef].currentSlide;
+      this.currentSlide = this.$refs[this.slickRef].currentSlide();
     }
   },
-  beforeDestroy: function() {
+  beforeDestroy: function () {
     if (this.$refs[this.slickRef]) {
       if (document.getElementById(this.section.id)) {
         document
@@ -261,6 +261,6 @@ export default {
           .removeEventListener("click", this.handleClonedSlides);
       }
     }
-  }
+  },
 };
 </script>

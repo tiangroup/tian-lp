@@ -1,5 +1,5 @@
 <template>
-  <div :style="styleDiv" :id="section.id">
+  <div :class="{ 'position-relative': isEdit }" :id="section.id">
     <buttons-section v-if="isEdit" :section="section">
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -13,7 +13,7 @@
             @click="
               itemImageSelect({
                 field: 'img',
-                value: section.img
+                value: section.img,
               })
             "
           >
@@ -25,7 +25,7 @@
     </buttons-section>
     <div
       class="questions custom-v-spacing-2 bg-primary"
-      :class="{mDark: section.settings.background === 'dark'}"
+      :class="{ mDark: section.settings.background === 'dark' }"
     >
       <div class="landing__container">
         <div class="questions__row">
@@ -38,7 +38,11 @@
           />
           <div class="questions__body">
             <h2 v-if="isEdit">
-              <editor :text="section.title || ''" :sectionId="section.id" field="title" />
+              <editor
+                :text="section.title || ''"
+                :sectionId="section.id"
+                field="title"
+              />
             </h2>
             <h2 v-else>{{ section.title }}</h2>
             <div class="questions__text">
@@ -52,18 +56,18 @@
             </div>
             <div class="questions__actions">
               <div class="questions__action">
-                <a
-                  class="button button-primary"
-                  @click.prevent="formDialogQuestion = true"
-                >Задать вопрос</a>
-                <form-dialog :section="section" field="form_callback" v-model="formDialogQuestion"></form-dialog>
+                <form-popup
+                  :section="section"
+                  field="form_callback"
+                  buttonClass="button-primary"
+                ></form-popup>
               </div>
               <div class="questions__action">
-                <a
-                  class="button button-secondary"
-                  @click.prevent="formDialogCallback = true"
-                >Заказать звонок</a>
-                <form-dialog :section="section" field="form_callback" v-model="formDialogCallback"></form-dialog>
+                <form-popup
+                  :section="section"
+                  field="form_question"
+                  buttonClass="button-secondary"
+                ></form-popup>
               </div>
             </div>
           </div>
@@ -87,10 +91,7 @@ export default {
       return this.isEdit ? { position: "relative" } : null;
     },
   },
-  data: () => ({
-    formDialogQuestion: false,
-    formDialogCallback: false,
-  }),
+  data: () => ({}),
   methods: {
     ...mapMutations({
       showImageUpload: "SET_DIALOG_IMAGE_UPLOAD",

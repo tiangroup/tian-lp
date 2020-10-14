@@ -20,12 +20,13 @@
               :ref="slickRef"
               :options="updatedSlickOptions"
               :key="slickKey"
+              @init="handleInit"
             >
               <staff-item
                 :item="item"
                 :isEdit="isEdit"
                 :sectionId="section.id"
-                v-for="item in section.items.filter(i => i.id)"
+                v-for="item in section.items.filter((i) => i.id)"
                 :key="item.id"
               ></staff-item>
               <div
@@ -53,7 +54,7 @@
                   :item="item"
                   :isEdit="false"
                   :sectionId="section.id"
-                  v-for="item in section.items.filter(i => i.id)"
+                  v-for="item in section.items.filter((i) => i.id)"
                   :key="item.id"
                 ></staff-item>
               </div>
@@ -70,10 +71,10 @@ import { mapGetters } from "vuex";
 import StaffItem from "./StaffItem";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   components: {
-    StaffItem
+    StaffItem,
   },
   data: () => ({
     currentSlide: 0,
@@ -95,28 +96,28 @@ export default {
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false
-          }
+            arrows: false,
+          },
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false
-          }
-        }
-      ]
-    }
+            arrows: false,
+          },
+        },
+      ],
+    },
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      isEdit: "isEdit",
     }),
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit
+        draggable: !this.isEdit,
       });
     },
     slickRef() {
@@ -134,20 +135,20 @@ export default {
     },
     itemsCount() {
       return this.section.items.length;
-    }
+    },
   },
   methods: {
     handleInit(event, slick) {
       if (this.currentSlide) {
         slick.goTo(this.currentSlide, true);
       }
+    },
+  },
+  beforeUpdate: function () {
+    if (this.$refs[this.slickRef]) {
+      this.currentSlide = this.$refs[this.slickRef].currentSlide();
     }
   },
-  beforeUpdate: function() {
-    if (this.$refs[this.slickRef]) {
-      this.currentSlide = this.$refs[this.slickRef].currentSlide;
-    }
-  }
 };
 </script>
 <style scoped>
