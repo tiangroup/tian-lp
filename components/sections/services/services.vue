@@ -7,7 +7,7 @@
         mDark: section.settings.background === 'dark',
         'services--style1': view === 'view1',
         'services--style2': view === 'view2',
-        'services--style3': view === 'view3'
+        'services--style3': view === 'view3',
       }"
     >
       <div class="landing__container">
@@ -67,26 +67,26 @@ import View2 from "./ServicesView2";
 import View3 from "./ServicesView3";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   components: {
     View1,
     View2,
-    View3
+    View3,
   },
   data() {
     return {
       currentItem: {},
-      dialogOrderService: false
+      dialogOrderService: false,
     };
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      isEdit: "isEdit",
     }),
     view() {
       return this.section.settings.view;
-    }
+    },
   },
   methods: {
     showOrderDialog(item) {
@@ -94,17 +94,13 @@ export default {
         this.currentItem = item;
         this.dialogOrderService = true;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
-.services >>> .v-skeleton-loader__avatar,
-.services >>> .v-skeleton-loader__button,
 .services >>> .v-skeleton-loader__chip,
-.services >>> .v-skeleton-loader__divider,
 .services >>> .v-skeleton-loader__heading,
-.services >>> .v-skeleton-loader__image,
 .services >>> .v-skeleton-loader__text {
   background-color: var(--separator-color);
 }

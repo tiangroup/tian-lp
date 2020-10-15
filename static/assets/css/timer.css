@@ -3,6 +3,9 @@
   align-items: center;
   flex-wrap: wrap;
 }
+.timer--expired .timer__time {
+  color: var(--fail-color);
+}
 .timer__text {
   flex: 0 0 100%;
   max-width: 100%;
@@ -14,6 +17,9 @@
   font-weight: bold;
   letter-spacing: 0.1px;
   line-height: 1.2;
+}
+.timer__time--hidden {
+  opacity: 0;
 }
 .timer__value::after,
 .timer__value::before {
