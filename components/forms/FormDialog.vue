@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="value" max-width="400" @input="$emit('input', value)">
+    <v-dialog v-model="dialog" max-width="400">
       <div class="der-popup" :style="styleDiv">
         <form-editor-button
           v-if="isEdit && section[field]"
@@ -81,6 +81,14 @@ export default {
     },
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
+    },
+    dialog: {
+      get() {
+        return this.value;
+      },
+      set(value) {
+        this.$emit("input", value);
+      }
     }
   },
   methods: {
