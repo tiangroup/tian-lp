@@ -60,7 +60,7 @@ export default {
       this.$overlay(true);
       await this.savePage();
       // создание форм
-      if (this.section.forms) {
+      if (this.section.forms && this.section.forms.length) {
         let section;
         if (this.sectionId) {
           const top_section = this.page.sections.find(
@@ -82,8 +82,8 @@ export default {
               field: form.name
             });
             await this.loadForm(section[form.name]);
-            await this.savePage();
           }
+          await this.savePage();
         }
       }
       this.$overlay(false);
