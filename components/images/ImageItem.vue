@@ -39,8 +39,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      _isEdit: "isEdit",
+      isSectionEdit: "isSectionEdit"
     }),
+    isEdit() {
+      return this.isSectionEdit(this.sectionId);
+    },
     fieldName() {
       return this.fieldSvg ? this.fieldSvg : this.field;
     },

@@ -38,8 +38,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
-    })
+      _isEdit: "isEdit",
+      isSectionEdit: "isSectionEdit"
+    }),
+    isEdit() {
+      return this.isSectionEdit(this.sectionId);
+    }
   },
   methods: {
     ...mapMutations({

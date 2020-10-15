@@ -1,6 +1,29 @@
 <template>
   <div>
-    <v-app-bar app color="blue" dark class="over">
+    <div v-if="isPreview">
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            class="over btn-edit"
+            fixed
+            top
+            right
+            fab
+            dark
+            medium
+            color="blue"
+            v-bind="attrs"
+            v-on="on"
+            @click="setPreview(false)"
+            :disabled="reloading"
+          >
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+        </template>
+        <span>Редактировать</span>
+      </v-tooltip>
+    </div>
+    <v-app-bar app color="blue" dark class="over" v-else>
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
       <v-toolbar-title>Редактирование</v-toolbar-title>
@@ -300,5 +323,8 @@ export default {
 <style scoped>
 .over {
   z-index: 10000;
+}
+.btn-edit {
+  top: 16px !important;
 }
 </style>

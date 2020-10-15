@@ -127,7 +127,9 @@ export const getters = {
     return state.auth.loggedIn /*&& state.isApp*/ && !state.isPreview;
   },
   isSectionEdit: state => section => {
-    return section.id == state.sectionEdit;
+    return section instanceof Object
+      ? section.id == state.sectionEdit
+      : section == state.sectionEdit;
   },
   overlay: state => state.overlay,
   dialogImageUpload: state => state.dialogImageUpload,
