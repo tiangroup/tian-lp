@@ -1,7 +1,7 @@
 <template>
   <v-card flat>
     <v-toolbar>
-      <v-toolbar-title>Форма: {{ params.form.title }}</v-toolbar-title>
+      <v-toolbar-title>Форма: {{ params.form.form.title }}</v-toolbar-title>
     </v-toolbar>
     <v-tabs>
       <v-tab>Статистика</v-tab>
@@ -59,7 +59,7 @@
         <v-container fluid>
           <v-row>
             <v-col cols="12" md="4">
-              <admin-form-mail :form="params"></admin-form-mail>
+              <admin-form-mail :params="params"></admin-form-mail>
             </v-col>
           </v-row>
         </v-container>
@@ -100,14 +100,14 @@ export default {
       `${this.$site_app}/forms/items/count`,
       {
         params: {
-          form: this.params.id
+          form: this.params.form.id
         }
       }
     );
     this.count = count;
     const items = await this.$axios.$get(`${this.$site_app}/forms/items/list`, {
       params: {
-        form: this.params.id
+        form: this.params.form.id
       }
     });
     this.items = items.map(item => ({
@@ -123,7 +123,7 @@ export default {
     }
   },
   watch: {
-    params: "$fetch"
+    "params.form": "$fetch"
   },
   methods: {
     saveMail() {}
