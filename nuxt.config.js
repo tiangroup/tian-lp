@@ -176,5 +176,8 @@ export default {
           }
         });
     }
-  }
+  },
+  publicRuntimeConfig: {
+    demo: process.env.DEMO
+  },
 };

@@ -41,9 +41,9 @@ body {
   min-height: 100vh;
   overflow-x: hidden; /* because of menus sliding from right */
 }
-*:focus {
+/* *:focus {
   outline: 1px dashed #093dc3;
-}
+} */
 .button:focus,
 .field__input:focus,
 .nav__toggle:focus,
@@ -2975,6 +2975,9 @@ nav ul li,
     max-width: 469px;
     margin-left: auto;
   }
+  .services__navigation .slick-list {
+    width: 100%;
+  }
   .services__navigation .slick-track {
     justify-content: flex-end;
   }
@@ -4927,7 +4930,7 @@ nav ul li,
   z-index: 5;
 }
 .ascend__link,
-.button-tpb {
+.button.button-tpb {
   box-shadow: 0 0 0 11px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.4s, background-color 0.4s;
 }
@@ -4949,8 +4952,8 @@ nav ul li,
 }
 .ascend__link:hover,
 .ascend__link:focus,
-.button-tpb:hover,
-.button-tpb:focus {
+.button.button-tpb:hover,
+.button.button-tpb:focus {
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
   outline: none;
 }
@@ -5330,12 +5333,12 @@ nav ul li,
   left: 0;
   z-index: 1;
 }
-.button-tpb {
+.button.button-tpb {
   border-radius: 0 50% 50% 0;
   height: 66px;
   width: 66px;
 }
-.button-tpb .icon-tuning {
+.button.button-tpb .icon-tuning {
   filter: brightness(10);
   background-size: 27px 28px;
 }
@@ -5343,7 +5346,7 @@ nav ul li,
   .landing__tpb {
     left: 35px;
   }
-  .button-tpb {
+  .button.button-tpb {
     border-radius: 50%;
   }
 }
@@ -5387,7 +5390,11 @@ nav ul li,
   --theme-hover-color: #093dc3;
   --separator-color: #e8ecf0;
   --trace-color: rgba(36, 94, 245, 0.3);
-  max-width: 47rem;
+}
+.tuning {
+  height: 100%;
+  /* padding-top: 2.75rem;
+  position: relative; */
 }
 .tuning-heading {
   background: var(--theme-color, #245ef5);
@@ -5397,6 +5404,11 @@ nav ul li,
   font-weight: 500;
   letter-spacing: 0.1px;
   padding: 0.5rem 1rem 0.5rem 1.5625rem;
+  /* position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1; */
 }
 @media (min-width: 768px) {
   .tuning-heading {
@@ -5404,11 +5416,13 @@ nav ul li,
   }
 }
 .tuning-heading .button {
-  color: inherit;
   vertical-align: middle;
 }
-.tuning-heading .button:hover,
-.tuning-heading .button:focus {
+.tuning .tuning-heading .button {
+  color: inherit;
+}
+.tuning .tuning-heading .button:hover,
+.tuning .tuning-heading .button:focus {
   color: #fff;
   background-color: #093dc3;
   background-color: var(--theme-hover-color, #093dc3);
@@ -5429,14 +5443,17 @@ nav ul li,
   margin-left: 3rem;
 }
 .tuning-body {
+  background: #fff;
   box-shadow: 0 5px 12px rgba(136, 140, 143, 0.24);
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
+  height: 100%;
+  height: calc(100% - 3.75rem); /* uh, shame; tuning__heading.height */
   max-width: 42.5rem;
+  overflow-y: auto;
 }
 .tuning-nav {
-  background: #fff;
   box-shadow: 2px 0 10px rgba(173, 195, 210, 0.35);
   color: #68696f;
   flex: 0 0 100%;
@@ -5478,7 +5495,6 @@ nav ul li,
   /* pointer-events: none; */
 }
 .tuning-panel {
-  background: #fff;
   color: #68696f;
   flex: 1 0 0%;
   font-size: 0.9375rem;
@@ -5788,10 +5804,10 @@ nav ul li,
   background: #f8f9fb;
 }
 /* END elements, not supposed to change colors */
-*:focus {
+/* *:focus {
   outline-color: #093dc3;
   outline-color: var(--theme-hover-color);
-}
+} */
 .landing,
 .bg-primary {
   background-color: #fff;
@@ -5945,7 +5961,8 @@ a:active,
 .tarifs__item--selected .tarifs__title,
 .form__status,
 .button.button-icon.button-primary:hover,
-.button.button-icon.button-primary:focus {
+.button.button-icon.button-primary:focus,
+.button.button-tpb {
   color: #fff;
 }
 .ascend__link:hover,
@@ -6090,7 +6107,7 @@ hr,
   background-color: var(--trace-color);
 }
 .ascend__link,
-.button-tpb {
+.button.button-tpb {
   box-shadow: 0 0 0 8px var(--trace-color);
 }
 .department__messenger .messenger__link {
