@@ -76,7 +76,10 @@
               <div class="cell cell-auto products__count">
                 Товаров {{ itemsShown }} из {{ itemsCount }}
               </div>
-              <div class="cell cell-auto products__loadmore">
+              <div
+                class="cell cell-auto products__loadmore"
+                v-if="itemsCount > 4"
+              >
                 <button
                   class="button button-primary button-more"
                   :class="{ 'button-more--opened': itemsShown >= itemsCount }"

@@ -309,9 +309,6 @@ img {
 .tian a:hover {
   text-decoration: underline;
 }
-.landing ul[class] {
-  padding-left: 0;
-}
 .landing .body-copy p,
 .landing .body-copy ul {
   margin: 0 0 1em;
@@ -921,7 +918,7 @@ nav ul li,
   overflow: hidden;
   padding: 0; /* all paddings in div inside! */
   position: absolute;
-  transition: max-height 0.4s;
+  transition: max-height 0.6s;
   top: 100%;
   left: 0;
   min-width: 15rem;
@@ -940,7 +937,7 @@ nav ul li,
 }
 .reveal__input:checked ~ .reveal__content,
 .reveal:hover .reveal__content {
-  max-height: 40rem;
+  max-height: 70rem;
 }
 /* form styling */
 .field {
@@ -1768,7 +1765,7 @@ nav ul li,
     width: 3.9375rem;
   }
   .logo__text {
-    flex: 0 0 6rem;
+    flex: 1 0 6rem;
     font-size: 1.5rem;
   }
   .logo__text:first-child:last-child {
@@ -2194,6 +2191,7 @@ nav ul li,
   margin-right: 1.25rem;
 }
 .highlights__text {
+  flex: 1 0 0%;
   font-size: 0.9375rem;
   letter-spacing: 0.2px;
 }
@@ -2507,10 +2505,12 @@ nav ul li,
   position: relative;
 }
 .products__details {
-  color: inherit;
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
+}
+.products .products__details {
+  color: inherit;
 }
 .products__details:not(.no-hover)::before {
   content: "";
@@ -2522,7 +2522,6 @@ nav ul li,
 }
 .products__details:hover,
 .products__details:focus {
-  color: inherit;
   outline: none;
   text-decoration: none;
 }
@@ -4474,6 +4473,9 @@ nav ul li,
 .social__list {
   margin-bottom: -0.9375rem;
 }
+.social .social__list {
+  padding-left: 0;
+}
 .social__item {
   margin-bottom: 0.9375rem;
   margin-right: 0.85rem;
@@ -5177,7 +5179,6 @@ nav ul li,
   margin-bottom: 0;
 }
 .tbps__label__link {
-  color: inherit;
   display: block;
   letter-spacing: 0.2px;
   padding: 0.5rem 0;
@@ -5186,6 +5187,9 @@ nav ul li,
 .tbps__label__link:focus {
   outline: none;
   text-decoration: none;
+}
+.tbps__label .tbps__label__link {
+  color: inherit;
 }
 /* .tbps__panel {
   display: none;
@@ -5756,7 +5760,8 @@ nav ul li,
 .field__input,
 .fake-file,
 .der-popup,
-.lnotice {
+.lnotice,
+.good-summary {
   background-color: #fff;
 }
 .field__input,
@@ -5862,7 +5867,7 @@ nav ul li,
 .video__cover::after,
 .tarifs__item--selected .tarifs__title,
 .ascend__link,
-.social__link:hover,
+.social .social__link:hover,
 .state-switch input:checked + .state-switch__label::before,
 .header--style5 .header__menu::before,
 .landing .blueimp-gallery > .slides > .slide > .video-content > a {
@@ -5871,8 +5876,8 @@ nav ul li,
 }
 .services__navigation__item--active .services__navigation__image,
 .slick-current .services__navigation__image,
-.social__link,
-.social__link:hover,
+.social .social__link,
+.social .social__link:hover,
 .nav__toggle:focus::before,
 .state-switch input:checked + .state-switch__label::before,
 .pic-enlarge:hover::after,
@@ -5910,12 +5915,13 @@ a:active,
 .good__prices__current,
 .good-summary__price,
 .good-summary__status,
-.tbps__label__link--active,
+.tbps__label .tbps__label__link--active,
 .phones__messenger a,
 .landing .reviews__readmore,
-.social__link,
-.social__link:focus,
-.social__link:active {
+.social .social__link,
+.social .social__link:focus,
+.social .social__link:active,
+.footer .tian a {
   color: #245ef5;
   color: var(--theme-color);
 }
@@ -5935,8 +5941,7 @@ a:active,
 .info-popup .button-close:hover,
 .info-popup .button-close:focus,
 .info-popup .button-close:active,
-.social__link:hover,
-.contacts .social__link:hover,
+.social .social__link:hover,
 .tarifs__item--selected .tarifs__title,
 .form__status,
 .button.button-icon.button-primary:hover,

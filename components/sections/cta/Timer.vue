@@ -1,10 +1,12 @@
 <template>
   <div class="timer" :class="{ 'timer--expired': timerExpired }">
     <div class="timer__text">До конца акции осталось</div>
-    <div class="timer__time" :class="{'timer__time--hidden': !timerLoaded}">
+    <div class="timer__time" :class="{ 'timer__time--hidden': !timerLoaded }">
       <span class="timer__value timer__value--days">{{ displayDays }}</span>
       <span class="timer__value timer__value--hours">{{ displayHours }}</span>
-      <span class="timer__value timer__value--minutes">{{ displayMinutes }}</span>
+      <span class="timer__value timer__value--minutes">{{
+        displayMinutes
+      }}</span>
     </div>
   </div>
 </template>
@@ -99,85 +101,3 @@ export default {
   },
 };
 </script>
-<style>
-.timer {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.timer--expired .timer__time {
-  color: var(--fail-color);
-}
-.timer__text {
-  flex: 0 0 100%;
-  max-width: 100%;
-  font-size: 1.125rem;
-  margin-bottom: 0.2rem;
-}
-.timer__time {
-  font-size: 1.625rem;
-  font-weight: bold;
-  letter-spacing: 0.1px;
-  line-height: 1.2;
-}
-.timer__time--hidden {
-  opacity: 0;
-}
-.timer__value::after,
-.timer__value::before {
-  font-size: 1.125rem;
-  font-weight: normal;
-  letter-spacing: 0.2px;
-  line-height: 1.5;
-  margin-left: 0.25rem;
-}
-.timer__value--days::after {
-  content: "д";
-}
-.timer__value--hours::after {
-  content: "ч";
-}
-.timer__value--minutes::after {
-  content: "мин";
-}
-.timer__value + .timer__value::before {
-  content: "..";
-  line-height: 1.25;
-  margin-left: 0.4rem;
-  margin-right: 0.625rem;
-  vertical-align: top;
-}
-@media (min-width: 768px) {
-  .timer__text {
-    font-weight: 600;
-    letter-spacing: 0.2px;
-    margin-bottom: 0.3rem;
-  }
-  .timer__value::after {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    letter-spacing: 0.2px;
-  }
-  .timer__value + .timer__value::before {
-    line-height: 2;
-    margin-right: 1rem;
-  }
-}
-@media (min-width: 1024px) {
-  .timer__text {
-    flex-basis: 9rem;
-    max-width: 9rem;
-    font-size: 1.125rem;
-    font-weight: normal;
-    line-height: 1.4;
-    margin-bottom: 0;
-    margin-right: 1.5625rem;
-  }
-  .timer__time {
-    font-size: 3rem;
-  }
-  .timer__value + .timer__value::before {
-    line-height: 3;
-  }
-}
-</style>

@@ -1,5 +1,5 @@
 <template>
-  <div :style="styleDiv" :id="section.id">
+  <div :class="{ 'position-relative': isEdit }" :id="section.id">
     <buttons-section v-if="isEdit" :section="section">
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -13,7 +13,7 @@
             @click="
               itemImageSelect({
                 field: 'bg_img',
-                value: section.bg_img
+                value: section.bg_img,
               })
             "
           >
@@ -83,16 +83,12 @@
             <timer :end-date="computedEndDate" @expired="reinitTimer"></timer>
           </div>
           <div class="cta__countdown__action">
-            <a
-              @click.prevent="dialogCtaBtn = true"
-              class="button button-secondary"
-              >Заказать прямо сейчас</a
-            >
-            <form-dialog
+            <form-popup
               :section="section"
               field="form_cta"
-              v-model="dialogCtaBtn"
-            ></form-dialog>
+              buttonClass="button-secondary"
+              popupClass="popup-order"
+            ></form-popup>
           </div>
         </div>
       </div>
@@ -116,23 +112,19 @@ import { mapGetters, mapMutations } from "vuex";
 import Timer from "./Timer.vue";
 export default {
   components: {
-    Timer
+    Timer,
   },
   props: {
-    section: Object
+    section: Object,
   },
   data: () => ({
-    dialogCtaBtn: false,
     dialogCtaDate: false,
-    ctaDate: ""
+    ctaDate: "",
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      isEdit: "isEdit",
     }),
-    styleDiv() {
-      return this.isEdit ? { position: "relative" } : null;
-    },
     countdown() {
       return this.section.settings.countdown === true;
     },
@@ -143,20 +135,20 @@ export default {
         let genDate = this.generateEndDate();
         return genDate;
       }
-    }
+    },
   },
   methods: {
     ...mapMutations({
       showImageUpload: "SET_DIALOG_IMAGE_UPLOAD",
       setImageUpload: "SET_IMAGE_UPLOAD",
-      setSectionField: "pages/SET_SECTION_FIELD"
+      setSectionField: "pages/SET_SECTION_FIELD",
     }),
     itemImageSelect() {
       this.setImageUpload({
         sectionId: this.section.id,
         field: "bg_img",
         items: null,
-        value: this.section.bg_img
+        value: this.section.bg_img,
       });
       this.showImageUpload(true);
     },
@@ -170,12 +162,13 @@ export default {
       this.setSectionField({
         id: this.section.id,
         field: "date",
-        value: newDate
+        value: newDate,
       });
       this.$store.dispatch("pages/savePage");
       this.dialogCtaDate = false;
     },
     reinitTimer() {
+      //console.log("expired");
       if (!this.isEdit) {
         let newEndDate = this.generateEndDate();
         this.saveCtaDate(newEndDate);
@@ -188,12 +181,12 @@ export default {
         computedDate.getTime() + 84 * 60 * 60 * 1000 + 15 * 60 * 1000
       );
       return computedDate.toISOString().substr(0, 10);
-    }
+    },
   },
-  mounted: function() {
+  mounted: function () {
     if (!this.section.date) {
       this.ctaDate = this.generateEndDate();
     }
-  }
+  },
 };
 </script>

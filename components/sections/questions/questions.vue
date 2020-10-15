@@ -60,6 +60,7 @@
                   :section="section"
                   field="form_callback"
                   buttonClass="button-primary"
+                  popupClass="popup-callback"
                 ></form-popup>
               </div>
               <div class="questions__action">
@@ -67,6 +68,7 @@
                   :section="section"
                   field="form_question"
                   buttonClass="button-secondary"
+                  popupClass="popup-question"
                 ></form-popup>
               </div>
             </div>
