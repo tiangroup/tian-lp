@@ -14,7 +14,14 @@
       v-if="isEdit"
     >
       <template v-slot:activator>
-        <v-btn v-model="fab" color="green" small dark fab>
+        <v-btn
+          v-model="fab"
+          color="green"
+          small
+          dark
+          fab
+          @click="if (fab) setSectionEdit(null);"
+        >
           <v-icon v-if="fab">mdi-close</v-icon>
           <v-icon v-else>mdi-pencil</v-icon>
         </v-btn>

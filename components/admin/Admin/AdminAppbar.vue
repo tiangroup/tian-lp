@@ -86,7 +86,7 @@ export default {
       title: item.form.title,
       action: {
         comp: "AdminForm",
-        params: item
+        params: { form: item, mailChange: false }
       }
     }));
     this.reloadSite();

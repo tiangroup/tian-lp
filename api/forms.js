@@ -9,6 +9,7 @@ const cors = require("cors");
 
 const api_backend = process.env.API_BACKEND;
 const admin_token = process.env.ADMIN_TOKEN;
+const smtp = process.env.SMTP;
 
 const app = express();
 
@@ -58,16 +59,26 @@ app.post("/", async (req, res) => {
       });
 
       // отправка сообщения
-      let testAccount = await nodemailer.createTestAccount();
-      let transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
-        port: 587,
-        secure: false,
-        auth: {
-          user: testAccount.user,
-          pass: testAccount.pass
-        }
-      });
+
+      let transporter;
+      if (smtp) {
+        transporter = nodemailer.createTransport({
+          host: smtp,
+          port: 25,
+          secure: false
+        });
+      } else {
+        let testAccount = await nodemailer.createTestAccount();
+        transporter = nodemailer.createTransport({
+          host: "smtp.ethereal.email",
+          port: 587,
+          secure: false,
+          auth: {
+            user: testAccount.user,
+            pass: testAccount.pass
+          }
+        });
+      }
       let info = await transporter.sendMail({
         from: '"Лендинг" <noreply@tian-lp.ru>',
         to: form.mail.to,
