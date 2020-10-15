@@ -70,7 +70,8 @@ export default {
         keys: [
           "API_BACKEND",
           "APP_BACKEND",
-          { key: "ADMIN_TOKEN", secret: true }
+          { key: "ADMIN_TOKEN", secret: true },
+          "DEMO"
         ]
       }
     ],
@@ -176,8 +177,5 @@ export default {
           }
         });
     }
-  },
-  publicRuntimeConfig: {
-    demo: process.env.DEMO
-  },
+  }
 };
