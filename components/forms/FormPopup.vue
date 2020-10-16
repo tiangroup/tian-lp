@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="over">
     <v-dialog v-model="dialogButton" max-width="400">
       <template v-slot:activator="{ on, attrs }">
         <a class="button" :class="[buttonClass]" v-bind="attrs" v-on="on">
@@ -114,3 +114,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.over {
+  z-index: 100007;
+}
+</style>

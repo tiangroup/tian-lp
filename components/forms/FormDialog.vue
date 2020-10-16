@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="over">
     <v-dialog v-model="dialog" max-width="400">
       <div class="der-popup" :style="styleDiv">
         <form-editor-button
@@ -106,3 +106,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.over {
+  z-index: 100007;
+}
+</style>
