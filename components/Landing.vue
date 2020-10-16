@@ -1,35 +1,32 @@
 <template>
-  <div>
-    <Login v-if="isLogin"></Login>
-    <div class="landing" v-else>
-      <sections
-        v-for="section in page.sections.filter(s => s.id)"
-        :key="section.id"
-        :section="section"
-      />
-      <div class="add-section" v-if="page.sections.length === 0 && isEdit">
-        <new-section-button />
-      </div>
-
-      <panel v-if="$env.DEMO"></panel>
-
-      <overlay v-if="isEdit" />
-
-      <image-upload v-if="isEdit" />
-
-      <image-svg v-if="isEdit" />
-
-      <form-message />
-      <form-editor v-if="isEdit" />
-
-      <dialog-confirm v-if="isEdit" />
-
-      <dialog-error />
-
-      <forms-licence />
-
-      <div v-if="counter" v-html="counter"></div>
+  <div class="landing">
+    <sections
+      v-for="section in page.sections.filter(s => s.id)"
+      :key="section.id"
+      :section="section"
+    />
+    <div class="add-section" v-if="page.sections.length === 0 && isEdit">
+      <new-section-button />
     </div>
+
+    <panel v-if="$env.DEMO"></panel>
+
+    <overlay v-if="isEdit" />
+
+    <image-upload v-if="isEdit" />
+
+    <image-svg v-if="isEdit" />
+
+    <form-message />
+    <form-editor v-if="isEdit" />
+
+    <dialog-confirm v-if="isEdit" />
+
+    <dialog-error />
+
+    <forms-licence />
+
+    <div v-if="counter" v-html="counter"></div>
   </div>
 </template>
 
@@ -43,15 +40,11 @@ export default {
   computed: {
     ...mapGetters({
       page: "pages/page",
-      isApp: "isApp",
       isEdit: "isEdit",
       dialogImageUpload: "dialogImageUpload",
       dialogImageSvg: "dialogImageSvg",
       site: "sites/site"
     }),
-    isLogin() {
-      return this.isApp && !this.$auth.loggedIn;
-    },
     counter() {
       return !this.isEdit && this.site && this.site.counter
         ? this.site.counter

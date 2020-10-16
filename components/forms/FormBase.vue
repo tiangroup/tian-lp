@@ -67,8 +67,7 @@ export default {
     ...mapGetters({
       site: "sites/site",
       getForm: "forms/form",
-      isEdit: "isEdit",
-      sect: "sections/section"
+      isEdit: "isEdit"
     }),
     styleDiv() {
       return this.isEdit
@@ -120,26 +119,6 @@ export default {
         });
       }
     }
-  },
-  async mounted() {
-    // if (!this.formId && this.isEdit) {
-    //   const sect = this.sect(this.section.__component);
-    //   let template = null;
-    //   if (sect.forms) {
-    //     const form = sect.forms.find(f => f.name == this.field);
-    //     if (form) {
-    //       template = form.template;
-    //     }
-    //   }
-    //   await this.addForm({
-    //     template,
-    //     siteId: this.site.id,
-    //     sectionId: this.section.id,
-    //     field: this.field
-    //   });
-    //   await this.savePage();
-    //   await this.loadForm(this.formId);
-    // }
   }
 };
 </script>

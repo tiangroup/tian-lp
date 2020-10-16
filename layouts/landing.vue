@@ -8,13 +8,15 @@
     </v-app>
     <v-app v-else>
       <v-main>
-        <nuxt />
+        <Login v-if="isApp"></Login>
+        <nuxt v-else />
       </v-main>
     </v-app>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   head: {
     link: [
@@ -23,6 +25,11 @@ export default {
         href: "/assets/css/style.css"
       }
     ]
+  },
+  computed: {
+    ...mapGetters({
+      isApp: "isApp"
+    })
   }
 };
 </script>
