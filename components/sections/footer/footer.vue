@@ -1,12 +1,12 @@
 <template>
   <footer
     :class="{
-      'position-relative': isEdit,
+      'position-relative': _isEdit,
       mDark: section.settings.background === 'dark'
     }"
     :id="section.id"
   >
-    <buttons-section v-if="isEdit" :section="section"></buttons-section>
+    <buttons-section v-if="_isEdit" :section="section"></buttons-section>
     <div
       class="footer bg-secondary"
       :class="{ 'footer--style2': view === 'view2' }"
@@ -189,8 +189,12 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit"
+      _isEdit: "isEdit",
+      isSectionEdit: "isSectionEdit"
     }),
+    isEdit() {
+      return this._isEdit && this.isSectionEdit(this.section);
+    },
     view() {
       return this.section.settings.view || "view1";
     },

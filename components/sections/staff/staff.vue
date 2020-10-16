@@ -1,6 +1,6 @@
 <template>
-  <div :class="{ 'position-relative': isEdit }" :id="section.id">
-    <buttons-section v-if="isEdit" :section="section" />
+  <div :class="{ 'position-relative': _isEdit }" :id="section.id">
+    <buttons-section v-if="_isEdit" :section="section" />
     <div
       class="staff custom-v-spacing custom-h-spacing bg-primary"
       :class="{ mDark: section.settings.background === 'dark' }"
@@ -26,7 +26,7 @@
                 :item="item"
                 :isEdit="isEdit"
                 :sectionId="section.id"
-                v-for="item in section.items.filter((i) => i.id)"
+                v-for="item in section.items.filter(i => i.id)"
                 :key="item.id"
               ></staff-item>
               <div
@@ -54,7 +54,7 @@
                   :item="item"
                   :isEdit="false"
                   :sectionId="section.id"
-                  v-for="item in section.items.filter((i) => i.id)"
+                  v-for="item in section.items.filter(i => i.id)"
                   :key="item.id"
                 ></staff-item>
               </div>
@@ -71,10 +71,10 @@ import { mapGetters } from "vuex";
 import StaffItem from "./StaffItem";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   components: {
-    StaffItem,
+    StaffItem
   },
   data: () => ({
     currentSlide: 0,
@@ -96,28 +96,32 @@ export default {
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false,
-          },
+            arrows: false
+          }
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false,
-          },
-        },
-      ],
-    },
+            arrows: false
+          }
+        }
+      ]
+    }
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      _isEdit: "isEdit",
+      isSectionEdit: "isSectionEdit"
     }),
+    isEdit() {
+      return this._isEdit && this.isSectionEdit(this.section);
+    },
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     slickRef() {
@@ -135,20 +139,20 @@ export default {
     },
     itemsCount() {
       return this.section.items.length;
-    },
+    }
   },
   methods: {
     handleInit(event, slick) {
       if (this.currentSlide) {
         slick.goTo(this.currentSlide, true);
       }
-    },
+    }
   },
-  beforeUpdate: function () {
+  beforeUpdate: function() {
     if (this.$refs[this.slickRef]) {
       this.currentSlide = this.$refs[this.slickRef].currentSlide();
     }
-  },
+  }
 };
 </script>
 <style scoped>
@@ -157,8 +161,6 @@ export default {
 }
 .staff >>> .v-skeleton-loader__avatar,
 .staff >>> .v-skeleton-loader__button,
-.staff >>> .v-skeleton-loader__chip,
-.staff >>> .v-skeleton-loader__divider,
 .staff >>> .v-skeleton-loader__heading,
 .staff >>> .v-skeleton-loader__image,
 .staff >>> .v-skeleton-loader__text {

@@ -1,13 +1,13 @@
 <template>
-  <div :class="{ 'position-relative': isEdit }" :id="section.id">
-    <buttons-section v-if="isEdit" :section="section"></buttons-section>
+  <div :class="{ 'position-relative': _isEdit }" :id="section.id">
+    <buttons-section v-if="_isEdit" :section="section"></buttons-section>
     <div
       class="services custom-v-spacing-2 bg-secondary"
       :class="{
         mDark: section.settings.background === 'dark',
         'services--style1': view === 'view1',
         'services--style2': view === 'view2',
-        'services--style3': view === 'view3',
+        'services--style3': view === 'view3'
       }"
     >
       <div class="landing__container">
@@ -67,26 +67,30 @@ import View2 from "./ServicesView2";
 import View3 from "./ServicesView3";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   components: {
     View1,
     View2,
-    View3,
+    View3
   },
   data() {
     return {
       currentItem: {},
-      dialogOrderService: false,
+      dialogOrderService: false
     };
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      _isEdit: "isEdit",
+      isSectionEdit: "isSectionEdit"
     }),
+    isEdit() {
+      return this._isEdit && this.isSectionEdit(this.section);
+    },
     view() {
       return this.section.settings.view;
-    },
+    }
   },
   methods: {
     showOrderDialog(item) {
@@ -94,8 +98,8 @@ export default {
         this.currentItem = item;
         this.dialogOrderService = true;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
-  <div :class="{ 'position-relative': isEdit }" :id="section.id">
-    <buttons-section v-if="isEdit" :section="section">
+  <div :class="{ 'position-relative': _isEdit }" :id="section.id">
+    <buttons-section v-if="_isEdit" :section="section">
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -13,7 +13,7 @@
             @click="
               itemImageSelect({
                 field: 'bg_img',
-                value: section.bg_img,
+                value: section.bg_img
               })
             "
           >
@@ -112,19 +112,23 @@ import { mapGetters, mapMutations } from "vuex";
 import Timer from "./Timer.vue";
 export default {
   components: {
-    Timer,
+    Timer
   },
   props: {
-    section: Object,
+    section: Object
   },
   data: () => ({
     dialogCtaDate: false,
-    ctaDate: "",
+    ctaDate: ""
   }),
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      _isEdit: "isEdit",
+      isSectionEdit: "isSectionEdit"
     }),
+    isEdit() {
+      return this._isEdit && this.isSectionEdit(this.section);
+    },
     countdown() {
       return this.section.settings.countdown === true;
     },
@@ -135,20 +139,20 @@ export default {
         let genDate = this.generateEndDate();
         return genDate;
       }
-    },
+    }
   },
   methods: {
     ...mapMutations({
       showImageUpload: "SET_DIALOG_IMAGE_UPLOAD",
       setImageUpload: "SET_IMAGE_UPLOAD",
-      setSectionField: "pages/SET_SECTION_FIELD",
+      setSectionField: "pages/SET_SECTION_FIELD"
     }),
     itemImageSelect() {
       this.setImageUpload({
         sectionId: this.section.id,
         field: "bg_img",
         items: null,
-        value: this.section.bg_img,
+        value: this.section.bg_img
       });
       this.showImageUpload(true);
     },
@@ -162,7 +166,7 @@ export default {
       this.setSectionField({
         id: this.section.id,
         field: "date",
-        value: newDate,
+        value: newDate
       });
       this.$store.dispatch("pages/savePage");
       this.dialogCtaDate = false;
@@ -181,12 +185,12 @@ export default {
         computedDate.getTime() + 84 * 60 * 60 * 1000 + 15 * 60 * 1000
       );
       return computedDate.toISOString().substr(0, 10);
-    },
+    }
   },
-  mounted: function () {
+  mounted: function() {
     if (!this.section.date) {
       this.ctaDate = this.generateEndDate();
     }
-  },
+  }
 };
 </script>

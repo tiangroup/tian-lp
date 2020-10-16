@@ -1,6 +1,6 @@
 <template>
-  <div :class="{ 'position-relative': isEdit }" :id="section.id">
-    <buttons-section v-if="isEdit" :section="section">
+  <div :class="{ 'position-relative': _isEdit }" :id="section.id">
+    <buttons-section v-if="_isEdit" :section="section">
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -13,7 +13,7 @@
             @click="
               itemImageSelect({
                 field: 'img',
-                value: section.img,
+                value: section.img
               })
             "
           >
@@ -83,31 +83,32 @@
 import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   computed: {
     ...mapGetters({
-      isEdit: "isEdit",
+      _isEdit: "isEdit",
+      isSectionEdit: "isSectionEdit"
     }),
-    styleDiv() {
-      return this.isEdit ? { position: "relative" } : null;
-    },
+    isEdit() {
+      return this._isEdit && this.isSectionEdit(this.section);
+    }
   },
   data: () => ({}),
   methods: {
     ...mapMutations({
       showImageUpload: "SET_DIALOG_IMAGE_UPLOAD",
-      setImageUpload: "SET_IMAGE_UPLOAD",
+      setImageUpload: "SET_IMAGE_UPLOAD"
     }),
     itemImageSelect() {
       this.setImageUpload({
         sectionId: this.section.id,
         field: "img",
         items: null,
-        value: this.section.img,
+        value: this.section.img
       });
       this.showImageUpload(true);
-    },
-  },
+    }
+  }
 };
 </script>
