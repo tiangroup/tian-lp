@@ -57,8 +57,7 @@
         </v-tab-item>
         <v-tab-item>
           <v-container>
-            <v-text-field label="Заголовок письма" v-model="mailSubject" />
-            <v-text-field label="E-mail отправки" v-model="mailTo" />
+            <form-editor-settings :form="form" />
           </v-container>
         </v-tab-item>
       </v-tabs>
@@ -154,36 +153,11 @@ export default {
           value: value
         });
       }
-    },
-    mailTo: {
-      get: function() {
-        return this.form.mail ? this.form.mail.to : "";
-      },
-      set: function(value) {
-        this.setMailField({
-          formId: this.form.id,
-          field: "to",
-          value: value
-        });
-      }
-    },
-    mailSubject: {
-      get: function() {
-        return this.form.mail ? this.form.mail.subject : "";
-      },
-      set: function(value) {
-        this.setMailField({
-          formId: this.form.id,
-          field: "subject",
-          value: value
-        });
-      }
     }
   },
   methods: {
     ...mapMutations({
       setFormField: "forms/SET_FORM_FIELD",
-      setMailField: "forms/SET_MAIL_FIELD",
       addFieds: "forms/ADD_FIELDS"
     }),
     ...mapActions({

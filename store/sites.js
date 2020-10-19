@@ -24,6 +24,17 @@ export const mutations = {
   },
   SET_CHANGE(state, change) {
     state.change = change;
+  },
+  SET_RECAPTCHA_FIELD(state, payload) {
+    if (!state.site.recaptcha) {
+      state.site.recaptcha = {
+        active: false,
+        sitekey: null,
+        secret: null
+      };
+    }
+    state.site.recaptcha[payload.field] = payload.value;
+    state.change = true;
   }
 };
 
@@ -70,5 +81,8 @@ export const getters = {
   name: state => state.site.name,
   id: state => state.site.id,
   pages: state => state.site.pages,
-  change: state => state.change
+  change: state => state.change,
+  recaptcha: state => {
+    return state.site.recaptcha ? state.site.recaptcha : {};
+  }
 };

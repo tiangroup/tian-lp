@@ -35,6 +35,27 @@ app.post("/", async (req, res) => {
       }
     });
     if (form && form.mail && form.mail.to) {
+      // получение сайта
+      const site_id = form.site;
+      const { data: site } = await axios.get(
+        `${api_backend}/sites/${site_id}`,
+        {
+          params: {
+            token: admin_token
+          }
+        }
+      );
+      // проверка recaptcha
+      if (site.recaptcha && site.recaptcha.active) {
+        const recaptcha_token = req.body.recaptcha_token;
+        const secretKey = site.recaptcha.secret;
+        const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptcha_token}`;
+        const { data: siteverify } = await axios.get(url);
+        if (!siteverify.success) {
+          throw "Вы не прошли проверку reCaptcha";
+        }
+      }
+
       // разбор полей
       const fields = Array();
       for (let field of form.fields) {
@@ -113,9 +134,9 @@ app.post("/", async (req, res) => {
       );
     }
     res.send("OK");
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ err });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
   }
 });
 

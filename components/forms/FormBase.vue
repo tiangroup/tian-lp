@@ -30,9 +30,9 @@
       </div>
       <div class="form__text">
         Нажимая на кнопку, подтверждаю свое согласие с
-        <a href @click.prevent="$forms.licence(true)"
-          >условиями обработки персональных данных</a
-        >
+        <a href @click.prevent="$forms.licence(true)">
+          условиями обработки персональных данных
+        </a>
       </div>
     </div>
   </form>
@@ -66,6 +66,7 @@ export default {
   computed: {
     ...mapGetters({
       site: "sites/site",
+      recaptcha: "sites/recaptcha",
       getForm: "forms/form",
       isEdit: "isEdit"
     }),
@@ -92,6 +93,21 @@ export default {
     async onSubmit() {
       if (this.loading) return;
       this.loading = true;
+
+      let token = null;
+      if (this.recaptcha.active) {
+        try {
+          token = await this.$recaptcha.execute("login");
+        } catch (error) {
+          //console.log("Login error:", error);
+          this.loading = true;
+          this.$error({
+            message: "Вы не прошли проверку reCaptcha"
+          });
+          return;
+        }
+      }
+
       try {
         const formData = new FormData();
         for (let id of Object.keys(this.formData)) {
@@ -100,6 +116,9 @@ export default {
           }
         }
         formData.append("id", this.formId);
+        if (this.recaptcha.active) {
+          formData.append("recaptcha_token", token);
+        }
         const { data } = await this.$axios.post(
           `${this.$site_app}/forms`,
           formData
@@ -112,12 +131,28 @@ export default {
           //caption: "Форма отправлена",
           error: false
         });
-      } catch (err) {
+      } catch (error) {
         this.loading = false;
         this.$emit("send", {
           error: true
         });
       }
+    },
+    async onSubmit2() {
+      if (this.recaptcha.active) {
+        try {
+          const token = await this.$recaptcha.execute("login");
+          console.log("ReCaptcha token:", token);
+        } catch (error) {
+          console.log("Login error:", error);
+        }
+      }
+    }
+  },
+  async mounted() {
+    if (this.recaptcha.active) {
+      this.$recaptcha.siteKey = this.recaptcha.sitekey;
+      await this.$recaptcha.init();
     }
   }
 };

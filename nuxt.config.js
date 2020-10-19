@@ -90,6 +90,14 @@ export default {
           rect_lg: { macros: ["scaleAndCrop|592|391"] }
         }
       }
+    ],
+    [
+      "@nuxtjs/recaptcha",
+      {
+        hideBadge: true,
+        siteKey: "-",
+        version: 3
+      }
     ]
   ],
   /*

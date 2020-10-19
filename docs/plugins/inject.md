@@ -96,7 +96,7 @@ methods: {
       ...
     }catch(error){
       this.$error({
-        message: "Сообщение об ошибке...";
+        message: "Сообщение об ошибке..."
       });
     }
   }

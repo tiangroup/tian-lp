@@ -11,7 +11,7 @@
       :required="!!item.required"
       :value="value"
       @input="$emit('input', $event.target.value)"
-      v-mask="'+7 ### ###-##-##'"
+      v-mask="mask"
       placeholder="+7 900 111-22-33"
     />
   </label>
@@ -21,11 +21,14 @@
 import { VueMaskDirective as mask } from "v-mask";
 export default {
   directives: {
-    mask,
+    mask
   },
+  data: () => ({
+    mask: "+7 ### ###-##-##"
+  }),
   props: {
     item: Object,
-    value: String,
-  },
+    value: String
+  }
 };
 </script>
