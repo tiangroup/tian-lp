@@ -1,5 +1,8 @@
 <template>
-  <label class="field field--text" :class="{ 'field--required': item.required }">
+  <label
+    class="field field--text"
+    :class="{ 'field--required': item.required }"
+  >
     <span class="field__label">{{ item.label }}</span>
     <input
       type="tel"
@@ -8,12 +11,18 @@
       :required="!!item.required"
       :value="value"
       @input="$emit('input', $event.target.value)"
+      v-mask="'+7 ### ###-##-##'"
+      placeholder="+7 900 111-22-33"
     />
   </label>
 </template>
 
 <script>
+import { VueMaskDirective as mask } from "v-mask";
 export default {
+  directives: {
+    mask,
+  },
   props: {
     item: Object,
     value: String,
