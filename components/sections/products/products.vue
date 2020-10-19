@@ -18,13 +18,13 @@
           <div class="products__list cells" v-if="section.items && isEdit">
             <products-item
               class="cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
-              v-for="item in section.items.filter(i => i.id)"
+              v-for="item in section.items.filter((i) => i.id)"
               :key="item.id"
               :item="item"
               :sectionId="section.id"
               :isEdit="isEdit"
               @show-order-form="showOrderForm(item)"
-              @update-description="updateItemDescription(item)"
+              @show-details="showProductDetails(item)"
             ></products-item>
             <div
               class="products__item-wrap cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
@@ -103,7 +103,7 @@
               :key="slickKey"
             >
               <products-item
-                v-for="item in section.items.filter(i => i.id)"
+                v-for="item in section.items.filter((i) => i.id)"
                 :key="item.id"
                 :item="item"
                 :sectionId="section.id"
@@ -142,7 +142,7 @@
               <div class="cells fx-nw overflow-hidden">
                 <products-item
                   class="cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
-                  v-for="item in section.items.filter(i => i.id)"
+                  v-for="item in section.items.filter((i) => i.id)"
                   :key="item.id"
                   :item="item"
                   :sectionId="section.id"
@@ -161,7 +161,7 @@
           <div class="good-summary">
             <div class="good-summary__row">
               <div class="good-summary__image" v-if="currentItem.img">
-                <img :src="$images.src(currentItem.img)" />
+                <img :src="$images.src(currentItem.img_0)" />
               </div>
               <div class="good-summary__body">
                 <div class="good-summary__title">{{ currentItem.title }}</div>
@@ -209,150 +209,29 @@
                 </button>
               </div>
               <div class="popup-order">
-                <div class="good">
-                  <div class="good__details">
-                    <div class="good__title">{{ currentItem.title }}</div>
-                    <!-- <div class="good__images illustrations">
-                <div class="illustrations__item illustrations__item--main">
-                  <div class="illustrations__image">
-                    <img src="../assets/content-images/products/p-1.jpg">
-                  </div>
-                </div>
-                <div class="illustrations__row">
-                  <div class="illustrations__item">
-                    <a href="../assets/content-images/products/p-1.jpg" class="illustrations__switch illustrations__switch--active">
-                      <div class="illustrations__image">
-                        <img src="../assets/content-images/products/p-1-1.jpg">
-                      </div>
-                    </a>
-                  </div>
-                  <div class="illustrations__item">
-                    <a href="../assets/content-images/products/p-1-2.jpg" class="illustrations__switch">
-                      <div class="illustrations__image">
-                        <img src="../assets/content-images/products/p-1-2-1.jpg">
-                      </div>
-                    </a>
-                  </div>
-                </div>
-                    </div>-->
-                    <div
-                      class="good__chars"
-                      v-html="currentItem.tech_chars"
-                    ></div>
-                    <div
-                      class="good__description"
-                      v-if="currentItem.description"
-                    >
-                      <div class="good__description__title">Описание</div>
-                      <div
-                        class="good__description__body"
-                        v-html="currentItem.description"
-                      ></div>
-                    </div>
-                  </div>
-                  <div class="good__cta">
-                    <div
-                      class="cells justify-content-between align-items-center"
-                    >
-                      <div class="cell cell-auto">
-                        <div class="good__prices">
-                          <div class="good__prices__current">
-                            {{ currentItem.price }}
-                          </div>
-                          <div class="good__prices__old">
-                            {{ currentItem.old_price }}
-                          </div>
-                        </div>
-                      </div>
-                      <div class="cell cell-auto">
-                        <div class="good__action">
-                          <a
-                            href
-                            class="button button-primary"
-                            @click.prevent="initOrderForm(currentItem)"
-                            >Купить</a
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <products-item-detailed
+                  :item="currentItem"
+                  :is-edit="isEdit"
+                  :section-id="section.id"
+                  @save-item="saveItemDetails"
+                ></products-item-detailed>
               </div>
             </div>
           </div>
         </v-dialog>
 
-        <v-dialog
-          v-model="dialogUpdateDescription"
-          max-width="40rem"
-          v-if="isEdit"
-        >
-          <v-card>
-            <v-card-title class="mb-10">
-              Отредактируйте описание товара
-              <v-spacer></v-spacer>
-              <v-btn icon @click="dialogUpdateDescription = false">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </v-card-title>
-            <v-card-text>
-              <div>
-                <b>Краткое описание товара:</b>
-                <small>(появится в блоке "Каталог")</small>:
-              </div>
-              <editor
-                data-placeholder="Краткое описание товара"
-                :text="currentItem.short_description || ''"
-                :sectionId="section.id"
-                field="short_description"
-                :itemId="currentItem.id"
-                :key="'sh' + currentItem.id"
-              />
-              <div class="mt-10">
-                <b>Технические характеристики товара</b>
-                <small>
-                  (краткая инфорация о товаре, которая появится в карточке
-                  товара) </small
-                >:
-              </div>
-              <editor
-                data-placeholder="Габариты: 220 х 100 х 35 мм"
-                :text="currentItem.tech_chars || ''"
-                :sectionId="section.id"
-                field="tech_chars"
-                :itemId="currentItem.id"
-                editContent="html"
-                :key="'ch' + currentItem.id"
-              />
-              <div class="mt-10">
-                <b>Полное описание товара</b>
-                <small>(появится в карточке товара)</small>:
-              </div>
-              <editor
-                data-placeholder="Полное описание товара"
-                :text="currentItem.description || ''"
-                :sectionId="section.id"
-                field="description"
-                :itemId="currentItem.id"
-                editContent="html"
-                :key="'d' + currentItem.id"
-              />
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                depressed
-                text
-                color="gray"
-                @click="dialogUpdateDescription = false"
-                >Отменить</v-btn
-              >
-              <v-btn depressed color="green" dark @click="saveDescription()"
-                >Сохранить</v-btn
-              >
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <client-only>
+          <v-gallery
+            :images="currentItemImages"
+            :index="index"
+            @close="index = null"
+            v-if="!isEdit"
+            :id="'gallery' + section.id"
+            :options="{
+              closeOnSlideClick: true,
+            }"
+          ></v-gallery>
+        </client-only>
       </div>
     </div>
   </div>
@@ -363,17 +242,17 @@ import { mapMutations, mapGetters } from "vuex";
 import ProductsItem from "./ProductsItem";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   components: {
-    ProductsItem
+    ProductsItem,
   },
   data: () => ({
     currentItem: {},
     currentSlide: 0,
     dialogDetailedItem: false,
     dialogOrderProduct: false,
-    dialogUpdateDescription: false,
+    index: null,
     itemsToShow: 4,
     slickOptions: {
       arrows: true,
@@ -392,32 +271,32 @@ export default {
           settings: {
             slidesToShow: 3,
             slidesToScroll: 1,
-            arrows: false
-          }
+            arrows: false,
+          },
         },
         {
           breakpoint: 1024,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false
-          }
+            arrows: false,
+          },
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false
-          }
-        }
-      ]
-    }
+            arrows: false,
+          },
+        },
+      ],
+    },
   }),
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit"
+      isSectionEdit: "isSectionEdit",
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
@@ -425,7 +304,7 @@ export default {
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit
+        draggable: !this.isEdit,
       });
     },
     view() {
@@ -465,7 +344,22 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)");
-    }
+    },
+    currentItemImages() {
+      var imagesArray = [];
+      for (var i = 0; i < 4; i++) {
+        let imgKey = "img_" + i;
+        if (this.currentItem[imgKey]) {
+          var imagesItem = {
+            title: this.currentItem.title + ". Изображение " + (i + 1),
+            href: this.$images.src(this.currentItem[imgKey]),
+            type: "image/jpeg",
+          };
+          imagesArray.push(imagesItem);
+        }
+      }
+      return imagesArray;
+    },
   },
   methods: {
     handleInit(event, slick) {
@@ -502,10 +396,9 @@ export default {
       }
     },
     showProductDetails(item) {
-      if (!this.isEdit) {
-        this.currentItem = item;
-        this.dialogDetailedItem = true;
-      }
+      console.log("click");
+      this.currentItem = item;
+      this.dialogDetailedItem = true;
     },
     showOrderForm(item) {
       this.currentItem = item;
@@ -514,16 +407,6 @@ export default {
     initOrderForm(item) {
       this.dialogDetailedItem = false;
       this.showOrderForm(item);
-    },
-    updateItemDescription(item) {
-      if (this.isEdit) {
-        this.currentItem = item;
-        this.dialogUpdateDescription = true;
-      }
-    },
-    saveDescription() {
-      this.dialogUpdateDescription = false;
-      this.$store.dispatch("pages/savePage");
     },
     showLimited(item, itemIndex) {
       if (item.id && itemIndex < this.itemsToShow) {
@@ -540,14 +423,18 @@ export default {
       } else {
         this.itemsToShow += 4;
       }
-    }
+    },
+    saveItemDetails() {
+      this.$store.dispatch("pages/savePage");
+      this.dialogDetailedItem = false;
+    },
   },
-  beforeUpdate: function() {
+  beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
       this.currentSlide = this.$refs[this.slickRef].currentSlide();
     }
   },
-  beforeDestroy: function() {
+  beforeDestroy: function () {
     if (this.$refs[this.slickRef]) {
       if (document.getElementById(this.section.id) && !this.isEdit) {
         document
@@ -555,7 +442,7 @@ export default {
           .removeEventListener("click", this.handleClonedSlides);
       }
     }
-  }
+  },
 };
 </script>
 <style scoped>
