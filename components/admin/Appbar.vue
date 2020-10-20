@@ -187,12 +187,14 @@
 
         <v-subheader>Сайт</v-subheader>
 
+        <!--
         <v-list-item link @click="publish" v-if="isPublish && !change">
           <v-list-item-icon>
             <v-icon>mdi-cloud-upload</v-icon>
           </v-list-item-icon>
           <v-list-item-title>Опубликовать</v-list-item-title>
         </v-list-item>
+        -->
 
         <v-list-group prepend-icon="mdi-text-box-multiple" no-action>
           <template v-slot:activator>

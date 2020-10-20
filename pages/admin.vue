@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import Admin from "~/components/admin/Admin/Admin";
 import AdminForm from "~/components/admin/Admin/form/AdminForm";
 import AdminSite from "~/components/admin/Admin/site/AdminSite";
 export default {
@@ -26,7 +25,7 @@ export default {
     title: "Панель управления"
   }),
   data: () => ({
-    comp: "Admin",
+    comp: "AdminSite",
     params: {}
   }),
   computed: {
