@@ -206,6 +206,8 @@
 
         <menu-item-counter />
 
+        <menu-item-sitemap />
+
         <menu-item-robots />
 
         <v-subheader>Администрирование</v-subheader>

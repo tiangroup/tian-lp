@@ -24,6 +24,10 @@ export const mutations = {
     state.site.licence = content;
     state.change = true;
   },
+  SET_SITEMAP(state, content) {
+    state.site.sitemap = content;
+    state.change = true;
+  },
   SET_CHANGE(state, change) {
     state.change = change;
   },

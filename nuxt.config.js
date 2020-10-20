@@ -64,6 +64,7 @@ export default {
     "@nuxtjs/axios",
     "@nuxtjs/auth",
     "~modules/robots",
+    "~modules/sitemap",
     [
       "nuxt-env",
       {
