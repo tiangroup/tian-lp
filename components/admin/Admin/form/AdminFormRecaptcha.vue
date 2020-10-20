@@ -13,7 +13,7 @@
       <a target="_blank" href="https://www.google.com/recaptcha/admin">
         Получить ключи
         <v-icon color="primary" small>
-          mdi-square-edit-outline
+          mdi-open-in-new
         </v-icon>
       </a>
       <v-spacer></v-spacer>

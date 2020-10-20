@@ -28,6 +28,10 @@ export const mutations = {
     state.site.sitemap = content;
     state.change = true;
   },
+  SET_YM(state, content) {
+    state.site.ym = content.trim();
+    state.change = true;
+  },
   SET_CHANGE(state, change) {
     state.change = change;
   },

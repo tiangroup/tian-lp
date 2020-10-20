@@ -21,23 +21,31 @@
 
         <v-tab-item>
           <v-container>
-            <v-text-field label="Заголовок формы" v-model="formTitle" />
-            <v-text-field label="Описание формы" v-model="formDescription" />
-            <v-text-field
-              label="Подпись кнопки отправки"
-              v-model="formButton"
-            />
-            <v-text-field
-              v-if="popup"
-              label="Подпись кнопки открытия формы"
-              v-model="formOpenButton"
-            />
-            <v-text-field
-              label="Сообщение после успешной отправки"
-              v-model="formSuccessMessage"
-            />
+            <v-card class="mt-4">
+              <v-card-text>
+                <v-text-field label="Заголовок формы" v-model="formTitle" />
+                <v-text-field
+                  label="Описание формы"
+                  v-model="formDescription"
+                />
+                <v-text-field
+                  label="Подпись кнопки отправки"
+                  v-model="formButton"
+                />
+                <v-text-field
+                  v-if="popup"
+                  label="Подпись кнопки открытия формы"
+                  v-model="formOpenButton"
+                />
+                <v-text-field
+                  label="Сообщение после успешной отправки"
+                  v-model="formSuccessMessage"
+                />
+              </v-card-text>
+            </v-card>
           </v-container>
         </v-tab-item>
+
         <v-tab-item>
           <v-container>
             <form-editor-input
@@ -48,13 +56,14 @@
               :first="index == 0"
               :last="index + 1 == form.fields.length"
             ></form-editor-input>
-            <v-row class="justify-center">
+            <v-row class="justify-center mt-4">
               <v-btn fab dark small color="green" @click="newField">
                 <v-icon>mdi-plus</v-icon>
               </v-btn>
             </v-row>
           </v-container>
         </v-tab-item>
+
         <v-tab-item>
           <v-container>
             <form-editor-settings :form="form" />

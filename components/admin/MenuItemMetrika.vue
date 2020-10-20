@@ -1,17 +1,17 @@
 <template>
   <v-list-item link @click="openForm">
     <v-list-item-icon>
-      <v-icon>mdi-sitemap</v-icon>
+      <v-icon>mdi-chart-bar</v-icon>
     </v-list-item-icon>
-    <v-list-item-title>sitemap.xml</v-list-item-title>
+    <v-list-item-title>Метрика</v-list-item-title>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">sitemap.xml</span>
+          <span class="headline">Метрика</span>
         </v-card-title>
 
         <v-card-text>
-          <v-textarea outlined v-model="sitemap"></v-textarea>
+          <v-text-field label="Идентификатор Яндекс.Метрика" v-model="ym" />
         </v-card-text>
 
         <v-card-actions>
@@ -46,12 +46,12 @@ export default {
     ...mapGetters({
       site: "sites/site"
     }),
-    sitemap: {
+    ym: {
       get() {
-        return this.content == undefined ? this.site.sitemap : this.content;
+        return this.content == undefined ? this.site.ym : this.content;
       },
       set(value) {
-        this.content = value === this.site.sitemap ? undefined : value;
+        this.content = value === this.site.ym ? undefined : value;
       }
     },
     isSave() {
@@ -64,11 +64,11 @@ export default {
     }),
     ...mapMutations({
       setUpdates: "sites/SET_UPDATES",
-      setSitemap: "sites/SET_SITEMAP"
+      setYm: "sites/SET_YM"
     }),
     async save() {
       this.process = true;
-      this.setSitemap(this.content);
+      this.setYm(this.content);
       this.setUpdates();
       await this.saveSite();
       this.process = false;

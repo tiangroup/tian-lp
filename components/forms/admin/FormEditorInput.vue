@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mb-4">
+  <v-card class="mt-4">
     <v-card-title>
       <span>{{ formField.label }}</span>
       <v-spacer></v-spacer>

@@ -1,31 +1,49 @@
 <template>
   <div>
-    <v-text-field label="Заголовок письма" v-model="mailSubject" />
-    <v-text-field label="E-mail отправки" v-model="mailTo" />
-    <v-checkbox
-      label="Включить защиту (reCAPTCHA v3)"
-      v-model="recaptchaActive"
-    ></v-checkbox>
-    <v-text-field
-      v-if="recaptchaActive"
-      label="Ключ сайта"
-      v-model="recaptchaSitekey"
-    />
-    <v-text-field
-      v-if="recaptchaActive"
-      label="Секретный ключ"
-      v-model="recaptchaSecret"
-    />
-    <a
-      target="_blank"
-      href="https://www.google.com/recaptcha/admin"
-      v-if="recaptchaActive"
-    >
-      Получить ключи
-      <v-icon color="primary" small>
-        mdi-square-edit-outline
-      </v-icon>
-    </a>
+    <v-card class="mt-4">
+      <v-card-title>Почтовое уведомление</v-card-title>
+      <v-card-text>
+        <v-text-field label="Заголовок письма" v-model="mailSubject" />
+        <v-text-field label="E-mail отправки" v-model="mailTo" />
+      </v-card-text>
+    </v-card>
+
+    <v-card class="mt-4">
+      <v-card-title>Защита от спама</v-card-title>
+      <v-card-text>
+        <v-checkbox
+          label="Включить защиту (reCAPTCHA v3)"
+          v-model="recaptchaActive"
+        ></v-checkbox>
+        <v-text-field
+          v-if="recaptchaActive"
+          label="Ключ сайта"
+          v-model="recaptchaSitekey"
+        />
+        <v-text-field
+          v-if="recaptchaActive"
+          label="Секретный ключ"
+          v-model="recaptchaSecret"
+        />
+        <a
+          target="_blank"
+          href="https://www.google.com/recaptcha/admin"
+          v-if="recaptchaActive"
+        >
+          Получить ключи
+          <v-icon color="primary" small>
+            mdi-open-in-new
+          </v-icon>
+        </a>
+      </v-card-text>
+    </v-card>
+    <v-card class="mt-4">
+      <v-card-title>Метрика</v-card-title>
+      <v-card-text>
+        <v-checkbox label="Включить метрику"></v-checkbox>
+        <v-text-field label="Идентификатор цели" />
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 

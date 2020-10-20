@@ -204,6 +204,8 @@
           <menu-item-add-page />
         </v-list-group>
 
+        <menu-item-metrika />
+
         <menu-item-counter />
 
         <menu-item-sitemap />
