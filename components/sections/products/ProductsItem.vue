@@ -10,8 +10,8 @@
     ></buttons-item>
     <div class="products__item">
       <div class="products__details" @click="$emit('show-details')">
-        <div class="products__image" :class="{ 'no-image': !item.img_0 }">
-          <img :src="$images.src(item.img_0)" v-if="item.img_0" />
+        <div class="products__image" :class="{ 'no-image': !item.img_1 }">
+          <img :src="$images.src(item.img_1)" v-if="item.img_1" />
         </div>
         <div class="products__title">
           {{ item.title }}

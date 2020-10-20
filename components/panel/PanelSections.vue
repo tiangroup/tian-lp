@@ -5,64 +5,119 @@
       <div class="tuning-panel__subtitle">Настройте внешний вид разделов</div>
       <div class="tuning-panel__block">
         <div class="tuning-panel__row mb-25px justify-content-between">
-          <table class="tuning-sort">
-            <tbody>
-              <tr
+          <div class="tuning-sort">
+            <v-expansion-panels v-model="currentPanel" accordion flat>
+              <v-expansion-panel
                 class="tuning-sort__row"
-                v-for="section in sections.filter((s) => s.id)"
+                v-for="(section, sectionIndex) in sections.filter((s) => s.id)"
                 :key="section.id"
                 :class="{ 'tuning-sort__row--active': section.show === true }"
               >
-                <td class="tuning-sort__cell tuning-sort__name">
-                  {{ section.title }}
-                </td>
-                <td class="tuning-sort__cell tuning-sort__action">
-                  <button class="button button-icon">
+                <div class="tuning-sort__cell tuning-sort__name">
+                  {{ sectionName(section) }}
+                </div>
+                <div class="tuning-sort__cell tuning-sort__action">
+                  <button
+                    class="button button-icon"
+                    @click="toggleSectionSettings(sectionIndex, section.id)"
+                  >
                     <span class="icon icon-tuning"></span>
                     <span class="sr-only">Настройки блока</span>
                   </button>
-                </td>
-                <td class="tuning-sort__cell tuning-sort__action">
+                </div>
+                <div class="tuning-sort__cell tuning-sort__action">
                   <label class="state-switch">
                     <input
                       type="checkbox"
                       class="state-switch__input"
                       :checked="section.show"
+                      @change="toggleSectionVisibility(section)"
                     />
                     <div class="state-switch__label">
                       <span class="sr-only">Включить/выключить блок</span>
                     </div>
                   </label>
-                </td>
-                <td class="tuning-sort__cell tuning-sort__move">
+                </div>
+                <div class="tuning-sort__cell tuning-sort__move">
                   <button class="button button-icon" type="button">
-                    <div class="button__body">
+                    <span class="button__body">
                       <span class="icon icon-move"></span>
                       <span class="sr-only">Переместить блок</span>
-                    </div>
+                    </span>
                   </button>
-                </td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="4" class="tuning-sort__submit">
-                  <button type="button" name="" class="button button-primary">
-                    <div class="button__body">Применить</div>
-                  </button>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
+                </div>
+                <div class="tuning-sort__settings">
+                  <v-expansion-panel-content eager>
+                    <settings
+                      :component="section.__component"
+                      :sectionId="section.id"
+                      :settings="section.settings"
+                    />
+                  </v-expansion-panel-content>
+                </div>
+              </v-expansion-panel>
+
+              <div class="tuning-sort__submit">
+                <button type="button" name="" class="button button-primary">
+                  <span class="button__body">Применить</span>
+                </button>
+              </div>
+            </v-expansion-panels>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { mapMutations, mapGetters } from "vuex";
 export default {
   props: {
     sections: Array,
   },
+  data: function () {
+    return {
+      currentPanel: null,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      sects: "sections/sections",
+    }),
+  },
+  methods: {
+    ...mapMutations({
+      setSectionField: "pages/SET_SECTION_FIELD",
+    }),
+    toggleSectionSettings(index, id) {
+      if (this.currentPanel === index) {
+        this.currentPanel = null;
+      } else {
+        this.currentPanel = index;
+        document.getElementById(id).scrollIntoView();
+      }
+    },
+    toggleSectionVisibility(section) {
+      this.setSectionField({
+        id: section.id,
+        field: "show",
+        value: !section.show,
+      });
+    },
+    sectionName(section) {
+      const sectionConfig = this.sects.find(function (sect) {
+        if (sect.component === section.__component) {
+          return true;
+        }
+      });
+      return sectionConfig.name;
+    },
+  },
 };
 </script>
+<style scoped>
+>>> .v-expansion-panel-content__wrap {
+  padding-left: 0;
+  padding-right: 0;
+}
+</style>

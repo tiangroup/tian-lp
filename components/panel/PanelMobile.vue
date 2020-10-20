@@ -6,10 +6,9 @@
       <div class="cells mb-15px">
         <div class="cell cell-auto">
           <div class="tuning-bg tuning-bg--pills">
-            <a
-              href=""
+            <button
               class="tuning-bg__color tuning-bg__color1 tuning-bg__color--active"
-            ></a>
+            ></button>
           </div>
           <div class="tuning-bg__label" aria-hidden="true">
             Как на&nbsp;десктопе
@@ -17,7 +16,7 @@
         </div>
         <div class="cell cell-auto">
           <div class="tuning-bg tuning-bg--pills">
-            <a href="" class="tuning-bg__color tuning-bg__color3"></a>
+            <button class="tuning-bg__color tuning-bg__color3"></button>
           </div>
           <div class="tuning-bg__label" aria-hidden="true">Цветной</div>
         </div>
@@ -27,7 +26,11 @@
       <div class="tuning-panel__block__title mb-25px">Варианты шапок</div>
       <div class="tuning-panel__row tuning-panel__settings">
         <div class="tuning-panel__cell tuning-setting-wrap">
-          <a href="" class="tuning-panel__setting tuning-setting">
+          <a
+            href=""
+            class="tuning-panel__setting tuning-setting"
+            @click.prevent
+          >
             <div class="tuning-setting__image">
               <img
                 src="https://api.tian-lp.ru/uploads/m_header_1_de07dc0786.jpeg"
@@ -40,6 +43,7 @@
           <a
             href=""
             class="tuning-panel__setting tuning-setting tuning-setting--active"
+            @click.prevent
           >
             <div class="tuning-setting__image">
               <img
@@ -55,7 +59,11 @@
       <div class="tuning-panel__block__title mb-25px">Варианты меню</div>
       <div class="tuning-panel__row tuning-panel__settings">
         <div class="tuning-panel__cell tuning-setting-wrap">
-          <a href="" class="tuning-panel__setting tuning-setting">
+          <a
+            href=""
+            class="tuning-panel__setting tuning-setting"
+            @click.prevent
+          >
             <div class="tuning-setting__image">
               <img
                 src="https://api.tian-lp.ru/uploads/m_menu_1_4a6858e905.jpeg"
@@ -68,6 +76,7 @@
           <a
             href=""
             class="tuning-panel__setting tuning-setting tuning-setting--active"
+            @click.prevent
           >
             <div class="tuning-setting__image">
               <img

@@ -12,43 +12,48 @@
         />
         <span v-else> {{ item.title }}</span>
       </div>
-      <div class="good__images illustrations">
-        <div class="illustrations__item illustrations__item--main">
+      <div class="good__images illustrations" v-if="isEdit || item.img_1">
+        <div
+          class="illustrations__item illustrations__item--main"
+          @click="handleMainIllustrationClick"
+        >
           <image-item
             divClass="illustrations__image"
-            :img="item['img_' + currentBigImageIndex]"
+            :field="getImageField(currentBigImageIndex)"
+            :img="getImage(currentBigImageIndex)"
             :itemId="item.id"
             :sectionId="sectionId"
+            :key="'imgB' + item.id"
           />
         </div>
-        <div class="illustrations__row">
-          <div class="illustrations__item" v-for="n in 3" :key="n">
-            <div v-if="isEdit" class="illustrations__switch">
-              <image-item
-                divClass="illustrations__image"
-                :img="item.img_0"
-                :itemId="item.id"
-                :sectionId="sectionId"
-              />
-            </div>
+        <div class="illustrations__row" v-if="isEdit || item.img_2">
+          <div
+            class="illustrations__item"
+            v-for="n in 4"
+            :key="n"
+            :id="'index' + n"
+          >
             <div
-              v-else
               class="illustrations__switch"
               :class="{
                 'illustrations__switch--active': n === currentBigImageIndex,
               }"
+              @click="handleIllustrationClick(n)"
+              v-if="item['img_' + n] || isEdit"
             >
               <image-item
                 divClass="illustrations__image"
-                :img="item['img_' + n]"
+                :field="getImageField(n)"
+                :img="getImage(n)"
                 :itemId="item.id"
                 :sectionId="sectionId"
+                :key="'img' + item.id + n"
               />
             </div>
           </div>
         </div>
       </div>
-      <div class="good__chars" v-if="isEdit">
+      <div class="good__chars body-copy" v-if="isEdit">
         <editor
           data-placeholder="Габариты: 220 х 100 х 35 мм"
           :text="item.tech_chars || ''"
@@ -59,7 +64,7 @@
           :key="'ch' + item.id"
         />
       </div>
-      <div class="good__chars" v-html="item.tech_chars" v-else></div>
+      <div class="good__chars body-copy" v-html="item.tech_chars" v-else></div>
       <div class="good__description" v-if="isEdit">
         <div class="good__description__title">Краткое описание</div>
 
@@ -85,7 +90,10 @@
             :key="'d' + item.id"
           />
         </div>
-        <div class="good__description__body" v-html="item.description"></div>
+        <div
+          class="good__description__body body-copy"
+          v-html="item.description"
+        ></div>
       </div>
     </div>
     <div class="good__cta">
@@ -151,8 +159,34 @@ export default {
   },
   data: function () {
     return {
-      currentBigImageIndex: null,
+      currentBigImageIndex: 1,
     };
+  },
+  methods: {
+    handleMainIllustrationClick() {
+      if (!this.isEdit) {
+        this.$emit("call-gallery", this.currentBigImageIndex - 1);
+      }
+    },
+    handleIllustrationClick(index) {
+      //if (!this.isEdit) {
+      this.currentBigImageIndex = index;
+      //}
+    },
+    getImage(index) {
+      let imageField = this.getImageField(index);
+      return this.item[imageField];
+    },
+    getImageField(index) {
+      return "img_" + index;
+    },
+  },
+  watch: {
+    isEdit: function (val, oldVal) {
+      if (val === true) {
+        this.currentBigImageIndex = 1;
+      }
+    },
   },
 };
 </script>

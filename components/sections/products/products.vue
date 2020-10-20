@@ -160,8 +160,8 @@
         >
           <div class="good-summary">
             <div class="good-summary__row">
-              <div class="good-summary__image" v-if="currentItem.img">
-                <img :src="$images.src(currentItem.img_0)" />
+              <div class="good-summary__image" v-if="currentItem.img_1">
+                <img :src="$images.src(currentItem.img_1)" />
               </div>
               <div class="good-summary__body">
                 <div class="good-summary__title">{{ currentItem.title }}</div>
@@ -214,6 +214,8 @@
                   :is-edit="isEdit"
                   :section-id="section.id"
                   @save-item="saveItemDetails"
+                  @call-gallery="callImageGallery"
+                  @call-order-form="handleOrderFormCall(currentItem)"
                 ></products-item-detailed>
               </div>
             </div>
@@ -347,11 +349,11 @@ export default {
     },
     currentItemImages() {
       var imagesArray = [];
-      for (var i = 0; i < 4; i++) {
+      for (var i = 1; i < 5; i++) {
         let imgKey = "img_" + i;
         if (this.currentItem[imgKey]) {
           var imagesItem = {
-            title: this.currentItem.title + ". Изображение " + (i + 1),
+            title: this.currentItem.title + ". Изображение " + i,
             href: this.$images.src(this.currentItem[imgKey]),
             type: "image/jpeg",
           };
@@ -396,17 +398,12 @@ export default {
       }
     },
     showProductDetails(item) {
-      console.log("click");
       this.currentItem = item;
       this.dialogDetailedItem = true;
     },
     showOrderForm(item) {
       this.currentItem = item;
       this.dialogOrderProduct = true;
-    },
-    initOrderForm(item) {
-      this.dialogDetailedItem = false;
-      this.showOrderForm(item);
     },
     showLimited(item, itemIndex) {
       if (item.id && itemIndex < this.itemsToShow) {
@@ -427,6 +424,13 @@ export default {
     saveItemDetails() {
       this.$store.dispatch("pages/savePage");
       this.dialogDetailedItem = false;
+    },
+    callImageGallery(imageIndex) {
+      this.index = imageIndex;
+    },
+    handleOrderFormCall(item) {
+      this.dialogDetailedItem = false;
+      this.showOrderForm(item);
     },
   },
   beforeUpdate: function () {
