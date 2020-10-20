@@ -16,6 +16,16 @@
       label="Секретный ключ"
       v-model="recaptchaSecret"
     />
+    <a
+      target="_blank"
+      href="https://www.google.com/recaptcha/admin"
+      v-if="recaptchaActive"
+    >
+      Получить ключи
+      <v-icon color="primary" small>
+        mdi-square-edit-outline
+      </v-icon>
+    </a>
   </div>
 </template>
 

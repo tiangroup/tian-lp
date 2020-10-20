@@ -61,6 +61,9 @@
             <v-col cols="12" md="4">
               <admin-form-mail :params="params"></admin-form-mail>
             </v-col>
+            <v-col cols="12" md="4">
+              <admin-form-recaptcha :params="params"></admin-form-recaptcha>
+            </v-col>
           </v-row>
         </v-container>
       </v-tab-item>

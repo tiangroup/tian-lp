@@ -1,6 +1,7 @@
 export const state = () => ({
   site: null,
-  change: false
+  change: false,
+  saveLoading: false
 });
 
 export const mutations = {
@@ -9,6 +10,7 @@ export const mutations = {
   },
   SET_UPDATES(state) {
     state.site.updates = Date.now();
+    state.change = true;
   },
   SET_ROBOTS(state, content) {
     state.site.robots = content;
@@ -35,6 +37,9 @@ export const mutations = {
     }
     state.site.recaptcha[payload.field] = payload.value;
     state.change = true;
+  },
+  SET_SAVE_LOADING(state, saveLoading) {
+    state.saveLoading = saveLoading;
   }
 };
 
@@ -49,6 +54,7 @@ export const actions = {
   },
   async reloadSite({ commit, state }) {
     if (state.site) {
+      commit("SET_SAVE_LOADING", true);
       try {
         const site = await this.$axios.$get(
           `${this.$site_api}/sites/${state.site.id}`
@@ -58,11 +64,14 @@ export const actions = {
       } catch (error) {
         console.error(error);
       }
+      commit("SET_SAVE_LOADING", false);
     }
   },
   async saveSite({ commit, state }) {
     if (state.site) {
+      commit("SET_SAVE_LOADING", true);
       try {
+        commit("SET_UPDATES");
         const site = await this.$axios.$put(
           `${this.$site_api}/sites/${state.site.id}`,
           state.site
@@ -72,6 +81,7 @@ export const actions = {
       } catch (error) {
         console.error(error);
       }
+      commit("SET_SAVE_LOADING", false);
     }
   }
 };
@@ -82,6 +92,7 @@ export const getters = {
   id: state => state.site.id,
   pages: state => state.site.pages,
   change: state => state.change,
+  saveLoading: state => state.saveLoading,
   recaptcha: state => {
     return state.site.recaptcha ? state.site.recaptcha : {};
   }

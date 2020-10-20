@@ -233,17 +233,21 @@ export default {
       saveLoadingPage: "pages/saveLoading",
       changeForm: "forms/change",
       saveLoadingForm: "forms/saveLoading",
+      saveLoadingSite: "sites/saveLoading",
       isPreview: "isPreview",
       page: "pages/page",
       site: "sites/site",
+      changeSite: "sites/change",
       reloadingPage: "pages/reloading",
       reloadingForms: "forms/reloading"
     }),
     change() {
-      return this.changePage || this.changeForm;
+      return this.changePage || this.changeForm || this.changeSite;
     },
     saveLoading() {
-      return this.saveLoadingPage || this.saveLoadingForm;
+      return (
+        this.saveLoadingPage || this.saveLoadingForm || this.saveLoadingSite
+      );
     },
     reloading() {
       return this.reloadingPage || this.reloadingForms;
@@ -266,6 +270,7 @@ export default {
     ...mapActions({
       savePage: "pages/savePage",
       saveForms: "forms/saveForms",
+      saveSite: "sites/saveSite",
       reloadPage: "pages/reloadPage",
       reloadSite: "sites/reloadSite",
       reloadForms: "forms/reloadForms"
@@ -280,6 +285,9 @@ export default {
       if (this.changeForm) {
         this.saveForms();
       }
+      if (this.changeSite) {
+        this.saveSite();
+      }
     },
     async undo() {
       if (this.changePage) {
@@ -289,6 +297,9 @@ export default {
       }
       if (this.changeForm) {
         await this.reloadForms();
+      }
+      if (this.changeSite) {
+        await this.reloadSite();
       }
     },
     onRoutes() {

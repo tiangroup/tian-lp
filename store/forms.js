@@ -181,6 +181,7 @@ export const actions = {
           form
         );
         commit("SET_FORM", response);
+        await dispatch("sites/saveSite", null, { root: true });
       } catch (error) {
         console.error(error);
       }

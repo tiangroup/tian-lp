@@ -82,6 +82,9 @@ export default {
     },
     formId() {
       return this.section[this.field];
+    },
+    isRecaptcha() {
+      return this.recaptcha.active && this.recaptcha.sitekey;
     }
   },
   methods: {
@@ -95,7 +98,7 @@ export default {
       this.loading = true;
 
       let token = null;
-      if (this.recaptcha.active) {
+      if (this.isRecaptcha) {
         try {
           token = await this.$recaptcha.execute("login");
         } catch (error) {
@@ -116,7 +119,7 @@ export default {
           }
         }
         formData.append("id", this.formId);
-        if (this.recaptcha.active) {
+        if (this.isRecaptcha) {
           formData.append("recaptcha_token", token);
         }
         const { data } = await this.$axios.post(
@@ -137,20 +140,10 @@ export default {
           error: true
         });
       }
-    },
-    async onSubmit2() {
-      if (this.recaptcha.active) {
-        try {
-          const token = await this.$recaptcha.execute("login");
-          console.log("ReCaptcha token:", token);
-        } catch (error) {
-          console.log("Login error:", error);
-        }
-      }
     }
   },
   async mounted() {
-    if (this.recaptcha.active) {
+    if (this.isRecaptcha) {
       this.$recaptcha.siteKey = this.recaptcha.sitekey;
       await this.$recaptcha.init();
     }

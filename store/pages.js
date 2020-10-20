@@ -166,10 +166,11 @@ export const actions = {
         `${this.$site_api}/pages/${page.id}`,
         page
       );
-      await this.$axios.$put(`${this.$site_app}/api/sites/updates`, {
-        site_id: rootGetters["sites/site"].id
-      });
-      await dispatch("sites/reloadSite", null, { root: true });
+      // await this.$axios.$put(`${this.$site_app}/api/sites/updates`, {
+      //   site_id: rootGetters["sites/site"].id
+      // });
+      // await dispatch("sites/reloadSite", null, { root: true });
+      await dispatch("sites/saveSite", null, { root: true });
       commit("SET_PAGE", response);
       commit("SET_CHANGE", false);
     } catch (error) {
