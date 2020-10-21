@@ -13,7 +13,7 @@
             @click="
               itemImageSelect({
                 field: 'bg_img',
-                value: section.bg_img
+                value: section.bg_img,
               })
             "
           >
@@ -32,20 +32,20 @@
       "
       :class="{
         mDark: section.settings.background === 'dark',
-        'hero--w-button': button && !form
+        'hero--w-button': button && !form,
       }"
     >
       <div class="landing__container">
         <div class="hero__row">
           <div class="hero__body">
-            <h1 v-if="isEdit">
+            <h2 class="hero__title" v-if="isEdit">
               <editor
                 :text="section.title || ''"
                 :sectionId="section.id"
                 field="title"
               />
-            </h1>
-            <h1 v-else>{{ section.title }}</h1>
+            </h2>
+            <h2 class="hero__title" v-else>{{ section.title }}</h2>
             <div class="hero__text" v-if="isEdit">
               <editor
                 :text="section.description || ''"
@@ -84,15 +84,15 @@ import { mapGetters } from "vuex";
 import Timer from "../cta/Timer.vue";
 export default {
   components: {
-    Timer
+    Timer,
   },
   props: {
-    section: Object
+    section: Object,
   },
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit"
+      isSectionEdit: "isSectionEdit",
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
@@ -111,7 +111,7 @@ export default {
     },
     countdown() {
       return this.section.settings.countdown === true;
-    }
+    },
   },
   methods: {
     itemImageSelect() {
@@ -119,9 +119,9 @@ export default {
         sectionId: this.section.id,
         field: "bg_img",
         items: null,
-        value: this.section.bg_img
+        value: this.section.bg_img,
       });
-    }
-  }
+    },
+  },
 };
 </script>

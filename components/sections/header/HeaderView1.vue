@@ -36,7 +36,7 @@
           </a>
           <div v-if="isEdit" class="logo__slogan">
             <editor
-              data-placeholder="Слоган"
+              data-placeholder="Слоган компании"
               :text="section.logo_slogan || ''"
               :sectionId="section.id"
               field="logo_slogan"

@@ -7,16 +7,21 @@
         <div class="cells mb-15">
           <div class="cell cell-auto">
             <div class="tuning-bg tuning-bg--pills">
-              <a
-                href=""
-                class="tuning-bg__color tuning-bg__color1 tuning-bg__color--active"
-              ></a>
+              <button
+                class="tuning-bg__color tuning-bg__color1"
+                :class="{ 'tuning-bg__color--active': isThemeLight }"
+                @click="setSectionTheme('light')"
+              ></button>
             </div>
             <div class="tuning-bg__label" aria-hidden="true">Светлый</div>
           </div>
           <div class="cell cell-auto">
             <div class="tuning-bg tuning-bg--pills">
-              <a href="" class="tuning-bg__color tuning-bg__color2"></a>
+              <button
+                class="tuning-bg__color tuning-bg__color2"
+                :class="{ 'tuning-bg__color--active': !isThemeLight }"
+                @click="setSectionTheme('dark')"
+              ></button>
             </div>
             <div class="tuning-bg__label" aria-hidden="true">Темный</div>
           </div>
@@ -167,7 +172,11 @@
   </div>
 </template>
 <script>
+import { mapMutations } from "vuex";
 export default {
+  props: {
+    sections: Array,
+  },
   data: function () {
     return {
       brandColors: [
@@ -245,6 +254,7 @@ export default {
         },
       ],
       isBorderRadiusSet: true,
+      isThemeLight: true,
       colorSelected: 1,
       userColor: {
         h: 223,
@@ -254,6 +264,9 @@ export default {
     };
   },
   methods: {
+    ...mapMutations({
+      setSettingsField: "pages/SET_SETTINGS_FIELD",
+    }),
     setBrandColor(payload) {
       const rootEl = document.getElementById("lp");
       rootEl.style.setProperty("--hue", payload.hue);
@@ -288,6 +301,16 @@ export default {
     removeButtonRadius() {
       document.getElementById("app").classList.add("buttons--style2");
       this.isBorderRadiusSet = false;
+    },
+    setSectionTheme(val) {
+      this.isThemeLight = val === "light" ? true : false;
+      for (const section of this.sections) {
+        this.setSettingsField({
+          id: section.id,
+          field: "background",
+          value: val,
+        });
+      }
     },
   },
 };

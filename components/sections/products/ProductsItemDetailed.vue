@@ -9,6 +9,7 @@
           field="title"
           :itemId="item.id"
           v-if="isEdit"
+          :key="'ttl' + item.id"
         />
         <span v-else> {{ item.title }}</span>
       </div>
@@ -24,6 +25,7 @@
             :itemId="item.id"
             :sectionId="sectionId"
             :key="'imgB' + item.id"
+            imageStyle="sq_lg"
           />
         </div>
         <div class="illustrations__row" v-if="isEdit || item.img_2">
@@ -48,6 +50,7 @@
                 :itemId="item.id"
                 :sectionId="sectionId"
                 :key="'img' + item.id + n"
+                imageStyle="icon_sm"
               />
             </div>
           </div>
@@ -67,15 +70,16 @@
       <div class="good__chars body-copy" v-html="item.tech_chars" v-else></div>
       <div class="good__description" v-if="isEdit">
         <div class="good__description__title">Краткое описание</div>
-
-        <editor
-          data-placeholder="Краткое описание товара"
-          :text="item.short_description || ''"
-          :sectionId="sectionId"
-          field="short_description"
-          :itemId="item.id"
-          :key="'sh' + item.id"
-        />
+        <div class="good__description__body" v-if="isEdit">
+          <editor
+            data-placeholder="Краткое описание товара"
+            :text="item.short_description || ''"
+            :sectionId="sectionId"
+            field="short_description"
+            :itemId="item.id"
+            :key="'sh' + item.id"
+          />
+        </div>
       </div>
       <div class="good__description" v-if="item.description || isEdit">
         <div class="good__description__title">Описание</div>
@@ -133,7 +137,7 @@
           <div class="good__action">
             <button
               class="button button-primary"
-              @click="$emit('call-order-form')"
+              @click="$emit('show-order-form')"
               v-if="!isEdit"
             >
               Купить
@@ -167,7 +171,7 @@ export default {
   methods: {
     handleMainIllustrationClick() {
       if (!this.isEdit) {
-        this.$emit("call-gallery", this.currentBigImageIndex - 1);
+        this.$emit("show-gallery", this.currentBigImageIndex - 1);
       }
     },
     handleIllustrationClick(index) {

@@ -9,21 +9,64 @@
       :sectionId="sectionId"
     ></buttons-item>
     <div class="products__item">
-      <div class="products__details" @click="$emit('show-details')">
-        <div class="products__image" :class="{ 'no-image': !item.img_1 }">
+      <div
+        class="products__details"
+        @click="callDetailsViewer"
+        :class="{ 'no-hover': isEdit }"
+      >
+        <div
+          class="products__image"
+          :class="{ 'no-image': !item.img_1 }"
+          @click="callDetailsEditor"
+        >
           <img :src="$images.src(item.img_1)" v-if="item.img_1" />
         </div>
         <div class="products__title">
-          {{ item.title }}
+          <editor
+            data-placeholder="Название товара"
+            :text="item.title || ''"
+            :sectionId="sectionId"
+            field="title"
+            :itemId="item.id"
+            v-if="isEdit"
+          />
+          <span v-else> {{ item.title }}</span>
         </div>
-        <div class="products__description">
+        <div class="products__description" v-if="isEdit">
+          <editor
+            data-placeholder="Краткое описание товара"
+            :text="item.short_description || ''"
+            :sectionId="sectionId"
+            field="short_description"
+            :itemId="item.id"
+          />
+        </div>
+        <div class="products__description" v-else>
           {{ item.short_description }}
         </div>
         <div class="products__prices">
-          <div class="products__prices__current">
+          <div class="good__prices__current" v-if="isEdit">
+            <editor
+              data-placeholder="000 руб."
+              :text="item.price || ''"
+              :sectionId="sectionId"
+              field="price"
+              :itemId="item.id"
+            />
+          </div>
+          <div class="good__prices__current" v-else>
             {{ item.price }}
           </div>
-          <div class="products__prices__old">
+          <div class="good__prices__old" v-if="isEdit">
+            <editor
+              data-placeholder="000 руб."
+              :text="item.old_price || ''"
+              :sectionId="sectionId"
+              field="old_price"
+              :itemId="item.id"
+            />
+          </div>
+          <div class="good__prices__old" v-else>
             {{ item.old_price }}
           </div>
         </div>
@@ -47,7 +90,18 @@ export default {
     isEdit: Boolean,
   },
   data: () => ({}),
-  methods: {},
+  methods: {
+    callDetailsEditor() {
+      if (this.isEdit) {
+        this.$emit("show-details");
+      }
+    },
+    callDetailsViewer() {
+      if (!this.isEdit) {
+        this.$emit("show-details");
+      }
+    },
+  },
 };
 </script>
 <style scoped>

@@ -214,8 +214,8 @@
                   :is-edit="isEdit"
                   :section-id="section.id"
                   @save-item="saveItemDetails"
-                  @call-gallery="callImageGallery"
-                  @call-order-form="handleOrderFormCall(currentItem)"
+                  @show-gallery="showImageGallery"
+                  @show-order-form="handleOrderFormCall(currentItem)"
                 ></products-item-detailed>
               </div>
             </div>
@@ -425,7 +425,7 @@ export default {
       this.$store.dispatch("pages/savePage");
       this.dialogDetailedItem = false;
     },
-    callImageGallery(imageIndex) {
+    showImageGallery(imageIndex) {
       this.index = imageIndex;
     },
     handleOrderFormCall(item) {

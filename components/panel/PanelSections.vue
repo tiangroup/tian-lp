@@ -56,12 +56,6 @@
                   </v-expansion-panel-content>
                 </div>
               </v-expansion-panel>
-
-              <div class="tuning-sort__submit">
-                <button type="button" name="" class="button button-primary">
-                  <span class="button__body">Применить</span>
-                </button>
-              </div>
             </v-expansion-panels>
           </div>
         </div>

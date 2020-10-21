@@ -112,7 +112,7 @@
             <v-tabs-items v-model="tab">
               <v-tab-item class="h-100">
                 <div class="tuning-panel h-100">
-                  <panel-general></panel-general>
+                  <panel-general :sections="sections"></panel-general>
                 </div>
               </v-tab-item>
               <v-tab-item class="h-100">
