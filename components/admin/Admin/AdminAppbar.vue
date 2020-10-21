@@ -86,7 +86,7 @@ export default {
       title: item.form.title,
       action: {
         comp: "AdminForm",
-        params: { form: item, mailChange: false }
+        params: { form: item, mailChange: false, metrikaChange: false }
       }
     }));
     this.reloadSite();

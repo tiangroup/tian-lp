@@ -37,11 +37,18 @@
         </a>
       </v-card-text>
     </v-card>
-    <v-card class="mt-4">
+    <v-card class="mt-4" v-if="ym">
       <v-card-title>Метрика</v-card-title>
       <v-card-text>
-        <v-checkbox label="Включить метрику"></v-checkbox>
-        <v-text-field label="Идентификатор цели" />
+        <v-checkbox
+          label="Включить метрику"
+          v-model="metrikaActive"
+        ></v-checkbox>
+        <v-text-field
+          label="Идентификатор цели"
+          v-model="metrikaTarget"
+          v-if="!!metrikaActive"
+        />
       </v-card-text>
     </v-card>
   </div>
@@ -55,7 +62,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      recaptcha: "sites/recaptcha"
+      recaptcha: "sites/recaptcha",
+      ym: "sites/ym"
     }),
     mailTo: {
       get: function() {
@@ -113,11 +121,36 @@ export default {
           value: value
         });
       }
+    },
+    metrikaActive: {
+      get: function() {
+        return this.form.metrika ? this.form.metrika.active : false;
+      },
+      set: function(value) {
+        this.setMetrikaField({
+          formId: this.form.id,
+          field: "active",
+          value: value
+        });
+      }
+    },
+    metrikaTarget: {
+      get: function() {
+        return this.form.metrika ? this.form.metrika.target : "";
+      },
+      set: function(value) {
+        this.setMetrikaField({
+          formId: this.form.id,
+          field: "target",
+          value: value
+        });
+      }
     }
   },
   methods: {
     ...mapMutations({
       setMailField: "forms/SET_MAIL_FIELD",
+      setMetrikaField: "forms/SET_METRIKA_FIELD",
       setRecaptchaField: "sites/SET_RECAPTCHA_FIELD"
     })
   }

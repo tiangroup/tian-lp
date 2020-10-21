@@ -103,5 +103,8 @@ export const getters = {
   saveLoading: state => state.saveLoading,
   recaptcha: state => {
     return state.site.recaptcha ? state.site.recaptcha : {};
+  },
+  ym: state => {
+    return state.site ? state.site.ym : null;
   }
 };

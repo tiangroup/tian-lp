@@ -43,6 +43,7 @@ export default {
   plugins: [
     { src: "~/plugins/medium-editor", ssr: false },
     { src: "~/plugins/inject" },
+    { src: "~/plugins/yandex-metrika", mode: "client" },
     { src: "~/plugins/slick", ssr: false },
     { src: "~/plugins/vue-gallery.client.js", ssr: false },
     "~plugins/vue-js-modal.js"

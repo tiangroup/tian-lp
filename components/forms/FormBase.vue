@@ -134,6 +134,13 @@ export default {
           //caption: "Форма отправлена",
           error: false
         });
+        if (
+          this.form.metrika &&
+          this.form.metrika.active &&
+          this.form.metrika.target
+        ) {
+          this.$yandexMetrika.reachGoal(this.form.metrika.target);
+        }
       } catch (error) {
         this.loading = false;
         this.$emit("send", {

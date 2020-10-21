@@ -64,6 +64,9 @@
             <v-col cols="12" md="4">
               <admin-form-recaptcha :params="params"></admin-form-recaptcha>
             </v-col>
+            <v-col cols="12" md="4">
+              <admin-form-metrika :params="params"></admin-form-metrika>
+            </v-col>
           </v-row>
         </v-container>
       </v-tab-item>
@@ -127,9 +130,6 @@ export default {
   },
   watch: {
     "params.form": "$fetch"
-  },
-  methods: {
-    saveMail() {}
   }
 };
 </script>

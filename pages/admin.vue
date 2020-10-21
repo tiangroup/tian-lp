@@ -12,12 +12,13 @@
 </template>
 
 <script>
+import AdminStart from "~/components/admin/Admin/start/AdminStart";
 import AdminForm from "~/components/admin/Admin/form/AdminForm";
 import AdminSite from "~/components/admin/Admin/site/AdminSite";
 export default {
   layout: "admin",
   components: {
-    Admin,
+    AdminStart,
     AdminForm,
     AdminSite
   },
@@ -25,7 +26,7 @@ export default {
     title: "Панель управления"
   }),
   data: () => ({
-    comp: "AdminSite",
+    comp: "AdminStart",
     params: {}
   }),
   computed: {

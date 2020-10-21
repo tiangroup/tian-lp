@@ -125,6 +125,20 @@ export const mutations = {
   },
   SET_LICENCE(state, licence) {
     state.licence = licence;
+  },
+  SET_METRIKA_FIELD(state, payload) {
+    const form = state.forms.find(f => f.id == payload.formId);
+    if (!form.metrika) {
+      form.metrika = {
+        active: false,
+        target: "FORM"
+      };
+    }
+    form.metrika[payload.field] = payload.value;
+    if (!state.changeForms.includes(form.id)) {
+      state.changeForms.push(form.id);
+    }
+    state.change = true;
   }
 };
 

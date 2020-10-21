@@ -27,8 +27,6 @@
     <forms-licence />
 
     <div v-if="counter" v-html="counter"></div>
-
-    <yandex-metrika-counter v-if="ym" :ym="ym" />
   </div>
 </template>
 
@@ -45,15 +43,13 @@ export default {
       isEdit: "isEdit",
       dialogImageUpload: "dialogImageUpload",
       dialogImageSvg: "dialogImageSvg",
-      site: "sites/site"
+      site: "sites/site",
+      ym: "sites/ym"
     }),
     counter() {
       return !this.isEdit && this.site && this.site.counter
         ? this.site.counter
         : null;
-    },
-    ym() {
-      return !this.isEdit && this.site && this.site.ym ? this.site.ym : null;
     }
   },
   methods: {
@@ -62,6 +58,9 @@ export default {
     })
   },
   mounted() {
+    if (!this.isEdit && this.ym) {
+      this.$yandexMetrika.init(this.ym);
+    }
     if (this.isEdit) {
       this.loadSections();
     }
