@@ -21,7 +21,7 @@
           <div
             class="tarifs__item-wrap cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
             :class="{ 'position-relative': isEdit }"
-            v-for="item in section.items.filter(i => i.id)"
+            v-for="item in section.items.filter((i) => i.id)"
             :key="item.id"
             :style="styleDiv"
           >
@@ -43,7 +43,7 @@
                       setSelected({
                         itemId: item.id,
                         field: 'selected',
-                        value: !item.selected
+                        value: !item.selected,
                       })
                     "
                   >
@@ -61,7 +61,7 @@
               <div class="tarifs__title">
                 <editor
                   :text="item.title || ''"
-                  data-placeholder="Название тарифа"
+                  data-placeholder="Название"
                   :sectionId="section.id"
                   field="title"
                   :itemId="item.id"
@@ -97,7 +97,7 @@
               <div class="tarifs__price">
                 <editor
                   :text="item.price || ''"
-                  data-placeholder="10 000 руб."
+                  data-placeholder="000 руб."
                   :sectionId="section.id"
                   field="price"
                   :itemId="item.id"
@@ -175,27 +175,27 @@
 import { mapMutations, mapGetters } from "vuex";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   data: () => ({
     dialog: false,
-    product: {}
+    product: {},
   }),
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit"
+      isSectionEdit: "isSectionEdit",
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
     },
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
-    }
+    },
   },
   methods: {
     ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD"
+      setItemField: "pages/SET_ITEM_FIELD",
     }),
     orderPlan(item) {
       this.dialog = true;
@@ -207,11 +207,11 @@ export default {
         itemId: payload.itemId,
         items: "items",
         field: payload.field,
-        value: payload.value
+        value: payload.value,
       });
       this.$store.dispatch("pages/savePage");
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

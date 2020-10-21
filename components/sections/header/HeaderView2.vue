@@ -2,7 +2,7 @@
   <div
     class="header header--style2"
     :class="{
-      mDark: section.settings.background === 'dark'
+      mDark: section.settings.background === 'dark',
     }"
   >
     <div class="bg-theme" v-if="showTopBlock">
@@ -125,7 +125,7 @@
           </a>
           <div v-if="isEdit" class="logo__slogan">
             <editor
-              data-placeholder="Введите слоган компании"
+              data-placeholder="Слоган компании"
               :text="section.logo_slogan || ''"
               :sectionId="section.id"
               field="logo_slogan"
@@ -134,19 +134,14 @@
           <div v-else class="logo__slogan">{{ section.logo_slogan }}</div>
         </div>
         <div class="header__menu__toggle">
-          <a
-            href="#main-nav-3"
-            type="button"
-            class="nav__toggle"
-            id="main-nav-toggle-3"
-          >
+          <a :href="'#nav' + section.id" type="button" class="nav__toggle">
             <span class="icon-bar" role="presentation"></span>
             <span class="icon-bar" role="presentation"></span>
             <span class="icon-bar" role="presentation"></span>
             <span class="sr-only">Открыть меню</span>
           </a>
         </div>
-        <menu-top :menu="section.menu"></menu-top>
+        <menu-top :menu="section.menu" :id="'nav' + section.id"></menu-top>
         <a href="#" class="overlay" tabindex="-1" aria-hidden="true" hidden></a>
       </div>
     </div>
@@ -160,8 +155,8 @@ export default {
     isEdit: Boolean,
     showTopBlock: {
       type: Boolean,
-      default: true
-    }
-  }
+      default: true,
+    },
+  },
 };
 </script>

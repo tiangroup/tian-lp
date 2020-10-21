@@ -317,7 +317,8 @@ img {
 .body-copy ul {
   margin: 0 0 1em;
 }
-.body-copy ul {
+.body-copy ul,
+.v-application .body-copy ul {
   list-style: none;
   padding: 0;
 }
@@ -3989,6 +3990,9 @@ nav ul li,
   padding: 2rem 2rem 1.25rem;
   text-align: center;
 }
+.tarifs__title > * {
+  min-width: 10rem;
+}
 .tarifs__item--selected .tarifs__title {
   background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M7.9999 11.8597C8.12711 11.8597 8.25431 11.8918 8.37032 11.9551L11.3857 13.6179L10.812 10.109C10.7664 9.83386 10.8536 9.55363 11.044 9.35864L13.473 6.88039L10.1104 6.36381C9.85039 6.32414 9.62558 6.15279 9.50877 5.90462L7.9999 2.70215L6.49103 5.90462C6.37423 6.15279 6.14942 6.32414 5.88941 6.36381L2.52686 6.88039L4.95577 9.35864C5.14617 9.55363 5.23338 9.83386 5.18778 10.109L4.61415 13.6179L7.62949 11.9551C7.74549 11.8918 7.8727 11.8597 7.9999 11.8597ZM12.4498 15.9997C12.3226 15.9997 12.1954 15.9685 12.0794 15.9043L8 13.6557L3.92062 15.9043C3.6502 16.0529 3.32379 16.0267 3.07978 15.8377C2.83337 15.6486 2.71096 15.3287 2.76216 15.0121L3.5398 10.2616L0.243649 6.8979C0.0236385 6.67422 -0.054765 6.33827 0.0388392 6.03187C0.131643 5.72546 0.382855 5.50262 0.684469 5.4562L5.24547 4.75729L7.28317 0.430486C7.55358 -0.143495 8.44642 -0.143495 8.71683 0.430486L10.7545 4.75729L15.3155 5.4562C15.6171 5.50262 15.8684 5.72546 15.9612 6.03187C16.0548 6.33827 15.9764 6.67422 15.7564 6.8979L12.4602 10.2616L13.2378 15.0121C13.289 15.3287 13.1666 15.6486 12.9202 15.8377C12.7818 15.9457 12.6162 15.9997 12.4498 15.9997Z' fill='white'/%3E%3C/svg%3E");
   background-size: 1rem 1rem;
@@ -5967,7 +5971,9 @@ a:active,
 .social .social__link,
 .social .social__link:focus,
 .social .social__link:active,
-.footer .tian a {
+.footer .tian a,
+.header .nav__toggle,
+.header .nav__close {
   color: #245ef5;
   color: var(--theme-color);
 }
@@ -6422,6 +6428,9 @@ body:last-child
 }
 .landing .blueimp-gallery-controls > .title:empty {
   display: none;
+}
+.landing p:first-child:last-child {
+  margin-bottom: 0;
 }
 /* END fixin stuff */
 @keyframes slideDown {

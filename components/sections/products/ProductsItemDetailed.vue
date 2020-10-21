@@ -102,11 +102,12 @@
           <div class="good__prices">
             <div class="good__prices__current" v-if="isEdit">
               <editor
-                data-placeholder="10 000"
+                data-placeholder="000 руб."
                 :text="item.price || ''"
                 :sectionId="sectionId"
                 field="price"
                 :itemId="item.id"
+                :key="'price' + item.id"
               />
             </div>
             <div class="good__prices__current" v-else>
@@ -115,11 +116,12 @@
 
             <div class="good__prices__old" v-if="isEdit">
               <editor
-                data-placeholder="20 000"
+                data-placeholder="000 руб."
                 :text="item.old_price || ''"
                 :sectionId="sectionId"
                 field="old_price"
                 :itemId="item.id"
+                :key="'oldprice' + item.id"
               />
             </div>
             <div class="good__prices__old" v-else>

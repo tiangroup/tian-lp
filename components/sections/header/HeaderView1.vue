@@ -6,7 +6,7 @@
       'header--style1': view == 'view1',
       'header--style3': view == 'view3',
       'header--style5': view == 'view5',
-      'header--style6': view == 'view6'
+      'header--style6': view == 'view6',
     }"
   >
     <div class="landing__container">
@@ -36,7 +36,7 @@
           </a>
           <div v-if="isEdit" class="logo__slogan">
             <editor
-              data-placeholder="Введите слоган компании"
+              data-placeholder="Слоган"
               :text="section.logo_slogan || ''"
               :sectionId="section.id"
               field="logo_slogan"
@@ -130,19 +130,14 @@
           />
         </div>
         <div class="header__menu__toggle">
-          <a
-            href="#main-nav"
-            type="button"
-            class="nav__toggle"
-            id="main-nav-toggle"
-          >
+          <a :href="'#nav' + section.id" type="button" class="nav__toggle">
             <span class="icon-bar" role="presentation"></span>
             <span class="icon-bar" role="presentation"></span>
             <span class="icon-bar" role="presentation"></span>
             <span class="sr-only">Открыть меню</span>
           </a>
         </div>
-        <menu-top :menu="section.menu"></menu-top>
+        <menu-top :menu="section.menu" :id="'nav' + section.id"></menu-top>
         <a href="#" class="overlay" tabindex="-1" aria-hidden="true" hidden></a>
       </div>
     </div>
@@ -156,8 +151,8 @@ export default {
     isEdit: Boolean,
     view: {
       type: String,
-      default: "view1"
-    }
-  }
+      default: "view1",
+    },
+  },
 };
 </script>

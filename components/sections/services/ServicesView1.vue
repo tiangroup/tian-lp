@@ -14,7 +14,7 @@
           <div
             class="services__item-wrap cell"
             :class="{ 'position-relative': isEdit }"
-            v-for="item in section.items.filter(i => i.id)"
+            v-for="item in section.items.filter((i) => i.id)"
             :key="item.id"
           >
             <buttons-item
@@ -59,7 +59,7 @@
                     <div class="cell cell-auto">
                       <div class="services__price">
                         <editor
-                          data-placeholder="от 5 000 руб."
+                          data-placeholder="от 000 руб."
                           :text="item.price || ''"
                           :sectionId="section.id"
                           field="price"
@@ -116,7 +116,7 @@
           <div class="cells fx-nw overflow-hidden">
             <div
               class="services__item-wrap cell cell-12"
-              v-for="item in section.items.filter(i => i.id)"
+              v-for="item in section.items.filter((i) => i.id)"
               :key="item.id"
             >
               <div class="services__item">
@@ -161,7 +161,7 @@
         >
           <div
             class="services__navigation__item"
-            v-for="item in section.items.filter(i => i.id)"
+            v-for="item in section.items.filter((i) => i.id)"
             :key="'nav' + item.id"
           >
             <div
@@ -184,8 +184,8 @@ export default {
     isEdit: Boolean,
     view: {
       type: String,
-      default: "view2"
-    }
+      default: "view2",
+    },
   },
   components: {},
   data() {
@@ -206,10 +206,10 @@ export default {
           {
             breakpoint: 1280,
             settings: {
-              arrows: false
-            }
-          }
-        ]
+              arrows: false,
+            },
+          },
+        ],
       },
       slickNavOptions: {
         arrows: false,
@@ -224,23 +224,23 @@ export default {
           {
             breakpoint: 768,
             settings: {
-              slidesToShow: 3
-            }
-          }
-        ]
-      }
+              slidesToShow: 3,
+            },
+          },
+        ],
+      },
     };
   },
   computed: {
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit
+        draggable: !this.isEdit,
       });
     },
     updatedSlickNavOptions() {
       return Object.assign(this.slickNavOptions, {
-        draggable: !this.isEdit
+        draggable: !this.isEdit,
       });
     },
     slickRef() {
@@ -278,7 +278,7 @@ export default {
     },
     slickId() {
       return "slick-" + this.section.id;
-    }
+    },
   },
   methods: {
     handleInit(event, slick) {},
@@ -310,9 +310,9 @@ export default {
         }
         this.syncSliders(null, null, slideId);
       }
-    }
+    },
   },
-  beforeDestroy: function() {
+  beforeDestroy: function () {
     if (this.$refs[this.slickRef]) {
       if (document.getElementById(this.slickNavId)) {
         document
@@ -320,6 +320,6 @@ export default {
           .removeEventListener("click", this.changeMainSlider);
       }
     }
-  }
+  },
 };
 </script>

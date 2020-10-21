@@ -2,7 +2,7 @@
   <footer
     :class="{
       'position-relative': _isEdit,
-      mDark: section.settings.background === 'dark'
+      mDark: section.settings.background === 'dark',
     }"
     :id="section.id"
   >
@@ -182,15 +182,15 @@
 import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   data: () => ({
-    showToTop: false
+    showToTop: false,
   }),
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit"
+      isSectionEdit: "isSectionEdit",
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
@@ -200,7 +200,7 @@ export default {
     },
     computedCopy() {
       let currentYear = new Date().getFullYear();
-      return currentYear + ', "Название компании"';
+      return '"Компания", ' + currentYear;
     },
     address() {
       return this.cleanString(this.section.address) || null;
@@ -210,7 +210,7 @@ export default {
     },
     email() {
       return this.cleanString(this.section.email) || null;
-    }
+    },
   },
   methods: {
     onScroll(e) {
@@ -228,7 +228,7 @@ export default {
         return null;
       }
       return str.replace(/(<([^>]+)>)/gi, "");
-    }
-  }
+    },
+  },
 };
 </script>

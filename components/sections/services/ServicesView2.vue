@@ -57,7 +57,7 @@
                   <div class="cell cell-auto">
                     <div class="services__price">
                       <editor
-                        data-placeholder="от 5 000 руб."
+                        data-placeholder="от 000 руб."
                         :text="item.price || ''"
                         :sectionId="section.id"
                         field="price"
