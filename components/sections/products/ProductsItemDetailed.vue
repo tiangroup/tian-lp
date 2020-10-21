@@ -49,7 +49,7 @@
                 :img="getImage(n)"
                 :itemId="item.id"
                 :sectionId="sectionId"
-                :key="'img' + item.id + n"
+                :key="getUniqueImgKey"
                 imageStyle="icon_sm"
               />
             </div>
@@ -186,12 +186,19 @@ export default {
     getImageField(index) {
       return "img_" + index;
     },
+    getUniqueImgKey() {
+      let currTime = Date.now();
+      return "img" + currTime;
+    },
   },
   watch: {
     isEdit: function (val, oldVal) {
       if (val === true) {
         this.currentBigImageIndex = 1;
       }
+    },
+    item: function () {
+      this.currentBigImageIndex = 1;
     },
   },
 };

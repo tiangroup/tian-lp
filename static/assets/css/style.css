@@ -6153,7 +6153,8 @@ hr,
 .tian {
   color: #9aa0aa;
 }
-.hero__body {
+.hero__title,
+.hero__text {
   text-shadow: 1px 1px 2px white;
 }
 .button[disabled] {
@@ -6176,8 +6177,9 @@ hr,
     calc(var(--lightness) + 5%)
   );
 }
-.mDark .hero__body {
-  text-shadow: 1px 1px 5px black;
+.mDark .hero__title,
+.mDark .hero__text {
+  text-shadow: 1px 1px 2px black;
 }
 .bg-theme {
   --text-color: #fff;
