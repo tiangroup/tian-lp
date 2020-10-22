@@ -11,16 +11,15 @@
     <div class="products__item">
       <div
         class="products__details"
-        @click="callDetailsViewer"
-        :class="{ 'no-hover': isEdit }"
+        :class="{ 'products__details--editable': isEdit }"
       >
-        <div
+        <button
           class="products__image"
           :class="{ 'no-image': !item.img_1 }"
-          @click="callDetailsEditor"
+          @click="$emit('show-details')"
         >
-          <img :src="$images.src(item.img_1)" v-if="item.img_1" />
-        </div>
+          <img :src="$site_img(item.img_1, 'sq_lg')" v-if="item.img_1" />
+        </button>
         <div class="products__title">
           <editor
             data-placeholder="Название товара"
@@ -30,7 +29,9 @@
             :itemId="item.id"
             v-if="isEdit"
           />
-          <span v-else> {{ item.title }}</span>
+          <div class="clickable" v-else @click="$emit('show-details')">
+            {{ item.title }}
+          </div>
         </div>
         <div class="products__description" v-if="isEdit">
           <editor
@@ -90,18 +91,7 @@ export default {
     isEdit: Boolean,
   },
   data: () => ({}),
-  methods: {
-    callDetailsEditor() {
-      if (this.isEdit) {
-        this.$emit("show-details");
-      }
-    },
-    callDetailsViewer() {
-      if (!this.isEdit) {
-        this.$emit("show-details");
-      }
-    },
-  },
+  methods: {},
 };
 </script>
 <style scoped>

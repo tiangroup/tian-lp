@@ -161,7 +161,7 @@
           <div class="good-summary">
             <div class="good-summary__row">
               <div class="good-summary__image" v-if="currentItem.img_1">
-                <img :src="$images.src(currentItem.img_1)" />
+                <img :src="$site_img(currentItem.img_1, 'icon_sm')" />
               </div>
               <div class="good-summary__body">
                 <div class="good-summary__title">{{ currentItem.title }}</div>
@@ -353,8 +353,8 @@ export default {
         let imgKey = "img_" + i;
         if (this.currentItem[imgKey]) {
           var imagesItem = {
-            title: this.currentItem.title + ". Изображение " + i,
-            href: this.$images.src(this.currentItem[imgKey]),
+            title: this.currentItem.title,
+            href: this.$site_img(this.currentItem[imgKey], "xlarge"),
             type: "image/jpeg",
           };
           imagesArray.push(imagesItem);

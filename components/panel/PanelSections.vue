@@ -6,27 +6,32 @@
       <div class="tuning-panel__block">
         <div class="tuning-panel__row mb-25px justify-content-between">
           <div class="tuning-sort">
-            <v-expansion-panels v-model="currentPanel" accordion flat>
-              <draggable v-model="sectsArray" handle=".sort-handle">
+            <v-expansion-panels accordion flat>
+              <draggable
+                v-model="sectsArray"
+                handle=".sort-handle"
+                @change="handleSectionsReorder"
+              >
                 <v-expansion-panel
                   class="tuning-sort__row"
-                  v-for="(section, sectionIndex) in sections.filter(
+                  v-for="(section, sectionIndex) in sectsArray.filter(
                     (s) => s.id
                   )"
-                  :key="section.id"
+                  :key="section.id + sectionIndex"
                   :class="{ 'tuning-sort__row--active': section.show === true }"
                 >
                   <div class="tuning-sort__cell tuning-sort__name">
                     {{ sectionName(section) }}
                   </div>
                   <div class="tuning-sort__cell tuning-sort__action">
-                    <button
+                    <v-expansion-panel-header
+                      hide-actions
                       class="button button-icon"
-                      @click="toggleSectionSettings(sectionIndex, section.id)"
+                      @click="toggleSectionSettings(section.id)"
                     >
                       <span class="icon icon-tuning"></span>
                       <span class="sr-only">Настройки блока</span>
-                    </button>
+                    </v-expansion-panel-header>
                   </div>
                   <div class="tuning-sort__cell tuning-sort__action">
                     <label class="state-switch">
@@ -82,31 +87,25 @@ export default {
   },
   data: function () {
     return {
-      currentPanel: null,
+      sectionMoved: {
+        id: null,
+        newIndex: null,
+      },
+      sectsArray: this.sections,
     };
   },
   computed: {
     ...mapGetters({
       sects: "sections/sections",
     }),
-    sectsArray: {
-      get: function () {
-        return this.sections;
-      },
-      set: function () {},
-    },
   },
   methods: {
     ...mapMutations({
       setSectionField: "pages/SET_SECTION_FIELD",
+      moveSection: "pages/MOVE_SECTION",
     }),
-    toggleSectionSettings(index, id) {
-      if (this.currentPanel === index) {
-        this.currentPanel = null;
-      } else {
-        this.currentPanel = index;
-        document.getElementById(id).scrollIntoView();
-      }
+    toggleSectionSettings(id) {
+      document.getElementById(id).scrollIntoView();
     },
     toggleSectionVisibility(section) {
       this.setSectionField({
@@ -121,7 +120,19 @@ export default {
           return true;
         }
       });
-      return sectionConfig.name;
+      if (sectionConfig) {
+        return sectionConfig.name;
+      } else {
+        return section.title;
+      }
+    },
+    handleSectionsReorder(payload) {
+      if (payload.moved) {
+        this.moveSection({
+          sectionId: payload.moved.element.id,
+          newIndex: payload.moved.newIndex,
+        });
+      }
     },
   },
 };
@@ -140,5 +151,11 @@ export default {
 }
 .v-expansion-panels > div {
   width: 100%;
+}
+.v-expansion-panel-header {
+  display: block;
+  min-height: 0 !important;
+  padding: 0;
+  text-align: center !important;
 }
 </style>
