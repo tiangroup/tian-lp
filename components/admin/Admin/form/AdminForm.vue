@@ -64,7 +64,7 @@
             <v-col cols="12" md="4">
               <admin-form-recaptcha :params="params"></admin-form-recaptcha>
             </v-col>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" v-if="ym">
               <admin-form-metrika :params="params"></admin-form-metrika>
             </v-col>
           </v-row>
@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   fetchOnServer: false,
   props: {
@@ -124,6 +125,10 @@ export default {
     }));
   },
   computed: {
+    ...mapGetters({
+      recaptcha: "sites/recaptcha",
+      ym: "sites/ym"
+    }),
     isItems() {
       return this.items && this.items.length;
     }

@@ -18,6 +18,7 @@
           :text="section.description || ''"
           :sectionId="section.id"
           field="description"
+          editContent="html"
         />
       </div>
       <div class="benefits__intro" v-else v-html="section.description"></div>
