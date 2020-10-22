@@ -16,7 +16,7 @@
       </v-list-item>
       <v-container>
         <menu-editor-item
-          v-for="(item, index) in section.menu.filter(i => i.id)"
+          v-for="(item, index) in section.menu.filter((i) => i.id)"
           :key="item.id"
           :menuItem="item"
           :sectionId="section.id"
@@ -38,10 +38,10 @@ import { mapMutations } from "vuex";
 export default {
   props: {
     show: Boolean,
-    section: Object
+    section: Object,
   },
   components: {
-    MenuEditorItem: () => import("./MenuEditorItem")
+    MenuEditorItem: () => import("./MenuEditorItem"),
   },
   computed: {
     drawer: {
@@ -52,29 +52,29 @@ export default {
         if (!value) {
           this.$emit("onClose", value);
         }
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapMutations({
-      addItem: "pages/ADD_ITEM"
+      addItem: "pages/ADD_ITEM",
     }),
     async newItem() {
       this.addItem({
         sectionId: this.section.id,
         items: "menu",
         itemNew: {
-          title: "Новый пункт"
-        }
+          title: "Новый пункт",
+        },
       });
       await this.$store.dispatch("pages/savePage");
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
 .over {
-  z-index: 10010;
+  z-index: 220;
 }
 </style>

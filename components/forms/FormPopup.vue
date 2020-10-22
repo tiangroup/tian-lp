@@ -58,19 +58,19 @@ export default {
     section: Object,
     field: {
       type: String,
-      default: "form"
+      default: "form",
     },
     buttonClass: {
       type: String,
-      default: "button-primary"
+      default: "button-primary",
     },
     popupClass: {
-      type: String
+      type: String,
     },
-    hiddenData: String
+    hiddenData: String,
   },
   data: () => ({
-    dialogButton: false
+    dialogButton: false,
   }),
   async fetch() {
     if (this.section[this.field]) {
@@ -82,7 +82,7 @@ export default {
       _isEdit: "isEdit",
       isSectionEdit: "isSectionEdit",
       getForm: "forms/form",
-      isEditor: "forms/isEditor"
+      isEditor: "forms/isEditor",
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
@@ -97,26 +97,26 @@ export default {
         this.getForm(form_id).form.openButton
         ? this.getForm(form_id).form.openButton
         : "Открыть";
-    }
+    },
   },
   methods: {
     onSend(payload) {
       this.dialogButton = false;
       this.$forms.showMessage(payload);
-    }
+    },
   },
   watch: {
     isEditor(value) {
       if (value) {
         this.dialogButton = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
 .over {
-  z-index: 100007;
+  z-index: 200;
 }
 </style>

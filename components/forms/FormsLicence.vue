@@ -48,13 +48,13 @@ import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   data: () => ({
     text: undefined,
-    processSave: false
+    processSave: false,
   }),
   computed: {
     ...mapGetters({
       isEdit: "isEdit",
       show: "forms/licence",
-      site: "sites/site"
+      site: "sites/site",
     }),
     isChange() {
       return this.text != undefined;
@@ -65,15 +65,15 @@ export default {
       },
       set(value) {
         this.text = value;
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapMutations({
-      setLicence: "sites/SET_LICENCE"
+      setLicence: "sites/SET_LICENCE",
     }),
     ...mapActions({
-      saveSite: "sites/saveSite"
+      saveSite: "sites/saveSite",
     }),
     async save() {
       this.processSave = true;
@@ -81,13 +81,13 @@ export default {
       await this.saveSite();
       this.text = undefined;
       this.processSave = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
 .over {
-  z-index: 100007;
+  z-index: 200;
 }
 </style>
