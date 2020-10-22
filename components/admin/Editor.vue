@@ -13,6 +13,7 @@
 
 <script>
 import { mapMutations } from "vuex";
+import MediumButton from "medium-button";
 export default {
   props: {
     text: String,
@@ -50,12 +51,33 @@ export default {
             "bold",
             "italic",
             "underline",
-            "anchor",
             "h2",
             "h3",
+            "anchor",
+            "orderedlist",
+            "unorderedlist",
             "removeFormat",
             "html"
+            // "pop"
           ]
+          // static: true,
+          // sticky: true,
+          // updateOnEmptySelection: true
+        },
+        extensions: {
+          // pop: new MediumButton({
+          //   label: "POP",
+          //   action: function(html, mark, parent) {
+          //     console.log(html);
+          //     console.log(mark);
+          //     console.log(parent);
+          //     alert("hello :)");
+          //     return html;
+          //   }
+          // })
+        },
+        anchor: {
+          placeholderText: "Вставьте ссылку"
         }
       };
     }

@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.2",
+    "medium-button": "^1.1.4",
     "vuepress": "^1.5.3"
   }
 }

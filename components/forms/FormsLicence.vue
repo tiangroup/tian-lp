@@ -1,14 +1,16 @@
 <template>
   <div class="over">
     <v-dialog
-      v-model="show"
+      v-model="dialog"
       fullscreen
       hide-overlay
       transition="dialog-bottom-transition"
     >
       <v-card>
         <v-card-title>
+          <!--
           <span class="headline">Условия лицензионного соглашения</span>
+          -->
           <v-spacer></v-spacer>
 
           <v-tooltip bottom>
@@ -28,7 +30,7 @@
             <span>Сохранить изменения</span>
           </v-tooltip>
 
-          <v-btn icon @click="$forms.licence(false)">
+          <v-btn icon @click="dialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
@@ -65,6 +67,14 @@ export default {
       },
       set(value) {
         this.text = value;
+      }
+    },
+    dialog: {
+      get() {
+        return this.show;
+      },
+      set(value) {
+        this.$forms.licence(value);
       }
     }
   },
