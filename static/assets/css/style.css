@@ -45,6 +45,10 @@ body {
   min-height: 100vh;
   overflow-x: hidden; /* because of menus sliding from right */
 }
+.no-hover,
+.v-application .no-hover {
+  cursor: default;
+}
 /* *:focus {
   outline: 1px dashed #093dc3;
 } */
@@ -2517,18 +2521,13 @@ nav ul li,
 .products .products__details {
   color: inherit;
 }
-.products__details:not(.no-hover)::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
 .products__details:hover,
 .products__details:focus {
   outline: none;
   text-decoration: none;
+}
+.products__details .products__image {
+  cursor: pointer;
 }
 .products__image {
   border-radius: 10px;
@@ -3467,7 +3466,7 @@ nav ul li,
 }
 .pic-enlarge:hover::before,
 .pic-enlarge:focus::before,
-.products__details:not(.no-hover):hover .products__image::before {
+.products__image:hover::before {
   content: "";
   opacity: 0.7;
   position: absolute;
@@ -3479,7 +3478,7 @@ nav ul li,
 }
 .pic-enlarge:hover::after,
 .pic-enlarge:focus::after,
-.products__details:not(.no-hover):hover .products__image::after {
+.products__image:hover::after {
   content: "";
   width: 3.5rem;
   height: 3.5rem;
@@ -4387,7 +4386,7 @@ nav ul li,
   margin-bottom: 1.25rem;
   margin-right: 1rem;
 }
-.illustrations__item:last-child {
+.illustrations__item:last-child:not(:first-child) {
   margin-right: 0;
 }
 .illustrations__image {
@@ -5060,6 +5059,9 @@ nav ul li,
   .footer {
     padding-top: 2.5rem;
     padding-bottom: 2.5rem;
+  }
+  .ascend {
+    right: 4rem;
   }
   .footer__contacts-wrap {
     flex-basis: 75%;
@@ -5932,7 +5934,7 @@ nav ul li,
 .pic-enlarge:hover::after,
 .pic-enlarge:focus::after,
 .tarifs__item--selected .tarifs__title,
-.products__details:hover .products__image::after,
+.products__image:hover::after,
 .illustrations__switch--active,
 .illustrations__switch:hover {
   border-color: #245ef5;
@@ -6045,7 +6047,7 @@ a:focus,
 }
 .pic-enlarge:hover::after,
 .pic-enlarge:focus::after,
-.products__details:hover .products__image::after {
+.products__image:hover::after {
   background-image: linear-gradient(
       to bottom,
       #245ef5 0.125rem,
@@ -6077,7 +6079,7 @@ a:focus,
 }
 .pic-enlarge:hover::before,
 .pic-enlarge:focus::before,
-.products__details:hover .products__image::before {
+.products__image:hover::before {
   background-color: #fff;
   background-color: var(--bg-color);
 }
@@ -6318,8 +6320,8 @@ hr,
   .header--style6 .primary-nav__link {
     border-left-color: var(--separator-color);
   }
-  .products__details:hover .products__title,
-  .products__details:focus .products__title {
+  .products__details:not(.products__details--editable) .products__title:hover,
+  .products__details:not(.products__details--editable) .products__title:focus {
     color: #245ef5;
     color: var(--theme-color);
     text-decoration: none;

@@ -49,7 +49,7 @@
                 :img="getImage(n)"
                 :itemId="item.id"
                 :sectionId="sectionId"
-                :key="getUniqueImgKey"
+                :key="'imgS' + item['img_' + n] + n"
                 imageStyle="icon_sm"
               />
             </div>
@@ -67,7 +67,11 @@
           :key="'ch' + item.id"
         />
       </div>
-      <div class="good__chars body-copy" v-html="item.tech_chars" v-else></div>
+      <div
+        class="good__chars body-copy"
+        v-html="item.tech_chars"
+        v-else-if="item.tech_chars"
+      ></div>
       <div class="good__description" v-if="isEdit">
         <div class="good__description__title">Краткое описание</div>
         <div class="good__description__body" v-if="isEdit">
@@ -97,6 +101,7 @@
         <div
           class="good__description__body body-copy"
           v-html="item.description"
+          v-else
         ></div>
       </div>
     </div>
@@ -185,10 +190,6 @@ export default {
     },
     getImageField(index) {
       return "img_" + index;
-    },
-    getUniqueImgKey() {
-      let currTime = Date.now();
-      return "img" + currTime;
     },
   },
   watch: {

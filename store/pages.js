@@ -132,6 +132,15 @@ export const mutations = {
       state.page.sections.splice(index, 1);
     }
     state.change = true;
+  },
+  MOVE_SECTION(state, payload) {
+    const section = state.page.sections.find(s => s.id === payload.sectionId);
+    const index = state.page.sections.indexOf(section);
+    if (index > -1 && payload.newIndex > -1 && payload.newIndex < state.page.sections.length) {
+      const itemMoved = state.page.sections.splice(index, 1).shift();
+      state.page.sections.splice(payload.newIndex, 0, itemMoved);
+      state.change = true;
+    }
   }
 };
 
