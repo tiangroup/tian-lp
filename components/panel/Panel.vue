@@ -158,7 +158,7 @@ export default {
   background: transparent !important;
   box-shadow: none !important;
   max-width: 47rem;
-  z-index: 10010;
+  z-index: 201;
 }
 >>> .v-tabs-bar {
   box-shadow: 2px 0 10px rgba(173, 195, 210, 0.35);

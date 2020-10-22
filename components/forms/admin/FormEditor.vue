@@ -49,7 +49,7 @@
         <v-tab-item>
           <v-container>
             <form-editor-input
-              v-for="(item, index) in form.fields.filter(i => i.id)"
+              v-for="(item, index) in form.fields.filter((i) => i.id)"
               :key="item.id"
               :formField="item"
               :formId="form.id"
@@ -82,17 +82,17 @@ export default {
       getForm: "forms/form",
       isEdit: "isEdit",
       isEditor: "forms/isEditor",
-      editor: "forms/editor"
+      editor: "forms/editor",
     }),
     drawer: {
-      get: function() {
+      get: function () {
         return this.isEditor;
       },
-      set: function(value) {
+      set: function (value) {
         if (!value) {
           this.hideEditor();
         }
-      }
+      },
     },
     formId() {
       return this.editor ? this.editor.formId : null;
@@ -104,87 +104,87 @@ export default {
       return this.formId ? this.getForm(this.formId) : null;
     },
     formTitle: {
-      get: function() {
+      get: function () {
         return this.form.form.title;
       },
-      set: function(value) {
+      set: function (value) {
         this.setFormField({
           formId: this.form.id,
           field: "title",
-          value: value
+          value: value,
         });
-      }
+      },
     },
     formDescription: {
-      get: function() {
+      get: function () {
         return this.form.form.description;
       },
-      set: function(value) {
+      set: function (value) {
         this.setFormField({
           formId: this.form.id,
           field: "description",
-          value: value
+          value: value,
         });
-      }
+      },
     },
     formButton: {
-      get: function() {
+      get: function () {
         return this.form.form.button;
       },
-      set: function(value) {
+      set: function (value) {
         this.setFormField({
           formId: this.form.id,
           field: "button",
-          value: value
+          value: value,
         });
-      }
+      },
     },
     formOpenButton: {
-      get: function() {
+      get: function () {
         return this.form.form.openButton;
       },
-      set: function(value) {
+      set: function (value) {
         this.setFormField({
           formId: this.form.id,
           field: "openButton",
-          value: value
+          value: value,
         });
-      }
+      },
     },
     formSuccessMessage: {
-      get: function() {
+      get: function () {
         return this.form.form.successMessage;
       },
-      set: function(value) {
+      set: function (value) {
         this.setFormField({
           formId: this.form.id,
           field: "successMessage",
-          value: value
+          value: value,
         });
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapMutations({
       setFormField: "forms/SET_FORM_FIELD",
-      addFieds: "forms/ADD_FIELDS"
+      addFieds: "forms/ADD_FIELDS",
     }),
     ...mapActions({
       saveForms: "forms/saveForms",
-      hideEditor: "forms/hideEditor"
+      hideEditor: "forms/hideEditor",
     }),
     async newField() {
       this.addFieds({
-        formId: this.form.id
+        formId: this.form.id,
       });
       await this.saveForms();
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
 .over {
-  z-index: 100105;
+  z-index: 600;
 }
 </style>

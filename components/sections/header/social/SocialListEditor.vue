@@ -17,7 +17,7 @@
 
       <v-container v-if="drawer">
         <social-list-editor-item
-          v-for="(item, index) in section.socials.filter(i => i.id)"
+          v-for="(item, index) in section.socials.filter((i) => i.id)"
           :key="item.id"
           :item="item"
           :sectionId="section.id"
@@ -38,11 +38,11 @@
 import { mapMutations } from "vuex";
 export default {
   components: {
-    SocialListEditorItem: () => import("./SocialListEditorItem")
+    SocialListEditorItem: () => import("./SocialListEditorItem"),
   },
   props: {
     show: Boolean,
-    section: Object
+    section: Object,
   },
   computed: {
     drawer: {
@@ -53,31 +53,31 @@ export default {
         if (!value) {
           this.$emit("onClose", value);
         }
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapMutations({
-      addItem: "pages/ADD_ITEM"
+      addItem: "pages/ADD_ITEM",
     }),
     async newItem() {
       this.addItem({
         sectionId: this.section.id,
         items: "socials",
         itemNew: {
-          type: "vk"
-        }
+          type: "vk",
+        },
       });
       this.$overlay(true);
       await this.$store.dispatch("pages/savePage");
       this.$overlay(false);
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
 .over {
-  z-index: 10010;
+  z-index: 200;
 }
 </style>

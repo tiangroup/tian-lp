@@ -98,6 +98,6 @@ export default {
 
 <style scoped>
 .over {
-  z-index: 100007;
+  z-index: 200;
 }
 </style>

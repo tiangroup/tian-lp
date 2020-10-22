@@ -34,8 +34,8 @@ export default {
     show: Boolean,
     sectionId: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   computed: {
     drawer: {
@@ -46,17 +46,17 @@ export default {
         if (!value) {
           this.$emit("onClose", value);
         }
-      }
+      },
     },
     ...mapGetters({
-      sections: "sections/sections"
-    })
-  }
+      sections: "sections/sections",
+    }),
+  },
 };
 </script>
 
 <style scoped>
 .over {
-  z-index: 10010;
+  z-index: 120;
 }
 </style>

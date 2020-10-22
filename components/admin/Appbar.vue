@@ -163,11 +163,11 @@
       <!--
       <v-list-item>
         <v-list-item-title>{{ slug }}</v-list-item-title>
-        
+
         <v-list-item-title>{{ slug }}</v-list-item-title>
-        
+
         <v-list-item-subtitle v-text="slug"></v-list-item-subtitle>
-        
+
       </v-list-item>
       -->
 
@@ -231,7 +231,7 @@ import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   data: () => ({
     drawer: false,
-    processPublish: false
+    processPublish: false,
   }),
   computed: {
     ...mapGetters({
@@ -245,7 +245,7 @@ export default {
       site: "sites/site",
       changeSite: "sites/change",
       reloadingPage: "pages/reloading",
-      reloadingForms: "forms/reloading"
+      reloadingForms: "forms/reloading",
     }),
     change() {
       return this.changePage || this.changeForm || this.changeSite;
@@ -259,7 +259,7 @@ export default {
       return this.reloadingPage || this.reloadingForms;
     },
     slug() {
-      const page = this.site.pages.find(p => p.page == this.page.id);
+      const page = this.site.pages.find((p) => p.page == this.page.id);
       return page ? page.slug : null;
     },
     isPublish() {
@@ -270,7 +270,7 @@ export default {
         this.site.updates &&
         this.site.updates > this.site.deploy.publish
       );
-    }
+    },
   },
   methods: {
     ...mapActions({
@@ -279,10 +279,10 @@ export default {
       saveSite: "sites/saveSite",
       reloadPage: "pages/reloadPage",
       reloadSite: "sites/reloadSite",
-      reloadForms: "forms/reloadForms"
+      reloadForms: "forms/reloadForms",
     }),
     ...mapMutations({
-      setPreview: "SET_IS_PREVIEW"
+      setPreview: "SET_IS_PREVIEW",
     }),
     save() {
       if (this.changePage) {
@@ -317,7 +317,7 @@ export default {
         const data = await this.$axios.$post(
           `${this.$site_app}/api/sites/publish`,
           {
-            site_id: this.site.id
+            site_id: this.site.id,
           }
         );
         if (data.status) {
@@ -328,18 +328,18 @@ export default {
         console.error(error);
         this.$error({
           message:
-            "Произошла непредвиденная ошибка, попробуйте повторить позже."
+            "Произошла непредвиденная ошибка, попробуйте повторить позже.",
         });
       }
       this.processPublish = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
 .over {
-  z-index: 10000;
+  z-index: 120;
 }
 .btn-edit {
   top: 16px !important;
