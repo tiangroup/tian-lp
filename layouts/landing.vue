@@ -34,7 +34,7 @@ export default {
     colorStyle() {
       return this.settings.color
         ? {
-            "--hue": this.settings.color.h ? this.settings.color.h : null,
+            "--hue": this.settings.color.h ? `${this.settings.color.h}` : null,
             "--saturation": this.settings.color.s
               ? Math.floor(this.settings.color.s * 100) + "%"
               : null,
