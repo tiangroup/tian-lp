@@ -82,18 +82,24 @@ export default {
       {
         imagesBaseDir: "content",
         imageStyles: {
-          icon_sm: { actions: ["trim", "gravity|Center", "resize|46|46"] },
-          icon_md: { macros: ["scaleAndCrop|63|63"] },
+          icon_sm: { actions: ["resize|46|46"] },
+          icon_md: { actions: ["resize|63|63"] },
+          sq_xs: { macros: ["scaleAndCrop|63|63"] },
           sq_sm: { macros: ["scaleAndCrop|176|176"] },
           sq_md: { macros: ["scaleAndCrop|244|244"] },
-          sq_lg: { actions: ["trim", "gravity|Center", "resize|520|520", "extent|520|520"] },
+          sq_lg: { macros: ["scaleAndCrop|520|520"] },
           rect_sm: { macros: ["scaleAndCrop|158|82"] },
           rect_md: { macros: ["scaleAndCrop|397|262"] },
           rect_lg: { macros: ["scaleAndCrop|592|391"] },
-          medium: {actions: ['resize|400|200>']},
-          xlarge: {actions: ['resize|1400|1400>']},
-          promo1: {actions: ['resize|696|600']},
-          promo2: {actions: ['resize|645|456']}
+          resize_sm: { actions: ['resize|158|82>'] },
+          resize_md: { actions: ['resize|400|200>'] },
+          resize_xl: { actions: ['resize|1400|1400>'] },
+          resize_v_md: { actions: ["resize|280|404"] },
+          resize_sq_sm: { actions: ['resize|176|176'] },
+          promo1: { actions: ['resize|696|600'] },
+          questions: { actions: ['resize|645|456'] },
+          cover: { macros: ["scaleAndCrop|1920|700"] },
+          sq_lg_ext: { actions: ["trim", "gravity|Center", "resize|520|520>", "extent|520|520"] }
         }
       }
     ],

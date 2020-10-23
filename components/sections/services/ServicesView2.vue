@@ -26,6 +26,7 @@
                   :img="item.img"
                   :itemId="item.id"
                   :sectionId="section.id"
+                  imageStyle="sq_lg"
                 />
                 <div class="services__title">
                   <editor
@@ -120,7 +121,7 @@
               <div class="services__item">
                 <div class="services__body body-copy">
                   <div class="services__image">
-                    <img :src="$images.src(item.img)" />
+                    <img :src="$site_img(item.img_1, 'sq_lg')" />
                   </div>
                   <div class="services__title">{{ item.title }}</div>
                   <div

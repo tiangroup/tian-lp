@@ -25,7 +25,7 @@
             :itemId="item.id"
             :sectionId="sectionId"
             :key="'imgB' + item.id"
-            imageStyle="sq_lg"
+            imageStyle="sq_lg_ext"
           />
         </div>
         <div class="illustrations__row" v-if="isEdit || item.img_2">

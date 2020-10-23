@@ -7,7 +7,7 @@
         mDark: section.settings.background === 'dark',
         'services--style1': view === 'view1',
         'services--style2': view === 'view2',
-        'services--style3': view === 'view3'
+        'services--style3': view === 'view3',
       }"
     >
       <div class="landing__container">
@@ -37,7 +37,7 @@
       <div class="good-summary">
         <div class="good-summary__row">
           <div class="good-summary__image" v-if="currentItem.img">
-            <img :src="$images.src(currentItem.img)" />
+            <img :src="$site_img(currentItem.img, 'icon_sm')" />
           </div>
           <div class="good-summary__body">
             <div class="good-summary__title">
@@ -67,30 +67,30 @@ import View2 from "./ServicesView2";
 import View3 from "./ServicesView3";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   components: {
     View1,
     View2,
-    View3
+    View3,
   },
   data() {
     return {
       currentItem: {},
-      dialogOrderService: false
+      dialogOrderService: false,
     };
   },
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit"
+      isSectionEdit: "isSectionEdit",
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
     },
     view() {
       return this.section.settings.view;
-    }
+    },
   },
   methods: {
     showOrderDialog(item) {
@@ -98,8 +98,8 @@ export default {
         this.currentItem = item;
         this.dialogOrderService = true;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
