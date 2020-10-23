@@ -48,6 +48,20 @@ export const mutations = {
   },
   SET_SAVE_LOADING(state, saveLoading) {
     state.saveLoading = saveLoading;
+  },
+  SET_SETTINGS_COLOR(state, color) {
+    if (state.site) {
+      if (!state.site.settings) {
+        state.settings = {};
+      }
+      if (!state.site.settings.color) {
+        state.site.settings.color = {};
+      }
+      state.site.settings.color.h = color.h;
+      state.site.settings.color.s = color.s;
+      state.site.settings.color.l = color.l;
+      state.change = true;
+    }
   }
 };
 
@@ -106,5 +120,11 @@ export const getters = {
   },
   ym: state => {
     return state.site ? state.site.ym : null;
+  },
+  settings: state => {
+    if (!state.site.settings) {
+      state.site.settings = {};
+    }
+    return state.site.settings;
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="landing__tp">
-    <div class="landing__tpb">
+    <div class="landing__tpb" v-if="!isEdit">
       <button
         class="button button-primary button-icon button-tpb"
         @click="showTuningPanel = !showTuningPanel"
@@ -42,7 +42,7 @@
         <div class="tuning-heading">
           <div class="tuning-heading__row">
             <div class="tuning-heading__cell">
-              <div class="tuning-heading__title">Настройки лендинга</div>
+              <div class="tuning-heading__title">Настройки сайта</div>
             </div>
             <div class="tuning-heading__cell tuning-heading__reset">
               <button
@@ -136,30 +136,35 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
-import PanelGeneral from "./PanelGeneral";
-import PanelSections from "./PanelSections";
-import PanelMobile from "./PanelMobile";
+import { mapGetters } from "vuex";
 export default {
-  components: {
-    PanelGeneral,
-    PanelSections,
-    PanelMobile,
-  },
   props: {
-    sections: Array,
+    sections: Array
   },
-  data: function () {
+  data: function() {
     return {
-      showTuningPanel: false,
-      tab: 0,
+      tab: 0
     };
+  },
+  computed: {
+    ...mapGetters({
+      isEdit: "isEdit",
+      tuningPanel: "tuningPanel"
+    }),
+    showTuningPanel: {
+      get() {
+        return this.tuningPanel;
+      },
+      set(value) {
+        this.$tuningPanel(value);
+      }
+    }
   },
   methods: {
     initPageReload() {
       window.location.reload();
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

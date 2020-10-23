@@ -12,7 +12,8 @@ export const state = () => ({
   error: {},
   sectionEdit: null,
   dialogEditorSource: false,
-  editorSource: {}
+  editorSource: {},
+  tuningPanel: false
 });
 
 export const mutations = {
@@ -66,6 +67,9 @@ export const mutations = {
   },
   SET_DIALOG_EDITOR_SOURCE(state, dialog) {
     state.dialogEditorSource = dialog;
+  },
+  SET_TUNING_PANEL(state, tuningPanel) {
+    state.tuningPanel = tuningPanel;
   }
 };
 
@@ -157,5 +161,6 @@ export const getters = {
   dialogError: state => state.dialogError,
   error: state => state.error,
   dialogEditorSource: state => state.dialogEditorSource,
-  editorSource: state => state.editorSource
+  editorSource: state => state.editorSource,
+  tuningPanel: state => state.tuningPanel
 };

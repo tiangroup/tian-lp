@@ -1,5 +1,5 @@
 <template>
-  <div id="lp">
+  <div id="lp" :style="colorStyle">
     <v-app v-if="$auth.loggedIn">
       <appbar />
       <v-main>
@@ -28,8 +28,22 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isApp: "isApp"
-    })
+      isApp: "isApp",
+      settings: "sites/settings"
+    }),
+    colorStyle() {
+      return this.settings.color
+        ? {
+            "--hue": this.settings.color.h ? this.settings.color.h : null,
+            "--saturation": this.settings.color.s
+              ? Math.floor(this.settings.color.s * 100) + "%"
+              : null,
+            "--lightness": this.settings.color.l
+              ? Math.floor(this.settings.color.l * 100) + "%"
+              : null
+          }
+        : null;
+    }
   }
 };
 </script>

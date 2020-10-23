@@ -41,22 +41,16 @@
               <button
                 class="tuning-bg__color"
                 :class="{
-                  'tuning-bg__color--active': colorSelected === index,
+                  'tuning-bg__color--active': colorSelected === index
                 }"
-                :style="
-                  getColorBg({
-                    hue: color.hue,
-                    saturation: color.saturation,
-                    lightness: color.lightness,
-                  })
-                "
+                :style="getColorBg(color)"
                 :title="color.name"
                 @click="
                   setBrandColor({
                     index: index,
-                    hue: color.hue,
-                    saturation: color.saturation,
-                    lightness: color.lightness,
+                    h: color.h,
+                    s: color.s,
+                    l: color.l
                   })
                 "
               ></button>
@@ -71,7 +65,7 @@
                     class="tuning-bg__color tuning-bg__colorN"
                     :class="{
                       'tuning-bg__color--active':
-                        colorSelected === brandColors.length + 1,
+                        colorSelected === brandColors.length + 1
                     }"
                     title="Пользовательский"
                     v-bind="attrs"
@@ -98,7 +92,7 @@
             <button
               class="tuning-panel__setting tuning-setting"
               :class="{
-                'tuning-setting--active': isBorderRadiusSet,
+                'tuning-setting--active': isBorderRadiusSet
               }"
               @click="setButtonRadius"
             >
@@ -114,7 +108,7 @@
             <button
               class="tuning-panel__setting tuning-setting"
               :class="{
-                'tuning-setting--active': !isBorderRadiusSet,
+                'tuning-setting--active': !isBorderRadiusSet
               }"
               @click="removeButtonRadius"
             >
@@ -172,126 +166,145 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
-    sections: Array,
+    sections: Array
   },
-  data: function () {
+  data: function() {
     return {
       brandColors: [
         {
           name: "Темно-синий",
-          hue: "224",
-          saturation: "82%",
-          lightness: "35%",
+          h: 224,
+          s: 0.82,
+          l: 0.35
         },
         {
           name: "Синий",
-          hue: "223",
-          saturation: "91%",
-          lightness: "55%",
+          h: 223,
+          s: 0.91,
+          l: 0.55
         },
         {
           name: "Голубой",
-          hue: "198",
-          saturation: "91%",
-          lightness: "55%",
+          h: 198,
+          s: 0.91,
+          l: 0.55
         },
         {
           name: "Темно-зеленый",
-          hue: "136",
-          saturation: "77%",
-          lightness: "25%",
+          h: 136,
+          s: 0.77,
+          l: 0.25
         },
         {
           name: "Зеленый",
-          hue: "136",
-          saturation: "75%",
-          lightness: "34%",
+          h: 136,
+          s: 0.75,
+          l: 0.34
         },
         {
           name: "Салатовый",
-          hue: "92",
-          saturation: "59%",
-          lightness: "49%",
+          h: 92,
+          s: 0.59,
+          l: 0.49
         },
         {
           name: "Желтый",
-          hue: "43",
-          saturation: "94%",
-          lightness: "51%",
+          h: 43,
+          s: 0.94,
+          l: 0.51
         },
         {
           name: "Темно-красный",
-          hue: "0",
-          saturation: "73%",
-          lightness: "38%",
+          h: 0,
+          s: 0.73,
+          l: 0.38
         },
         {
           name: "Красный",
-          hue: "0",
-          saturation: "84%",
-          lightness: "57%",
+          h: 0,
+          s: 0.84,
+          l: 0.57
         },
         {
           name: "Ярко-розовый",
-          hue: "346",
-          saturation: "78%",
-          lightness: "51%",
+          h: 346,
+          s: 0.78,
+          l: 0.51
         },
         {
           name: "Фиолетовый",
-          hue: "285",
-          saturation: "58%",
-          lightness: "44%",
+          h: 285,
+          s: 0.58,
+          l: 0.44
         },
         {
           name: "Сиреневый",
-          hue: "284",
-          saturation: "59%",
-          lightness: "64%",
-        },
+          h: 284,
+          s: 0.59,
+          l: 0.64
+        }
       ],
       isBorderRadiusSet: true,
-      isThemeLight: true,
-      colorSelected: 1,
-      userColor: {
-        h: 223,
-        s: 0.91,
-        l: 0.55,
-      },
+      isThemeLight: true
     };
+  },
+  computed: {
+    ...mapGetters({
+      settings: "sites/settings"
+    }),
+    userColor: {
+      get() {
+        return (
+          this.settings.color || {
+            h: 223,
+            s: 0.91,
+            l: 0.55
+          }
+        );
+      },
+      set(value) {
+        this.setSettingsColor(value);
+      }
+    },
+    colorSelected() {
+      const color = this.brandColors.find(
+        c =>
+          c.h == this.userColor.h &&
+          c.s == this.userColor.s &&
+          c.l == this.userColor.l
+      );
+      return color
+        ? this.brandColors.indexOf(color)
+        : this.brandColors.length + 1;
+    }
   },
   methods: {
     ...mapMutations({
       setSettingsField: "pages/SET_SETTINGS_FIELD",
+      setSettingsColor: "sites/SET_SETTINGS_COLOR"
     }),
     setBrandColor(payload) {
-      const rootEl = document.getElementById("lp");
-      rootEl.style.setProperty("--hue", payload.hue);
-      rootEl.style.setProperty("--saturation", payload.saturation);
-      rootEl.style.setProperty("--lightness", payload.lightness);
-      this.colorSelected = payload.index;
+      this.setSettingsColor({
+        h: payload.h,
+        s: payload.s,
+        l: payload.l
+      });
     },
-    getColorBg(payload) {
+    getColorBg(color) {
       return {
-        "background-color":
-          "hsl(" +
-          payload.hue +
-          "," +
-          payload.saturation +
-          ", " +
-          payload.lightness +
-          ")",
+        "background-color": `hsl(${color.h},${Math.floor(
+          color.s * 100
+        )}%,${Math.floor(color.l * 100)}%)`
       };
     },
     handlePickedColor() {
       this.setBrandColor({
-        index: this.brandColors.length + 1,
-        hue: this.userColor.h,
-        saturation: Math.floor(this.userColor.s * 100) + "%",
-        lightness: Math.floor(this.userColor.l * 100) + "%",
+        h: this.userColor.h,
+        s: this.userColor.s,
+        l: this.userColor.l
       });
     },
     setButtonRadius() {
@@ -308,10 +321,10 @@ export default {
         this.setSettingsField({
           id: section.id,
           field: "background",
-          value: val,
+          value: val
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
