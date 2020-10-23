@@ -1290,6 +1290,7 @@ nav ul li,
   }
   .header__logo {
     flex: 1 0 25%;
+    flex-wrap: wrap;
     max-width: 50%;
   }
   .header__contacts {
@@ -1686,19 +1687,18 @@ nav ul li,
   display: none;
   font-size: 0.8125rem;
   letter-spacing: 0.1px;
-  max-width: 12rem;
+  max-width: 14rem;
   min-width: 5rem;
   opacity: 0.7;
 }
 .logo__link {
-  flex: 1 0 60%;
+  flex: 0 0 auto;
+  max-width: 60%;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   text-decoration: none;
   vertical-align: middle;
-}
-.logo__link:first-child:last-child {
 }
 .logo__link:hover,
 .logo__link:focus {
@@ -1710,18 +1710,11 @@ nav ul li,
   .logo__slogan {
     margin-bottom: 1rem;
   }
-  .logo__link {
-    margin-right: 1.6875rem;
-  }
-  .logo__link:first-child:last-child {
-    margin-right: 0;
-  }
 }
 .logo__image {
   height: 2.5rem;
   width: 2.5rem;
   overflow: hidden;
-  margin-right: 0.5rem;
 }
 .logo__image:first-child:last-child {
   flex: 1 0 auto;
@@ -1741,7 +1734,6 @@ nav ul li,
   max-height: 100%;
   max-width: 100%;
   width: auto;
-  vertical-align: middle;
 }
 .logo__image svg,
 .logo__image img {
@@ -1761,7 +1753,6 @@ nav ul li,
   .logo__image {
     height: 3.125rem;
     width: 3.125rem;
-    margin-right: 0.625rem;
   }
   .logo__image:first-child:last-child {
     min-width: 3.125rem;
@@ -1772,7 +1763,7 @@ nav ul li,
 }
 @media (min-width: 1024px) {
   .logo__image {
-    flex: 0 0 3.9375rem;
+    flex: 0.5 0 3.9375rem;
     height: 3.9375rem;
     min-width: 3.9375rem;
     width: 3.9375rem;
@@ -1789,6 +1780,8 @@ nav ul li,
 @media (min-width: 1280px) {
   .logo__slogan {
     display: block;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 .nav__toggle,
