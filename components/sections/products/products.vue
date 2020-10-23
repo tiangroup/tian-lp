@@ -213,6 +213,7 @@
                   :item="currentItem"
                   :is-edit="isEdit"
                   :section-id="section.id"
+                  :description-label="section.description_label"
                   @save-item="saveItemDetails"
                   @show-gallery="showImageGallery"
                   @show-order-form="handleOrderFormCall(currentItem)"
@@ -416,10 +417,10 @@ export default {
         let lastElem = document.getElementById(
           this.section.items[this.itemsToShow - 1].id
         );
-        //this.$vuetify.goTo(lastElem, { duration: 500 });
       } else {
         this.itemsToShow += 4;
       }
+      document.activeElement.blur();
     },
     saveItemDetails() {
       this.$store.dispatch("pages/savePage");
@@ -450,25 +451,20 @@ export default {
 };
 </script>
 <style scoped>
-.products-appear-enter-active,
-.products-appear-leave-active {
-  transition: max-height 1s;
-  max-height: 40rem;
-  overflow: hidden;
+.products-appear-enter-active {
+  transition: transform 0.4s, opacity 0.4s;
+  transform: translateY(0);
 }
 .products-appear-leave-to {
   margin-bottom: 0;
 }
-.products-appear-enter,
-.products-appear-leave-to {
-  max-height: 0;
+.products-appear-enter {
+  transform: translateY(200px);
+  opacity: 0;
 }
-.products >>> .v-skeleton-loader__avatar,
 .products >>> .v-skeleton-loader__button,
 .products >>> .v-skeleton-loader__chip,
-.products >>> .v-skeleton-loader__divider,
 .products >>> .v-skeleton-loader__heading,
-.products >>> .v-skeleton-loader__image,
 .products >>> .v-skeleton-loader__text {
   background-color: var(--separator-color);
 }

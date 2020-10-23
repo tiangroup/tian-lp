@@ -55,7 +55,7 @@
               :itemId="item.id"
             />
           </div>
-          <div class="good__prices__current" v-else>
+          <div class="good__prices__current" v-else-if="item.price">
             {{ item.price }}
           </div>
           <div class="good__prices__old" v-if="isEdit">
@@ -67,7 +67,7 @@
               :itemId="item.id"
             />
           </div>
-          <div class="good__prices__old" v-else>
+          <div class="good__prices__old" v-else-if="item.old_price">
             {{ item.old_price }}
           </div>
         </div>

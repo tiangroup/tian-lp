@@ -50,7 +50,7 @@
                 :itemId="item.id"
                 :sectionId="sectionId"
                 :key="'imgS' + item['img_' + n] + n"
-                imageStyle="icon_sm"
+                imageStyle="sq_lg_ext"
               />
             </div>
           </div>
@@ -72,21 +72,16 @@
         v-html="item.tech_chars"
         v-else-if="item.tech_chars"
       ></div>
-      <div class="good__description" v-if="isEdit">
-        <div class="good__description__title">Краткое описание</div>
-        <div class="good__description__body" v-if="isEdit">
-          <editor
-            data-placeholder="Краткое описание товара"
-            :text="item.short_description || ''"
-            :sectionId="sectionId"
-            field="short_description"
-            :itemId="item.id"
-            :key="'sh' + item.id"
-          />
-        </div>
-      </div>
       <div class="good__description" v-if="item.description || isEdit">
-        <div class="good__description__title">Описание</div>
+        <div class="good__description__title">
+          <editor
+            :text="descriptionLabel || 'Описание'"
+            :sectionId="sectionId"
+            field="description_label"
+            v-if="isEdit"
+          />
+          <span v-else>{{ descriptionLabel || "Описание" }}</span>
+        </div>
         <div class="good__description__body" v-if="isEdit">
           <editor
             data-placeholder="Полное описание товара"
@@ -167,6 +162,7 @@ export default {
     item: Object,
     isEdit: Boolean,
     sectionId: String,
+    descriptionLabel: String,
   },
   data: function () {
     return {

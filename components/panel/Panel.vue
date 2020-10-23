@@ -47,7 +47,7 @@
             <div class="tuning-heading__cell tuning-heading__reset">
               <button
                 class="button button-text button-icon-w-text"
-                @click="reset"
+                @click="initPageReload"
               >
                 <svg
                   width="24"
@@ -161,7 +161,9 @@ export default {
     }
   },
   methods: {
-    reset() {}
+    initPageReload() {
+      window.location.reload();
+    }
   }
 };
 </script>
@@ -182,5 +184,12 @@ export default {
 }
 .tuning-body >>> .v-window__container {
   height: 100%;
+}
+.tuning >>> .primary--text {
+  color: var(--theme-color, #245ef5) !important;
+  caret-color: var(--theme-color, #245ef5) !important;
+}
+.v-application .tuning >>> a {
+  color: inherit;
 }
 </style>
