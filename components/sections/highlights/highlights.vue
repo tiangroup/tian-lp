@@ -10,7 +10,7 @@
         <div class="highlights__list cells">
           <div
             class="highlights__item cell cell-12 cell-sm-6 cell-lg-3"
-            v-for="item in section.items.filter(i => i.id)"
+            v-for="item in section.items.filter((i) => i.id)"
             :key="item.id"
             :style="styleDiv"
           >
@@ -27,6 +27,7 @@
               :sectionId="section.id"
               field="img"
               fieldSvg="svg"
+              imageStyle="icon_sm"
             />
             <div class="highlights__text" v-if="isEdit">
               <editor
@@ -64,20 +65,20 @@
 import { mapGetters } from "vuex";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit"
+      isSectionEdit: "isSectionEdit",
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
     },
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

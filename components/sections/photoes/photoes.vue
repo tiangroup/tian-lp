@@ -23,7 +23,7 @@
               v-if="!isEdit"
               :id="'gallery' + section.id"
               :options="{
-                closeOnSlideClick: true
+                closeOnSlideClick: true,
               }"
             ></v-gallery>
           </client-only>
@@ -38,7 +38,7 @@
                 <div
                   class="gallery__item"
                   :class="{ 'position-relative': isEdit }"
-                  v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                  v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
                   :key="item.id"
                 >
                   <buttons-item
@@ -56,6 +56,7 @@
                       :img="item.img"
                       :itemId="item.id"
                       :sectionId="section.id"
+                      imageStyle="rect_lg"
                     />
                     <div class="gallery__text" v-if="isEdit">
                       <editor
@@ -84,12 +85,14 @@
                 <div class="cells fx-nw overflow-hidden">
                   <div
                     class="gallery__link cell-12 cell-sm-6 cell-lg-3"
-                    v-for="item in section.items.filter(i => i.id)"
+                    v-for="item in section.items.filter((i) => i.id)"
                     :key="item.id"
                     :item="item"
                     :sectionId="section.id"
                     :isEdit="false"
-                  ></div>
+                  >
+                    <img src="$site_img(item.img, 'rect_lg')" />
+                  </div>
                 </div>
               </template>
             </client-only>
@@ -104,7 +107,7 @@
 import { mapGetters } from "vuex";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   data: () => ({
     index: null,
@@ -125,24 +128,24 @@ export default {
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false
-          }
+            arrows: false,
+          },
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false
-          }
-        }
-      ]
-    }
+            arrows: false,
+          },
+        },
+      ],
+    },
   }),
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit"
+      isSectionEdit: "isSectionEdit",
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
@@ -163,7 +166,7 @@ export default {
         // slidesToShow: slidesQty,
         // centerMode: slickCenter,
         infinite: !this.isEdit,
-        draggable: !this.isEdit
+        draggable: !this.isEdit,
       });
     },
     images() {
@@ -173,7 +176,7 @@ export default {
         var imagesItem = {
           title: pic.title,
           href: this.$images.src(pic.img),
-          type: "image/jpeg"
+          type: "image/jpeg",
         };
         imagesArray.push(imagesItem);
       }
@@ -199,7 +202,7 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)").length;
-    }
+    },
   },
   methods: {
     showGallery(itemIndex) {
@@ -231,14 +234,14 @@ export default {
         }
         this.showGallery(slideId);
       }
-    }
+    },
   },
-  beforeUpdate: function() {
+  beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
       this.currentSlide = this.$refs[this.slickRef].currentSlide();
     }
   },
-  beforeDestroy: function() {
+  beforeDestroy: function () {
     if (this.$refs[this.slickRef]) {
       if (document.getElementById(this.section.id) && !this.isEdit) {
         document
@@ -246,6 +249,6 @@ export default {
           .removeEventListener("click", this.handleClonedSlides);
       }
     }
-  }
+  },
 };
 </script>

@@ -28,6 +28,7 @@
                 :img="item.img"
                 :itemId="item.id"
                 :sectionId="section.id"
+                imageStyle="sq_lg"
               />
               <div class="services__body body-copy">
                 <div class="services__title">
@@ -121,7 +122,7 @@
             >
               <div class="services__item">
                 <div class="services__image">
-                  <img :src="$images.src(item.img)" />
+                  <img :src="$site_img(item.img, 'sq_lg')" />
                 </div>
                 <div class="services__body body-copy">
                   <div class="services__title">{{ item.title }}</div>
@@ -168,7 +169,7 @@
               class="services__navigation__image"
               :class="{ 'no-image': !item.img }"
             >
-              <img :src="$images.src(item.img)" v-if="item.img" />
+              <img :src="$site_img(item.img, 'sq_xs')" v-if="item.img" />
             </div>
           </div>
         </slick>

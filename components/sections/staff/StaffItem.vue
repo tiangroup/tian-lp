@@ -7,6 +7,7 @@
         :img="item.img"
         :itemId="item.id"
         :sectionId="sectionId"
+        imageStyle="resize_sq_sm"
       />
       <div class="staff__info">
         <div class="staff__name" v-if="isEdit">

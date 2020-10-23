@@ -27,7 +27,7 @@
       class="hero"
       :style="
         section.bg_img
-          ? `background-image:url(\'${$site_img(section.bg_img)}\');`
+          ? `background-image:url(\'${$site_img(section.bg_img, 'cover')}\');`
           : ''
       "
       :class="{
@@ -72,6 +72,7 @@
             :items="null"
             field="img"
             :sectionId="section.id"
+            imageStyle="promo1"
           />
         </div>
       </div>

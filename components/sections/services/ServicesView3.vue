@@ -15,14 +15,14 @@
             <div class="tbps__labels">
               <div
                 class="tbps__label"
-                v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
                 :key="'nav-' + item.id"
               >
                 <a
                   :href="'#' + item.id"
                   class="tbps__label__link"
                   :class="{
-                    'tbps__label__link--active': isActiveItem(itemIndex)
+                    'tbps__label__link--active': isActiveItem(itemIndex),
                   }"
                   @click.prevent="changeActiveItem(itemIndex)"
                   >{{ item.title || "Новая услуга" }}</a
@@ -53,13 +53,13 @@
             :key="slickKey"
           >
             <div
-              v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+              v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
               :key="item.id"
               :id="item.id"
               class="tbps__panel h-100"
               :class="{
                 'position-relative': isEdit,
-                'tbps__panel--active': isActiveItem(itemIndex)
+                'tbps__panel--active': isActiveItem(itemIndex),
               }"
               @click="gotoClickedSlide(itemIndex)"
             >
@@ -77,6 +77,7 @@
                         :img="item.img"
                         :itemId="item.id"
                         :sectionId="section.id"
+                        imageStyle="sq_lg"
                       />
                     </div>
                     <div class="cell cell-12 cell-sm-9 order-sm-1">
@@ -184,11 +185,11 @@
           <template slot="placeholder">
             <div class="display-flex align-items-stretch">
               <div
-                v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
                 :key="item.id"
                 class="tbps__panel"
                 :class="{
-                  'tbps__panel--active': isActiveItem(itemIndex)
+                  'tbps__panel--active': isActiveItem(itemIndex),
                 }"
               >
                 <div class="services__item h-100">
@@ -245,8 +246,8 @@ export default {
     isEdit: Boolean,
     view: {
       type: String,
-      default: "view2"
-    }
+      default: "view2",
+    },
   },
   components: {},
   data() {
@@ -264,8 +265,8 @@ export default {
         prevArrow:
           '<button type="button" class="slick-arrow slick-prev"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 1L2 13.9706L15.966 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
         nextArrow:
-          '<button type="button" class="slick-arrow slick-next"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L15 13.9706L1.03398 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>'
-      }
+          '<button type="button" class="slick-arrow slick-next"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L15 13.9706L1.03398 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
+      },
     };
   },
   computed: {
@@ -277,7 +278,7 @@ export default {
     },
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
-        draggable: !this.isEdit
+        draggable: !this.isEdit,
       });
     },
     slickRef() {
@@ -300,7 +301,7 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)");
-    }
+    },
   },
   methods: {
     changeActiveItem(index) {
@@ -326,8 +327,8 @@ export default {
       if (!this.isActiveItem(itemIndex)) {
         this.changeActiveItem(itemIndex);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

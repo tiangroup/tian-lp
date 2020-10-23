@@ -27,7 +27,7 @@
         <div class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3">
           <div
             class="benefits__item benefits__item--lg-right"
-            v-for="item in items1.filter(i => i.id)"
+            v-for="item in items1.filter((i) => i.id)"
             :key="item.id"
             :style="styleDiv"
           >
@@ -87,12 +87,13 @@
             :items="null"
             field="img"
             :sectionId="section.id"
+            imageStyle="promo1"
           />
         </div>
         <div class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3">
           <div
             class="benefits__item"
-            v-for="item in items2.filter(i => i.id)"
+            v-for="item in items2.filter((i) => i.id)"
             :key="item.id"
             :style="styleDiv"
           >
@@ -152,7 +153,7 @@
 export default {
   props: {
     section: Object,
-    isEdit: Boolean
+    isEdit: Boolean,
   },
   computed: {
     styleDiv() {
@@ -165,7 +166,7 @@ export default {
     items2() {
       const len = Math.ceil(this.section.items.length / 2);
       return this.section.items.filter((item, index) => index >= len);
-    }
-  }
+    },
+  },
 };
 </script>

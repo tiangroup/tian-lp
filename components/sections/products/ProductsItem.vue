@@ -18,7 +18,7 @@
           :class="{ 'no-image': !item.img_1 }"
           @click="$emit('show-details')"
         >
-          <img :src="$site_img(item.img_1, 'sq_lg')" v-if="item.img_1" />
+          <img :src="$site_img(item.img_1, 'sq_lg_ext')" v-if="item.img_1" />
         </button>
         <div class="products__title">
           <editor
