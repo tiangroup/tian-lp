@@ -45,7 +45,10 @@
               <div class="tuning-heading__title">Настройки лендинга</div>
             </div>
             <div class="tuning-heading__cell tuning-heading__reset">
-              <button class="button button-text button-icon-w-text">
+              <button
+                class="button button-text button-icon-w-text"
+                @click="initPageReload"
+              >
                 <svg
                   width="24"
                   height="24"
@@ -133,6 +136,7 @@
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
 import PanelGeneral from "./PanelGeneral";
 import PanelSections from "./PanelSections";
 import PanelMobile from "./PanelMobile";
@@ -150,6 +154,11 @@ export default {
       showTuningPanel: false,
       tab: 0,
     };
+  },
+  methods: {
+    initPageReload() {
+      window.location.reload();
+    },
   },
 };
 </script>
@@ -170,5 +179,12 @@ export default {
 }
 .tuning-body >>> .v-window__container {
   height: 100%;
+}
+.tuning >>> .primary--text {
+  color: var(--theme-color, #245ef5) !important;
+  caret-color: var(--theme-color, #245ef5) !important;
+}
+.v-application .tuning >>> a {
+  color: inherit;
 }
 </style>

@@ -2,7 +2,7 @@
   <div>
     <div class="tuning-panel__title">Настройка разделов</div>
     <div class="tuning-panel__blocks">
-      <div class="tuning-panel__subtitle">Настройте внешний вид разделов</div>
+      <!-- <div class="tuning-panel__subtitle">Настройте внешний вид разделов</div> -->
       <div class="tuning-panel__block">
         <div class="tuning-panel__row mb-25px justify-content-between">
           <div class="tuning-sort">

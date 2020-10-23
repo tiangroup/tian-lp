@@ -11,7 +11,10 @@
   >
     <div class="landing__container">
       <div class="header__wrap">
-        <div class="logo header__logo">
+        <div
+          class="logo header__logo"
+          :class="{ 'header__logo--editable': isEdit }"
+        >
           <a class="logo__link">
             <image-item
               divClass="logo__image"
