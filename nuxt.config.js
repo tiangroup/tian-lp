@@ -72,8 +72,7 @@ export default {
         keys: [
           "API_BACKEND",
           "APP_BACKEND",
-          { key: "ADMIN_TOKEN", secret: true },
-          "DEMO"
+          { key: "ADMIN_TOKEN", secret: true }
         ]
       }
     ],
@@ -91,13 +90,13 @@ export default {
           rect_sm: { macros: ["scaleAndCrop|158|82"] },
           rect_md: { macros: ["scaleAndCrop|397|262"] },
           rect_lg: { macros: ["scaleAndCrop|592|391"] },
-          resize_sm: { actions: ['resize|158|82>'] },
-          resize_md: { actions: ['resize|400|200>'] },
-          resize_xl: { actions: ['resize|1400|1400>'] },
+          resize_sm: { actions: ["resize|158|82>"] },
+          resize_md: { actions: ["resize|400|200>"] },
+          resize_xl: { actions: ["resize|1400|1400>"] },
           resize_v_md: { actions: ["resize|280|404"] },
-          resize_sq_sm: { actions: ['resize|176|176'] },
-          promo1: { actions: ['resize|696|600'] },
-          questions: { actions: ['resize|645|456'] },
+          resize_sq_sm: { actions: ["resize|176|176"] },
+          promo1: { actions: ["resize|696|600"] },
+          questions: { actions: ["resize|645|456"] },
           cover: { macros: ["scaleAndCrop|1920|700"] },
           sq_lg_ext: { actions: ["trim", "gravity|Center", "resize|520|520>", "extent|520|520"] },
           logo: { actions: ['resize|450|100>'] },

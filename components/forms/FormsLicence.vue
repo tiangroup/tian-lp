@@ -13,6 +13,10 @@
           -->
           <v-spacer></v-spacer>
 
+          <v-btn icon v-show="false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
@@ -36,7 +40,7 @@
         </v-card-title>
         <v-card-text>
           <div v-if="isEdit">
-            <editor-ext v-model="editText" editContent="html" />
+            <editor v-model="editText" editContent="html" />
           </div>
           <div v-else v-html="editText"></div>
         </v-card-text>

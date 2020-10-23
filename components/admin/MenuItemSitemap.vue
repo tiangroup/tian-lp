@@ -4,7 +4,7 @@
       <v-icon>mdi-sitemap</v-icon>
     </v-list-item-icon>
     <v-list-item-title>sitemap.xml</v-list-item-title>
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" persistent max-width="600">
       <v-card>
         <v-card-title>
           <span class="headline">sitemap.xml</span>
