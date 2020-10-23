@@ -73,4 +73,6 @@ export default (context, inject) => {
   inject("editorSource", editorSource =>
     store.dispatch("showEditorSource", editorSource)
   );
+
+  inject("tuningPanel", show => store.commit("SET_TUNING_PANEL", show));
 };

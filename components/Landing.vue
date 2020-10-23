@@ -9,7 +9,7 @@
       <new-section-button />
     </div>
 
-    <panel v-if="site.demo" :sections="page.sections"></panel>
+    <panel v-if="site.demo || isEdit" :sections="page.sections"></panel>
 
     <overlay v-if="isEdit" />
 
