@@ -1,36 +1,14 @@
 <template>
   <client-only>
-    <div>
-      <medium-editor
-        :text="_text"
-        :options="{
-          ...editorOptions,
-          editContent
-        }"
-        @edit="operation => applyItemTextEdit(operation)"
-      />
-      <v-dialog v-model="dialog" persistent max-width="600px">
-        <v-card>
-          <v-card-title>
-            <span class="headline">Исходный код</span>
-          </v-card-title>
-
-          <v-card-text>
-            <v-textarea outlined v-model="source"></v-textarea>
-          </v-card-text>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog = false">
-              Отмена
-            </v-btn>
-            <v-btn color="blue darken-1" text @click="sourceOk">
-              OK
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </div>
+    <medium-editor
+      :text="_text"
+      :options="{
+        ...editorOptions,
+        editContent
+      }"
+      @edit="operation => applyItemTextEdit(operation)"
+      v-if="active"
+    />
   </client-only>
 </template>
 
@@ -39,6 +17,10 @@ import { mapMutations } from "vuex";
 import MediumButton from "medium-button";
 export default {
   props: {
+    value: {
+      type: String,
+      default: undefined
+    },
     text: String,
     editContent: {
       type: String,
@@ -61,8 +43,7 @@ export default {
   },
   data: () => ({
     _text: null,
-    dialog: false,
-    source: null
+    active: true
   }),
   computed: {
     editorOptions() {
@@ -85,12 +66,16 @@ export default {
             buttons: [
               "bold",
               "italic",
-              "underline",
               "h2",
               "h3",
+              "h4",
               {
                 name: "anchor",
                 aria: "ссылка"
+              },
+              {
+                name: "image",
+                aria: "картинка"
               },
               {
                 name: "orderedlist",
@@ -115,19 +100,10 @@ export default {
             source: new MediumButton({
               label: "&lt;/&gt;",
               action: function(html, mark, parent) {
-                _this.source = JSON.parse(JSON.stringify(_this._text));
-                _this.dialog = true;
-                // const promise = new Promise(function(resolve, reject) {
-                //   let timerId = setTimeout(function tick() {
-                //     if (_this.dialog) {
-                //       timerId = setTimeout(tick, 2000);
-                //     } else {
-                //       resolve(_this.source);
-                //     }
-                //   }, 2000);
-                // });
-                // let result = await promise;
-                // console.log(result);
+                _this.$editorSource({
+                  html: _this._text,
+                  callback: _this.callbackEditorSource
+                });
                 return html;
               }
             })
@@ -154,49 +130,58 @@ export default {
         text = operation.api.origElements.innerHTML;
       }
 
-      this._text = text;
-
-      const payload = {
-        text: text,
-        field: this.field,
-        items: this.items,
-        itemId: this.itemId,
-        sectionId: this.sectionId,
-        object: this.object
-      };
-
-      this.$emit("onEdit", payload);
-
-      if (this.object) {
-        this.setObjectField({
-          sectionId: this.sectionId,
-          objectField: this.object,
-          field: this.field,
-          value: text
-        });
-      } else if (this.itemId) {
-        this.setItemField({
-          sectionId: this.sectionId,
-          itemId: this.itemId,
-          items: this.items,
-          field: this.field,
-          value: text
-        });
+      if (this.value !== undefined) {
+        this.$emit("input", text);
       } else {
-        this.setSectionField({
-          id: this.sectionId,
+        this._text = text;
+
+        const payload = {
+          text: text,
           field: this.field,
-          value: text
-        });
+          items: this.items,
+          itemId: this.itemId,
+          sectionId: this.sectionId,
+          object: this.object
+        };
+
+        this.$emit("onEdit", payload);
+
+        if (this.object) {
+          this.setObjectField({
+            sectionId: this.sectionId,
+            objectField: this.object,
+            field: this.field,
+            value: text
+          });
+        } else if (this.itemId) {
+          this.setItemField({
+            sectionId: this.sectionId,
+            itemId: this.itemId,
+            items: this.items,
+            field: this.field,
+            value: text
+          });
+        } else {
+          this.setSectionField({
+            id: this.sectionId,
+            field: this.field,
+            value: text
+          });
+        }
       }
     },
-    sourceOk() {
-      this._text = this.source;
-      this.dialog = false;
+    callbackEditorSource(source) {
+      this.active = false;
+      this._text = JSON.parse(JSON.stringify(source));
+      this.active = true;
     }
   },
   created() {
-    this._text = JSON.parse(JSON.stringify(this.text));
+    if (this.value === undefined) {
+      this._text = JSON.parse(JSON.stringify(this.text));
+    } else {
+      this._text = JSON.parse(JSON.stringify(this.value));
+    }
   }
 };
 </script>

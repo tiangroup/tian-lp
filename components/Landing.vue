@@ -1,7 +1,7 @@
 <template>
   <div class="landing">
     <sections
-      v-for="section in page.sections.filter((s) => s.id)"
+      v-for="section in page.sections.filter(s => s.id)"
       :key="section.id"
       :section="section"
     />
@@ -12,6 +12,8 @@
     <panel v-if="site.demo" :sections="page.sections"></panel>
 
     <overlay v-if="isEdit" />
+
+    <dialog-editor-source v-if="isEdit" />
 
     <image-upload v-if="isEdit" />
 
@@ -35,7 +37,7 @@ import { mapGetters, mapActions } from "vuex";
 import Sections from "~/components/sections/Section";
 export default {
   components: {
-    Sections,
+    Sections
   },
   computed: {
     ...mapGetters({
@@ -44,18 +46,18 @@ export default {
       dialogImageUpload: "dialogImageUpload",
       dialogImageSvg: "dialogImageSvg",
       site: "sites/site",
-      ym: "sites/ym",
+      ym: "sites/ym"
     }),
     counter() {
       return !this.isEdit && this.site && this.site.counter
         ? this.site.counter
         : null;
-    },
+    }
   },
   methods: {
     ...mapActions({
-      loadSections: "sections/loadSections",
-    }),
+      loadSections: "sections/loadSections"
+    })
   },
   mounted() {
     if (!this.isEdit && this.ym) {
@@ -64,7 +66,7 @@ export default {
     if (this.isEdit) {
       this.loadSections();
     }
-  },
+  }
 };
 </script>
 

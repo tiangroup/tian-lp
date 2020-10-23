@@ -4,7 +4,7 @@
       <v-icon>mdi-search-web</v-icon>
     </v-list-item-icon>
     <v-list-item-title>SEO</v-list-item-title>
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" persistent max-width="600">
       <v-card>
         <v-card-title>
           <span class="headline">SEO</span>

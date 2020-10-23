@@ -10,7 +10,9 @@ export const state = () => ({
   imageSvg: {},
   dialogError: false,
   error: {},
-  sectionEdit: null
+  sectionEdit: null,
+  dialogEditorSource: false,
+  editorSource: {}
 });
 
 export const mutations = {
@@ -58,6 +60,12 @@ export const mutations = {
   },
   SET_SECTION_EDIT(state, section_id) {
     state.sectionEdit = section_id;
+  },
+  SET_EDITOR_SOURCE(state, editorSource) {
+    state.editorSource = editorSource;
+  },
+  SET_DIALOG_EDITOR_SOURCE(state, dialog) {
+    state.dialogEditorSource = dialog;
   }
 };
 
@@ -117,6 +125,14 @@ export const actions = {
   },
   hideError({ commit }) {
     commit("SET_DIALOG_ERROR", false);
+  },
+  showEditorSource({ commit }, editorSource) {
+    commit("SET_EDITOR_SOURCE", editorSource);
+    commit("SET_DIALOG_EDITOR_SOURCE", true);
+  },
+  hideEditorSource({ commit }) {
+    commit("SET_DIALOG_EDITOR_SOURCE", false);
+    commit("SET_EDITOR_SOURCE", {});
   }
 };
 
@@ -139,5 +155,7 @@ export const getters = {
   dialogImageSvg: state => state.dialogImageSvg,
   imageSvg: state => state.imageSvg,
   dialogError: state => state.dialogError,
-  error: state => state.error
+  error: state => state.error,
+  dialogEditorSource: state => state.dialogEditorSource,
+  editorSource: state => state.editorSource
 };

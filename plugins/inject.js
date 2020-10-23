@@ -69,4 +69,8 @@ export default (context, inject) => {
   inject("overlay", show => store.commit("SET_OVERLAY", show));
 
   inject("error", error => store.dispatch("showError", error));
+
+  inject("editorSource", editorSource =>
+    store.dispatch("showEditorSource", editorSource)
+  );
 };
