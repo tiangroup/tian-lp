@@ -3,6 +3,7 @@
     class="header"
     :class="{
       mDark: section.settings.background === 'dark',
+      mLight: section.settings.background === 'light',
       'header--style1': view == 'view1',
       'header--style3': view == 'view3',
       'header--style5': view == 'view5',

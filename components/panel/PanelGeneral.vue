@@ -41,7 +41,7 @@
               <button
                 class="tuning-bg__color"
                 :class="{
-                  'tuning-bg__color--active': colorSelected === index
+                  'tuning-bg__color--active': colorSelected === index,
                 }"
                 :style="getColorBg(color)"
                 :title="color.name"
@@ -50,7 +50,7 @@
                     index: index,
                     h: color.h,
                     s: color.s,
-                    l: color.l
+                    l: color.l,
                   })
                 "
               ></button>
@@ -65,7 +65,7 @@
                     class="tuning-bg__color tuning-bg__colorN"
                     :class="{
                       'tuning-bg__color--active':
-                        colorSelected === brandColors.length + 1
+                        colorSelected === brandColors.length + 1,
                     }"
                     title="Пользовательский"
                     v-bind="attrs"
@@ -92,7 +92,7 @@
             <button
               class="tuning-panel__setting tuning-setting"
               :class="{
-                'tuning-setting--active': isBorderRadiusSet
+                'tuning-setting--active': isBorderRadiusSet,
               }"
               @click="setButtonRadius"
             >
@@ -108,7 +108,7 @@
             <button
               class="tuning-panel__setting tuning-setting"
               :class="{
-                'tuning-setting--active': !isBorderRadiusSet
+                'tuning-setting--active': !isBorderRadiusSet,
               }"
               @click="removeButtonRadius"
             >
@@ -169,91 +169,91 @@
 import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
-    sections: Array
+    sections: Array,
   },
-  data: function() {
+  data: function () {
     return {
       brandColors: [
         {
           name: "Темно-синий",
           h: 224,
           s: 0.82,
-          l: 0.35
+          l: 0.35,
         },
         {
           name: "Синий",
           h: 223,
           s: 0.91,
-          l: 0.55
+          l: 0.55,
         },
         {
           name: "Голубой",
           h: 198,
           s: 0.91,
-          l: 0.55
+          l: 0.55,
         },
         {
           name: "Темно-зеленый",
           h: 136,
           s: 0.77,
-          l: 0.25
+          l: 0.25,
         },
         {
           name: "Зеленый",
           h: 136,
           s: 0.75,
-          l: 0.34
+          l: 0.34,
         },
         {
           name: "Салатовый",
           h: 92,
           s: 0.59,
-          l: 0.49
+          l: 0.49,
         },
         {
           name: "Желтый",
           h: 43,
           s: 0.94,
-          l: 0.51
+          l: 0.51,
         },
         {
           name: "Темно-красный",
           h: 0,
           s: 0.73,
-          l: 0.38
+          l: 0.38,
         },
         {
           name: "Красный",
           h: 0,
           s: 0.84,
-          l: 0.57
+          l: 0.57,
         },
         {
           name: "Ярко-розовый",
           h: 346,
           s: 0.78,
-          l: 0.51
+          l: 0.51,
         },
         {
           name: "Фиолетовый",
           h: 285,
           s: 0.58,
-          l: 0.44
+          l: 0.44,
         },
         {
           name: "Сиреневый",
           h: 284,
           s: 0.59,
-          l: 0.64
-        }
+          l: 0.64,
+        },
       ],
       isBorderRadiusSet: true,
-      isThemeLight: true
+      isThemeLight: true,
     };
   },
   computed: {
     ...mapGetters({
-      settings: "sites/settings"
+      settings: "sites/settings",
     }),
     userColor: {
       get() {
@@ -261,17 +261,17 @@ export default {
           this.settings.color || {
             h: 223,
             s: 0.91,
-            l: 0.55
+            l: 0.55,
           }
         );
       },
       set(value) {
         this.setSettingsColor(value);
-      }
+      },
     },
     colorSelected() {
       const color = this.brandColors.find(
-        c =>
+        (c) =>
           c.h == this.userColor.h &&
           c.s == this.userColor.s &&
           c.l == this.userColor.l
@@ -279,32 +279,32 @@ export default {
       return color
         ? this.brandColors.indexOf(color)
         : this.brandColors.length + 1;
-    }
+    },
   },
   methods: {
     ...mapMutations({
       setSettingsField: "pages/SET_SETTINGS_FIELD",
-      setSettingsColor: "sites/SET_SETTINGS_COLOR"
+      setSettingsColor: "sites/SET_SETTINGS_COLOR",
     }),
     setBrandColor(payload) {
       this.setSettingsColor({
         h: payload.h,
         s: payload.s,
-        l: payload.l
+        l: payload.l,
       });
     },
     getColorBg(color) {
       return {
         "background-color": `hsl(${color.h},${Math.floor(
           color.s * 100
-        )}%,${Math.floor(color.l * 100)}%)`
+        )}%,${Math.floor(color.l * 100)}%)`,
       };
     },
     handlePickedColor() {
       this.setBrandColor({
         h: this.userColor.h,
         s: this.userColor.s,
-        l: this.userColor.l
+        l: this.userColor.l,
       });
     },
     setButtonRadius() {
@@ -316,15 +316,26 @@ export default {
       this.isBorderRadiusSet = false;
     },
     setSectionTheme(val) {
-      this.isThemeLight = val === "light" ? true : false;
-      for (const section of this.sections) {
-        this.setSettingsField({
-          id: section.id,
-          field: "background",
-          value: val
-        });
+      // this.isThemeLight = val === "light" ? true : false;
+      // for (const section of this.sections) {
+      //   this.setSettingsField({
+      //     id: section.id,
+      //     field: "background",
+      //     value: val
+      //   });
+      // }
+      if (val === "light") {
+        this.isThemeLight = true;
+        document.getElementsByClassName("landing")[0].classList.remove("mDark");
+        document.getElementsByClassName("landing")[0].classList.add("mLight");
+      } else {
+        this.isThemeLight = false;
+        document
+          .getElementsByClassName("landing")[0]
+          .classList.remove("mLight");
+        document.getElementsByClassName("landing")[0].classList.add("mDark");
       }
-    }
-  }
+    },
+  },
 };
 </script>

@@ -34,7 +34,6 @@
       v-model="showTuningPanel"
       fixed
       floating
-      temporary
       overlay-opacity="0"
       width="100%"
     >
@@ -139,17 +138,17 @@
 import { mapGetters } from "vuex";
 export default {
   props: {
-    sections: Array
+    sections: Array,
   },
-  data: function() {
+  data: function () {
     return {
-      tab: 0
+      tab: 0,
     };
   },
   computed: {
     ...mapGetters({
       isEdit: "isEdit",
-      tuningPanel: "tuningPanel"
+      tuningPanel: "tuningPanel",
     }),
     showTuningPanel: {
       get() {
@@ -157,14 +156,14 @@ export default {
       },
       set(value) {
         this.$tuningPanel(value);
-      }
-    }
+      },
+    },
   },
   methods: {
     initPageReload() {
       window.location.reload();
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

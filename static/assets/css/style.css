@@ -5408,10 +5408,10 @@ nav ul li,
 }
 /* tuning panel */
 .tuning {
-  --theme-color: #245ef5;
-  --theme-hover-color: #093dc3;
+  /* --theme-color: #245ef5;
+  --theme-hover-color: #093dc3; */
   --separator-color: #e8ecf0;
-  --trace-color: rgba(36, 94, 245, 0.3);
+  /* --trace-color: rgba(36, 94, 245, 0.3); */
 }
 .tuning {
   height: 100%;
@@ -6162,6 +6162,18 @@ hr,
   border-color: var(--separator-color);
   color: #b7b9c1;
   color: var(--element-color);
+}
+.mLight {
+  --bg-color: #fff;
+  --bg-aux-color: #f8f9fb;
+  --text-color: #303339;
+  --text-aux-color: #68696f;
+  --separator-color: #e8ecf0;
+  --theme-hover-color: hsl(
+    var(--hue),
+    var(--saturation),
+    calc(var(--lightness) - 15%)
+  );
 }
 .mDark {
   --bg-color: #282a2e;
