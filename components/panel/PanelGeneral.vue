@@ -182,6 +182,16 @@
           </div>
         </div>
       </div>
+      <div class="tuning-panel__block">
+        <div class="tuning-panel__block__title mb-25px">
+          Демо панель
+        </div>
+        <div class="cells mb-15">
+          <div class="cell cell-auto">
+            <v-switch v-model="demo" label="показывать на сайте"></v-switch>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -271,6 +281,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      site: "sites/site",
       settings: "sites/settings"
     }),
     userColor: {
@@ -297,6 +308,14 @@ export default {
       return color
         ? this.brandColors.indexOf(color)
         : this.brandColors.length + 1;
+    },
+    demo: {
+      get() {
+        return this.site.demo;
+      },
+      set(value) {
+        this.setDemo(value);
+      }
     }
   },
   methods: {
@@ -305,7 +324,8 @@ export default {
       setSettingsColor: "sites/SET_SETTINGS_COLOR",
       setSettingsBackground: "sites/SET_SETTINGS_BACKGROUND",
       setSettingsButtons: "sites/SET_SETTINGS_BUTTONS",
-      setSettingsPopup: "sites/SET_SETTINGS_POPUP"
+      setSettingsPopup: "sites/SET_SETTINGS_POPUP",
+      setDemo: "sites/SET_DEMO"
     }),
     setBrandColor(payload) {
       this.setSettingsColor({

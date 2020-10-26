@@ -92,12 +92,19 @@ export const mutations = {
   },
   SET_SETTINGS_HEADER_MCOLOR(state, mcolor) {
     state.site.settings.header.mcolor = mcolor;
+    state.change = true;
   },
   SET_SETTINGS_HEADER_MHEADER(state, mheader) {
     state.site.settings.header.mheader = mheader;
+    state.change = true;
   },
   SET_SETTINGS_HEADER_MMENU(state, mmenu) {
     state.site.settings.header.mmenu = mmenu;
+    state.change = true;
+  },
+  SET_DEMO(state, demo) {
+    state.site.demo = demo;
+    state.change = true;
   }
 };
 

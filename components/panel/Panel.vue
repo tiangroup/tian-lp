@@ -46,7 +46,9 @@
             <div class="tuning-heading__cell tuning-heading__reset">
               <button
                 class="button button-text button-icon-w-text"
-                @click="initPageReload"
+                v-if="change"
+                v-show="!process"
+                @click="undo"
               >
                 <svg
                   width="24"
@@ -135,20 +137,21 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   props: {
-    sections: Array,
+    sections: Array
   },
-  data: function () {
-    return {
-      tab: 0,
-    };
-  },
+  data: () => ({
+    tab: 0,
+    process: false
+  }),
   computed: {
     ...mapGetters({
       isEdit: "isEdit",
       tuningPanel: "tuningPanel",
+      changePage: "pages/change",
+      changeSite: "sites/change"
     }),
     showTuningPanel: {
       get() {
@@ -156,14 +159,34 @@ export default {
       },
       set(value) {
         this.$tuningPanel(value);
-      },
+      }
     },
+    change() {
+      return this.changePage || this.changeSite;
+    }
   },
   methods: {
-    initPageReload() {
-      window.location.reload();
-    },
-  },
+    ...mapActions({
+      reloadPage: "pages/reloadPage",
+      reloadSite: "sites/reloadSite"
+    }),
+    async undo() {
+      if (this.isEdit) {
+        this.process = true;
+        if (this.changeSite) {
+          await this.reloadSite();
+        }
+        if (this.changePage) {
+          this.setPreview(true);
+          await this.reloadPage();
+          this.setPreview(false);
+        }
+        this.process = false;
+      } else {
+        window.location.reload();
+      }
+    }
+  }
 };
 </script>
 <style scoped>

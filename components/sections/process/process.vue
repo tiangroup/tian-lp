@@ -17,7 +17,7 @@
         <div class="process__list cells" v-if="section.items">
           <div
             class="process__item cell cell-12 cell-sm-6 cell-lg-3"
-            v-for="item in section.items.filter((i) => i.id)"
+            v-for="item in section.items.filter(i => i.id)"
             :key="item.id"
             :style="styleDiv"
           >
@@ -85,23 +85,23 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit",
+      isSectionEdit: "isSectionEdit"
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
     },
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
