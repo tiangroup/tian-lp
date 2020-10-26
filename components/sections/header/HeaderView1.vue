@@ -3,7 +3,6 @@
     class="header"
     :class="{
       mDark: section.settings.background === 'dark',
-      mLight: section.settings.background === 'light',
       'header--style1': view == 'view1',
       'header--style3': view == 'view3',
       'header--style5': view == 'view5',
@@ -12,10 +11,7 @@
   >
     <div class="landing__container">
       <div class="header__wrap">
-        <div
-          class="logo header__logo"
-          :class="{ 'header__logo--editable': isEdit }"
-        >
+        <div class="logo header__logo" :class="{ 'logo--editable': isEdit }">
           <a class="logo__link">
             <image-item
               divClass="logo__image"
@@ -25,6 +21,7 @@
               :items="null"
               field="logo_img"
               fieldSvg="logo_svg"
+              v-if="section.logo_svg || section.logo_img || isEdit"
             />
             <div v-if="isEdit" class="logo__text">
               <editor
@@ -49,7 +46,10 @@
           <div v-else class="logo__slogan">{{ section.logo_slogan }}</div>
         </div>
         <div class="header__contacts">
-          <div class="addresses header__addresses connect__item">
+          <div
+            class="addresses header__addresses connect__item"
+            v-if="getCleanString(section.address) || isEdit"
+          >
             <div class="connect__row">
               <div class="connect__icon">
                 <svg
@@ -88,7 +88,10 @@
               </div>
             </div>
           </div>
-          <div class="phones header__phones connect__item">
+          <div
+            class="phones header__phones connect__item"
+            v-if="getCleanString(section.address) || isEdit"
+          >
             <div class="connect__row">
               <div class="connect__icon">
                 <svg
@@ -156,6 +159,12 @@ export default {
     view: {
       type: String,
       default: "view1",
+    },
+  },
+  methods: {
+    getCleanString(incoming) {
+      const strippedString = incoming.replace(/(<([^>]+)>)/gi, "");
+      return strippedString;
     },
   },
 };

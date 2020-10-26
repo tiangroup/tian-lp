@@ -1247,9 +1247,13 @@ nav ul li,
 }
 @media (min-width: 1024px) {
   .header__wrap {
-    margin-left: -1.25rem;
-    margin-right: -1.25rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
   }
+}
+.header__logo {
+  flex: 0 0 80%;
+  max-width: 80%;
 }
 .header__contacts,
 .header__addresses,
@@ -1265,14 +1269,20 @@ nav ul li,
   display: none;
 }
 .header__addresses {
-  max-width: 20rem;
-  min-width: 0;
+  flex-basis: 60%;
+  max-width: 60%;
+}
+.header__phones {
+  flex-basis: 11.5rem;
+  max-width: 40%;
+}
+@media (min-width: 768px) {
+  .header__logo {
+    flex-basis: 50%;
+    max-width: 50%;
+  }
 }
 @media (min-width: 1024px) {
-  .header__contacts {
-    display: flex;
-    align-items: center;
-  }
   .header__addresses,
   .header__phones,
   .header__action,
@@ -1285,19 +1295,25 @@ nav ul li,
   .header__action,
   .header__social {
     margin-bottom: 1rem;
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   .header__logo {
-    flex: 1 0 25%;
+    flex: 0 0 30%;
     flex-wrap: wrap;
-    max-width: 50%;
+    max-width: 30%;
   }
   .header__contacts {
-    margin-left: auto;
+    flex: 0 0 45%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    max-width: 45%;
   }
   .header__action {
-    margin-left: auto;
+    flex-basis: 14.5rem;
+    max-width: 25%;
+    text-align: right;
   }
 }
 @media (min-width: 1280px) {
@@ -1314,11 +1330,19 @@ nav ul li,
     padding-right: 1.5625rem;
   }
   .header__logo {
-    flex-basis: 33.3333%;
+    flex-basis: 40%;
+    max-width: 40%;
     margin-bottom: 0; /* compensate for mb on elements to properly center align in row */
+  }
+  .header__contacts {
+    flex-basis: 40%;
+    max-width: 40%;
   }
   .header__addresses {
     max-width: 21.5rem;
+  }
+  .header__action {
+    max-width: 20%;
   }
 }
 .header__menu {
@@ -1683,7 +1707,7 @@ nav ul li,
   align-items: center;
 }
 .logo__slogan {
-  flex: 1 0 40%;
+  flex: 0 0 50%;
   display: none;
   font-size: 0.8125rem;
   letter-spacing: 0.1px;
@@ -1692,11 +1716,9 @@ nav ul li,
   opacity: 0.7;
 }
 .logo__link {
-  flex: 0 0 auto;
-  max-width: 60%;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  width: 100%;
   text-decoration: none;
   vertical-align: middle;
 }
@@ -1710,14 +1732,21 @@ nav ul li,
   .logo__slogan {
     margin-bottom: 1rem;
   }
+  .logo__link {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
 }
 .logo__image {
+  flex: 0 0 2.5rem;
+  max-width: 2.5rem;
   height: 2.5rem;
   width: 2.5rem;
   overflow: hidden;
+  margin-right: 0.25rem;
 }
 .logo__image:first-child:last-child {
-  flex: 1 0 auto;
+  flex: 1 0 100%;
   width: auto;
   max-width: 100%;
   min-width: 2.5rem;
@@ -1742,15 +1771,22 @@ nav ul li,
   transform: translate(0, -50%);
 }
 .logo__text {
+  flex: 1 0 0%;
   font-size: 0.9rem;
   font-weight: 800;
   letter-spacing: 0.1px;
   line-height: 1.15;
   min-width: 5rem;
+  max-width: 66%;
   text-transform: uppercase;
+}
+.logo__text:first-child:last-child {
+  flex-basis: 100%;
+  max-width: 100%;
 }
 @media (min-width: 768px) {
   .logo__image {
+    flex-basis: 3.125rem;
     height: 3.125rem;
     width: 3.125rem;
   }
@@ -1763,18 +1799,18 @@ nav ul li,
 }
 @media (min-width: 1024px) {
   .logo__image {
-    flex: 0.5 0 3.9375rem;
+    flex-basis: 3.9375rem;
+    max-width: 30%;
     height: 3.9375rem;
     min-width: 3.9375rem;
     width: 3.9375rem;
+    margin-right: 4%;
   }
   .logo__text {
-    flex: 1 0 6rem;
+    flex: 0 0 66%;
+    min-width: 0;
+    max-width: 66%;
     font-size: 1.5rem;
-  }
-  .logo__text:first-child:last-child {
-    flex: 0 0 auto;
-    max-width: 100%;
   }
 }
 @media (min-width: 1280px) {
@@ -5420,7 +5456,7 @@ nav ul li,
 }
 .tuning-heading {
   background-color: #245ef5;
-  background: var(--theme-color, #245ef5);
+  background-color: var(--theme-color, #245ef5);
   color: #fff;
   font-size: 0.9375rem;
   font-weight: 500;
@@ -5803,6 +5839,8 @@ nav ul li,
     calc(var(--lightness) - 15%)
   );
   --trace-color: hsla(var(--hue), var(--saturation), var(--lightness), 0.3);
+}
+.landing {
   --bbradius: 1.875rem;
 }
 /* elements, not supposed to change colors */
