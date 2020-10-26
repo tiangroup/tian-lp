@@ -1,5 +1,5 @@
 <template>
-  <div class="landing" :class="landing_class">
+  <div class="landing" :class="landingClass">
     <sections
       v-for="section in page.sections.filter(s => s.id)"
       :key="section.id"
@@ -54,7 +54,7 @@ export default {
         ? this.site.counter
         : null;
     },
-    landing_class() {
+    landingClass() {
       return {
         mLight:
           !this.settings.background || this.settings.background === "light",

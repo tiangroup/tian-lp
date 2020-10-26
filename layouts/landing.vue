@@ -1,5 +1,5 @@
 <template>
-  <div id="lp" :style="colorStyle">
+  <div id="lp" :style="colorStyle" :class="lpClass">
     <v-app v-if="$auth.loggedIn">
       <appbar />
       <v-main>
@@ -34,15 +34,23 @@ export default {
     colorStyle() {
       return this.settings.color
         ? {
-            "--hue": this.settings.color.h ? `${this.settings.color.h}` : null,
-            "--saturation": this.settings.color.s
-              ? Math.floor(this.settings.color.s * 100) + "%"
-              : null,
-            "--lightness": this.settings.color.l
-              ? Math.floor(this.settings.color.l * 100) + "%"
-              : null
+            "--hue":
+              this.settings.color.h >= 0 ? `${this.settings.color.h}` : null,
+            "--saturation":
+              this.settings.color.s >= 0
+                ? Math.floor(this.settings.color.s * 100) + "%"
+                : null,
+            "--lightness":
+              this.settings.color.l >= 0
+                ? Math.floor(this.settings.color.l * 100) + "%"
+                : null
           }
         : null;
+    },
+    lpClass() {
+      return {
+        "buttons--style2": this.settings.buttons == "rect"
+      };
     }
   }
 };
