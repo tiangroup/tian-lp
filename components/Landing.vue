@@ -1,5 +1,5 @@
 <template>
-  <div class="landing">
+  <div class="landing" :class="landing_class">
     <sections
       v-for="section in page.sections.filter(s => s.id)"
       :key="section.id"
@@ -46,12 +46,21 @@ export default {
       dialogImageUpload: "dialogImageUpload",
       dialogImageSvg: "dialogImageSvg",
       site: "sites/site",
-      ym: "sites/ym"
+      ym: "sites/ym",
+      settings: "sites/settings"
     }),
     counter() {
       return !this.isEdit && this.site && this.site.counter
         ? this.site.counter
         : null;
+    },
+    landing_class() {
+      return {
+        mLight:
+          !this.settings.background || this.settings.background === "light",
+        mDark: this.settings.background === "dark",
+        "buttons--style2": this.settings.buttons == "rect"
+      };
     }
   },
   methods: {
@@ -63,7 +72,7 @@ export default {
     if (!this.isEdit && this.ym) {
       this.$yandexMetrika.init(this.ym);
     }
-    if (this.isEdit) {
+    if (this.isEdit || this.site.demo) {
       this.loadSections();
     }
   }

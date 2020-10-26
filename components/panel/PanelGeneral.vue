@@ -9,8 +9,10 @@
             <div class="tuning-bg tuning-bg--pills">
               <button
                 class="tuning-bg__color tuning-bg__color1"
-                :class="{ 'tuning-bg__color--active': isThemeLight }"
-                @click="setSectionTheme('light')"
+                :class="{
+                  'tuning-bg__color--active': settings.background != 'dark'
+                }"
+                @click="setSettingsBackground('light')"
               ></button>
             </div>
             <div class="tuning-bg__label" aria-hidden="true">Светлый</div>
@@ -19,8 +21,10 @@
             <div class="tuning-bg tuning-bg--pills">
               <button
                 class="tuning-bg__color tuning-bg__color2"
-                :class="{ 'tuning-bg__color--active': !isThemeLight }"
-                @click="setSectionTheme('dark')"
+                :class="{
+                  'tuning-bg__color--active': settings.background == 'dark'
+                }"
+                @click="setSettingsBackground('dark')"
               ></button>
             </div>
             <div class="tuning-bg__label" aria-hidden="true">Темный</div>
@@ -41,7 +45,7 @@
               <button
                 class="tuning-bg__color"
                 :class="{
-                  'tuning-bg__color--active': colorSelected === index,
+                  'tuning-bg__color--active': colorSelected === index
                 }"
                 :style="getColorBg(color)"
                 :title="color.name"
@@ -50,7 +54,7 @@
                     index: index,
                     h: color.h,
                     s: color.s,
-                    l: color.l,
+                    l: color.l
                   })
                 "
               ></button>
@@ -65,7 +69,7 @@
                     class="tuning-bg__color tuning-bg__colorN"
                     :class="{
                       'tuning-bg__color--active':
-                        colorSelected === brandColors.length + 1,
+                        colorSelected === brandColors.length + 1
                     }"
                     title="Пользовательский"
                     v-bind="attrs"
@@ -92,9 +96,9 @@
             <button
               class="tuning-panel__setting tuning-setting"
               :class="{
-                'tuning-setting--active': isBorderRadiusSet,
+                'tuning-setting--active': settings.buttons !== 'rect'
               }"
-              @click="setButtonRadius"
+              @click="setSettingsButtons('round')"
             >
               <div class="tuning-setting__image">
                 <img
@@ -108,9 +112,9 @@
             <button
               class="tuning-panel__setting tuning-setting"
               :class="{
-                'tuning-setting--active': !isBorderRadiusSet,
+                'tuning-setting--active': settings.buttons == 'rect'
               }"
-              @click="removeButtonRadius"
+              @click="setSettingsButtons('rect')"
             >
               <div class="tuning-setting__image">
                 <img
@@ -128,9 +132,12 @@
         </div>
         <div class="tuning-panel__settings tuning-panel__row">
           <div class="tuning-panel__cell tuning-setting-wrap">
-            <a
-              href=""
-              class="tuning-panel__setting tuning-setting tuning-setting--active"
+            <button
+              class="tuning-panel__setting tuning-setting"
+              :class="{
+                'tuning-setting--active': settings.popup == 'right'
+              }"
+              @click="setSettingsPopup('right')"
             >
               <div class="tuning-setting__image">
                 <img
@@ -138,27 +145,40 @@
                 />
               </div>
               <div class="tuning-setting__title">Справа</div>
-            </a>
+            </button>
           </div>
           <div class="tuning-panel__cell tuning-setting-wrap">
-            <a href="" class="tuning-panel__setting tuning-setting">
+            <button
+              class="tuning-panel__setting tuning-setting"
+              @click="setSettingsPopup('center')"
+              :class="{
+                'tuning-setting--active':
+                  !settings.popup || settings.popup == 'center'
+              }"
+            >
               <div class="tuning-setting__image">
                 <img
                   src="https://api.tian-lp.ru/uploads/popup_c_e466725a7b.png"
                 />
               </div>
               <div class="tuning-setting__title">По центру</div>
-            </a>
+            </button>
           </div>
           <div class="tuning-panel__cell tuning-setting-wrap">
-            <a href="" class="tuning-panel__setting tuning-setting">
+            <button
+              class="tuning-panel__setting tuning-setting"
+              @click="setSettingsPopup('left')"
+              :class="{
+                'tuning-setting--active': settings.popup == 'left'
+              }"
+            >
               <div class="tuning-setting__image">
                 <img
                   src="https://api.tian-lp.ru/uploads/popup_l_11ca5cfae0.png"
                 />
               </div>
               <div class="tuning-setting__title">Слева</div>
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -169,91 +189,89 @@
 import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
-    sections: Array,
+    sections: Array
   },
-  data: function () {
+  data: function() {
     return {
       brandColors: [
         {
           name: "Темно-синий",
           h: 224,
           s: 0.82,
-          l: 0.35,
+          l: 0.35
         },
         {
           name: "Синий",
           h: 223,
           s: 0.91,
-          l: 0.55,
+          l: 0.55
         },
         {
           name: "Голубой",
           h: 198,
           s: 0.91,
-          l: 0.55,
+          l: 0.55
         },
         {
           name: "Темно-зеленый",
           h: 136,
           s: 0.77,
-          l: 0.25,
+          l: 0.25
         },
         {
           name: "Зеленый",
           h: 136,
           s: 0.75,
-          l: 0.34,
+          l: 0.34
         },
         {
           name: "Салатовый",
           h: 92,
           s: 0.59,
-          l: 0.49,
+          l: 0.49
         },
         {
           name: "Желтый",
           h: 43,
           s: 0.94,
-          l: 0.51,
+          l: 0.51
         },
         {
           name: "Темно-красный",
           h: 0,
           s: 0.73,
-          l: 0.38,
+          l: 0.38
         },
         {
           name: "Красный",
           h: 0,
           s: 0.84,
-          l: 0.57,
+          l: 0.57
         },
         {
           name: "Ярко-розовый",
           h: 346,
           s: 0.78,
-          l: 0.51,
+          l: 0.51
         },
         {
           name: "Фиолетовый",
           h: 285,
           s: 0.58,
-          l: 0.44,
+          l: 0.44
         },
         {
           name: "Сиреневый",
           h: 284,
           s: 0.59,
-          l: 0.64,
-        },
-      ],
-      isBorderRadiusSet: true,
-      isThemeLight: true,
+          l: 0.64
+        }
+      ]
     };
   },
   computed: {
     ...mapGetters({
-      settings: "sites/settings",
+      settings: "sites/settings"
     }),
     userColor: {
       get() {
@@ -261,17 +279,17 @@ export default {
           this.settings.color || {
             h: 223,
             s: 0.91,
-            l: 0.55,
+            l: 0.55
           }
         );
       },
       set(value) {
         this.setSettingsColor(value);
-      },
+      }
     },
     colorSelected() {
       const color = this.brandColors.find(
-        (c) =>
+        c =>
           c.h == this.userColor.h &&
           c.s == this.userColor.s &&
           c.l == this.userColor.l
@@ -279,63 +297,37 @@ export default {
       return color
         ? this.brandColors.indexOf(color)
         : this.brandColors.length + 1;
-    },
+    }
   },
   methods: {
     ...mapMutations({
       setSettingsField: "pages/SET_SETTINGS_FIELD",
       setSettingsColor: "sites/SET_SETTINGS_COLOR",
+      setSettingsBackground: "sites/SET_SETTINGS_BACKGROUND",
+      setSettingsButtons: "sites/SET_SETTINGS_BUTTONS",
+      setSettingsPopup: "sites/SET_SETTINGS_POPUP"
     }),
     setBrandColor(payload) {
       this.setSettingsColor({
         h: payload.h,
         s: payload.s,
-        l: payload.l,
+        l: payload.l
       });
     },
     getColorBg(color) {
       return {
         "background-color": `hsl(${color.h},${Math.floor(
           color.s * 100
-        )}%,${Math.floor(color.l * 100)}%)`,
+        )}%,${Math.floor(color.l * 100)}%)`
       };
     },
     handlePickedColor() {
       this.setBrandColor({
         h: this.userColor.h,
         s: this.userColor.s,
-        l: this.userColor.l,
+        l: this.userColor.l
       });
-    },
-    setButtonRadius() {
-      document.getElementById("app").classList.remove("buttons--style2");
-      this.isBorderRadiusSet = true;
-    },
-    removeButtonRadius() {
-      document.getElementById("app").classList.add("buttons--style2");
-      this.isBorderRadiusSet = false;
-    },
-    setSectionTheme(val) {
-      // this.isThemeLight = val === "light" ? true : false;
-      // for (const section of this.sections) {
-      //   this.setSettingsField({
-      //     id: section.id,
-      //     field: "background",
-      //     value: val
-      //   });
-      // }
-      if (val === "light") {
-        this.isThemeLight = true;
-        document.getElementsByClassName("landing")[0].classList.remove("mDark");
-        document.getElementsByClassName("landing")[0].classList.add("mLight");
-      } else {
-        this.isThemeLight = false;
-        document
-          .getElementsByClassName("landing")[0]
-          .classList.remove("mLight");
-        document.getElementsByClassName("landing")[0].classList.add("mDark");
-      }
-    },
-  },
+    }
+  }
 };
 </script>

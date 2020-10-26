@@ -62,6 +62,42 @@ export const mutations = {
       state.site.settings.color.l = color.l;
       state.change = true;
     }
+  },
+  SET_SETTINGS_BACKGROUND(state, background) {
+    if (state.site) {
+      if (!state.site.settings) {
+        state.settings = {};
+      }
+      state.site.settings.background = background;
+      state.change = true;
+    }
+  },
+  SET_SETTINGS_BUTTONS(state, buttons) {
+    if (state.site) {
+      if (!state.site.settings) {
+        state.settings = {};
+      }
+      state.site.settings.buttons = buttons;
+      state.change = true;
+    }
+  },
+  SET_SETTINGS_POPUP(state, popup) {
+    if (state.site) {
+      if (!state.site.settings) {
+        state.settings = {};
+      }
+      state.site.settings.popup = popup;
+      state.change = true;
+    }
+  },
+  SET_SETTINGS_HEADER_MCOLOR(state, mcolor) {
+    state.site.settings.header.mcolor = mcolor;
+  },
+  SET_SETTINGS_HEADER_MHEADER(state, mheader) {
+    state.site.settings.header.mheader = mheader;
+  },
+  SET_SETTINGS_HEADER_MMENU(state, mmenu) {
+    state.site.settings.header.mmenu = mmenu;
   }
 };
 
@@ -124,6 +160,20 @@ export const getters = {
   settings: state => {
     if (!state.site.settings) {
       state.site.settings = {};
+    }
+    if (!state.site.settings.color) {
+      state.site.settings.color = {
+        h: null,
+        s: null,
+        l: null
+      };
+    }
+    if (!state.site.settings.header) {
+      state.site.settings.header = {
+        mcolor: "desktop",
+        mheader: "button",
+        mmenu: "long"
+      };
     }
     return state.site.settings;
   }

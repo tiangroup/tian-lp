@@ -7,7 +7,12 @@
         <div class="cell cell-auto">
           <div class="tuning-bg tuning-bg--pills">
             <button
-              class="tuning-bg__color tuning-bg__color1 tuning-bg__color--active"
+              class="tuning-bg__color tuning-bg__color1"
+              :class="{
+                'tuning-bg__color--active':
+                  !settings.header.mcolor || settings.header.mcolor == 'desktop'
+              }"
+              @click="setColor('desktop')"
             ></button>
           </div>
           <div class="tuning-bg__label" aria-hidden="true">
@@ -16,7 +21,13 @@
         </div>
         <div class="cell cell-auto">
           <div class="tuning-bg tuning-bg--pills">
-            <button class="tuning-bg__color tuning-bg__color3"></button>
+            <button
+              class="tuning-bg__color tuning-bg__color3"
+              :class="{
+                'tuning-bg__color--active': settings.header.mcolor == 'color'
+              }"
+              @click="setColor('color')"
+            ></button>
           </div>
           <div class="tuning-bg__label" aria-hidden="true">Цветной</div>
         </div>
@@ -26,10 +37,13 @@
       <div class="tuning-panel__block__title mb-25px">Варианты шапок</div>
       <div class="tuning-panel__row tuning-panel__settings">
         <div class="tuning-panel__cell tuning-setting-wrap">
-          <a
-            href=""
+          <button
             class="tuning-panel__setting tuning-setting"
-            @click.prevent
+            :class="{
+              'tuning-setting--active':
+                !settings.header.mheader || settings.header.mheader == 'button'
+            }"
+            @click="setHeader('button')"
           >
             <div class="tuning-setting__image">
               <img
@@ -37,13 +51,15 @@
               />
             </div>
             <div class="tuning-setting__title">С кнопкой</div>
-          </a>
+          </button>
         </div>
         <div class="tuning-panel__cell tuning-setting-wrap">
-          <a
-            href=""
-            class="tuning-panel__setting tuning-setting tuning-setting--active"
-            @click.prevent
+          <button
+            class="tuning-panel__setting tuning-setting"
+            :class="{
+              'tuning-setting--active': settings.header.mheader == 'compact'
+            }"
+            @click="setHeader('compact')"
           >
             <div class="tuning-setting__image">
               <img
@@ -51,7 +67,7 @@
               />
             </div>
             <div class="tuning-setting__title">Компакт</div>
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -59,10 +75,13 @@
       <div class="tuning-panel__block__title mb-25px">Варианты меню</div>
       <div class="tuning-panel__row tuning-panel__settings">
         <div class="tuning-panel__cell tuning-setting-wrap">
-          <a
-            href=""
+          <button
             class="tuning-panel__setting tuning-setting"
-            @click.prevent
+            :class="{
+              'tuning-setting--active':
+                !settings.header.mmenu || settings.header.mmenu == 'long'
+            }"
+            @click="setMenu('long')"
           >
             <div class="tuning-setting__image">
               <img
@@ -70,13 +89,15 @@
               />
             </div>
             <div class="tuning-setting__title">Подробное</div>
-          </a>
+          </button>
         </div>
         <div class="tuning-panel__cell tuning-setting-wrap">
-          <a
-            href=""
-            class="tuning-panel__setting tuning-setting tuning-setting--active"
-            @click.prevent
+          <button
+            class="tuning-panel__setting tuning-setting"
+            :class="{
+              'tuning-setting--active': settings.header.mmenu == 'short'
+            }"
+            @click="setMenu('short')"
           >
             <div class="tuning-setting__image">
               <img
@@ -84,9 +105,27 @@
               />
             </div>
             <div class="tuning-setting__title">Краткое</div>
-          </a>
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import { mapGetters, mapMutations } from "vuex";
+export default {
+  computed: {
+    ...mapGetters({
+      settings: "sites/settings"
+    })
+  },
+  methods: {
+    ...mapMutations({
+      setColor: "sites/SET_SETTINGS_HEADER_MCOLOR",
+      setHeader: "sites/SET_SETTINGS_HEADER_MHEADER",
+      setMenu: "sites/SET_SETTINGS_HEADER_MMENU"
+    })
+  }
+};
+</script>
