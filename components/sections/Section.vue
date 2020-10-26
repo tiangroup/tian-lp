@@ -21,6 +21,7 @@ import sections_contacts from "~/components/sections/contacts/contacts";
 import sections_footer from "~/components/sections/footer/footer";
 import sections_products from "~/components/sections/products/products";
 import sections_services from "~/components/sections/services/services";
+import sections_about from "~/components/sections/about/about";
 export default {
   props: {
     section: Object
@@ -42,7 +43,8 @@ export default {
     sections_contacts,
     sections_products,
     sections_services,
-    sections_footer
+    sections_footer,
+    sections_about
   },
   computed: {
     ...mapGetters({
