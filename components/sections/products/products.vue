@@ -23,8 +23,8 @@
               :item="item"
               :sectionId="section.id"
               :isEdit="isEdit"
-              @show-order-form="showOrderForm(item)"
-              @show-details="showProductDetails(item)"
+              @show-order-form="showOrderForm"
+              @show-details="showProductDetails"
             ></products-item>
             <div
               class="products__item-wrap cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
@@ -66,8 +66,8 @@
                 :item="item"
                 :sectionId="section.id"
                 :isEdit="isEdit"
-                @show-details="showProductDetails(item)"
-                @show-order-form="showOrderForm(item)"
+                @show-details="showProductDetails"
+                @show-order-form="showOrderForm"
               ></products-item>
             </transition-group>
             <div
@@ -108,9 +108,9 @@
                 :item="item"
                 :sectionId="section.id"
                 :isEdit="isEdit"
-                @show-details="showProductDetails(item)"
-                @show-order-form="showOrderForm(item)"
-                @update-description="updateItemDescription(item)"
+                @show-details="showProductDetails"
+                @show-order-form="showOrderForm"
+                @update-description="updateItemDescription"
               ></products-item>
               <div
                 class="products__item-wrap cell"
@@ -217,7 +217,7 @@
                   :description-label="section.description_label"
                   @save-item="saveItemDetails"
                   @show-gallery="showImageGallery"
-                  @show-order-form="handleOrderFormCall(currentItem)"
+                  @show-order-form="handleOrderFormCall"
                 ></products-item-detailed>
               </div>
             </div>
@@ -399,11 +399,11 @@ export default {
         }
       }
     },
-    showProductDetails(item) {
+    showProductDetails(event, item) {
       this.currentItem = item;
       this.dialogDetailedItem = true;
     },
-    showOrderForm(item) {
+    showOrderForm(event, item) {
       this.currentItem = item;
       this.dialogOrderProduct = true;
     },
@@ -430,7 +430,7 @@ export default {
     showImageGallery(imageIndex) {
       this.index = imageIndex;
     },
-    handleOrderFormCall(item) {
+    handleOrderFormCall(event, item) {
       this.dialogDetailedItem = false;
       this.showOrderForm(item);
     },

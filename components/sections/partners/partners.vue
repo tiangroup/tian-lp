@@ -20,19 +20,12 @@
         >
           <partners-item
             :class="computedItemClass"
-            v-for="item in section.items.filter(i => i.id)"
+            v-for="item in section.items.filter((i) => i.id)"
             :key="item.id"
             :item="item"
             :sectionId="section.id"
             :isEdit="isEdit"
-            @change-link="
-              updatePartnerLink({
-                itemId: item.id,
-                sectionId: section.id,
-                field: 'link',
-                value: item.link
-              })
-            "
+            @change-link="updatePartnerLink"
           ></partners-item>
           <div
             class="partners__item-wrap cell"
@@ -62,19 +55,12 @@
               @init="handleInit"
             >
               <partners-item
-                v-for="item in section.items.filter(i => i.id)"
+                v-for="item in section.items.filter((i) => i.id)"
                 :key="item.id"
                 :item="item"
                 :sectionId="section.id"
                 :isEdit="isEdit"
-                @change-link="
-                  updatePartnerLink({
-                    itemId: item.id,
-                    sectionId: section.id,
-                    field: 'link',
-                    value: item.link
-                  })
-                "
+                @change-link="updatePartnerLink"
               ></partners-item>
               <div
                 class="partners__item-wrap cell"
@@ -98,7 +84,7 @@
               <div class="cells fx-nw overflow-hidden">
                 <partners-item
                   class="cell-6 cell-sm-4 cell-md-3 cell-xl-2"
-                  v-for="item in section.items.filter(i => i.id)"
+                  v-for="item in section.items.filter((i) => i.id)"
                   :key="item.id"
                   :item="item"
                   :sectionId="section.id"
@@ -155,10 +141,10 @@ import { mapMutations, mapGetters } from "vuex";
 import PartnersItem from "./PartnersItem";
 export default {
   props: {
-    section: Object
+    section: Object,
   },
   components: {
-    PartnersItem
+    PartnersItem,
   },
   data: () => ({
     currentItem: {},
@@ -179,26 +165,26 @@ export default {
           settings: {
             slidesToShow: 4,
             slidesToScroll: 1,
-            arrows: false
-          }
+            arrows: false,
+          },
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false
-          }
-        }
-      ]
+            arrows: false,
+          },
+        },
+      ],
     },
     partnerLinkDialog: false,
-    userUrl: ""
+    userUrl: "",
   }),
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit"
+      isSectionEdit: "isSectionEdit",
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
@@ -208,7 +194,7 @@ export default {
       return Object.assign(this.slickOptions, {
         slidesToShow: slickSlidesToShow,
         infinite: !this.isEdit,
-        draggable: !this.isEdit
+        draggable: !this.isEdit,
       });
     },
     view() {
@@ -240,24 +226,24 @@ export default {
         ? "cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
         : "cell-6 cell-sm-4 cell-md-3 cell-xl-2";
       return classes;
-    }
+    },
   },
   methods: {
     ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD"
+      setItemField: "pages/SET_ITEM_FIELD",
     }),
     updatePartnerLink(payload) {
       this.currentItem = payload;
       this.userUrl = payload.value;
       this.partnerLinkDialog = true;
     },
-    setPartnerField(value) {
+    setPartnerField: function (value) {
       this.setItemField({
         sectionId: this.section.id,
         itemId: this.currentItem.itemId,
         items: "items",
         field: this.currentItem.field,
-        value: value
+        value: value,
       });
       this.$store.dispatch("pages/savePage");
       this.partnerLinkDialog = false;
@@ -266,13 +252,13 @@ export default {
       if (this.currentSlide) {
         slick.goTo(this.currentSlide, true);
       }
-    }
+    },
   },
-  beforeUpdate: function() {
+  beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
       this.currentSlide = this.$refs[this.slickRef].currentSlide();
     }
-  }
+  },
 };
 </script>
 <style scoped>

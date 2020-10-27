@@ -22,6 +22,7 @@
               field="logo_img"
               fieldSvg="logo_svg"
               v-if="section.logo_svg || section.logo_img || isEdit"
+              imageStyle="logo"
             />
             <div v-if="isEdit" class="logo__text">
               <editor

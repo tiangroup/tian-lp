@@ -16,7 +16,7 @@
         <button
           class="products__image"
           :class="{ 'no-image': !item.img_1 }"
-          @click="$emit('show-details')"
+          @click="$emit('show-details', $event, item)"
         >
           <img :src="$site_img(item.img_1, 'sq_lg_ext')" v-if="item.img_1" />
         </button>
@@ -29,7 +29,11 @@
             :itemId="item.id"
             v-if="isEdit"
           />
-          <div class="clickable" v-else @click="$emit('show-details')">
+          <div
+            class="clickable"
+            v-else
+            @click="$emit('show-details', $event, item)"
+          >
             {{ item.title }}
           </div>
         </div>
@@ -75,7 +79,7 @@
       <div class="products__action">
         <button
           class="button button-secondary"
-          @click="$emit('show-order-form')"
+          @click="$emit('show-order-form', $event, item)"
         >
           Заказать
         </button>

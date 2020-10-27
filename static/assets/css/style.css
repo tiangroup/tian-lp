@@ -1533,12 +1533,15 @@ nav ul li,
 }
 @media (min-width: 1024px) {
   .header--style6 .header__contacts {
+    flex-basis: 25%;
+    max-width: 25%;
     align-items: flex-start;
     flex-direction: column;
     margin-left: 0;
     order: 1;
   }
   .header--style6 .header__phones {
+    flex: 0 0 auto;
     order: 1;
   }
   .header--style6 .header__addresses {
@@ -1617,7 +1620,7 @@ nav ul li,
     animation: slideDown 400ms;
     border-bottom: 0;
     box-shadow: 0 5px 12px rgba(136, 140, 143, 0.24);
-    padding: 0;
+    padding: 0.25rem 0;
     position: fixed;
     top: 0;
     left: 0;
@@ -1632,8 +1635,7 @@ nav ul li,
     padding-bottom: 0;
   }
   .header--fixed .logo__slogan,
-  .header--fixed .header__addresses,
-  .header--fixed .header__phones,
+  .header--fixed .header__contacts,
   .header--fixed .header__action,
   .header--fixed .header__social {
     display: none;
@@ -5849,7 +5851,8 @@ nav ul li,
 .fake-file,
 .der-popup,
 .lnotice,
-.good-summary {
+.good-summary,
+.map__balloon {
   background-color: #fff;
 }
 .field__input,
@@ -5874,6 +5877,12 @@ nav ul li,
 }
 .good__cta {
   background: #f8f9fb;
+}
+.map__balloon {
+  color: #36383c;
+}
+.map__balloon__title {
+  color: #303339;
 }
 /* END elements, not supposed to change colors */
 *:focus {
@@ -6104,8 +6113,7 @@ a:focus,
 .department__title,
 .department__phone__link a,
 .good__title,
-.video__item,
-.map__balloon {
+.video__item {
   color: #303339;
   color: var(--text-color);
 }

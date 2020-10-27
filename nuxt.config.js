@@ -99,7 +99,7 @@ export default {
           questions: { actions: ["resize|645|456"] },
           cover: { macros: ["scaleAndCrop|1920|700"] },
           sq_lg_ext: { actions: ["trim", "gravity|Center", "resize|520|520>"] },
-          logo: { actions: ['resize|450|100>'] },
+          logo: { actions: ['resize|250|100>'] },
         }
       }
     ],

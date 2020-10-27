@@ -205,7 +205,7 @@ export default {
     },
   },
   methods: {
-    showGallery(itemIndex) {
+    showGallery: function (itemIndex) {
       if (this.isEdit) {
         return;
       }

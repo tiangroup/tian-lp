@@ -137,7 +137,7 @@
           <div class="good__action">
             <button
               class="button button-primary"
-              @click="$emit('show-order-form')"
+              @click="$emit('show-order-form', $event, item)"
               v-if="!isEdit"
             >
               Купить
@@ -175,7 +175,7 @@ export default {
         this.$emit("show-gallery", this.currentBigImageIndex - 1);
       }
     },
-    handleIllustrationClick(index) {
+    handleIllustrationClick: function (index) {
       //if (!this.isEdit) {
       this.currentBigImageIndex = index;
       //}

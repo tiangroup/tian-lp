@@ -115,6 +115,8 @@
               :items="null"
               field="logo_img"
               fieldSvg="logo_svg"
+              imageStyle="logo"
+              v-if="section.logo_svg || section.logo_img || isEdit"
             />
             <div v-if="isEdit" class="logo__text">
               <editor
@@ -124,7 +126,9 @@
                 field="logo_text"
               />
             </div>
-            <div v-else class="logo__text">{{ section.logo_text }}</div>
+            <div v-else-if="section.logo_text" class="logo__text">
+              {{ section.logo_text }}
+            </div>
           </a>
           <div v-if="isEdit" class="logo__slogan">
             <editor
