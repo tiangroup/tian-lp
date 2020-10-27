@@ -24,7 +24,8 @@
       </v-tooltip>
     </buttons-section>
     <div
-      class="cta custom-v-spacing-2 mDark"
+      class="cta custom-v-spacing-2"
+      :class="{ mDark: section.settings.background === 'dark' }"
       :style="
         section.bg_img
           ? `background-image:url(\'${$site_img(section.bg_img, 'cover')}\');`
@@ -42,13 +43,13 @@
               />
             </h2>
             <h2 v-else>{{ section.title }}</h2>
-            <div
+            <!-- <div
               class="cta__timer"
               v-if="countdown"
               @click.stop="callCtaDateDialog"
             >
               <timer :end-date="computedEndDate" @expired="reinitTimer"></timer>
-            </div>
+            </div> -->
             <div class="cta__offer">
               <div class="cta__offer__text" v-if="isEdit">
                 <editor
@@ -77,7 +78,7 @@
         </div>
       </div>
     </div>
-    <div class="bg-theme cta__countdown" v-if="countdown">
+    <!-- <div class="bg-theme cta__countdown" v-if="countdown">
       <div class="landing__container">
         <div class="cta__countdown__row">
           <div class="cta__countdown__timer" @click.stop="callCtaDateDialog">
@@ -93,7 +94,8 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
+
     <v-dialog v-model="dialogCtaDate" width="290px">
       <v-date-picker v-model="ctaDate" scrollable>
         <v-spacer></v-spacer>
@@ -110,10 +112,10 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import Timer from "./Timer.vue";
+// import Timer from "./Timer.vue";
 export default {
   components: {
-    Timer,
+    // Timer,
   },
   props: {
     section: Object,
@@ -130,9 +132,9 @@ export default {
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
     },
-    countdown() {
-      return this.section.settings.countdown === true;
-    },
+    // countdown() {
+    //   return this.section.settings.countdown === true;
+    // },
     computedEndDate() {
       if (this.section.date) {
         return this.section.date;

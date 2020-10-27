@@ -54,9 +54,9 @@
               />
             </div>
             <div class="hero__text" v-else>{{ section.description }}</div>
-            <div class="hero__timer" v-if="countdown">
+            <!-- <div class="hero__timer" v-if="countdown">
               <timer></timer>
-            </div>
+            </div> -->
             <div class="hero__action" v-if="button || form">
               <form-popup :section="section" field="promo_form"></form-popup>
             </div>
@@ -110,9 +110,9 @@ export default {
     image() {
       return this.section.settings.image === true;
     },
-    countdown() {
-      return this.section.settings.countdown === true;
-    },
+    // countdown() {
+    //   return this.section.settings.countdown === true;
+    // },
   },
   methods: {
     itemImageSelect() {
