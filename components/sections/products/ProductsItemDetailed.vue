@@ -5,7 +5,7 @@
         <editor
           data-placeholder="Название товара"
           :text="item.title || ''"
-          :sectionId="sectionId"
+          :sectionId="section.id"
           field="title"
           :itemId="item.id"
           v-if="isEdit"
@@ -23,8 +23,7 @@
             :field="getImageField(currentBigImageIndex)"
             :img="getImage(currentBigImageIndex)"
             :itemId="item.id"
-            :sectionId="sectionId"
-            :key="'imgB' + item.id"
+            :sectionId="section.id"
             imageStyle="sq_lg_ext"
           />
         </div>
@@ -48,7 +47,7 @@
                 :field="getImageField(n)"
                 :img="getImage(n)"
                 :itemId="item.id"
-                :sectionId="sectionId"
+                :sectionId="section.id"
                 :key="'imgS' + item['img_' + n] + n"
                 imageStyle="sq_lg_ext"
               />
@@ -60,7 +59,7 @@
         <editor
           data-placeholder="Габариты: 220 х 100 х 35 мм"
           :text="item.tech_chars || ''"
-          :sectionId="sectionId"
+          :sectionId="section.id"
           field="tech_chars"
           :itemId="item.id"
           editContent="html"
@@ -75,18 +74,18 @@
       <div class="good__description" v-if="item.description || isEdit">
         <div class="good__description__title">
           <editor
-            :text="descriptionLabel || 'Описание'"
-            :sectionId="sectionId"
+            :text="section.description_label || 'Описание'"
+            :sectionId="section.id"
             field="description_label"
             v-if="isEdit"
           />
-          <span v-else>{{ descriptionLabel || "Описание" }}</span>
+          <span v-else>{{ section.description_label || "Описание" }}</span>
         </div>
         <div class="good__description__body" v-if="isEdit">
           <editor
             data-placeholder="Полное описание товара"
             :text="item.description || ''"
-            :sectionId="sectionId"
+            :sectionId="section.id"
             field="description"
             :itemId="item.id"
             editContent="html"
@@ -108,7 +107,7 @@
               <editor
                 data-placeholder="000 руб."
                 :text="item.price || ''"
-                :sectionId="sectionId"
+                :sectionId="section.id"
                 field="price"
                 :itemId="item.id"
                 :key="'price' + item.id"
@@ -122,7 +121,7 @@
               <editor
                 data-placeholder="000 руб."
                 :text="item.old_price || ''"
-                :sectionId="sectionId"
+                :sectionId="section.id"
                 field="old_price"
                 :itemId="item.id"
                 :key="'oldprice' + item.id"
@@ -137,7 +136,7 @@
           <div class="good__action">
             <button
               class="button button-primary"
-              @click="$emit('show-order-form', $event, item)"
+              @click="dialogDetailedOrder = true"
               v-if="!isEdit"
             >
               Купить
@@ -146,7 +145,7 @@
               depressed
               color="green"
               dark
-              @click="$emit('save-item')"
+              @click="$emit('save-details')"
               v-else
               >Сохранить</v-btn
             >
@@ -154,6 +153,45 @@
         </div>
       </div>
     </div>
+
+    <form-dialog
+      :section="section"
+      field="order_form"
+      v-model="dialogDetailedOrder"
+      :hiddenData="item.title"
+    >
+      <div class="good-summary">
+        <div class="good-summary__row">
+          <div class="good-summary__image" v-if="item.img_1">
+            <img :src="$site_img(item.img_1, 'icon_sm')" />
+          </div>
+          <div class="good-summary__body">
+            <div class="good-summary__title">{{ item.title }}</div>
+            <div class="good-summary__price">{{ item.price }}</div>
+          </div>
+        </div>
+        <div class="good-summary__status">
+          <svg viewBox="0 0 24 24" height="23" width="23" fill="currentColor">
+            <path
+              d="M21 11.080v0.92c-0.001 2.485-1.009 4.733-2.64 6.362s-3.88 2.634-6.365 2.632-4.734-1.009-6.362-2.64-2.634-3.879-2.633-6.365 1.009-4.733 2.64-6.362 3.88-2.634 6.365-2.633c1.33 0.001 2.586 0.289 3.649 0.775 0.502 0.23 1.096 0.008 1.325-0.494s0.008-1.096-0.494-1.325c-1.327-0.606-2.866-0.955-4.479-0.956-3.037-0.002-5.789 1.229-7.78 3.217s-3.224 4.74-3.226 7.777 1.229 5.789 3.217 7.78 4.739 3.225 7.776 3.226 5.789-1.229 7.78-3.217 3.225-4.739 3.227-7.777v-0.92c0-0.552-0.448-1-1-1s-1 0.448-1 1zM21.293 3.293l-9.293 9.302-2.293-2.292c-0.391-0.391-1.024-0.391-1.414 0s-0.391 1.024 0 1.414l3 3c0.391 0.391 1.024 0.39 1.415 0l10-10.010c0.39-0.391 0.39-1.024-0.001-1.414s-1.024-0.39-1.414 0.001z"
+            />
+          </svg>
+        </div>
+      </div>
+    </form-dialog>
+
+    <client-only>
+      <v-gallery
+        :images="currentItemImages"
+        :index="index"
+        @close="index = null"
+        v-if="!isEdit"
+        :id="'gallery' + item.id"
+        :options="{
+          closeOnSlideClick: true,
+        }"
+      ></v-gallery>
+    </client-only>
   </div>
 </template>
 <script>
@@ -161,18 +199,36 @@ export default {
   props: {
     item: Object,
     isEdit: Boolean,
-    sectionId: String,
-    descriptionLabel: String,
+    section: Object,
   },
   data: function () {
     return {
       currentBigImageIndex: 1,
+      dialogDetailedOrder: false,
+      index: null,
     };
+  },
+  computed: {
+    currentItemImages() {
+      var imagesArray = [];
+      for (var i = 1; i < 5; i++) {
+        let imgKey = "img_" + i;
+        if (this.item[imgKey]) {
+          var imagesItem = {
+            title: this.item.title,
+            href: this.$site_img(this.item[imgKey], "resize_xl"),
+            type: "image/jpeg",
+          };
+          imagesArray.push(imagesItem);
+        }
+      }
+      return imagesArray;
+    },
   },
   methods: {
     handleMainIllustrationClick() {
       if (!this.isEdit) {
-        this.$emit("show-gallery", this.currentBigImageIndex - 1);
+        this.index = this.currentBigImageIndex - 1;
       }
     },
     handleIllustrationClick: function (index) {
@@ -186,16 +242,6 @@ export default {
     },
     getImageField(index) {
       return "img_" + index;
-    },
-  },
-  watch: {
-    isEdit: function (val, oldVal) {
-      if (val === true) {
-        this.currentBigImageIndex = 1;
-      }
-    },
-    item: function () {
-      this.currentBigImageIndex = 1;
     },
   },
 };

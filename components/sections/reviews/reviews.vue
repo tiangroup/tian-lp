@@ -343,7 +343,7 @@ export default {
         this.index = itemIndex;
       }
     },
-    handleInit(slick) {
+    handleInit(event, slick) {
       if (this.currentSlide) {
         slick.goTo(this.currentSlide, true);
       }
