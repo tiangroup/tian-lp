@@ -3,7 +3,9 @@
     <v-dialog v-model="dialog" max-width="400" persistent scrollable>
       <v-card>
         <v-card-title>
-          <span class="headline">Вставить картинку</span>
+          <span class="headline">{{
+            itemImageEdit.title || "Вставить картинку"
+          }}</span>
         </v-card-title>
 
         <v-card-text
@@ -200,10 +202,18 @@ export default {
         formData.append("image", this.selectedFile, this.selectedFile.name);
         formData.append("old_image", this.itemImageEdit.value);
         // контекстный путь картинки
-        const path = `${this.itemImageEdit.sectionId}${
-          this.itemImageEdit.id ? "/" + this.itemImageEdit.id : ""
-        }`;
+        let path = "";
+        if (this.itemImageEdit.path) {
+          path = this.itemImageEdit.path;
+        } else {
+          path = `${this.itemImageEdit.sectionId}${
+            this.itemImageEdit.id ? "/" + this.itemImageEdit.id : ""
+          }`;
+        }
         formData.append("path", path);
+        if (this.itemImageEdit.upload == "static") {
+          formData.append("upload", "static");
+        }
         const { data } = await this.$axios.post(
           `${this.$site_app}/api/upload/image`,
           formData
@@ -228,7 +238,6 @@ export default {
           }
           await this.savePage();
         }
-        await this.$emit("onUpload", itemImageEdit);
         this.image = null;
         this.loading = false;
         this.dialog = false;
@@ -247,10 +256,18 @@ export default {
         formData.append("old_image", this.itemImageEdit.value);
         formData.append("image_link", this.imageLink);
         // контекстный путь картинки
-        const path = `${this.itemImageEdit.sectionId}${
-          this.itemImageEdit.id ? "/" + this.itemImageEdit.id : ""
-        }`;
+        let path = "";
+        if (this.itemImageEdit.path) {
+          path = this.itemImageEdit.path;
+        } else {
+          path = `${this.itemImageEdit.sectionId}${
+            this.itemImageEdit.id ? "/" + this.itemImageEdit.id : ""
+          }`;
+        }
         formData.append("path", path);
+        if (this.itemImageEdit.upload == "static") {
+          formData.append("upload", "static");
+        }
         const { data } = await this.$axios.post(
           `${this.$site_app}/api/upload/image-link`,
           formData
@@ -275,7 +292,6 @@ export default {
           }
           await this.savePage();
         }
-        this.$emit("onUpload", itemImageEdit);
         this.image = null;
         this.loading = false;
         this.imageLink = null;

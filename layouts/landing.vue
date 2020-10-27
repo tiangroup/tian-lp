@@ -18,18 +18,28 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  head: {
-    link: [
-      {
-        rel: "stylesheet",
-        href: "/assets/css/style.css"
-      }
-    ]
+  head() {
+    return {
+      link: [
+        {
+          rel: "stylesheet",
+          href: "/assets/css/style.css"
+        },
+        {
+          rel: "icon",
+          type: "image/x-icon",
+          href: this.site.favicon
+            ? this.$site_img(this.site.favicon)
+            : "/favicon.ico"
+        }
+      ]
+    };
   },
   computed: {
     ...mapGetters({
       isApp: "isApp",
-      settings: "sites/settings"
+      settings: "sites/settings",
+      site: "sites/site"
     }),
     colorStyle() {
       return this.settings.color

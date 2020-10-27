@@ -57,12 +57,16 @@ app.post("/image", checkAuth, async (req, res) => {
         if (req.body.path) {
           filename = req.body.path + "/" + filename;
         }
-        image.mv(`./content/${catalog}/${filename}`);
+        let upload_dir = "content";
+        if (req.body.upload === "static") {
+          upload_dir = "static";
+        }
+        image.mv(`./${upload_dir}/${catalog}/${filename}`);
 
         const old_image = req.body.old_image;
         if (old_image) {
           try {
-            fs.unlinkSync(`./content/${catalog}/${old_image}`);
+            fs.unlinkSync(`./${upload_dir}/${catalog}/${old_image}`);
           } catch (error) {}
         }
 
@@ -127,15 +131,20 @@ app.post("/image-link", checkAuth, async (req, res) => {
     //const catalog = req.body.catalog;
     const catalog = await getCatalog(req);
 
+    let upload_dir = "content";
+    if (req.body.upload === "static") {
+      upload_dir = "static";
+    }
+
     const data = await downloadImage(
       image_link,
-      `./content/${catalog}/${filename}`
+      `./${upload_dir}/${catalog}/${filename}`
     );
 
     const old_image = req.body.old_image;
     if (old_image) {
       try {
-        fs.unlinkSync(`./content/${catalog}/${old_image}`);
+        fs.unlinkSync(`./${upload_dir}/${catalog}/${old_image}`);
       } catch (error) {}
     }
 
@@ -157,9 +166,13 @@ app.post("/image-remove", checkAuth, async (req, res) => {
   const image = req.body.image;
   //const catalog = req.body.catalog;
   const catalog = await getCatalog(req);
+  let upload_dir = "content";
+  if (req.body.upload === "static") {
+    upload_dir = "static";
+  }
   if (image) {
     try {
-      fs.unlinkSync(`./content/${catalog}/${image}`);
+      fs.unlinkSync(`./${upload_dir}/${catalog}/${image}`);
     } catch (error) {}
   }
   res.send({
@@ -172,9 +185,13 @@ app.post("/image-remove", checkAuth, async (req, res) => {
 app.post("/dir-remove", checkAuth, async (req, res) => {
   const dir = req.body.dir;
   const catalog = await getCatalog(req);
+  let upload_dir = "content";
+  if (req.body.upload === "static") {
+    upload_dir = "static";
+  }
   if (dir) {
     try {
-      rimraf(`./content/${catalog}/${dir}`, function() {});
+      rimraf(`./${upload_dir}}/${catalog}/${dir}`, function() {});
     } catch (error) {
       console.log(error);
     }
