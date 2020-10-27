@@ -5584,6 +5584,7 @@ nav ul li,
 }
 .tuning-panel__block {
   border-bottom: 1px solid #e8ecf0;
+  color: var(--text-color);
   padding: 1.875rem 0 0.9375rem;
   width: 100%;
 }
@@ -6201,18 +6202,6 @@ hr,
   color: #b7b9c1;
   color: var(--element-color);
 }
-.mLight {
-  --bg-color: #fff;
-  --bg-aux-color: #f8f9fb;
-  --text-color: #303339;
-  --text-aux-color: #68696f;
-  --separator-color: #e8ecf0;
-  --theme-hover-color: hsl(
-    var(--hue),
-    var(--saturation),
-    calc(var(--lightness) - 15%)
-  );
-}
 .mDark {
   --bg-color: #282a2e;
   --bg-aux-color: #323438;
@@ -6319,6 +6308,18 @@ hr,
     border-color: var(--theme-hover-color);
     color: #fff;
   }
+}
+.mLight {
+  --bg-color: #fff;
+  --bg-aux-color: #f8f9fb;
+  --text-color: #303339;
+  --text-aux-color: #68696f;
+  --separator-color: #e8ecf0;
+  --theme-hover-color: hsl(
+    var(--hue),
+    var(--saturation),
+    calc(var(--lightness) - 15%)
+  );
 }
 @media (min-width: 1024px) {
   .video__title,

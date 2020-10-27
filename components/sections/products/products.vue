@@ -157,6 +157,7 @@
           :section="section"
           field="order_form"
           v-model="dialogOrderProduct"
+          :hiddenData="currentItem.title"
         >
           <div class="good-summary">
             <div class="good-summary__row">

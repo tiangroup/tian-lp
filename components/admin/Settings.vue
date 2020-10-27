@@ -1,12 +1,17 @@
 <template>
-  <div>
+  <div class="mLight">
     <v-row class="ml-4 mr-4" v-if="sectionConfig">
       <div class="tuning-panel__block">
         <div class="tuning-panel__row mb-25px">
           <div class="tuning-panel__cell">
-            <div class="tuning-panel__block__title">«{{ sectionConfig.name }}»</div>
+            <div class="tuning-panel__block__title">
+              «{{ sectionConfig.name }}»
+            </div>
           </div>
-          <div class="tuning-panel__cell" v-if="sectionConfig.settings.background.length">
+          <div
+            class="tuning-panel__cell"
+            v-if="sectionConfig.settings.background.length"
+          >
             <div class="tuning-panel__block__bg tuning-bg">
               <div class="tuning-bg__title">Фон</div>
               <a
@@ -17,9 +22,9 @@
                 :class="[
                   {
                     'tuning-bg__color--active':
-                      settings.background == background.value
+                      settings.background == background.value,
                   },
-                  background.class
+                  background.class,
                 ]"
                 @click.prevent="setBackroundSettings(background.value)"
               >
@@ -42,7 +47,7 @@
               href
               class="tuning-panel__setting tuning-setting"
               :class="{
-                'tuning-setting--active': settings.view == view.value
+                'tuning-setting--active': settings.view == view.value,
               }"
               @click.prevent="setViewSettings(view.value)"
             >
@@ -67,7 +72,7 @@
               href
               class="tuning-panel__setting tuning-setting"
               :class="{
-                'tuning-setting--active': settings.view == view.value
+                'tuning-setting--active': settings.view == view.value,
               }"
               @click.prevent="setViewSettings(view.value)"
             >
@@ -79,13 +84,18 @@
           </div>
         </div>
 
-        <div class="tuning-panel__row tuning-panel__options" v-if="sectionConfig.settings.options">
+        <div
+          class="tuning-panel__row tuning-panel__options"
+          v-if="sectionConfig.settings.options"
+        >
           <div
             class="tuning-panel__cell tuning-option-wrap"
             v-for="(option, index) in sectionConfig.settings.options"
             :key="index"
           >
-            <label class="tuning-panel__option tuning-option field field--check">
+            <label
+              class="tuning-panel__option tuning-option field field--check"
+            >
               <input
                 type="checkbox"
                 class="field__input"
@@ -150,3 +160,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.landing .tuning-panel__setting {
+  color: inherit;
+}
+</style>

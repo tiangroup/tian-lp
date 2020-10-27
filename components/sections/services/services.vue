@@ -33,6 +33,7 @@
       buttonClass="button-primary"
       popupClass="popup-order"
       v-model="dialogOrderService"
+      :hiddenData="currentItem.title"
     >
       <div class="good-summary">
         <div class="good-summary__row">
