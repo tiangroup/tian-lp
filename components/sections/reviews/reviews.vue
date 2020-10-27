@@ -42,19 +42,9 @@
               >
                 <reviews-item
                   v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
-                  @change-desc="
-                    updateReviewDesc({
-                      id: item.id,
-                      text: item.text,
-                    })
-                  "
-                  @change-date="
-                    updateReviewDate({
-                      id: item.id,
-                      date: item.date,
-                    })
-                  "
-                  @show-review="showReview(item)"
+                  @change-desc="updateReviewDesc"
+                  @change-date="updateReviewDate"
+                  @show-review="showReview"
                   @show-gallery="showGallery(itemIndex)"
                   :key="item.id"
                   :item="item"
@@ -316,7 +306,7 @@ export default {
         this.dialogReviewDate = true;
       }
     },
-    saveReviewDate(date) {
+    saveReviewDate: function (date) {
       this.saveReviewField("date", date);
       this.dialogReviewDate = false;
     },
@@ -348,7 +338,7 @@ export default {
       this.currentReview.text = item.text;
       this.dialogShowReview = true;
     },
-    showGallery(itemIndex) {
+    showGallery: function (itemIndex) {
       if (!this.isEdit) {
         this.index = itemIndex;
       }

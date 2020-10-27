@@ -42,7 +42,11 @@
           </div>
         </div>
 
-        <div class="reviews__text" @click="$emit('change-desc')" v-if="isEdit">
+        <div
+          class="reviews__text"
+          @click="$emit('change-desc', item)"
+          v-if="isEdit"
+        >
           {{ truncateText(item.text, 25) || "Введите текст отзыва" }}
         </div>
         <div class="reviews__text" v-else>
@@ -54,14 +58,14 @@
             :value="formatDate(computedReviewDate)"
             label="Дата отзыва"
             readonly
-            @click="$emit('change-date')"
+            @click="$emit('change-date', item)"
           ></v-text-field>
         </div>
         <div class="reviews__info align-items-center" v-else>
           <button
             class="reviews__readmore"
             v-if="isCropped"
-            @click="$emit('show-review')"
+            @click="$emit('show-review', item)"
           >
             Читать полностью
             <svg

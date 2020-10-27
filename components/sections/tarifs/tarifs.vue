@@ -23,7 +23,6 @@
             :class="{ 'position-relative': isEdit }"
             v-for="item in section.items.filter((i) => i.id)"
             :key="item.id"
-            :style="styleDiv"
           >
             <buttons-item
               v-if="isEdit"
@@ -189,19 +188,12 @@ export default {
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
     },
-    styleDiv() {
-      return this.isEdit ? { position: "relative" } : null;
-    },
   },
   methods: {
     ...mapMutations({
       setItemField: "pages/SET_ITEM_FIELD",
     }),
-    orderPlan(item) {
-      this.dialog = true;
-      this.product = item;
-    },
-    setSelected(payload) {
+    setSelected: function (payload) {
       this.setItemField({
         sectionId: this.section.id,
         itemId: payload.itemId,

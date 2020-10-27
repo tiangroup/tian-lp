@@ -13,7 +13,14 @@
             color="green"
             v-bind="attrs"
             v-on="on"
-            @click="$emit('change-link')"
+            @click="
+              $emit('change-link', {
+                itemId: item.id,
+                sectionId: sectionId,
+                field: 'link',
+                value: item.link,
+              })
+            "
           >
             <v-icon>mdi-link</v-icon>
           </v-btn>

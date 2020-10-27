@@ -304,7 +304,7 @@ export default {
     },
   },
   methods: {
-    changeActiveItem(index) {
+    changeActiveItem: function (index) {
       this.itemToShow = index;
       if (this.currentSection.querySelector(".reveal__input").checked) {
         this.currentSection.querySelector(".reveal__input").checked = false;
@@ -314,16 +314,12 @@ export default {
     isActiveItem(itemIndex) {
       return itemIndex === this.itemToShow ? true : false;
     },
-    showOrderDialog(item) {
-      this.currentItem = item;
-      this.dialogOrderService = true;
-    },
     handleInit(event, slick) {
       if (this.itemToShow) {
         slick.goTo(this.itemToShow, true);
       }
     },
-    gotoClickedSlide(itemIndex) {
+    gotoClickedSlide: function (itemIndex) {
       if (!this.isActiveItem(itemIndex)) {
         this.changeActiveItem(itemIndex);
       }
