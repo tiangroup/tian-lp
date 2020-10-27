@@ -1268,14 +1268,6 @@ nav ul li,
 .header__social {
   display: none;
 }
-.header__addresses {
-  flex-basis: 60%;
-  max-width: 60%;
-}
-.header__phones {
-  flex-basis: 11.5rem;
-  max-width: 40%;
-}
 @media (min-width: 768px) {
   .header__logo {
     flex-basis: 50%;
@@ -1309,6 +1301,15 @@ nav ul li,
     align-items: center;
     justify-content: flex-end;
     max-width: 45%;
+  }
+
+  .header__addresses {
+    flex-basis: 60%;
+    max-width: 60%;
+  }
+  .header__phones {
+    flex-basis: 11.5rem;
+    max-width: 40%;
   }
   .header__action {
     flex-basis: 14.5rem;
@@ -1720,7 +1721,7 @@ nav ul li,
 .logo__link {
   display: flex;
   align-items: center;
-  width: 100%;
+  max-width: 100%;
   text-decoration: none;
   vertical-align: middle;
 }
@@ -2065,6 +2066,10 @@ nav ul li,
   }
 }
 @media (max-width: 1023px) {
+  .header--mStyle2 .header__logo {
+    flex-basis: auto;
+    max-width: 50%;
+  }
   .header--mStyle2 .header__contacts {
     margin-left: auto;
   }
@@ -2077,6 +2082,9 @@ nav ul li,
     flex-basis: 0.6875rem;
     height: 1rem;
     width: 0.6875rem;
+  }
+  .header--mStyle2 .header__phones .connect__instance {
+    min-width: 9.5rem;
   }
 }
 .addresses {
@@ -4554,6 +4562,9 @@ nav ul li,
   justify-content: center;
   position: relative;
 }
+.social .social__link {
+  border-color: currentColor;
+}
 .social__link:hover,
 .social__link:focus {
   text-decoration: none;
@@ -5973,7 +5984,6 @@ nav ul li,
 }
 .services__navigation__item--active .services__navigation__image,
 .slick-current .services__navigation__image,
-.social .social__link,
 .social .social__link:hover,
 .nav__toggle:focus::before,
 .state-switch input:checked + .state-switch__label::before,
@@ -6299,20 +6309,18 @@ hr,
   .mTheme .nav__toggle,
   .mDark .header__logo .logo__link,
   .mDark .nav__toggle,
-  .mTheme .header__menu__mobile-contacts .connect__icon {
+  .mTheme .header__menu__mobile-contacts .connect__icon,
+  .header.mTheme .nav__close,
+  .mTheme .social__link {
     color: #fff;
-  }
-  .mTheme a:hover,
-  .mTheme a:focus,
-  .mTheme a:active {
-    color: var(--theme-hover-color);
   }
   .mTheme .button.button-secondary {
     border-color: currentColor;
     color: #fff;
   }
   .mTheme .button.button-secondary:hover,
-  .mTheme .button.button-secondary:focus {
+  .mTheme .button.button-secondary:focus,
+  .mTheme .social .social__link:hover {
     background-color: var(--theme-hover-color);
     border-color: var(--theme-hover-color);
     color: #fff;

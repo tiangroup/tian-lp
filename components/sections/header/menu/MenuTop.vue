@@ -9,7 +9,7 @@
     <ul class="primary-nav nav" ref="menu" v-resize="handleResize">
       <li
         class="primary-nav__item"
-        v-for="item in menuItems.filter(i => i.id)"
+        v-for="item in menuItems.filter((i) => i.id)"
         :key="item.id"
         ref="menu_items"
       >
@@ -38,6 +38,11 @@
         </div>
       </li>
     </ul>
+    <menu-top-extra
+      v-if="menuExtra"
+      :section="section"
+      :is-edit="isEdit"
+    ></menu-top-extra>
   </nav>
 </template>
 
@@ -46,16 +51,19 @@ import { mapGetters } from "vuex";
 import _ from "lodash";
 export default {
   props: {
-    menu: Array
+    isEdit: Boolean,
+    section: Object,
+    menu: Array,
+    menuExtra: Boolean,
   },
   data: () => ({
-    items: []
+    items: [],
   }),
   methods: {
-    handleResize: _.throttle(function() {
+    handleResize: _.throttle(function () {
       this.items = this.items.map((item, index) => ({
         ...item,
-        show: true
+        show: true,
       }));
       setTimeout(this.onResize, 100);
     }, 300),
@@ -72,10 +80,10 @@ export default {
                 menu_items[index].clientWidth +
                 15 >
               menuWidth
-            )
+            ),
         }));
       }
-    }
+    },
   },
   mounted() {
     this.$nextTick(() => {
@@ -84,45 +92,45 @@ export default {
   },
   computed: {
     ...mapGetters({
-      page: "pages/page"
+      page: "pages/page",
     }),
     itemsHide() {
-      return this.items.filter(item => !item.show);
+      return this.items.filter((item) => !item.show);
     },
     _menu() {
       if (this.menu && this.menu.length > 0) {
         return this.menu;
       } else {
         const menu = this.page.sections
-          .filter(s => s.show && s.title)
-          .map(s => ({
+          .filter((s) => s.show && s.title)
+          .map((s) => ({
             id: s.id,
             title: s.title || "Пункт",
             type: "anchor",
-            link: s.slug ? `#${s.slug}` : `#${s.id}`
+            link: s.slug ? `#${s.slug}` : `#${s.id}`,
           }));
         return menu;
       }
     },
     menuItems: {
-      get: function() {
+      get: function () {
         let _this = this;
-        const items = this._menu.map(i => ({
+        const items = this._menu.map((i) => ({
           id: i.id,
           title: i.title,
           type: i.type,
           link: i.link,
-          show: _this.items.find(item => item.id == i.id)
-            ? _this.items.find(item => item.id == i.id).show
-            : true
+          show: _this.items.find((item) => item.id == i.id)
+            ? _this.items.find((item) => item.id == i.id).show
+            : true,
         }));
         this.items = items;
         return this.items;
       },
-      set: function(value) {
+      set: function (value) {
         this.items = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

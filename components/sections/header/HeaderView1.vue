@@ -7,6 +7,8 @@
       'header--style3': view == 'view3',
       'header--style5': view == 'view5',
       'header--style6': view == 'view6',
+      mTheme: mobileColoredBg,
+      'header--mStyle2': mobileHeaderWbutton,
     }"
   >
     <div class="landing__container">
@@ -145,7 +147,13 @@
             <span class="sr-only">Открыть меню</span>
           </a>
         </div>
-        <menu-top :menu="section.menu" :id="'nav' + section.id"></menu-top>
+        <menu-top
+          :menu="section.menu"
+          :id="'nav' + section.id"
+          :section="section"
+          :is-edit="isEdit"
+          :menu-extra="mobileLongMenu"
+        ></menu-top>
         <a href="#" class="overlay" tabindex="-1" aria-hidden="true" hidden></a>
       </div>
     </div>
@@ -153,6 +161,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   props: {
     section: Object,
@@ -160,6 +169,20 @@ export default {
     view: {
       type: String,
       default: "view1",
+    },
+  },
+  computed: {
+    ...mapGetters({
+      headerSettings: "sites/settings",
+    }),
+    mobileColoredBg() {
+      return this.headerSettings.header.mcolor === "color" ? true : false;
+    },
+    mobileHeaderWbutton() {
+      return this.headerSettings.header.mheader === "button" ? true : false;
+    },
+    mobileLongMenu() {
+      return this.headerSettings.header.mmenu === "long" ? true : false;
     },
   },
   methods: {
