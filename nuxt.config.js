@@ -25,8 +25,8 @@ export default {
         name: "description",
         content: ""
       }
-    ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    ]
+    // link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
   /*
    ** Global CSS
@@ -81,6 +81,7 @@ export default {
       {
         imagesBaseDir: "content",
         imageStyles: {
+          origin: {},
           icon_sm: { actions: ["resize|46|46"] },
           icon_md: { actions: ["resize|63|63"] },
           sq_xs: { macros: ["scaleAndCrop|63|63"] },
@@ -99,7 +100,7 @@ export default {
           questions: { actions: ["resize|645|456"] },
           cover: { macros: ["scaleAndCrop|1920|700"] },
           sq_lg_ext: { actions: ["trim", "gravity|Center", "resize|520|520>"] },
-          logo: { actions: ['resize|450|100>'] },
+          logo: { actions: ["resize|450|100>"] }
         }
       }
     ],

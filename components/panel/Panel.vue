@@ -41,7 +41,7 @@
         <div class="tuning-heading">
           <div class="tuning-heading__row">
             <div class="tuning-heading__cell">
-              <div class="tuning-heading__title">Настройки сайта</div>
+              <div class="tuning-heading__title">Панель настроек</div>
             </div>
             <div class="tuning-heading__cell tuning-heading__reset">
               <button

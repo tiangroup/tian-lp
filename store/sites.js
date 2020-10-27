@@ -105,6 +105,10 @@ export const mutations = {
   SET_DEMO(state, demo) {
     state.site.demo = demo;
     state.change = true;
+  },
+  SET_FAVICON(state, favicon) {
+    state.site.favicon = favicon;
+    state.change = true;
   }
 };
 

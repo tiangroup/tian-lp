@@ -207,6 +207,8 @@
           <menu-item-add-page />
         </v-list-group>
 
+        <menu-item-favicon />
+
         <menu-item-metrika />
 
         <menu-item-counter />

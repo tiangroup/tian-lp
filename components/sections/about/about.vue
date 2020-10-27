@@ -52,19 +52,19 @@
 import { mapGetters } from "vuex";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit",
+      isSectionEdit: "isSectionEdit"
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
     },
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
-    },
-  },
+    }
+  }
 };
 </script>
