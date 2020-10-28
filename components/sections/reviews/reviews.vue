@@ -140,7 +140,7 @@
           </v-date-picker>
         </v-dialog>
 
-        <v-dialog v-model="dialogShowReview" max-width="30rem">
+        <v-dialog v-model="dialogShowReview" max-width="30rem" v-if="isCenter">
           <div class="der-popup">
             <div class="der-popup__close">
               <button
@@ -184,6 +184,57 @@
             </div>
           </div>
         </v-dialog>
+        <v-navigation-drawer
+          app
+          temporary
+          width="30rem"
+          :right="settings.popup == 'right'"
+          v-model="dialogShowReview"
+          v-if="!isCenter"
+        >
+          <div class="der-popup">
+            <div class="der-popup__close">
+              <button
+                class="button button-icon button-close"
+                @click="dialogShowReview = false"
+              >
+                <span class="sr-only">Закрыть</span>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1 1L9 9M17 17L9 9M9 9L1 17M9 9L17 1"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div class="der-popup__body">
+              <div class="popup-reviews">
+                <div class="reviews__body--full">
+                  <div class="reviews__person">
+                    <div class="reviews__person__name">
+                      {{ currentReview.name }}
+                    </div>
+                    <div class="reviews__person__position">
+                      {{ currentReview.position }}
+                    </div>
+                  </div>
+                  <div class="reviews__text">{{ currentReview.text }}</div>
+                  <div class="reviews__info">
+                    <div class="reviews__date">{{ currentReview.date }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </v-navigation-drawer>
       </div>
     </div>
   </div>
@@ -240,12 +291,16 @@ export default {
     ...mapGetters({
       _isEdit: "isEdit",
       isSectionEdit: "isSectionEdit",
+      settings: "sites/settings",
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
     },
     view() {
       return this.section.settings.view;
+    },
+    isCenter() {
+      return this.settings.popup != "right" && this.settings.popup != "left";
     },
     updatedSlickOptions() {
       const slidesQty = this.view === "view1" ? 2 : 1;

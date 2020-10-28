@@ -18,7 +18,11 @@
           :class="{ 'no-image': !item.img_1 }"
           @click="dialogDetailedItem = true"
         >
-          <img :src="$site_img(item.img_1, 'sq_lg_ext')" v-if="item.img_1" />
+          <nuxt-img
+            v-if="item.img_1"
+            :src="$site_img(item.img_1)"
+            image-style="sq_lg_ext"
+          />
         </button>
         <div class="products__title">
           <editor
@@ -91,7 +95,7 @@
       <div class="good-summary">
         <div class="good-summary__row">
           <div class="good-summary__image" v-if="item.img_1">
-            <img :src="$site_img(item.img_1, 'icon_sm')" />
+            <nuxt-img :src="$site_img(item.img_1)" image-style="icon_sm" />
           </div>
           <div class="good-summary__body">
             <div class="good-summary__title">{{ item.title }}</div>
@@ -108,7 +112,7 @@
       </div>
     </form-dialog>
 
-    <v-dialog v-model="dialogDetailedItem" max-width="40rem">
+    <v-dialog v-model="dialogDetailedItem" max-width="40rem" v-if="isCenter">
       <div class="der-popup">
         <div class="der-popup__body">
           <div class="der-popup__close">
@@ -139,14 +143,60 @@
               :is-edit="isEdit"
               :section="section"
               @save-details="saveItemDetails"
+              @call-order-form="handleOrderFormCall"
             ></products-item-detailed>
           </div>
         </div>
       </div>
     </v-dialog>
+    <v-navigation-drawer
+      app
+      temporary
+      width="40rem"
+      :right="settings.popup == 'right'"
+      v-model="dialogDetailedItem"
+      v-if="!isCenter"
+    >
+      <div class="der-popup">
+        <div class="der-popup__body">
+          <div class="der-popup__close">
+            <button
+              class="button button-icon button-close"
+              @click="dialogDetailedItem = false"
+            >
+              <span class="sr-only">Закрыть</span>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1 1L9 9M17 17L9 9M9 9L1 17M9 9L17 1"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="popup-order">
+            <products-item-detailed
+              :item="item"
+              :is-edit="isEdit"
+              :section="section"
+              @save-details="saveItemDetails"
+              @call-order-form="handleOrderFormCall"
+            ></products-item-detailed>
+          </div>
+        </div>
+      </div>
+    </v-navigation-drawer>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
   props: {
     item: Object,
@@ -157,10 +207,22 @@ export default {
     dialogOrderProduct: false,
     dialogDetailedItem: false,
   }),
+  computed: {
+    ...mapGetters({
+      settings: "sites/settings",
+    }),
+    isCenter() {
+      return this.settings.popup != "right" && this.settings.popup != "left";
+    },
+  },
   methods: {
     saveItemDetails() {
       this.$store.dispatch("pages/savePage");
       this.dialogDetailedItem = false;
+    },
+    handleOrderFormCall() {
+      this.dialogDetailedItem = false;
+      this.dialogOrderProduct = true;
     },
   },
 };
