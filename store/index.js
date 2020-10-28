@@ -13,7 +13,9 @@ export const state = () => ({
   sectionEdit: null,
   dialogEditorSource: false,
   editorSource: {},
-  tuningPanel: false
+  tuningPanel: false,
+  dialogEditorUpload: false,
+  editorUpload: {}
 });
 
 export const mutations = {
@@ -70,6 +72,12 @@ export const mutations = {
   },
   SET_TUNING_PANEL(state, tuningPanel) {
     state.tuningPanel = tuningPanel;
+  },
+  SET_EDITOR_UPLOAD(state, editorUpload) {
+    state.editorUpload = editorUpload;
+  },
+  SET_DIALOG_EDITOR_UPLOAD(state, dialog) {
+    state.dialogEditorUpload = dialog;
   }
 };
 
@@ -137,6 +145,23 @@ export const actions = {
   hideEditorSource({ commit }) {
     commit("SET_DIALOG_EDITOR_SOURCE", false);
     commit("SET_EDITOR_SOURCE", {});
+  },
+  async showEditorUpload({ commit }, editorUpload) {
+    commit("SET_OVERLAY", true);
+    const { files } = await this.$axios.$get(
+      `${this.$site_app}/api/upload/section/${editorUpload.sectionId}`
+    );
+    commit("SET_OVERLAY", false);
+    editorUpload = {
+      ...editorUpload,
+      files: files
+    };
+    commit("SET_EDITOR_UPLOAD", editorUpload);
+    commit("SET_DIALOG_EDITOR_UPLOAD", true);
+  },
+  hideEditorUpload({ commit }) {
+    commit("SET_DIALOG_EDITOR_UPLOAD", false);
+    commit("SET_EDITOR_UPLOAD", {});
   }
 };
 
@@ -162,5 +187,7 @@ export const getters = {
   error: state => state.error,
   dialogEditorSource: state => state.dialogEditorSource,
   editorSource: state => state.editorSource,
-  tuningPanel: state => state.tuningPanel
+  tuningPanel: state => state.tuningPanel,
+  dialogEditorUpload: state => state.dialogEditorUpload,
+  editorUpload: state => state.editorUpload
 };

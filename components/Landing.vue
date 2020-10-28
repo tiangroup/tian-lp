@@ -14,6 +14,7 @@
     <overlay v-if="isEdit" />
 
     <dialog-editor-source v-if="isEdit" />
+    <dialog-editor-upload v-if="isEdit" />
 
     <image-upload v-if="isEdit" />
 

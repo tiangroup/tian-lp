@@ -33,7 +33,6 @@ export default {
         value: this.site.favicon,
         upload: "static",
         callback: image => {
-          console.log(image);
           this.setFavicon(image.value);
           this.saveSite();
         }
