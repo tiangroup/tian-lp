@@ -6123,7 +6123,6 @@ a:focus,
 .reviews__item,
 .department__title,
 .department__phone__link a,
-.good__title,
 .video__item {
   color: #303339;
   color: var(--text-color);

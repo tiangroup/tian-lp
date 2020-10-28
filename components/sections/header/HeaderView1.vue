@@ -9,7 +9,9 @@
       'header--style6': view == 'view6',
       mTheme: mobileColoredBg,
       'header--mStyle2': mobileHeaderWbutton,
+      'header--fixed': addFixedClass,
     }"
+    v-scroll="onScroll"
   >
     <div class="landing__container">
       <div class="header__wrap">
@@ -170,7 +172,13 @@ export default {
       type: String,
       default: "view1",
     },
+    fixHeader: Boolean,
   },
+  data: () => ({
+    headerHeight: 170,
+    addFixedClass: false,
+    bodyElm: null,
+  }),
   computed: {
     ...mapGetters({
       headerSettings: "sites/settings",
@@ -190,6 +198,23 @@ export default {
       const strippedString = incoming.replace(/(<([^>]+)>)/gi, "");
       return strippedString;
     },
+    onScroll(e) {
+      if (typeof window === "undefined" || !this.fixHeader) return;
+      const top = window.pageYOffset || e.target.scrollTop || 0;
+      if (top > parseInt(this.headerHeight)) {
+        this.addFixedClass = true;
+        this.bodyElm.style.paddingTop = this.headerHeight + "px";
+      } else {
+        this.addFixedClass = false;
+        this.bodyElm.style.paddingTop = 0;
+      }
+    },
+  },
+  mounted: function () {
+    this.headerHeight = document.getElementsByClassName(
+      "header"
+    )[0].offsetHeight;
+    this.bodyElm = document.getElementsByTagName("body")[0];
   },
 };
 </script>

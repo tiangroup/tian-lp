@@ -6,7 +6,12 @@
         @click="showMenuEditor = true"
       ></menu-editor-button>
     </buttons-section>
-    <component :is="view" :section="section" :isEdit="isEdit" />
+    <component
+      :is="view"
+      :section="section"
+      :isEdit="isEdit"
+      :fix-header="isHeaderFixed"
+    />
     <menu-editor
       v-if="isEdit"
       :show="showMenuEditor"
@@ -31,18 +36,19 @@ export default {
     View3,
     View4,
     View5,
-    View6
+    View6,
   },
   props: {
-    section: Object
+    section: Object,
   },
   data: () => ({
-    showMenuEditor: false
+    showMenuEditor: false,
   }),
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit"
+      isSectionEdit: "isSectionEdit",
+      headerSettings: "sites/settings",
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
@@ -52,7 +58,10 @@ export default {
     },
     view() {
       return this.section.settings.view || "view1";
-    }
-  }
+    },
+    isHeaderFixed() {
+      return !this._isEdit && this.section.settings.fixed;
+    },
+  },
 };
 </script>
