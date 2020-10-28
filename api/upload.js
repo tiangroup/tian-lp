@@ -202,6 +202,21 @@ app.post("/dir-remove", checkAuth, async (req, res) => {
   });
 });
 
+// получение загрузок раздела
+app.get("/section/:id", checkAuth, async (req, res) => {
+  const sectionId = req.params.id;
+  const catalog = await getCatalog(req);
+  const upload_dir = "static";
+  const files = fs.readdirSync(
+    `./${upload_dir}/${catalog}/${sectionId}/upload`
+  );
+  console.log(files);
+  res.send({
+    status: true,
+    files: files
+  });
+});
+
 // -- export app --
 module.exports = {
   path: "/api/upload",

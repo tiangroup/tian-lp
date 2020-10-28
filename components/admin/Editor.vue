@@ -75,15 +75,15 @@ export default {
               },
               {
                 name: "image",
-                aria: "картинка"
+                aria: "преобразовать в картинку"
               },
               {
                 name: "orderedlist",
-                aria: "нумерованный срисок"
+                aria: "нумерованный список"
               },
               {
                 name: "unorderedlist",
-                aria: "ненумерованный срисок"
+                aria: "ненумерованный список"
               },
               {
                 name: "html",
@@ -93,7 +93,8 @@ export default {
                 name: "removeFormat",
                 aria: "убрать форматирование"
               },
-              "source"
+              "source",
+              "upload"
             ]
           },
           extensions: {
@@ -103,6 +104,15 @@ export default {
                 _this.$editorSource({
                   html: _this._text,
                   callback: _this.callbackEditorSource
+                });
+                return html;
+              }
+            }),
+            upload: new MediumButton({
+              label: "upload",
+              action: function(html, mark, parent) {
+                _this.$editorUpload({
+                  sectionId: _this.sectionId
                 });
                 return html;
               }

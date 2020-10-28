@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" max-width="800">
+    <v-dialog v-model="dialog" max-width="800" scrollable>
       <v-card>
         <v-card-title>
           <span class="headline">Исходный код</span>
