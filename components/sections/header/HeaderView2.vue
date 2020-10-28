@@ -4,7 +4,7 @@
     :class="{
       mDark: section.settings.background === 'dark',
       mTheme: mobileColoredBg,
-      'header--mStyle2': mobileHeaderWbutton,
+      'header--mStyle2': mobileHeaderWbutton
     }"
   >
     <div class="bg-theme" v-if="showTopBlock">
@@ -164,18 +164,19 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   props: {
     section: Object,
     isEdit: Boolean,
     showTopBlock: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   computed: {
     ...mapGetters({
-      headerSettings: "sites/settings",
+      headerSettings: "sites/settings"
     }),
     mobileColoredBg() {
       return this.headerSettings.header.mcolor === "color" ? true : false;
@@ -185,7 +186,7 @@ export default {
     },
     mobileLongMenu() {
       return this.headerSettings.header.mmenu === "long" ? true : false;
-    },
-  },
+    }
+  }
 };
 </script>
