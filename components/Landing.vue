@@ -72,7 +72,7 @@ export default {
     if (!this.isEdit && this.ym) {
       this.$yandexMetrika.init(this.ym);
     }
-    if (this.isEdit) {
+    if (this.isEdit || this.site.demo) {
       this.loadSections();
     }
   }
