@@ -4,7 +4,7 @@ export default (context, inject) => {
   const api_backend = $env.API_BACKEND || "https://api.tian-lp.ru";
   const app_backend = $env.APP_BACKEND || "https://app.tian-lp.ru";
 
-  inject("site_img", (img, imageStyle) => {
+  function imgSrc(img, imageStyle) {
     if (img.indexOf("http") === 0) {
       return img;
     } else {
@@ -12,15 +12,31 @@ export default (context, inject) => {
       if (store.getters["isEdit"]) {
         root = app_backend + "/";
       }
-      return (
+
+      let src =
         root +
         "uploads/" +
         store.getters["sites/name"] +
         img +
-        (imageStyle ? `?style=${imageStyle}` : "")
-      );
+        (imageStyle ? `?style=${imageStyle}` : "");
+
+      if (!store.getters["isEdit"] && !store.getters["isApp"] && imageStyle) {
+        const splitPath = img.split(".");
+        const filenameIndex = splitPath.length - 2;
+        splitPath[filenameIndex] = splitPath[filenameIndex] + "--" + imageStyle;
+        const img_style = splitPath.join(".");
+        src =
+          root +
+          "image-styles/uploads/" +
+          store.getters["sites/name"] +
+          img_style;
+      }
+
+      return src;
     }
-  });
+  }
+
+  inject("site_img", imgSrc);
 
   inject("site_api", api_backend);
 
@@ -39,23 +55,7 @@ export default (context, inject) => {
   });
 
   inject("images", {
-    src: (img, imageStyle) => {
-      if (img.indexOf("http") === 0) {
-        return img;
-      } else {
-        let root = "/";
-        if (store.getters["isEdit"]) {
-          root = app_backend + "/";
-        }
-        return (
-          root +
-          "uploads/" +
-          store.getters["sites/name"] +
-          img +
-          (imageStyle ? `?style=${imageStyle}` : "")
-        );
-      }
-    },
+    src: imgSrc,
     upload: imageUpload => {
       store.dispatch("showImageUpload", imageUpload);
     },

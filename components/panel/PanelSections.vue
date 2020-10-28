@@ -15,7 +15,7 @@
                 <v-expansion-panel
                   class="tuning-sort__row"
                   v-for="(section, sectionIndex) in sectsArray.filter(
-                    (s) => s.id
+                    s => s.id
                   )"
                   :key="section.id + sectionIndex"
                   :class="{ 'tuning-sort__row--active': section.show === true }"
@@ -80,29 +80,31 @@ import { mapMutations, mapGetters } from "vuex";
 import draggable from "vuedraggable";
 export default {
   components: {
-    draggable,
+    draggable
   },
   props: {
-    sections: Array,
+    sections: Array
   },
-  data: function () {
+  data: function() {
     return {
       sectionMoved: {
         id: null,
-        newIndex: null,
-      },
-      sectsArray: this.sections,
+        newIndex: null
+      }
     };
   },
   computed: {
     ...mapGetters({
-      sects: "sections/sections",
+      sects: "sections/sections"
     }),
+    sectsArray() {
+      return this.sections;
+    }
   },
   methods: {
     ...mapMutations({
       setSectionField: "pages/SET_SECTION_FIELD",
-      moveSection: "pages/MOVE_SECTION",
+      moveSection: "pages/MOVE_SECTION"
     }),
     toggleSectionSettings(id) {
       document.getElementById(id).scrollIntoView();
@@ -111,11 +113,11 @@ export default {
       this.setSectionField({
         id: section.id,
         field: "show",
-        value: !section.show,
+        value: !section.show
       });
     },
     sectionName(section) {
-      const sectionConfig = this.sects.find(function (sect) {
+      const sectionConfig = this.sects.find(function(sect) {
         if (sect.component === section.__component) {
           return true;
         }
@@ -130,11 +132,11 @@ export default {
       if (payload.moved) {
         this.moveSection({
           sectionId: payload.moved.element.id,
-          newIndex: payload.moved.newIndex,
+          newIndex: payload.moved.newIndex
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
