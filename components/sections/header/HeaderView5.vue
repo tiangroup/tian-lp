@@ -1,5 +1,10 @@
 <template>
-  <view1 view="view5" :section="section" :isEdit="isEdit" />
+  <view1
+    view="view5"
+    :section="section"
+    :isEdit="isEdit"
+    :fix-header="fixHeader"
+  />
 </template>
 
 <script>
@@ -10,7 +15,8 @@ export default {
   },
   props: {
     section: Object,
-    isEdit: Boolean
+    isEdit: Boolean,
+    fixHeader: Boolean
   }
 };
 </script>
