@@ -201,19 +201,19 @@ export default {
   props: {
     item: Object,
     section: Object,
-    isEdit: Boolean,
+    isEdit: Boolean
   },
   data: () => ({
     dialogOrderProduct: false,
-    dialogDetailedItem: false,
+    dialogDetailedItem: false
   }),
   computed: {
     ...mapGetters({
-      settings: "sites/settings",
+      settings: "sites/settings"
     }),
     isCenter() {
       return this.settings.popup != "right" && this.settings.popup != "left";
-    },
+    }
   },
   methods: {
     saveItemDetails() {
@@ -223,8 +223,8 @@ export default {
     handleOrderFormCall() {
       this.dialogDetailedItem = false;
       this.dialogOrderProduct = true;
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -232,5 +232,8 @@ export default {
 .partners__item-wrap a:hover,
 .partners__item-wrap a:focus {
   color: inherit;
+}
+.v-navigation-drawer {
+  z-index: 130;
 }
 </style>

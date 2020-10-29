@@ -50,7 +50,9 @@
       </div>
     </div>
     <div class="header__menu__action">
-      <a href="" class="button button-secondary">Заказать звонок</a>
+      <button class="button button-secondary" @click="$emit('call-cb-form')">
+        Заказать звонок
+      </button>
     </div>
     <div class="social header__menu__social">
       <social-list :section="section" :isEdit="isEdit"></social-list>
@@ -61,7 +63,7 @@
 export default {
   props: {
     isEdit: Boolean,
-    section: Object,
-  },
+    section: Object
+  }
 };
 </script>

@@ -121,7 +121,7 @@
               <div class="services__item">
                 <div class="services__body body-copy">
                   <div class="services__image">
-                    <img :src="$site_img(item.img, 'sq_lg')" />
+                    <nuxt-img :src="$site_img(item.img)" image-style="sq_lg" />
                   </div>
                   <div class="services__title">{{ item.title }}</div>
                   <div

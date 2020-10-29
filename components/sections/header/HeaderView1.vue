@@ -9,13 +9,14 @@
       'header--style6': view == 'view6',
       mTheme: mobileColoredBg,
       'header--mStyle2': mobileHeaderWbutton,
-      'header--fixed': addFixedClass
+      'header--fixed': addFixedClass,
+      'header--editable': isEdit
     }"
   >
     <div class="landing__container">
       <div class="header__wrap">
-        <div class="logo header__logo" :class="{ 'logo--editable': isEdit }">
-          <a class="logo__link">
+        <div class="logo header__logo">
+          <div class="logo__link">
             <image-item
               divClass="logo__image"
               :img="section.logo_img"
@@ -38,7 +39,7 @@
             <div v-else-if="section.logo_text" class="logo__text">
               {{ section.logo_text }}
             </div>
-          </a>
+          </div>
           <div v-if="isEdit" class="logo__slogan">
             <editor
               data-placeholder="Слоган компании"
@@ -47,7 +48,9 @@
               field="logo_slogan"
             />
           </div>
-          <div v-else class="logo__slogan">{{ section.logo_slogan }}</div>
+          <div v-else-if="section.logo_slogan" class="logo__slogan">
+            {{ section.logo_slogan }}
+          </div>
         </div>
         <div class="header__contacts">
           <div
@@ -154,10 +157,17 @@
           :section="section"
           :is-edit="isEdit"
           :menu-extra="mobileLongMenu"
+          @call-cb-form="dialogCallback = true"
         ></menu-top>
         <a href="#" class="overlay" tabindex="-1" aria-hidden="true" hidden></a>
       </div>
     </div>
+    <form-dialog
+      v-model="dialogCallback"
+      :section="section"
+      field="form"
+      popupClass="popup-callback"
+    />
   </div>
 </template>
 
@@ -174,6 +184,7 @@ export default {
     fixHeader: Boolean
   },
   data: () => ({
+    dialogCallback: false,
     headerHeight: 170,
     addFixedClass: false,
     bodyElm: null
@@ -212,7 +223,7 @@ export default {
       }
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.headerHeight = document.getElementsByClassName(
       "header"
     )[0].offsetHeight;
@@ -222,7 +233,7 @@ export default {
     }
   },
   watch: {
-    fixHeader: function() {
+    fixHeader: function () {
       this.addFixedClass = false;
       this.bodyElm.style.paddingTop = 0;
       if (this.fixHeader && window) {
@@ -232,7 +243,7 @@ export default {
       }
     }
   },
-  beforeDestroy: function() {
+  beforeDestroy: function () {
     if (window && this.fixHeader) {
       window.removeEventListener("scroll", this.toggleFixedClass);
     }
