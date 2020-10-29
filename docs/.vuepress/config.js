@@ -38,6 +38,8 @@ module.exports = {
         title: "Компоненты",
         children: [
           "/components/editor",
+          "/components/editor-html",
+          "/components/editor-text",
           "/components/image-item",
           "/components/forms"
         ]

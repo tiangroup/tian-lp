@@ -173,8 +173,8 @@ export const getters = {
   },
   isSectionEdit: state => section => {
     return section instanceof Object
-      ? section.id == state.sectionEdit
-      : section == state.sectionEdit;
+      ? section.id === state.sectionEdit
+      : section === state.sectionEdit;
   },
   overlay: state => state.overlay,
   dialogImageUpload: state => state.dialogImageUpload,

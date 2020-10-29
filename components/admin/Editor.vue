@@ -94,7 +94,7 @@ export default {
                 aria: "убрать форматирование"
               },
               "source",
-              "upload"
+              this.sectionId ? "upload" : ""
             ]
           },
           extensions: {

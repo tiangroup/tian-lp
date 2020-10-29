@@ -18,7 +18,7 @@
 | items       | `String` | имя поля элементов, когда редактируется элемент            | `items`      |
 | itemId      | `String` | id элемента, в котором редактируется текстовое поле        | `null`       |
 | editContent | `String` | текст сохраняется с разметкой или без                      | `text`       |
-| object      | `Object` | имя поля объекта в section для редактирования поля `field` | `null`       |
+| object      | `String` | имя поля объекта в section для редактирования поля `field` | `null`       |
 
 editContent :
 

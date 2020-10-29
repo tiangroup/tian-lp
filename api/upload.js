@@ -207,9 +207,14 @@ app.get("/section/:id", checkAuth, async (req, res) => {
   const sectionId = req.params.id;
   const catalog = await getCatalog(req);
   const upload_dir = "static";
-  const files = fs.readdirSync(
-    `./${upload_dir}/${catalog}/${sectionId}/upload`
-  );
+  const path = `./${upload_dir}/${catalog}/${sectionId}/upload`;
+  const files = fs
+    .readdirSync(path)
+    .map(file => ({
+      url: `/${catalog}/${sectionId}/upload/${file}`,
+      time: fs.statSync(`${path}/${file}`).mtime.getTime()
+    }))
+    .sort((a, b) => b.time - a.time);
   console.log(files);
   res.send({
     status: true,

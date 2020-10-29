@@ -67,9 +67,8 @@ export default {
       }
     },
     files() {
-      const path = `/uploads/${this.site.name}/${this.editorUpload.sectionId}/upload`;
       return this.editorUpload.files
-        ? this.editorUpload.files.map(file => ({ src: `${path}/${file}` }))
+        ? this.editorUpload.files.map(file => ({ src: file.url }))
         : [];
     }
   },
