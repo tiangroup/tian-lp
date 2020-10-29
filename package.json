@@ -31,6 +31,7 @@
     "nuxt-env": "^0.1.0",
     "rimraf": "^3.0.2",
     "templayed": "^0.2.3",
+    "v-clipboard": "^2.2.3",
     "v-mask": "^2.2.3",
     "vue-gallery": "^2.0.1",
     "vue-js-modal": "^2.0.0-rc.6",

@@ -138,6 +138,7 @@ export default {
       let text = operation.api.origElements.textContent;
       if (operation.api.options.editContent == "html") {
         text = operation.api.origElements.innerHTML;
+        text = this.clearImage(text);
       }
 
       if (this.value !== undefined) {
@@ -184,14 +185,24 @@ export default {
       this.active = false;
       this._text = JSON.parse(JSON.stringify(source));
       this.active = true;
+    },
+    clearImage(text) {
+      const reg = `(src=["'])${this.$site_app}`;
+      const regexp = new RegExp(reg, "ig");
+
+      return text.replace(regexp, "$1");
     }
   },
   created() {
+    let text;
     if (this.value === undefined) {
-      this._text = JSON.parse(JSON.stringify(this.text));
+      text = JSON.parse(JSON.stringify(this.text));
     } else {
-      this._text = JSON.parse(JSON.stringify(this.value));
+      text = JSON.parse(JSON.stringify(this.value));
     }
+    const reg = `(src=["'])/`;
+    const regexp = new RegExp(reg, "ig");
+    this._text = text.replace(regexp, `$1${this.$site_app}/`);
   }
 };
 </script>

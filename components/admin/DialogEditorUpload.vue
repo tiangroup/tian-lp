@@ -5,6 +5,9 @@
         <v-card-title>
           <span class="headline">Загрузки</span>
           <v-spacer></v-spacer>
+          <v-btn icon v-show="false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
           <v-btn icon @click="close">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -22,11 +25,39 @@
             -->
             <v-col
               v-for="file in files"
-              :key="file"
+              :key="file.src"
               class="d-flex child-flex"
               cols="4"
             >
-              <v-img :src="file.src" contain class="grey lighten-2"></v-img>
+              <v-menu absolute offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-img
+                    v-bind="attrs"
+                    v-on="on"
+                    :src="file.src"
+                    contain
+                    aspect-ratio="2"
+                    class="grey lighten-2"
+                  ></v-img>
+                </template>
+                <v-list>
+                  <!--
+                  <v-list-item>
+                    <v-text-field label="Ссылка" :value="file.url" autofocus />
+                  </v-list-item>
+                  -->
+                  <v-list-item @click="copyLink(file)">
+                    <v-list-item-title>
+                      Скопировать ссылку
+                    </v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="deleteFile(file)">
+                    <v-list-item-title>
+                      Удалить картинку
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </v-col>
           </v-row>
           <v-btn
@@ -44,12 +75,62 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <v-snackbar v-model="snackbar" top>
+      {{ message }}
+      <template v-slot:action="{ attrs }">
+        <v-btn icon v-bind="attrs" @click="snackbar = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+function copyTextToClipboard(text) {
+  var textArea = document.createElement("textarea");
+  textArea.style.position = "fixed";
+  textArea.style.top = 0;
+  textArea.style.left = 0;
+
+  // Ensure it has a small width and height. Setting to 1px / 1em
+  // doesn't work as this gives a negative w/h on some browsers.
+  textArea.style.width = "2em";
+  textArea.style.height = "2em";
+
+  // We don't need padding, reducing the size if it does flash render.
+  textArea.style.padding = 0;
+
+  // Clean up any borders.
+  textArea.style.border = "none";
+  textArea.style.outline = "none";
+  textArea.style.boxShadow = "none";
+
+  // Avoid flash of white box if rendered for any reason.
+  textArea.style.background = "transparent";
+
+  textArea.value = text;
+
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    var successful = document.execCommand("copy");
+    var msg = successful ? "successful" : "unsuccessful";
+    console.log("Copying text command was " + msg);
+  } catch (err) {
+    console.log("Oops, unable to copy");
+  }
+
+  document.body.removeChild(textArea);
+}
 export default {
+  data: () => ({
+    snackbar: false,
+    message: ""
+  }),
   computed: {
     ...mapGetters({
       dialogEditorUpload: "dialogEditorUpload",
@@ -68,7 +149,10 @@ export default {
     },
     files() {
       return this.editorUpload.files
-        ? this.editorUpload.files.map(file => ({ src: file.url }))
+        ? this.editorUpload.files.map(file => ({
+            src: `${this.$site_app}${file.url}`,
+            url: file.url
+          }))
         : [];
     }
   },
@@ -90,19 +174,15 @@ export default {
         }
       });
     },
-    async getFiles() {
-      // const { files } = await this.$axios.$get(
-      //   `${this.$site_app}/api/upload/section/${this.editorUpload.sectionId}`
-      // );
-      // console.log(files);
-    }
-  },
-  watch: {
-    dialogEditorUpload: function() {
-      if (this.dialogEditorUpload) {
-        console.log(this.editorUpload);
-        this.getFiles();
-      }
+    copyLink(file) {
+      //copyTextToClipboard(file.url);
+      this.$clipboard(file.src);
+      this.message = "Ссылка скопирована в буфер обмена";
+      this.snackbar = true;
+      this.dialog = false;
+    },
+    deleteFile(file) {
+      console.log(file);
     }
   }
 };

@@ -55,7 +55,13 @@ export default {
     },
     out() {
       const out = this.value === undefined ? this.text : this.value;
-      return out;
+      if (this._isEdit) {
+        const reg = `(src=["'])/`;
+        const regexp = new RegExp(reg, "ig");
+        return out.replace(regexp, `$1${this.$site_app}/`);
+      } else {
+        return out;
+      }
     }
   },
   methods: {

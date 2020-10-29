@@ -46,6 +46,7 @@ export default {
     { src: "~/plugins/yandex-metrika", mode: "client" },
     { src: "~/plugins/slick", ssr: false },
     { src: "~/plugins/vue-gallery.client.js", ssr: false },
+    { src: "~/plugins/v-clipboard", ssr: false },
     "~plugins/vue-js-modal.js"
   ],
   /*
