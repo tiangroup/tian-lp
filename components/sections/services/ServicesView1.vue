@@ -122,7 +122,7 @@
             >
               <div class="services__item">
                 <div class="services__image">
-                  <img :src="$site_img(item.img, 'sq_lg')" />
+                  <nuxt-img :src="$site_img(item.img)" image-style="sq_lg" />
                 </div>
                 <div class="services__body body-copy">
                   <div class="services__title">{{ item.title }}</div>
@@ -169,7 +169,11 @@
               class="services__navigation__image"
               :class="{ 'no-image': !item.img }"
             >
-              <img :src="$site_img(item.img, 'sq_xs')" v-if="item.img" />
+              <nuxt-img
+                :src="$site_img(item.img)"
+                image-style="sq_xs"
+                v-if="item.img"
+              />
             </div>
           </div>
         </slick>
@@ -185,8 +189,8 @@ export default {
     isEdit: Boolean,
     view: {
       type: String,
-      default: "view2",
-    },
+      default: "view2"
+    }
   },
   components: {},
   data() {
@@ -194,7 +198,7 @@ export default {
       currentSlide: 0,
       slickOptions: {
         arrows: true,
-        dots: false,
+        dots: true,
         slidesToShow: 1,
         slidesToScroll: 1,
         draggable: false,
@@ -207,10 +211,10 @@ export default {
           {
             breakpoint: 1280,
             settings: {
-              arrows: false,
-            },
-          },
-        ],
+              arrows: false
+            }
+          }
+        ]
       },
       slickNavOptions: {
         arrows: false,
@@ -225,23 +229,23 @@ export default {
           {
             breakpoint: 768,
             settings: {
-              slidesToShow: 3,
-            },
-          },
-        ],
-      },
+              slidesToShow: 3
+            }
+          }
+        ]
+      }
     };
   },
   computed: {
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     updatedSlickNavOptions() {
       return Object.assign(this.slickNavOptions, {
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     slickRef() {
@@ -279,7 +283,7 @@ export default {
     },
     slickId() {
       return "slick-" + this.section.id;
-    },
+    }
   },
   methods: {
     handleInit(event, slick) {},
@@ -311,7 +315,7 @@ export default {
         }
         this.syncSliders(null, null, slideId);
       }
-    },
+    }
   },
   beforeDestroy: function () {
     if (this.$refs[this.slickRef]) {
@@ -321,6 +325,6 @@ export default {
           .removeEventListener("click", this.changeMainSlider);
       }
     }
-  },
+  }
 };
 </script>

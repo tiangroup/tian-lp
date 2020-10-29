@@ -5,7 +5,8 @@
       mDark: section.settings.background === 'dark',
       mTheme: mobileColoredBg,
       'header--mStyle2': mobileHeaderWbutton,
-      'header--fixed': addFixedClass
+      'header--fixed': addFixedClass,
+      'header--editable': isEdit
     }"
   >
     <div class="bg-theme" v-if="showTopBlock">
@@ -52,7 +53,7 @@
               </div>
             </div>
           </div>
-          <div class="display-flex align-items-center">
+          <div class="display-flex align-items-center justify-content-center">
             <div
               class="phones header__phones connect__item"
               v-if="getCleanString(section.phone) || isEdit"
@@ -111,10 +112,7 @@
     </div>
     <div class="landing__container">
       <div class="header__wrap header__wrap--vs2">
-        <div
-          class="logo header__logo"
-          :class="{ 'header__logo--editable': isEdit }"
-        >
+        <div class="logo header__logo">
           <a class="logo__link">
             <image-item
               divClass="logo__image"
@@ -147,7 +145,9 @@
               field="logo_slogan"
             />
           </div>
-          <div v-else class="logo__slogan">{{ section.logo_slogan }}</div>
+          <div class="logo__slogan" v-else-if="section.logo_slogan">
+            {{ section.logo_slogan }}
+          </div>
         </div>
         <div class="header__menu__toggle">
           <a :href="'#nav' + section.id" type="button" class="nav__toggle">
@@ -163,10 +163,17 @@
           :section="section"
           :is-edit="isEdit"
           :menu-extra="mobileLongMenu"
+          @call-cb-form="dialogCallback = true"
         ></menu-top>
         <a href="#" class="overlay" tabindex="-1" aria-hidden="true" hidden></a>
       </div>
     </div>
+    <form-dialog
+      v-model="dialogCallback"
+      :section="section"
+      field="form"
+      popupClass="popup-callback"
+    />
   </div>
 </template>
 
@@ -183,6 +190,7 @@ export default {
     fixHeader: Boolean
   },
   data: () => ({
+    dialogCallback: false,
     headerHeight: 170,
     addFixedClass: false,
     bodyElm: null
@@ -221,7 +229,7 @@ export default {
       }
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.headerHeight = document.getElementsByClassName(
       "header"
     )[0].offsetHeight;
@@ -231,7 +239,7 @@ export default {
     }
   },
   watch: {
-    fixHeader: function() {
+    fixHeader: function () {
       this.addFixedClass = false;
       this.bodyElm.style.paddingTop = 0;
       if (this.fixHeader && window) {
@@ -241,7 +249,7 @@ export default {
       }
     }
   },
-  beforeDestroy: function() {
+  beforeDestroy: function () {
     if (window && this.fixHeader) {
       window.removeEventListener("scroll", this.toggleFixedClass);
     }

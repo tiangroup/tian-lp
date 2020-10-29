@@ -23,7 +23,7 @@
             v-if="!isEdit && section.items && view === 'view2'"
             :id="'gallery' + section.id"
             :options="{
-              closeOnSlideClick: true,
+              closeOnSlideClick: true
             }"
           ></v-gallery>
         </client-only>
@@ -244,14 +244,14 @@
 import { mapMutations, mapGetters } from "vuex";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   data: () => ({
     currentReview: {
       id: null,
       name: "",
       position: "",
-      date: "",
+      date: ""
     },
     dialogShowReview: false,
     dialogReviewDate: false,
@@ -273,25 +273,25 @@ export default {
         {
           breakpoint: 1280,
           settings: {
-            arrows: false,
-          },
+            arrows: false
+          }
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false,
-          },
-        },
-      ],
-    },
+            arrows: false
+          }
+        }
+      ]
+    }
   }),
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
       isSectionEdit: "isSectionEdit",
-      settings: "sites/settings",
+      settings: "sites/settings"
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
@@ -307,7 +307,7 @@ export default {
       return Object.assign(this.slickOptions, {
         slidesToShow: slidesQty,
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     reviewImages() {
@@ -317,7 +317,7 @@ export default {
         var imagesItem = {
           title: "Отзыв " + pic.name,
           href: this.$site_img(this.pic.img, "resize_xl"),
-          type: "image/jpeg",
+          type: "image/jpeg"
         };
         imagesArray.push(imagesItem);
       }
@@ -348,11 +348,11 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)");
-    },
+    }
   },
   methods: {
     ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD",
+      setItemField: "pages/SET_ITEM_FIELD"
     }),
     updateReviewDate(item) {
       if (this.isEdit) {
@@ -382,7 +382,7 @@ export default {
         itemId: this.currentReview.id,
         items: "items",
         field: field,
-        value: value,
+        value: value
       });
       this.$store.dispatch("pages/savePage");
     },
@@ -432,7 +432,7 @@ export default {
             .click();
         }
       }
-    },
+    }
   },
   beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
@@ -447,12 +447,15 @@ export default {
           .removeEventListener("click", this.handleClonedSlides);
       }
     }
-  },
+  }
 };
 </script>
 <style scoped>
 .reviews >>> .v-skeleton-loader__heading,
 .reviews >>> .v-skeleton-loader__text {
   background-color: var(--separator-color);
+}
+.v-navigation-drawer {
+  z-index: 130;
 }
 </style>

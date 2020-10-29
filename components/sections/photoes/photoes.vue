@@ -91,7 +91,10 @@
                     :sectionId="section.id"
                     :isEdit="false"
                   >
-                    <img :src="$site_img(item.img, 'rect_lg')" />
+                    <nuxt-img
+                      :src="$site_img(item.img)"
+                      image-style="rect_lg"
+                    />
                   </div>
                 </div>
               </template>

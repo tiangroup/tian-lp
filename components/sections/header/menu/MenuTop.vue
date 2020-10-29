@@ -42,6 +42,7 @@
       v-if="menuExtra"
       :section="section"
       :is-edit="isEdit"
+      @call-cb-form="$emit('call-cb-form')"
     ></menu-top-extra>
   </nav>
 </template>
@@ -54,16 +55,16 @@ export default {
     isEdit: Boolean,
     section: Object,
     menu: Array,
-    menuExtra: Boolean,
+    menuExtra: Boolean
   },
   data: () => ({
-    items: [],
+    items: []
   }),
   methods: {
     handleResize: _.throttle(function () {
       this.items = this.items.map((item, index) => ({
         ...item,
-        show: true,
+        show: true
       }));
       setTimeout(this.onResize, 100);
     }, 300),
@@ -80,10 +81,10 @@ export default {
                 menu_items[index].clientWidth +
                 15 >
               menuWidth
-            ),
+            )
         }));
       }
-    },
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -92,7 +93,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      page: "pages/page",
+      page: "pages/page"
     }),
     itemsHide() {
       return this.items.filter((item) => !item.show);
@@ -107,7 +108,7 @@ export default {
             id: s.id,
             title: s.title || "Пункт",
             type: "anchor",
-            link: s.slug ? `#${s.slug}` : `#${s.id}`,
+            link: s.slug ? `#${s.slug}` : `#${s.id}`
           }));
         return menu;
       }
@@ -122,15 +123,15 @@ export default {
           link: i.link,
           show: _this.items.find((item) => item.id == i.id)
             ? _this.items.find((item) => item.id == i.id).show
-            : true,
+            : true
         }));
         this.items = items;
         return this.items;
       },
       set: function (value) {
         this.items = value;
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>
