@@ -1,5 +1,10 @@
 <template>
-  <view2 :showTopBlock="false" :section="section" :isEdit="isEdit" />
+  <view2
+    :showTopBlock="false"
+    :section="section"
+    :isEdit="isEdit"
+    :fix-header="fixHeader"
+  />
 </template>
 
 <script>
@@ -10,7 +15,8 @@ export default {
   },
   props: {
     section: Object,
-    isEdit: Boolean
+    isEdit: Boolean,
+    fixHeader: Boolean
   }
 };
 </script>

@@ -1,4 +1,3 @@
-@import "timer.css";
 /*
 contents:
 
@@ -1621,7 +1620,7 @@ nav ul li,
     animation: slideDown 400ms;
     border-bottom: 0;
     box-shadow: 0 5px 12px rgba(136, 140, 143, 0.24);
-    padding: 0.25rem 0;
+    padding: 0.5rem 0;
     position: fixed;
     top: 0;
     left: 0;
@@ -1634,6 +1633,9 @@ nav ul li,
   .header--fixed .header__wrap--vs2 {
     padding-top: 0;
     padding-bottom: 0;
+  }
+  .header--fixed.header--style2 .header__wrap--vs1 {
+    display: none;
   }
   .header--fixed .logo__slogan,
   .header--fixed .header__contacts,
@@ -4431,6 +4433,10 @@ nav ul li,
 }
 .illustrations__item:last-child:not(:first-child) {
   margin-right: 0;
+}
+.illustrations__item--main {
+  border: 1px solid var(--separator-color);
+  border-radius: 0.75rem;
 }
 .illustrations__image {
   overflow: hidden;

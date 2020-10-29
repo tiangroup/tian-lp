@@ -4,13 +4,17 @@
     :class="{
       mDark: section.settings.background === 'dark',
       mTheme: mobileColoredBg,
-      'header--mStyle2': mobileHeaderWbutton
+      'header--mStyle2': mobileHeaderWbutton,
+      'header--fixed': addFixedClass
     }"
   >
     <div class="bg-theme" v-if="showTopBlock">
       <div class="landing__container">
         <div class="header__wrap header__wrap--vs1">
-          <div class="addresses header__addresses connect__item">
+          <div
+            class="addresses header__addresses connect__item"
+            v-if="getCleanString(section.address) || isEdit"
+          >
             <div class="connect__row">
               <div class="connect__icon">
                 <svg
@@ -49,7 +53,10 @@
             </div>
           </div>
           <div class="display-flex align-items-center">
-            <div class="phones header__phones connect__item">
+            <div
+              class="phones header__phones connect__item"
+              v-if="getCleanString(section.phone) || isEdit"
+            >
               <div class="connect__row">
                 <div class="connect__icon">
                   <svg
@@ -172,8 +179,14 @@ export default {
     showTopBlock: {
       type: Boolean,
       default: true
-    }
+    },
+    fixHeader: Boolean
   },
+  data: () => ({
+    headerHeight: 170,
+    addFixedClass: false,
+    bodyElm: null
+  }),
   computed: {
     ...mapGetters({
       headerSettings: "sites/settings"
@@ -186,6 +199,51 @@ export default {
     },
     mobileLongMenu() {
       return this.headerSettings.header.mmenu === "long" ? true : false;
+    }
+  },
+  methods: {
+    getCleanString(incoming) {
+      const strippedString = incoming.replace(/(<([^>]+)>)/gi, "");
+      return strippedString;
+    },
+    toggleFixedClass() {
+      const top = window.pageYOffset;
+      if (top > parseInt(this.headerHeight)) {
+        this.addFixedClass = true;
+        if (this.bodyElm) {
+          this.bodyElm.style.paddingTop = this.headerHeight + "px";
+        }
+      } else {
+        this.addFixedClass = false;
+        if (this.bodyElm) {
+          this.bodyElm.style.paddingTop = 0;
+        }
+      }
+    }
+  },
+  mounted: function() {
+    this.headerHeight = document.getElementsByClassName(
+      "header"
+    )[0].offsetHeight;
+    this.bodyElm = document.getElementsByTagName("body")[0];
+    if (this.fixHeader && window) {
+      window.addEventListener("scroll", this.toggleFixedClass);
+    }
+  },
+  watch: {
+    fixHeader: function() {
+      this.addFixedClass = false;
+      this.bodyElm.style.paddingTop = 0;
+      if (this.fixHeader && window) {
+        window.addEventListener("scroll", this.toggleFixedClass);
+      } else {
+        window.removeEventListener("scroll", this.toggleFixedClass);
+      }
+    }
+  },
+  beforeDestroy: function() {
+    if (window && this.fixHeader) {
+      window.removeEventListener("scroll", this.toggleFixedClass);
     }
   }
 };
