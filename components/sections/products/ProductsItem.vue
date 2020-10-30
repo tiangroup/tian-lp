@@ -25,9 +25,9 @@
           />
         </button>
         <div class="products__title">
-          <editor
+          <editor-text
             data-placeholder="Название товара"
-            :text="item.title || ''"
+            :text="item.title"
             :sectionId="section.id"
             field="title"
             :itemId="item.id"
@@ -37,42 +37,33 @@
             {{ item.title }}
           </div>
         </div>
-        <div class="products__description" v-if="isEdit">
-          <editor
+        <div class="products__description">
+          <editor-text
             data-placeholder="Краткое описание товара"
-            :text="item.short_description || ''"
+            :text="item.short_description"
             :sectionId="section.id"
             field="short_description"
             :itemId="item.id"
           />
         </div>
-        <div class="products__description" v-else>
-          {{ item.short_description }}
-        </div>
         <div class="products__prices">
-          <div class="good__prices__current" v-if="isEdit">
-            <editor
+          <div class="good__prices__current">
+            <editor-text
               data-placeholder="000 руб."
-              :text="item.price || ''"
+              :text="item.price"
               :sectionId="section.id"
               field="price"
               :itemId="item.id"
             />
           </div>
-          <div class="good__prices__current" v-else-if="item.price">
-            {{ item.price }}
-          </div>
-          <div class="good__prices__old" v-if="isEdit">
-            <editor
+          <div class="good__prices__old">
+            <editor-text
               data-placeholder="000 руб."
-              :text="item.old_price || ''"
+              :text="item.old_price"
               :sectionId="section.id"
               field="old_price"
               :itemId="item.id"
             />
-          </div>
-          <div class="good__prices__old" v-else-if="item.old_price">
-            {{ item.old_price }}
           </div>
         </div>
       </div>
@@ -112,7 +103,12 @@
       </div>
     </form-dialog>
 
-    <v-dialog v-model="dialogDetailedItem" max-width="40rem" v-if="isCenter">
+    <v-dialog
+      v-model="dialogDetailedItem"
+      max-width="40rem"
+      v-if="isCenter"
+      scrollable
+    >
       <div class="der-popup">
         <div class="der-popup__body">
           <div class="der-popup__close">

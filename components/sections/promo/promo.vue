@@ -13,7 +13,7 @@
             @click="
               itemImageSelect({
                 field: 'bg_img',
-                value: section.bg_img,
+                value: section.bg_img
               })
             "
           >
@@ -32,28 +32,26 @@
       "
       :class="{
         mDark: section.settings.background === 'dark',
-        'hero--w-button': button && !form,
+        'hero--w-button': button && !form
       }"
     >
       <div class="landing__container">
         <div class="hero__row">
           <div class="hero__body">
-            <h2 class="hero__title" v-if="isEdit">
-              <editor
-                :text="section.title || ''"
+            <h2 class="hero__title">
+              <editor-text
+                :text="section.title"
                 :sectionId="section.id"
                 field="title"
               />
             </h2>
-            <h2 class="hero__title" v-else>{{ section.title }}</h2>
-            <div class="hero__text" v-if="isEdit">
-              <editor
-                :text="section.description || ''"
+            <div class="hero__text">
+              <editor-html
+                :text="section.description"
                 :sectionId="section.id"
                 field="description"
               />
             </div>
-            <div class="hero__text" v-else>{{ section.description }}</div>
             <!-- <div class="hero__timer" v-if="countdown">
               <timer></timer>
             </div> -->
@@ -85,15 +83,15 @@ import { mapGetters } from "vuex";
 import Timer from "../cta/Timer.vue";
 export default {
   components: {
-    Timer,
+    Timer
   },
   props: {
-    section: Object,
+    section: Object
   },
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit",
+      isSectionEdit: "isSectionEdit"
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
@@ -109,7 +107,7 @@ export default {
     },
     image() {
       return this.section.settings.image === true;
-    },
+    }
     // countdown() {
     //   return this.section.settings.countdown === true;
     // },
@@ -120,9 +118,9 @@ export default {
         sectionId: this.section.id,
         field: "bg_img",
         items: null,
-        value: this.section.bg_img,
+        value: this.section.bg_img
       });
-    },
-  },
+    }
+  }
 };
 </script>

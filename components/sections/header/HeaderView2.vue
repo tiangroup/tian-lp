@@ -37,19 +37,13 @@
                 </svg>
               </div>
               <div class="connect__instances">
-                <div class="connect__instance" v-if="isEdit">
-                  <editor
-                    :text="section.address || ''"
+                <div class="connect__instance">
+                  <editor-html
+                    :text="section.address"
                     :sectionId="section.id"
-                    editContent="html"
                     field="address"
                   />
                 </div>
-                <div
-                  class="connect__instance"
-                  v-else
-                  v-html="section.address"
-                ></div>
               </div>
             </div>
           </div>
@@ -79,19 +73,13 @@
                   </svg>
                 </div>
                 <div class="connect__instances">
-                  <div class="connect__instance" v-if="isEdit">
-                    <editor
-                      :text="section.phone || ''"
+                  <div class="connect__instance">
+                    <editor-html
+                      :text="section.phone"
                       :sectionId="section.id"
-                      editContent="html"
                       field="phone"
                     />
                   </div>
-                  <div
-                    class="connect__instance"
-                    v-else
-                    v-html="section.phone"
-                  ></div>
                 </div>
               </div>
             </div>
@@ -126,9 +114,9 @@
               v-if="section.logo_svg || section.logo_img || isEdit"
             />
             <div v-if="isEdit" class="logo__text">
-              <editor
+              <editor-text
                 data-placeholder="Название"
-                :text="section.logo_text || ''"
+                :text="section.logo_text"
                 :sectionId="section.id"
                 field="logo_text"
               />
@@ -138,9 +126,9 @@
             </div>
           </a>
           <div v-if="isEdit" class="logo__slogan">
-            <editor
+            <editor-text
               data-placeholder="Слоган компании"
-              :text="section.logo_slogan || ''"
+              :text="section.logo_slogan"
               :sectionId="section.id"
               field="logo_slogan"
             />

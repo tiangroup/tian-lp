@@ -29,15 +29,14 @@
               fieldSvg="svg"
               imageStyle="icon_sm"
             />
-            <div class="highlights__text" v-if="isEdit">
-              <editor
-                :text="item.title || ''"
+            <div class="highlights__text">
+              <editor-html
+                :text="item.title"
                 :sectionId="section.id"
                 field="title"
                 :itemId="item.id"
               />
             </div>
-            <div class="highlights__text" v-else>{{ item.title }}</div>
           </div>
           <div
             class="highlights__item cell cell-12 cell-sm-6 cell-lg-3"
@@ -65,20 +64,20 @@
 import { mapGetters } from "vuex";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit",
+      isSectionEdit: "isSectionEdit"
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
     },
     styleDiv() {
       return this.isEdit ? { position: "relative" } : null;
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

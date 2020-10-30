@@ -8,7 +8,7 @@
     >
       {{ button }}
     </a>
-    <v-dialog v-else v-model="dialogButton" max-width="400">
+    <v-dialog v-else v-model="dialogButton" max-width="400" scrollable>
       <template v-slot:activator="{ on, attrs }">
         <a class="button" :class="[buttonClass]" v-bind="attrs" v-on="on">
           {{ button }}

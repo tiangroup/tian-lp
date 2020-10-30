@@ -3,14 +3,13 @@
     <div class="landing__container">
       <div class="contacts__row">
         <div class="contacts__body custom-v-spacing-2">
-          <h2 v-if="isEdit">
-            <editor
-              :text="section.title || ''"
+          <h2>
+            <editor-text
+              :text="section.title"
               :sectionId="section.id"
               field="title"
             />
           </h2>
-          <h2 v-else>{{ section.title }}</h2>
           <div
             :class="{ 'position-relative': isEdit }"
             v-if="isEdit && (!section.items || !section.items.length)"
@@ -53,20 +52,18 @@
                 </div>
                 <div class="connect__instances">
                   <div class="connect__instance">
-                    <editor
+                    <editor-text
                       data-placeholder="Введите адрес"
-                      :text="item.address || ''"
+                      :text="item.address"
                       :sectionId="section.id"
                       field="address"
                       :itemId="item.id"
-                      v-if="isEdit"
                     />
-                    <span v-else>{{ item.address }}</span>
                   </div>
                   <div class="connect__instance" v-if="isEdit">
-                    <editor
+                    <editor-text
                       data-placeholder="55.159897, 61.402554"
-                      :text="item.coords || ''"
+                      :text="item.coords"
                       :sectionId="section.id"
                       field="coords"
                       :itemId="item.id"
@@ -102,16 +99,13 @@
                 </div>
                 <div class="connect__instances">
                   <div class="connect__instance">
-                    <editor
+                    <editor-html
                       data-placeholder="Введите email"
-                      :text="item.email || ''"
+                      :text="item.email"
                       :sectionId="section.id"
                       field="email"
                       :itemId="item.id"
-                      editContent="html"
-                      v-if="isEdit"
                     />
-                    <div v-else v-html="item.email"></div>
                   </div>
                 </div>
               </div>
@@ -139,15 +133,13 @@
                 </div>
                 <div class="connect__instances">
                   <div class="connect__instance">
-                    <editor
+                    <editor-html
                       data-placeholder="+7 900 111-22-33"
-                      :text="item.phone || ''"
+                      :text="item.phone"
                       :sectionId="section.id"
                       field="phone"
                       :itemId="item.id"
-                      v-if="isEdit"
                     />
-                    <span v-else v-html="item.phone"></span>
                   </div>
                 </div>
               </div>

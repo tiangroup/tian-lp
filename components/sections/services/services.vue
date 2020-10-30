@@ -11,14 +11,13 @@
       }"
     >
       <div class="landing__container">
-        <h2 v-if="isEdit">
-          <editor
-            :text="section.title || ''"
+        <h2>
+          <editor-text
+            :text="section.title"
             :sectionId="section.id"
             field="title"
           />
         </h2>
-        <h2 v-else>{{ section.title }}</h2>
         <component
           :is="view"
           :section="section"

@@ -3,13 +3,11 @@
     <div class="landing__container">
       <div class="contacts__body">
         <h2>
-          <editor
-            :text="section.title || ''"
+          <editor-text
+            :text="section.title"
             :sectionId="section.id"
             field="title"
-            v-if="isEdit"
           />
-          <span v-else>{{ section.title }}</span>
         </h2>
         <div class="contacts__list mx-ncell">
           <client-only>
@@ -32,37 +30,35 @@
                 />
                 <div class="contacts__item department">
                   <div class="department__title" v-if="item.title || isEdit">
-                    <editor
+                    <editor-text
                       data-placeholder="Филиал"
-                      :text="item.title || ''"
+                      :text="item.title"
                       :sectionId="section.id"
                       field="title"
                       :itemId="item.id"
-                      v-if="isEdit"
                     />
-                    <span v-else>{{ item.title }}</span>
                   </div>
                   <div
                     class="department__address"
                     v-if="item.address || isEdit"
                   >
-                    <div class="department__address__text" v-if="isEdit">
-                      <editor
+                    <div class="department__address__text">
+                      <editor-text
                         data-placeholder="Введите адрес"
-                        :text="item.address || ''"
+                        :text="item.address"
                         :sectionId="section.id"
                         field="address"
                         :itemId="item.id"
                       />
-                      <editor
+                      <editor-text
                         data-placeholder="55.159897, 61.402554"
-                        :text="item.coords || ''"
+                        :text="item.coords"
                         :sectionId="section.id"
                         field="coords"
                         :itemId="item.id"
+                        v-if="isEdit"
                       />
                     </div>
-                    <div v-else>{{ item.address }}</div>
                     <a
                       :data-coords="item.coords"
                       href
@@ -74,31 +70,25 @@
                   </div>
                   <div class="department__emails" v-if="item.email || isEdit">
                     <div class="department__email">
-                      <editor
+                      <editor-html
                         data-placeholder="Введите email"
-                        :text="item.email || ''"
+                        :text="item.email"
                         :sectionId="section.id"
                         field="email"
                         :itemId="item.id"
-                        editContent="html"
-                        v-if="isEdit"
                       />
-                      <div v-else v-html="item.email"></div>
                     </div>
                   </div>
                   <div class="department__phones" v-if="item.email || isEdit">
                     <div class="department__phone">
                       <div class="department__phone__link">
-                        <editor
+                        <editor-html
                           data-placeholder="+7 900 111-22-33"
-                          :text="item.phone || ''"
+                          :text="item.phone"
                           :sectionId="section.id"
                           field="phone"
                           :itemId="item.id"
-                          editContent="html"
-                          v-if="isEdit"
                         />
-                        <div v-else v-html="item.phone"></div>
                       </div>
                     </div>
                   </div>
@@ -179,11 +169,11 @@ export default {
     isEdit: Boolean,
     view: {
       type: String,
-      default: "view2",
-    },
+      default: "view2"
+    }
   },
   components: {
-    ContactsMap,
+    ContactsMap
   },
   data() {
     return {
@@ -204,26 +194,26 @@ export default {
           {
             breakpoint: 1280,
             settings: {
-              arrows: false,
-            },
+              arrows: false
+            }
           },
           {
             breakpoint: 576,
             settings: {
               slidesToShow: 1,
               slidesToScroll: 1,
-              arrows: false,
-            },
-          },
-        ],
-      },
+              arrows: false
+            }
+          }
+        ]
+      }
     };
   },
   computed: {
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     slickRef() {
@@ -246,7 +236,7 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)");
-    },
+    }
   },
   methods: {
     handleInit(event, slick) {
@@ -283,7 +273,7 @@ export default {
         this.$vuetify.goTo(".contacts__map", { duration: 500 });
         this.myMap.setCenter(coords);
         this.myMap.setZoom(16, {
-          checkZoomRange: true,
+          checkZoomRange: true
         });
       }
     },
@@ -292,7 +282,7 @@ export default {
     },
     getItemCoords(str) {
       return str.replace(/\s+/g, "").split(",");
-    },
+    }
   },
   beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
@@ -307,7 +297,7 @@ export default {
           .removeEventListener("click", this.handleClonedSlides);
       }
     }
-  },
+  }
 };
 </script>
 <style scoped>

@@ -29,27 +29,22 @@
                   imageStyle="sq_lg"
                 />
                 <div class="services__title">
-                  <editor
+                  <editor-text
                     data-placeholder="Название услуги"
-                    :text="item.title || ''"
+                    :text="item.title"
                     :sectionId="section.id"
                     field="title"
                     :itemId="item.id"
-                    v-if="isEdit"
                   />
-                  <span v-else>{{ item.title }}</span>
                 </div>
                 <div class="services__description">
-                  <editor
+                  <editor-html
                     data-placeholder="Описание услуги"
-                    :text="item.description || ''"
+                    :text="item.description"
                     :sectionId="section.id"
                     field="description"
                     :itemId="item.id"
-                    editContent="html"
-                    v-if="isEdit"
                   />
-                  <div v-else v-html="item.description"></div>
                 </div>
               </div>
 
@@ -57,15 +52,13 @@
                 <div class="cells justify-content-between align-items-center">
                   <div class="cell cell-auto">
                     <div class="services__price">
-                      <editor
+                      <editor-text
                         data-placeholder="от 000 руб."
-                        :text="item.price || ''"
+                        :text="item.price"
                         :sectionId="section.id"
                         field="price"
                         :itemId="item.id"
-                        v-if="isEdit"
                       />
-                      <span v-else>{{ item.price }}</span>
                     </div>
                   </div>
                   <div class="cell cell-auto">
@@ -158,8 +151,8 @@ export default {
     isEdit: Boolean,
     view: {
       type: String,
-      default: "view2",
-    },
+      default: "view2"
+    }
   },
   components: {},
   data() {
@@ -183,18 +176,18 @@ export default {
             breakpoint: 1024,
             settings: {
               slidesToShow: 1,
-              arrows: false,
-            },
-          },
-        ],
-      },
+              arrows: false
+            }
+          }
+        ]
+      }
     };
   },
   computed: {
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     slickRef() {
@@ -217,7 +210,7 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)");
-    },
+    }
   },
   methods: {
     handleInit(event, slick) {
@@ -247,7 +240,7 @@ export default {
           this.computedRealSlides[slideId].querySelector(".button").click();
         }
       }
-    },
+    }
   },
   beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
@@ -262,6 +255,6 @@ export default {
           .removeEventListener("click", this.handleClonedSlides);
       }
     }
-  },
+  }
 };
 </script>

@@ -6,14 +6,13 @@
       :class="{ mDark: section.settings.background === 'dark' }"
     >
       <div class="landing__container">
-        <h2 v-if="isEdit">
-          <editor
-            :text="section.title || ''"
+        <h2>
+          <editor-text
+            :text="section.title"
             :sectionId="section.id"
             field="title"
           />
         </h2>
-        <h2 v-else>{{ section.title }}</h2>
         <div
           class="partners__list cells justify-content-center"
           v-if="section.items && section.settings.view === 'list'"
@@ -141,10 +140,10 @@ import { mapMutations, mapGetters } from "vuex";
 import PartnersItem from "./PartnersItem";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   components: {
-    PartnersItem,
+    PartnersItem
   },
   data: () => ({
     currentItem: {},
@@ -165,26 +164,26 @@ export default {
           settings: {
             slidesToShow: 4,
             slidesToScroll: 1,
-            arrows: false,
-          },
+            arrows: false
+          }
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false,
-          },
-        },
-      ],
+            arrows: false
+          }
+        }
+      ]
     },
     partnerLinkDialog: false,
-    userUrl: "",
+    userUrl: ""
   }),
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit",
+      isSectionEdit: "isSectionEdit"
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
@@ -194,7 +193,7 @@ export default {
       return Object.assign(this.slickOptions, {
         slidesToShow: slickSlidesToShow,
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     view() {
@@ -226,11 +225,11 @@ export default {
         ? "cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
         : "cell-6 cell-sm-4 cell-md-3 cell-xl-2";
       return classes;
-    },
+    }
   },
   methods: {
     ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD",
+      setItemField: "pages/SET_ITEM_FIELD"
     }),
     updatePartnerLink(payload) {
       this.currentItem = payload;
@@ -243,7 +242,7 @@ export default {
         itemId: this.currentItem.itemId,
         items: "items",
         field: this.currentItem.field,
-        value: value,
+        value: value
       });
       this.$store.dispatch("pages/savePage");
       this.partnerLinkDialog = false;
@@ -252,13 +251,13 @@ export default {
       if (this.currentSlide) {
         slick.goTo(this.currentSlide, true);
       }
-    },
+    }
   },
   beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
       this.currentSlide = this.$refs[this.slickRef].currentSlide();
     }
-  },
+  }
 };
 </script>
 <style scoped>

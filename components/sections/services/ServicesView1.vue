@@ -32,42 +32,35 @@
               />
               <div class="services__body body-copy">
                 <div class="services__title">
-                  <editor
+                  <editor-text
                     data-placeholder="Название услуги"
-                    :text="item.title || ''"
+                    :text="item.title"
                     :sectionId="section.id"
                     field="title"
                     :itemId="item.id"
-                    v-if="isEdit"
                   />
-                  <span v-else>{{ item.title }}</span>
                 </div>
                 <div class="services__description">
-                  <editor
+                  <editor-html
                     data-placeholder="Описание услуги"
-                    :text="item.description || ''"
+                    :text="item.description"
                     :sectionId="section.id"
                     field="description"
                     :itemId="item.id"
-                    editContent="html"
-                    v-if="isEdit"
                   />
-                  <div v-else v-html="item.description"></div>
                 </div>
 
                 <div class="services__cta">
                   <div class="cells align-items-center">
                     <div class="cell cell-auto">
                       <div class="services__price">
-                        <editor
+                        <editor-text
                           data-placeholder="от 000 руб."
-                          :text="item.price || ''"
+                          :text="item.price"
                           :sectionId="section.id"
                           field="price"
                           :itemId="item.id"
-                          v-if="isEdit"
                         />
-                        <span v-else>{{ item.price }}</span>
                       </div>
                     </div>
                     <div class="cell cell-auto">

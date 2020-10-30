@@ -7,14 +7,13 @@
       :class="{ mDark: section.settings.background === 'dark' }"
     >
       <div class="landing__container">
-        <h2 v-if="isEdit">
-          <editor
-            :text="section.title || ''"
+        <h2>
+          <editor-text
+            :text="section.title"
             :sectionId="section.id"
             field="title"
           />
         </h2>
-        <h2 v-else>{{ section.title }}</h2>
         <client-only>
           <v-gallery
             :images="reviewImages"
@@ -99,9 +98,9 @@
               </v-btn>
             </v-card-title>
             <v-card-text>
-              <editor
+              <editor-text
                 data-placeholder="Введите текст отзыва"
-                :text="currentReview.text || ''"
+                :text="currentReview.text"
                 :sectionId="section.id"
                 field="text"
                 :itemId="currentReview.id"
@@ -140,7 +139,12 @@
           </v-date-picker>
         </v-dialog>
 
-        <v-dialog v-model="dialogShowReview" max-width="30rem" v-if="isCenter">
+        <v-dialog
+          v-model="dialogShowReview"
+          max-width="30rem"
+          v-if="isCenter"
+          scrollable
+        >
           <div class="der-popup">
             <div class="der-popup__close">
               <button
@@ -166,6 +170,30 @@
             </div>
             <div class="der-popup__body">
               <div class="popup-reviews">
+                <div class="reviews__body--full scrollable__base">
+                  <div class="reviews__person scrollable__head">
+                    <div class="reviews__person__name">
+                      {{ currentReview.name }}
+                    </div>
+                    <div class="reviews__person__position">
+                      {{ currentReview.position }}
+                    </div>
+                  </div>
+                  <div class="scrollable__block">
+                    <div class="reviews__text">{{ currentReview.text }}</div>
+                    <div class="reviews__info">
+                      <div class="reviews__date">{{ currentReview.date }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <v-card>
+            <v-card-title> lalalal </v-card-title>
+            <v-card-text class="der-popup__body">
+              <div class="popup-reviews">
                 <div class="reviews__body--full">
                   <div class="reviews__person">
                     <div class="reviews__person__name">
@@ -175,14 +203,16 @@
                       {{ currentReview.position }}
                     </div>
                   </div>
-                  <div class="reviews__text">{{ currentReview.text }}</div>
-                  <div class="reviews__info">
-                    <div class="reviews__date">{{ currentReview.date }}</div>
+                  <div class="">
+                    <div class="reviews__text">{{ currentReview.text }}</div>
+                    <div class="reviews__info">
+                      <div class="reviews__date">{{ currentReview.date }}</div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </v-card-text>
+          </v-card> -->
         </v-dialog>
         <v-navigation-drawer
           app

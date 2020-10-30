@@ -56,7 +56,7 @@ export default {
     },
     out() {
       const out = this.value === undefined ? this.text : this.value;
-      if (this._isEdit) {
+      if (this._isEdit && out) {
         const reg = `(src=["'])/`;
         const regexp = new RegExp(reg, "ig");
         return out.replace(regexp, `$1${this.$site_app}/`);

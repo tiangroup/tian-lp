@@ -6,14 +6,13 @@
       :class="{ mDark: section.settings.background === 'dark' }"
     >
       <div class="landing__container">
-        <h2 v-if="isEdit">
-          <editor
-            :text="section.title || ''"
+        <h2>
+          <editor-text
+            :text="section.title"
             :sectionId="section.id"
             field="title"
           />
         </h2>
-        <h2 v-else>{{ section.title }}</h2>
         <div class="gallery__list" v-if="section.items">
           <client-only>
             <v-gallery
@@ -23,7 +22,7 @@
               v-if="!isEdit"
               :id="'gallery' + section.id"
               :options="{
-                closeOnSlideClick: true,
+                closeOnSlideClick: true
               }"
             ></v-gallery>
           </client-only>
@@ -59,7 +58,7 @@
                       imageStyle="rect_lg"
                     />
                     <div class="gallery__text" v-if="isEdit">
-                      <editor
+                      <editor-text
                         data-placeholder="Краткое описание фотографии"
                         :text="item.title || ''"
                         :sectionId="section.id"
@@ -110,7 +109,7 @@
 import { mapGetters } from "vuex";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   data: () => ({
     index: null,
@@ -131,24 +130,24 @@ export default {
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false,
-          },
+            arrows: false
+          }
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false,
-          },
-        },
-      ],
-    },
+            arrows: false
+          }
+        }
+      ]
+    }
   }),
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit",
+      isSectionEdit: "isSectionEdit"
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
@@ -169,7 +168,7 @@ export default {
         // slidesToShow: slidesQty,
         // centerMode: slickCenter,
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     images() {
@@ -179,7 +178,7 @@ export default {
         var imagesItem = {
           title: pic.title,
           href: this.$images.src(pic.img),
-          type: "image/jpeg",
+          type: "image/jpeg"
         };
         imagesArray.push(imagesItem);
       }
@@ -205,7 +204,7 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)").length;
-    },
+    }
   },
   methods: {
     showGallery: function (itemIndex) {
@@ -237,7 +236,7 @@ export default {
         }
         this.showGallery(slideId);
       }
-    },
+    }
   },
   beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
@@ -252,6 +251,6 @@ export default {
           .removeEventListener("click", this.handleClonedSlides);
       }
     }
-  },
+  }
 };
 </script>

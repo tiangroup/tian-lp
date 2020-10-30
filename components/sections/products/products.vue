@@ -6,14 +6,13 @@
       :class="{ mDark: section.settings.background === 'dark' }"
     >
       <div class="landing__container">
-        <h2 v-if="isEdit">
-          <editor
-            :text="section.title || ''"
+        <h2>
+          <editor-text
+            :text="section.title"
             :sectionId="section.id"
             field="title"
           />
         </h2>
-        <h2 v-else>{{ section.title }}</h2>
         <div v-if="section.settings.view === 'view1'">
           <div class="products__list cells" v-if="section.items && isEdit">
             <products-item
@@ -155,10 +154,10 @@ import { mapMutations, mapGetters } from "vuex";
 import ProductsItem from "./ProductsItem";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   components: {
-    ProductsItem,
+    ProductsItem
   },
   data: () => ({
     currentItem: {},
@@ -184,32 +183,32 @@ export default {
           settings: {
             slidesToShow: 3,
             slidesToScroll: 1,
-            arrows: false,
-          },
+            arrows: false
+          }
         },
         {
           breakpoint: 1024,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false,
-          },
+            arrows: false
+          }
         },
         {
           breakpoint: 576,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            arrows: false,
-          },
-        },
-      ],
-    },
+            arrows: false
+          }
+        }
+      ]
+    }
   }),
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit",
+      isSectionEdit: "isSectionEdit"
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
@@ -217,7 +216,7 @@ export default {
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
         infinite: !this.isEdit,
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     view() {
@@ -257,7 +256,7 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)");
-    },
+    }
   },
   methods: {
     handleInit(event, slick) {
@@ -308,7 +307,7 @@ export default {
         this.itemsToShow += 4;
       }
       document.activeElement.blur();
-    },
+    }
   },
   beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
@@ -323,7 +322,7 @@ export default {
           .removeEventListener("click", this.handleClonedSlides);
       }
     }
-  },
+  }
 };
 </script>
 <style scoped>

@@ -6,14 +6,13 @@
       :class="{ mDark: section.settings.background === 'dark' }"
     >
       <div class="landing__container">
-        <h2 v-if="isEdit">
-          <editor
-            :text="section.title || ''"
+        <h2>
+          <editor-text
+            :text="section.title"
             :sectionId="section.id"
             field="title"
           />
         </h2>
-        <h2 v-else>{{ section.title }}</h2>
         <div
           class="tarifs__list cells align-items-stretch justify-content-center"
           v-if="section.items"
@@ -42,7 +41,7 @@
                       setSelected({
                         itemId: item.id,
                         field: 'selected',
-                        value: !item.selected,
+                        value: !item.selected
                       })
                     "
                   >
@@ -58,51 +57,42 @@
               :class="{ 'tarifs__item--selected': item.selected }"
             >
               <div class="tarifs__title">
-                <editor
-                  :text="item.title || ''"
+                <editor-text
+                  :text="item.title"
                   data-placeholder="Название"
                   :sectionId="section.id"
                   field="title"
                   :itemId="item.id"
-                  v-if="isEdit"
                 />
-                <span v-else>{{ item.title }}</span>
               </div>
               <div class="tarifs__punch">
-                <editor
-                  :text="item.target || ''"
+                <editor-text
+                  :text="item.target"
                   data-placeholder="Для кого это предложение"
                   :sectionId="section.id"
                   field="target"
                   :itemId="item.id"
-                  v-if="isEdit"
                 />
-                <span v-else>{{ item.target }}</span>
               </div>
               <div class="tarifs__description">
                 <div class="body-copy">
-                  <editor
-                    :text="item.description || ''"
+                  <editor-html
+                    :text="item.description"
                     data-placeholder="Описание тарифа"
-                    editContent="html"
                     :sectionId="section.id"
                     field="description"
                     :itemId="item.id"
-                    v-if="isEdit"
                   />
-                  <div v-else v-html="item.description"></div>
                 </div>
               </div>
               <div class="tarifs__price">
-                <editor
-                  :text="item.price || ''"
+                <editor-text
+                  :text="item.price"
                   data-placeholder="000 руб."
                   :sectionId="section.id"
                   field="price"
                   :itemId="item.id"
-                  v-if="isEdit"
                 />
-                <span v-else>{{ item.price }}</span>
               </div>
               <div class="tarifs__action">
                 <form-popup
@@ -174,24 +164,24 @@
 import { mapMutations, mapGetters } from "vuex";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   data: () => ({
     dialog: false,
-    product: {},
+    product: {}
   }),
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit",
+      isSectionEdit: "isSectionEdit"
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
-    },
+    }
   },
   methods: {
     ...mapMutations({
-      setItemField: "pages/SET_ITEM_FIELD",
+      setItemField: "pages/SET_ITEM_FIELD"
     }),
     setSelected: function (payload) {
       this.setItemField({
@@ -199,11 +189,11 @@ export default {
         itemId: payload.itemId,
         items: "items",
         field: payload.field,
-        value: payload.value,
+        value: payload.value
       });
       this.$store.dispatch("pages/savePage");
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

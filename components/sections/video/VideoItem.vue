@@ -1,6 +1,10 @@
 <template>
   <div class="video__item-wrap cell">
-    <div class="video__item" :class="{'position-relative': isEdit}" @click="$emit('gallery-call')">
+    <div
+      class="video__item"
+      :class="{ 'position-relative': isEdit }"
+      @click="$emit('gallery-call')"
+    >
       <buttons-item :itemId="item.id" :sectionId="sectionId" v-if="isEdit" />
       <div
         v-if="isEdit"
@@ -14,15 +18,13 @@
         <img v-if="item.link" :src="videoCover" />
       </div>
       <div class="video__title">
-        <editor
+        <editor-text
           data-placeholder="Название видео"
-          :text="item.title || ''"
+          :text="item.title"
           :sectionId="sectionId"
           field="title"
           :itemId="item.id"
-          v-if="isEdit"
         />
-        <span v-else>{{ item.title }}</span>
       </div>
     </div>
   </div>
@@ -32,10 +34,10 @@ export default {
   props: {
     item: Object,
     sectionId: String,
-    isEdit: Boolean,
+    isEdit: Boolean
   },
   data: () => ({
-    videoShown: false,
+    videoShown: false
   }),
   computed: {
     videoId() {
@@ -53,8 +55,8 @@ export default {
       return (
         "https://img.youtube.com/vi/" + this.videoId + "/maxresdefault.jpg"
       );
-    },
+    }
   },
-  methods: {},
+  methods: {}
 };
 </script>

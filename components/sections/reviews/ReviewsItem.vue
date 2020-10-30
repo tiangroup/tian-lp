@@ -19,26 +19,22 @@
       <div class="reviews__body">
         <div class="reviews__person">
           <div class="reviews__person__name">
-            <editor
+            <editor-text
               data-placeholder="Имя Фамилия"
-              :text="item.name || ''"
+              :text="item.name"
               :sectionId="sectionId"
               field="name"
               :itemId="item.id"
-              v-if="isEdit"
             />
-            <span v-else>{{ item.name }}</span>
           </div>
           <div class="reviews__person__position">
-            <editor
+            <editor-text
               data-placeholder="Должность"
-              :text="item.position || ''"
+              :text="item.position"
               :sectionId="sectionId"
               field="position"
               :itemId="item.id"
-              v-if="isEdit"
             />
-            <span v-else>{{ item.position }}</span>
           </div>
         </div>
 
@@ -93,17 +89,17 @@ export default {
     item: Object,
     sectionId: String,
     isEdit: Boolean,
-    view: String,
+    view: String
   },
   data: () => ({
-    isCropped: false,
+    isCropped: false
   }),
   computed: {
     computedReviewDate() {
       return this.item.date
         ? this.item.date
         : new Date().toISOString().substr(0, 10);
-    },
+    }
   },
   methods: {
     truncateText(textToTruncate, words) {
@@ -121,8 +117,8 @@ export default {
     formatDate(dateToFormat) {
       const [year, month, day] = dateToFormat.split("-");
       return `${day}.${month}.${year}`;
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

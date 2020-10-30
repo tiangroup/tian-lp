@@ -2,7 +2,7 @@
   <footer
     :class="{
       'position-relative': _isEdit,
-      mDark: section.settings.background === 'dark',
+      mDark: section.settings.background === 'dark'
     }"
     :id="section.id"
   >
@@ -54,15 +54,12 @@
                   </div>
                   <div class="connect__instances">
                     <div class="connect__instance">
-                      <editor
+                      <editor-html
                         data-placeholder="Введите адрес компании"
-                        :text="section.address || ''"
+                        :text="section.address"
                         :sectionId="section.id"
-                        editContent="html"
                         field="address"
-                        v-if="isEdit"
                       />
-                      <div v-else v-html="section.address"></div>
                     </div>
                   </div>
                 </div>
@@ -93,15 +90,12 @@
                   </div>
                   <div class="connect__instances">
                     <div class="connect__instance">
-                      <editor
+                      <editor-html
                         data-placeholder="+7 900 111-22-33"
-                        :text="section.phone || ''"
+                        :text="section.phone"
                         :sectionId="section.id"
-                        editContent="html"
                         field="phone"
-                        v-if="isEdit"
                       />
-                      <div v-else v-html="section.phone"></div>
                     </div>
                   </div>
                 </div>
@@ -133,15 +127,12 @@
                   </div>
                   <div class="connect__instances">
                     <div class="connect__instance">
-                      <editor
+                      <editor-html
                         data-placeholder="info@mail.ru"
-                        :text="section.email || ''"
+                        :text="section.email"
                         :sectionId="section.id"
-                        editContent="html"
                         field="email"
-                        v-if="isEdit"
                       />
-                      <div v-else v-html="section.email"></div>
                     </div>
                   </div>
                 </div>
@@ -158,14 +149,13 @@
         <div class="footer__row">
           <div class="copy">
             &copy;
-            <div class="d-inline-flex" v-if="isEdit">
-              <editor
+            <div class="d-inline-flex">
+              <editor-html
                 :text="section.copy || computedCopy"
                 :sectionId="section.id"
                 field="copy"
               />
             </div>
-            <span v-else>{{ section.copy || computedCopy }}</span>
           </div>
           <div class="tian">
             Интернет-агентство Tian Group:
@@ -182,15 +172,15 @@
 import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
-    section: Object,
+    section: Object
   },
   data: () => ({
-    showToTop: false,
+    showToTop: false
   }),
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit",
+      isSectionEdit: "isSectionEdit"
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
@@ -210,7 +200,7 @@ export default {
     },
     email() {
       return this.cleanString(this.section.email) || null;
-    },
+    }
   },
   methods: {
     onScroll(e) {
@@ -228,7 +218,7 @@ export default {
         return null;
       }
       return str.replace(/(<([^>]+)>)/gi, "");
-    },
-  },
+    }
+  }
 };
 </script>

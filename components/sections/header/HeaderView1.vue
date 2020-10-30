@@ -29,9 +29,9 @@
               imageStyle="logo"
             />
             <div v-if="isEdit" class="logo__text">
-              <editor
+              <editor-text
                 data-placeholder="Название"
-                :text="section.logo_text || ''"
+                :text="section.logo_text"
                 :sectionId="section.id"
                 field="logo_text"
               />
@@ -41,9 +41,9 @@
             </div>
           </div>
           <div v-if="isEdit" class="logo__slogan">
-            <editor
+            <editor-text
               data-placeholder="Слоган компании"
-              :text="section.logo_slogan || ''"
+              :text="section.logo_slogan"
               :sectionId="section.id"
               field="logo_slogan"
             />
@@ -78,20 +78,14 @@
                 </svg>
               </div>
               <div class="connect__instances">
-                <div class="connect__instance" v-if="isEdit">
-                  <editor
+                <div class="connect__instance">
+                  <editor-html
                     data-placeholder="Введите адрес компании"
-                    :text="section.address || ''"
+                    :text="section.address"
                     :sectionId="section.id"
-                    editContent="html"
                     field="address"
                   />
                 </div>
-                <div
-                  class="connect__instance"
-                  v-else
-                  v-html="section.address"
-                ></div>
               </div>
             </div>
           </div>
@@ -117,20 +111,14 @@
                 </svg>
               </div>
               <div class="connect__instances">
-                <div class="connect__instance" v-if="isEdit">
-                  <editor
+                <div class="connect__instance">
+                  <editor-html
                     data-placeholder="+7 900 111-22-33"
-                    :text="section.phone || ''"
+                    :text="section.phone"
                     :sectionId="section.id"
-                    editContent="html"
                     field="phone"
                   />
                 </div>
-                <div
-                  class="connect__instance"
-                  v-else
-                  v-html="section.phone"
-                ></div>
               </div>
             </div>
           </div>

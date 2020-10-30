@@ -6,23 +6,19 @@
       :class="{ mDark: section.settings.background === 'dark' }"
     >
       <div class="landing__container">
-        <h2 v-if="isEdit">
-          <editor
-            :text="section.title || ''"
+        <h2>
+          <editor-text
+            :text="section.title"
             :sectionId="section.id"
             field="title"
           />
         </h2>
-        <h2 v-else>{{ section.title }}</h2>
         <div class="video__intro">
-          <editor
-            :text="section.description || ''"
+          <editor-html
+            :text="section.description"
             :sectionId="section.id"
             field="description"
-            v-if="isEdit"
-            editContent="html"
           />
-          <div v-else v-html="section.description"></div>
         </div>
         <div v-if="section.items">
           <client-only>
@@ -49,7 +45,7 @@
                 :key="slickKey"
               >
                 <video-item
-                  v-for="(item, itemIndex) in section.items.filter(i => i.id)"
+                  v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
                   :key="item.id"
                   :item="item"
                   :sectionId="section.id"
@@ -82,7 +78,7 @@
                 <div class="cells fx-nw overflow-hidden">
                   <video-item
                     class="cell-12 cell-sm-6"
-                    v-for="item in section.items.filter(i => i.id)"
+                    v-for="item in section.items.filter((i) => i.id)"
                     :key="item.id"
                     :item="item"
                     :sectionId="section.id"
@@ -287,12 +283,12 @@ export default {
       }
     }
   },
-  beforeUpdate: function() {
+  beforeUpdate: function () {
     if (this.$refs[this.slickRef]) {
       this.currentSlide = this.$refs[this.slickRef].currentSlide();
     }
   },
-  beforeDestroy: function() {
+  beforeDestroy: function () {
     if (this.$refs[this.slickRef]) {
       if (document.getElementById(this.section.id)) {
         document

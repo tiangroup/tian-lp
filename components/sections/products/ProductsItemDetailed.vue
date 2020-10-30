@@ -1,10 +1,10 @@
 <template>
-  <div class="good">
-    <div class="good__details">
+  <div class="good scrollable__base">
+    <div class="good__details scrollable__head">
       <div class="good__title">
         <editor
           data-placeholder="Название товара"
-          :text="item.title || ''"
+          :text="item.title"
           :sectionId="section.id"
           field="title"
           :itemId="item.id"
@@ -13,6 +13,8 @@
         />
         <span v-else> {{ item.title }}</span>
       </div>
+    </div>
+    <div class="good__details scrollable__block">
       <div class="good__images illustrations" v-if="isEdit || item.img_1">
         <div
           class="illustrations__item illustrations__item--main"
@@ -37,7 +39,7 @@
             <div
               class="illustrations__switch"
               :class="{
-                'illustrations__switch--active': n === currentBigImageIndex,
+                'illustrations__switch--active': n === currentBigImageIndex
               }"
               @click="handleIllustrationClick(n)"
               v-if="item['img_' + n] || isEdit"
@@ -56,13 +58,12 @@
         </div>
       </div>
       <div class="good__chars body-copy" v-if="isEdit">
-        <editor
+        <editor-html
           data-placeholder="Габариты: 220 х 100 х 35 мм"
-          :text="item.tech_chars || ''"
+          :text="item.tech_chars"
           :sectionId="section.id"
           field="tech_chars"
           :itemId="item.id"
-          editContent="html"
           :key="'ch' + item.id"
         />
       </div>
@@ -73,62 +74,48 @@
       ></div>
       <div class="good__description" v-if="item.description || isEdit">
         <div class="good__description__title">
-          <editor
+          <editor-text
             :text="section.description_label || 'Описание'"
             :sectionId="section.id"
             field="description_label"
-            v-if="isEdit"
           />
-          <span v-else>{{ section.description_label || "Описание" }}</span>
         </div>
-        <div class="good__description__body" v-if="isEdit">
-          <editor
+        <div class="good__description__body">
+          <editor-html
             data-placeholder="Полное описание товара"
-            :text="item.description || ''"
+            :text="item.description"
             :sectionId="section.id"
             field="description"
             :itemId="item.id"
-            editContent="html"
             :key="'d' + item.id"
           />
         </div>
-        <div
-          class="good__description__body body-copy"
-          v-html="item.description"
-          v-else
-        ></div>
       </div>
     </div>
-    <div class="good__cta">
+    <div class="good__cta scrollable__foot">
       <div class="cells justify-content-between align-items-center">
         <div class="cell cell-auto">
           <div class="good__prices">
-            <div class="good__prices__current" v-if="isEdit">
-              <editor
+            <div class="good__prices__current">
+              <editor-text
                 data-placeholder="000 руб."
-                :text="item.price || ''"
+                :text="item.price"
                 :sectionId="section.id"
                 field="price"
                 :itemId="item.id"
                 :key="'price' + item.id"
               />
             </div>
-            <div class="good__prices__current" v-else>
-              {{ item.price }}
-            </div>
 
-            <div class="good__prices__old" v-if="isEdit">
-              <editor
+            <div class="good__prices__old">
+              <editor-text
                 data-placeholder="000 руб."
-                :text="item.old_price || ''"
+                :text="item.old_price"
                 :sectionId="section.id"
                 field="old_price"
                 :itemId="item.id"
                 :key="'oldprice' + item.id"
               />
-            </div>
-            <div class="good__prices__old" v-else>
-              {{ item.old_price }}
             </div>
           </div>
         </div>
@@ -162,7 +149,7 @@
         v-if="!isEdit"
         :id="'gallery' + item.id"
         :options="{
-          closeOnSlideClick: true,
+          closeOnSlideClick: true
         }"
       ></v-gallery>
     </client-only>
@@ -173,12 +160,12 @@ export default {
   props: {
     item: Object,
     isEdit: Boolean,
-    section: Object,
+    section: Object
   },
   data: function () {
     return {
       currentBigImageIndex: 1,
-      index: null,
+      index: null
     };
   },
   computed: {
@@ -190,13 +177,13 @@ export default {
           var imagesItem = {
             title: this.item.title,
             href: this.$site_img(this.item[imgKey]) + "?style=resize_xl",
-            type: "image/jpeg",
+            type: "image/jpeg"
           };
           imagesArray.push(imagesItem);
         }
       }
       return imagesArray;
-    },
+    }
   },
   methods: {
     handleMainIllustrationClick() {
@@ -215,7 +202,7 @@ export default {
     },
     getImageField(index) {
       return "img_" + index;
-    },
-  },
+    }
+  }
 };
 </script>

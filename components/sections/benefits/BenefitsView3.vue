@@ -4,24 +4,22 @@
     :class="{ mDark: section.settings.background === 'dark' }"
   >
     <div class="landing__container">
-      <h2 v-if="isEdit">
-        <editor
-          :text="section.title || ''"
+      <h2>
+        <editor-text
+          :text="section.title"
           :sectionId="section.id"
           field="title"
         />
       </h2>
-      <h2 v-else>{{ section.title }}</h2>
 
-      <div class="benefits__intro" v-if="isEdit">
-        <editor
-          :text="section.description || ''"
+      <div class="benefits__intro">
+        <editor-text
+          :text="section.description"
           :sectionId="section.id"
           field="description"
           data-placeholder="Небольшой текст, который раскрывает основное преимущество компании"
         />
       </div>
-      <div class="benefits__intro" v-else v-html="section.description"></div>
 
       <div class="benefits__list cells benefits__list--style3">
         <div class="cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3">
@@ -52,28 +50,24 @@
               </svg>
             </div>
             <div class="benefits__body">
-              <div v-if="isEdit" class="benefits__title">
-                <editor
+              <div class="benefits__title">
+                <editor-text
                   data-placeholder="Преимущество"
-                  :text="item.title || ''"
+                  :text="item.title"
                   :sectionId="section.id"
                   field="title"
                   :itemId="item.id"
                 />
               </div>
-              <div v-else class="benefits__title">{{ item.title }}</div>
 
-              <div v-if="isEdit" class="benefits__description">
-                <editor
+              <div class="benefits__description">
+                <editor-html
                   data-placeholder="Краткое описание преимущества"
-                  :text="item.description || ''"
+                  :text="item.description"
                   :sectionId="section.id"
                   field="description"
                   :itemId="item.id"
                 />
-              </div>
-              <div v-else class="benefits__description">
-                {{ item.description }}
               </div>
             </div>
           </div>
@@ -118,28 +112,24 @@
               </svg>
             </div>
             <div class="benefits__body">
-              <div v-if="isEdit" class="benefits__title">
-                <editor
+              <div class="benefits__title">
+                <editor-text
                   data-placeholder="Преимущество"
-                  :text="item.title || ''"
+                  :text="item.title"
                   :sectionId="section.id"
                   field="title"
                   :itemId="item.id"
                 />
               </div>
-              <div v-else class="benefits__title">{{ item.title }}</div>
 
-              <div v-if="isEdit" class="benefits__description">
-                <editor
+              <div class="benefits__description">
+                <editor-html
                   data-placeholder="Краткое описание преимущества"
-                  :text="item.description || ''"
+                  :text="item.description"
                   :sectionId="section.id"
                   field="description"
                   :itemId="item.id"
                 />
-              </div>
-              <div v-else class="benefits__description">
-                {{ item.description }}
               </div>
             </div>
           </div>
@@ -153,7 +143,7 @@
 export default {
   props: {
     section: Object,
-    isEdit: Boolean,
+    isEdit: Boolean
   },
   computed: {
     styleDiv() {
@@ -166,7 +156,7 @@ export default {
     items2() {
       const len = Math.ceil(this.section.items.length / 2);
       return this.section.items.filter((item, index) => index >= len);
-    },
-  },
+    }
+  }
 };
 </script>

@@ -22,7 +22,7 @@
                   :href="'#' + item.id"
                   class="tbps__label__link"
                   :class="{
-                    'tbps__label__link--active': isActiveItem(itemIndex),
+                    'tbps__label__link--active': isActiveItem(itemIndex)
                   }"
                   @click.prevent="changeActiveItem(itemIndex)"
                   >{{ item.title || "Новая услуга" }}</a
@@ -59,7 +59,7 @@
               class="tbps__panel h-100"
               :class="{
                 'position-relative': isEdit,
-                'tbps__panel--active': isActiveItem(itemIndex),
+                'tbps__panel--active': isActiveItem(itemIndex)
               }"
               @click="gotoClickedSlide(itemIndex)"
             >
@@ -83,27 +83,22 @@
                     <div class="cell cell-12 cell-sm-9 order-sm-1">
                       <div class="services__body body-copy">
                         <div class="services__title">
-                          <editor
+                          <editor-text
                             data-placeholder="Название услуги"
-                            :text="item.title || ''"
+                            :text="item.title"
                             :sectionId="section.id"
                             field="title"
                             :itemId="item.id"
-                            v-if="isEdit"
                           />
-                          <span v-else>{{ item.title }}</span>
                         </div>
                         <div class="services__description">
-                          <editor
+                          <editor-html
                             data-placeholder="Описание услуги"
-                            :text="item.description || ''"
+                            :text="item.description"
                             :sectionId="section.id"
                             field="description"
                             :itemId="item.id"
-                            editContent="html"
-                            v-if="isEdit"
                           />
-                          <div v-else v-html="item.description"></div>
                         </div>
                       </div>
                     </div>
@@ -116,15 +111,13 @@
                     >
                       <div class="cell cell-auto">
                         <div class="services__price">
-                          <editor
+                          <editor-text
                             data-placeholder="от 5 000 руб."
-                            :text="item.price || ''"
+                            :text="item.price"
                             :sectionId="section.id"
                             field="price"
                             :itemId="item.id"
-                            v-if="isEdit"
                           />
-                          <span v-else>{{ item.price }}</span>
                         </div>
                       </div>
                       <div class="cell cell-auto">
@@ -189,7 +182,7 @@
                 :key="item.id"
                 class="tbps__panel"
                 :class="{
-                  'tbps__panel--active': isActiveItem(itemIndex),
+                  'tbps__panel--active': isActiveItem(itemIndex)
                 }"
               >
                 <div class="services__item h-100">
@@ -246,8 +239,8 @@ export default {
     isEdit: Boolean,
     view: {
       type: String,
-      default: "view2",
-    },
+      default: "view2"
+    }
   },
   components: {},
   data() {
@@ -265,8 +258,8 @@ export default {
         prevArrow:
           '<button type="button" class="slick-arrow slick-prev"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 1L2 13.9706L15.966 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
         nextArrow:
-          '<button type="button" class="slick-arrow slick-next"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L15 13.9706L1.03398 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>',
-      },
+          '<button type="button" class="slick-arrow slick-next"><svg width="17" height="28" viewBox="0 0 17 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L15 13.9706L1.03398 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></button>'
+      }
     };
   },
   computed: {
@@ -278,7 +271,7 @@ export default {
     },
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
-        draggable: !this.isEdit,
+        draggable: !this.isEdit
       });
     },
     slickRef() {
@@ -301,7 +294,7 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)");
-    },
+    }
   },
   methods: {
     changeActiveItem: function (index) {
@@ -323,8 +316,8 @@ export default {
       if (!this.isActiveItem(itemIndex)) {
         this.changeActiveItem(itemIndex);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

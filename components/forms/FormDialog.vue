@@ -1,6 +1,6 @@
 <template>
   <div class="over">
-    <v-dialog v-if="isCenter" v-model="dialog" max-width="400">
+    <v-dialog v-if="isCenter" v-model="dialog" max-width="400" scrollable>
       <div class="der-popup" :style="styleDiv">
         <form-editor-button
           v-if="isEdit && section[field]"

@@ -9,127 +9,118 @@
             <v-expansion-panels accordion flat>
               <draggable
                 v-model="sectsArray"
+                v-bind="dragOptions"
                 handle=".sort-handle"
                 @change="handleSectionsReorder"
-                ghost-class="ghost"
-                animation="200"
-                @start="drag = true"
-                @end="drag = false"
               >
-                <transition-group
-                  tag="div"
-                  :name="!drag ? 'flip-list' : null"
-                  type="transition"
+                <v-expansion-panel
+                  class="tuning-sort__row"
+                  v-for="(section, sectionIndex) in sectsArray.filter(
+                    (s) => s.id
+                  )"
+                  :key="section.id + sectionIndex"
+                  :class="{
+                    'tuning-sort__row--active': section.show === true
+                  }"
                 >
-                  <v-expansion-panel
-                    class="tuning-sort__row"
-                    v-for="(section, sectionIndex) in sectsArray.filter(
-                      (s) => s.id
-                    )"
-                    :key="section.id + sectionIndex"
-                    :class="{
-                      'tuning-sort__row--active': section.show === true
-                    }"
-                  >
-                    <div class="tuning-sort__cell tuning-sort__name">
-                      {{ sectionName(section) }}
-                    </div>
-                    <div class="tuning-sort__cell tuning-sort__action">
-                      <v-expansion-panel-header
-                        hide-actions
-                        class="button button-icon"
-                        @click="toggleSectionSettings(section.id)"
-                      >
-                        <span class="icon icon-tuning">
+                  <div class="tuning-sort__cell tuning-sort__name">
+                    {{ sectionName(section) }}
+                  </div>
+                  <div class="tuning-sort__cell tuning-sort__action">
+                    <v-expansion-panel-header
+                      hide-actions
+                      class="button button-icon"
+                      @click="toggleSectionSettings(section.id)"
+                    >
+                      <span class="icon icon-tuning">
+                        <svg
+                          width="21"
+                          height="20"
+                          viewBox="0 0 21 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M0 2.5H1.99805" stroke="currentColor" />
+                          <path
+                            d="M4.99805 2.50049H20.998"
+                            stroke="currentColor"
+                          />
+                          <circle
+                            cx="3.49805"
+                            cy="2.5"
+                            r="2"
+                            stroke="currentColor"
+                          />
+                          <path d="M20.998 9.5H19" stroke="currentColor" />
+                          <path d="M16 9.50049H0" stroke="currentColor" />
+                          <circle
+                            r="2"
+                            transform="matrix(-1 0 0 1 17.5 9.5)"
+                            stroke="currentColor"
+                          />
+                          <path d="M0 17.5H1.99805" stroke="currentColor" />
+                          <path
+                            d="M4.99805 17.5005H20.998"
+                            stroke="currentColor"
+                          />
+                          <circle
+                            cx="3.49805"
+                            cy="17.5"
+                            r="2"
+                            stroke="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      <span class="sr-only">Настройки блока</span>
+                    </v-expansion-panel-header>
+                  </div>
+                  <div class="tuning-sort__cell tuning-sort__action">
+                    <label class="state-switch">
+                      <input
+                        type="checkbox"
+                        class="state-switch__input"
+                        :checked="section.show"
+                        @change="toggleSectionVisibility(section)"
+                      />
+                      <div class="state-switch__label">
+                        <span class="sr-only">Включить/выключить блок</span>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="tuning-sort__cell tuning-sort__move">
+                    <button
+                      class="button button-icon sort-handle"
+                      type="button"
+                    >
+                      <span class="button__body">
+                        <span class="icon icon-move">
                           <svg
-                            width="21"
+                            width="11"
                             height="20"
-                            viewBox="0 0 21 20"
+                            viewBox="0 0 11 20"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
                           >
-                            <path d="M0 2.5H1.99805" stroke="currentColor" />
                             <path
-                              d="M4.99805 2.50049H20.998"
-                              stroke="currentColor"
-                            />
-                            <circle
-                              cx="3.49805"
-                              cy="2.5"
-                              r="2"
-                              stroke="currentColor"
-                            />
-                            <path d="M20.998 9.5H19" stroke="currentColor" />
-                            <path d="M16 9.50049H0" stroke="currentColor" />
-                            <circle
-                              r="2"
-                              transform="matrix(-1 0 0 1 17.5 9.5)"
-                              stroke="currentColor"
-                            />
-                            <path d="M0 17.5H1.99805" stroke="currentColor" />
-                            <path
-                              d="M4.99805 17.5005H20.998"
-                              stroke="currentColor"
-                            />
-                            <circle
-                              cx="3.49805"
-                              cy="17.5"
-                              r="2"
+                              d="M5.5 1L1 4.88777M5.5 1L10 4.88777M5.5 1V19M5.5 19L1 15.2551M5.5 19L10 15.2551"
                               stroke="currentColor"
                             />
                           </svg>
                         </span>
-                        <span class="sr-only">Настройки блока</span>
-                      </v-expansion-panel-header>
-                    </div>
-                    <div class="tuning-sort__cell tuning-sort__action">
-                      <label class="state-switch">
-                        <input
-                          type="checkbox"
-                          class="state-switch__input"
-                          :checked="section.show"
-                          @change="toggleSectionVisibility(section)"
-                        />
-                        <div class="state-switch__label">
-                          <span class="sr-only">Включить/выключить блок</span>
-                        </div>
-                      </label>
-                    </div>
-                    <div class="tuning-sort__cell tuning-sort__move">
-                      <button
-                        class="button button-icon sort-handle"
-                        type="button"
-                      >
-                        <span class="button__body">
-                          <span class="icon icon-move">
-                            <svg
-                              width="11"
-                              height="20"
-                              viewBox="0 0 11 20"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M5.5 1L1 4.88777M5.5 1L10 4.88777M5.5 1V19M5.5 19L1 15.2551M5.5 19L10 15.2551"
-                                stroke="currentColor"
-                              />
-                            </svg>
-                          </span>
-                          <span class="sr-only">Переместить блок</span>
-                        </span>
-                      </button>
-                    </div>
-                    <div class="tuning-sort__settings">
-                      <v-expansion-panel-content eager>
-                        <settings
-                          :component="section.__component"
-                          :sectionId="section.id"
-                          :settings="section.settings"
-                        />
-                      </v-expansion-panel-content>
-                    </div>
-                  </v-expansion-panel>
-                </transition-group>
+                        <span class="sr-only">Переместить блок</span>
+                      </span>
+                    </button>
+                  </div>
+                  <div class="tuning-sort__settings">
+                    <v-expansion-panel-content eager>
+                      <settings
+                        :component="section.__component"
+                        :sectionId="section.id"
+                        :settings="section.settings"
+                      />
+                    </v-expansion-panel-content>
+                  </div>
+                </v-expansion-panel>
               </draggable>
             </v-expansion-panels>
           </div>
@@ -150,18 +141,27 @@ export default {
   },
   data: function () {
     return {
+      drag: false,
       sectionMoved: {
         id: null,
         newIndex: null
       },
       sectsArray: this.sections,
-      drag: false
+      drags: []
     };
   },
   computed: {
     ...mapGetters({
       sects: "sections/sections"
-    })
+    }),
+    dragOptions() {
+      return {
+        animation: 200,
+        group: "sectslist",
+        disabled: false,
+        ghostClass: "ghost"
+      };
+    }
   },
   methods: {
     ...mapMutations({

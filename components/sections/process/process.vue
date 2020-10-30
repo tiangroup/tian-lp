@@ -17,7 +17,7 @@
         <div class="process__list cells" v-if="section.items">
           <div
             class="process__item cell cell-12 cell-sm-6 cell-lg-3"
-            v-for="item in section.items.filter(i => i.id)"
+            v-for="item in section.items.filter((i) => i.id)"
             :key="item.id"
             :style="styleDiv"
           >
@@ -39,27 +39,21 @@
             />
 
             <div class="process__body">
-              <div class="process__title" v-if="isEdit">
-                <editor
-                  :text="item.title || ''"
+              <div class="process__title">
+                <editor-text
+                  :text="item.title"
                   :sectionId="section.id"
                   field="title"
                   :itemId="item.id"
                 />
               </div>
-              <div class="process__title" v-else>
-                {{ item.title }}
-              </div>
-              <div class="process__description" v-if="isEdit">
-                <editor
-                  :text="item.description || ''"
+              <div class="process__description">
+                <editor-text
+                  :text="item.description"
                   :sectionId="section.id"
                   field="description"
                   :itemId="item.id"
                 />
-              </div>
-              <div class="process__description" v-else>
-                {{ item.description }}
               </div>
             </div>
           </div>

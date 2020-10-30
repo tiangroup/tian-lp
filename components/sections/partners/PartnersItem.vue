@@ -18,7 +18,7 @@
                 itemId: item.id,
                 sectionId: sectionId,
                 field: 'link',
-                value: item.link,
+                value: item.link
               })
             "
           >
@@ -42,16 +42,15 @@
         :sectionId="sectionId"
         imageStyle="resize_sm"
       />
-      <div class="partners__text" v-if="isEdit">
-        <editor
-          :text="item.title || ''"
+      <div class="partners__text">
+        <editor-text
+          :text="item.title"
           data-placeholder="Название компании"
           :sectionId="sectionId"
           field="title"
           :itemId="item.id"
         />
       </div>
-      <div v-else class="partners__text">{{ item.title }}</div>
     </div>
   </div>
 </template>
@@ -60,9 +59,9 @@ export default {
   props: {
     item: Object,
     sectionId: String,
-    isEdit: Boolean,
+    isEdit: Boolean
   },
   data: () => ({}),
-  methods: {},
+  methods: {}
 };
 </script>

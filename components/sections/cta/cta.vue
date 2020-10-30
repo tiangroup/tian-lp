@@ -13,7 +13,7 @@
             @click="
               itemImageSelect({
                 field: 'bg_img',
-                value: section.bg_img,
+                value: section.bg_img
               })
             "
           >
@@ -35,14 +35,13 @@
       <div class="landing__container">
         <div class="cta__body cells align-items-center justify-content-between">
           <div class="cta__text cell cell-12 cell-md-7 cell-xl-6">
-            <h2 v-if="isEdit">
-              <editor
-                :text="section.title || ''"
+            <h2>
+              <editor-text
+                :text="section.title"
                 :sectionId="section.id"
                 field="title"
               />
             </h2>
-            <h2 v-else>{{ section.title }}</h2>
             <!-- <div
               class="cta__timer"
               v-if="countdown"
@@ -51,15 +50,12 @@
               <timer :end-date="computedEndDate" @expired="reinitTimer"></timer>
             </div> -->
             <div class="cta__offer">
-              <div class="cta__offer__text" v-if="isEdit">
-                <editor
-                  :text="section.description || ''"
+              <div class="cta__offer__text">
+                <editor-html
+                  :text="section.description"
                   :sectionId="section.id"
                   field="description"
                 />
-              </div>
-              <div class="cta__offer__text" v-else>
-                {{ section.description }}
               </div>
             </div>
             <image-item
@@ -118,16 +114,16 @@ export default {
     // Timer,
   },
   props: {
-    section: Object,
+    section: Object
   },
   data: () => ({
     dialogCtaDate: false,
-    ctaDate: "",
+    ctaDate: ""
   }),
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit",
+      isSectionEdit: "isSectionEdit"
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
@@ -142,20 +138,20 @@ export default {
         let genDate = this.generateEndDate();
         return genDate;
       }
-    },
+    }
   },
   methods: {
     ...mapMutations({
       showImageUpload: "SET_DIALOG_IMAGE_UPLOAD",
       setImageUpload: "SET_IMAGE_UPLOAD",
-      setSectionField: "pages/SET_SECTION_FIELD",
+      setSectionField: "pages/SET_SECTION_FIELD"
     }),
     itemImageSelect() {
       this.setImageUpload({
         sectionId: this.section.id,
         field: "bg_img",
         items: null,
-        value: this.section.bg_img,
+        value: this.section.bg_img
       });
       this.showImageUpload(true);
     },
@@ -169,7 +165,7 @@ export default {
       this.setSectionField({
         id: this.section.id,
         field: "date",
-        value: newDate,
+        value: newDate
       });
       this.$store.dispatch("pages/savePage");
       this.dialogCtaDate = false;
@@ -188,12 +184,12 @@ export default {
         computedDate.getTime() + 84 * 60 * 60 * 1000 + 15 * 60 * 1000
       );
       return computedDate.toISOString().substr(0, 10);
-    },
+    }
   },
   mounted: function () {
     if (!this.section.date) {
       this.ctaDate = this.generateEndDate();
     }
-  },
+  }
 };
 </script>

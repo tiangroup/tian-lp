@@ -5,19 +5,29 @@
     :ref="`form-${form.id}`"
     v-if="form"
   >
-    <div class="form__body">
+    <div class="form__body scrollable__head">
       <div class="form__title">{{ form.form.title }}</div>
+    </div>
+    <div class="form__body scrollable__block">
       <div class="form__intro" v-if="form.form.description">
         {{ form.form.description }}
       </div>
       <slot></slot>
       <component
-        v-for="item in form.fields.filter(i => i.id)"
+        v-for="item in form.fields.filter((i) => i.id)"
         :key="item.id"
         :is="`input_${item.type}`"
         :item="item"
         v-model="formData[item.id]"
       />
+      <div class="form__text">
+        Нажимая на кнопку, подтверждаю свое согласие с
+        <a href @click.prevent="$forms.licence(true)">
+          условиями обработки персональных данных
+        </a>
+      </div>
+    </div>
+    <div class="form__body scrollable__foot">
       <div class="field field--submit">
         <button
           type="submit"
@@ -27,12 +37,6 @@
           <span class="button__body">{{ form.form.button }}</span>
           <span class="button__spinner spinner"></span>
         </button>
-      </div>
-      <div class="form__text">
-        Нажимая на кнопку, подтверждаю свое согласие с
-        <a href @click.prevent="$forms.licence(true)">
-          условиями обработки персональных данных
-        </a>
       </div>
     </div>
   </form>
