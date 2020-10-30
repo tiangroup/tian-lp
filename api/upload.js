@@ -191,7 +191,8 @@ app.post("/dir-remove", checkAuth, async (req, res) => {
   }
   if (dir) {
     try {
-      rimraf(`./${upload_dir}}/${catalog}/${dir}`, function() {});
+      console.log(`./${upload_dir}}/${catalog}/${dir}`);
+      rimraf(`./${upload_dir}/${catalog}/${dir}`, function() {});
     } catch (error) {
       console.log(error);
     }
@@ -208,14 +209,21 @@ app.get("/section/:id", checkAuth, async (req, res) => {
   const catalog = await getCatalog(req);
   const upload_dir = "static";
   const path = `./${upload_dir}/${catalog}/${sectionId}/upload`;
-  const files = fs
-    .readdirSync(path)
-    .map(file => ({
-      url: `/${catalog}/${sectionId}/upload/${file}`,
-      time: fs.statSync(`${path}/${file}`).mtime.getTime()
-    }))
-    .sort((a, b) => b.time - a.time);
-  console.log(files);
+  let files = [];
+  try {
+    if (fs.existsSync(path)) {
+      files = fs
+        .readdirSync(path)
+        .map(file => ({
+          url: `/${catalog}/${sectionId}/upload/${file}`,
+          img: `/${sectionId}/upload/${file}`,
+          time: fs.statSync(`${path}/${file}`).mtime.getTime()
+        }))
+        .sort((a, b) => b.time - a.time);
+    }
+  } catch (error) {
+    console.log(error);
+  }
   res.send({
     status: true,
     files: files

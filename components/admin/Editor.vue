@@ -39,7 +39,8 @@ export default {
     object: {
       type: String,
       default: null
-    }
+    },
+    upload: false
   },
   data: () => ({
     _text: null,
@@ -94,7 +95,7 @@ export default {
                 aria: "убрать форматирование"
               },
               "source",
-              this.sectionId ? "upload" : ""
+              this.sectionId && this.upload ? "upload" : ""
             ]
           },
           extensions: {

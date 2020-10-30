@@ -213,33 +213,33 @@ export default {
     section: Object,
     top: {
       type: Boolean,
-      default: function () {
+      default: function() {
         return this.bottom === true ? false : true;
-      },
+      }
     },
     right: {
       type: Boolean,
-      default: function () {
+      default: function() {
         return this.left === true ? false : true;
-      },
+      }
     },
     bottom: {
       type: Boolean,
-      default: false,
+      default: false
     },
     left: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data: () => ({
     settingsDrawer: false,
     fab: false,
-    showNewSectionEditor: false,
+    showNewSectionEditor: false
   }),
   computed: {
     ...mapGetters({
-      isSectionEdit: "isSectionEdit",
+      isSectionEdit: "isSectionEdit"
     }),
     isEdit() {
       return this.isSectionEdit(this.section);
@@ -252,10 +252,10 @@ export default {
         this.setSectionField({
           id: this.section.id,
           field: "show",
-          value: value,
+          value: value
         });
-      },
-    },
+      }
+    }
   },
   methods: {
     ...mapMutations({
@@ -263,42 +263,50 @@ export default {
       downSection: "pages/DOWN_SECTION",
       upSection: "pages/UP_SECTION",
       deleteSection: "pages/DELETE_SECTION",
-      setSectionEdit: "SET_SECTION_EDIT",
+      setSectionEdit: "SET_SECTION_EDIT"
     }),
     ...mapActions({
-      savePage: "pages/savePage",
+      savePage: "pages/savePage"
     }),
     setShowSection(show) {
       this.setSectionField({
         id: this.section.id,
         field: "show",
-        value: show,
+        value: show
       });
     },
     onDownClick() {
       this.downSection({
-        sectionId: this.section.id,
+        sectionId: this.section.id
       });
     },
     onUpClick() {
       this.upSection({
-        sectionId: this.section.id,
+        sectionId: this.section.id
       });
     },
     async onDelete() {
       this.$overlay(true);
-      await this.$axios.post(`${this.$site_app}/api/upload/dir-remove`, {
-        dir: this.section.id,
-      });
+      try {
+        await this.$axios.post(`${this.$site_app}/api/upload/dir-remove`, {
+          dir: this.section.id
+        });
+        await this.$axios.post(`${this.$site_app}/api/upload/dir-remove`, {
+          dir: this.section.id,
+          upload: "static"
+        });
+      } catch (error) {
+        console.log(error);
+      }
       try {
         await this.$axios.put(`${this.$site_app}/forms/remove-section`, {
-          section: this.section.id,
+          section: this.section.id
         });
       } catch (error) {
         console.log(error);
       }
       this.deleteSection({
-        sectionId: this.section.id,
+        sectionId: this.section.id
       });
       await this.savePage();
       this.$overlay(false);
@@ -309,16 +317,16 @@ export default {
         message: "Вы действительно хотите удалить данный блок?",
         button: {
           no: "Отмена",
-          yes: "Удалить",
+          yes: "Удалить"
         },
-        callback: (confirm) => {
+        callback: confirm => {
           if (confirm) {
             this.onDelete();
           }
-        },
+        }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

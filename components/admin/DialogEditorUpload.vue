@@ -151,7 +151,8 @@ export default {
       return this.editorUpload.files
         ? this.editorUpload.files.map(file => ({
             src: `${this.$site_app}${file.url}`,
-            url: file.url
+            url: file.url,
+            img: file.img
           }))
         : [];
     }
@@ -170,7 +171,9 @@ export default {
         value: null,
         upload: "static",
         callback: image => {
-          console.log(image);
+          this.$editorUpload({
+            sectionId: this.editorUpload.sectionId
+          });
         }
       });
     },
@@ -181,8 +184,29 @@ export default {
       this.snackbar = true;
       this.dialog = false;
     },
-    deleteFile(file) {
-      console.log(file);
+    async deleteFile(file) {
+      this.$confirm({
+        title: "Удалить картинку",
+        message: "Вы действительно хотите удалить картинку?",
+        button: {
+          no: "Отмена",
+          yes: "Удалить"
+        },
+        callback: async confirm => {
+          if (confirm) {
+            const formData = new FormData();
+            formData.append("image", file.img);
+            formData.append("upload", "static");
+            await this.$axios.post(
+              `${this.$site_app}/api/upload/image-remove`,
+              formData
+            );
+            this.$editorUpload({
+              sectionId: this.editorUpload.sectionId
+            });
+          }
+        }
+      });
     }
   }
 };

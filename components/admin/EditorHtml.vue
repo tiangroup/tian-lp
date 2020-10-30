@@ -12,6 +12,7 @@
       :object="object"
       @input="onInput"
       editContent="html"
+      :upload="true"
     />
     <div v-else v-html="out"></div>
   </div>
