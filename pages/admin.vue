@@ -7,7 +7,9 @@
       </v-main>
       <dialog-error />
     </v-app>
-    <Login v-else />
+    <v-app v-else>
+      <Login />
+    </v-app>
   </div>
 </template>
 

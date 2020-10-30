@@ -191,7 +191,6 @@ app.post("/dir-remove", checkAuth, async (req, res) => {
   }
   if (dir) {
     try {
-      console.log(`./${upload_dir}}/${catalog}/${dir}`);
       rimraf(`./${upload_dir}/${catalog}/${dir}`, function() {});
     } catch (error) {
       console.log(error);
