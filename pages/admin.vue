@@ -17,12 +17,14 @@
 import AdminStart from "~/components/admin/Admin/start/AdminStart";
 import AdminForm from "~/components/admin/Admin/form/AdminForm";
 import AdminSite from "~/components/admin/Admin/site/AdminSite";
+import AdminProfile from "~/components/admin/Admin/profile/AdminProfile";
 export default {
   layout: "admin",
   components: {
     AdminStart,
     AdminForm,
-    AdminSite
+    AdminSite,
+    AdminProfile
   },
   head: () => ({
     title: "Панель управления"

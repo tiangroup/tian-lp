@@ -26,7 +26,10 @@ export default {
       type: String,
       default: undefined
     },
-    text: String,
+    text: {
+      type: String,
+      default: ""
+    },
     sectionId: String,
     field: String,
     items: {

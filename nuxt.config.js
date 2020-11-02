@@ -178,7 +178,8 @@ export default {
     "~/api/upload",
     "~/api/sites",
     "~/api/forms",
-    "~/api/robots"
+    "~/api/robots",
+    "~/api/auth"
   ],
   generate: {
     fallback: true,

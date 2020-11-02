@@ -57,6 +57,16 @@
           </v-list-item>
         </v-list-group>
 
+        <v-list-item
+          selectable
+          @click="$emit('action', { comp: 'AdminProfile' })"
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-account-lock</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Профиль</v-list-item-title>
+        </v-list-item>
+
         <v-list-item selectable @click="$router.push('/')">
           <v-list-item-icon>
             <v-icon>mdi-pencil</v-icon>
