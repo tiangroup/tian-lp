@@ -2508,6 +2508,9 @@ nav ul li,
 .products__item-wrap {
   margin-bottom: 1.25rem;
 }
+.slick-slider .products__item-wrap {
+  margin-bottom: 0;
+}
 .products__item {
   border-radius: 0.625rem;
   display: flex;
@@ -5607,9 +5610,6 @@ nav ul li,
 .tuning-panel__row--start {
   justify-content: flex-start;
 }
-.tuning-panel__row:first-child:last-child {
-  margin-bottom: 1.25rem;
-}
 .tuning-panel__cell {
   flex: 0 0 auto;
   margin-bottom: 0.5rem;
@@ -5743,6 +5743,9 @@ nav ul li,
   .tuning-option-wrap {
     flex-basis: 50%;
   }
+  .tuning-option-wrap:first-child:last-child {
+    flex-basis: 100%;
+  }
 }
 .tuning-panel__settings--column .tuning-setting-wrap {
   max-width: 100%;
@@ -5808,6 +5811,12 @@ nav ul li,
 .tuning-sort .button.button-icon:hover,
 .tuning-sort .button.button-icon:focus {
   filter: none;
+}
+.tuning-panel__block > div {
+  margin-bottom: 2rem;
+}
+.tuning-panel__block > div:last-child {
+  margin-bottom: 0;
 }
 @media (min-width: 1280px) {
   /* 100vw doesn't acccount for scrollbar -> horizontal overflow ->

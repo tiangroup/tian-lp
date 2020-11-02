@@ -22,6 +22,8 @@
               :item="item"
               :section="section"
               :isEdit="isEdit"
+              @call-details-dialog="handleDetailsCall"
+              @call-order-dialog="handleOrderCall"
             ></products-item>
             <div
               class="products__item-wrap cell cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
@@ -63,6 +65,8 @@
                 :item="item"
                 :section="section"
                 :isEdit="isEdit"
+                @call-details-dialog="handleDetailsCall"
+                @call-order-dialog="handleOrderCall"
               ></products-item>
             </transition-group>
             <div
@@ -103,6 +107,8 @@
                 :item="item"
                 :section="section"
                 :isEdit="isEdit"
+                @call-details-dialog="handleDetailsCall"
+                @call-order-dialog="handleOrderCall"
               ></products-item>
               <div
                 class="products__item-wrap cell"
@@ -146,6 +152,122 @@
         </div>
       </div>
     </div>
+
+    <form-dialog
+      :section="section"
+      field="order_form"
+      v-model="dialogOrderProduct"
+      :hiddenData="currentItem.title"
+    >
+      <div class="good-summary">
+        <div class="good-summary__row">
+          <div class="good-summary__image" v-if="currentItem.img_1">
+            <nuxt-img
+              :src="$site_img(currentItem.img_1)"
+              image-style="icon_sm"
+            />
+          </div>
+          <div class="good-summary__body">
+            <div class="good-summary__title">{{ currentItem.title }}</div>
+            <div class="good-summary__price">{{ currentItem.price }}</div>
+          </div>
+        </div>
+        <div class="good-summary__status">
+          <svg viewBox="0 0 24 24" height="23" width="23" fill="currentColor">
+            <path
+              d="M21 11.080v0.92c-0.001 2.485-1.009 4.733-2.64 6.362s-3.88 2.634-6.365 2.632-4.734-1.009-6.362-2.64-2.634-3.879-2.633-6.365 1.009-4.733 2.64-6.362 3.88-2.634 6.365-2.633c1.33 0.001 2.586 0.289 3.649 0.775 0.502 0.23 1.096 0.008 1.325-0.494s0.008-1.096-0.494-1.325c-1.327-0.606-2.866-0.955-4.479-0.956-3.037-0.002-5.789 1.229-7.78 3.217s-3.224 4.74-3.226 7.777 1.229 5.789 3.217 7.78 4.739 3.225 7.776 3.226 5.789-1.229 7.78-3.217 3.225-4.739 3.227-7.777v-0.92c0-0.552-0.448-1-1-1s-1 0.448-1 1zM21.293 3.293l-9.293 9.302-2.293-2.292c-0.391-0.391-1.024-0.391-1.414 0s-0.391 1.024 0 1.414l3 3c0.391 0.391 1.024 0.39 1.415 0l10-10.010c0.39-0.391 0.39-1.024-0.001-1.414s-1.024-0.39-1.414 0.001z"
+            />
+          </svg>
+        </div>
+      </div>
+    </form-dialog>
+
+    <v-dialog
+      v-model="dialogDetailedItem"
+      max-width="40rem"
+      v-if="isCenter"
+      scrollable
+    >
+      <div class="der-popup">
+        <div class="der-popup__body">
+          <div class="der-popup__close">
+            <button
+              class="button button-icon button-close"
+              @click="dialogDetailedItem = false"
+            >
+              <span class="sr-only">Закрыть</span>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1 1L9 9M17 17L9 9M9 9L1 17M9 9L17 1"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="popup-order">
+            <products-item-detailed
+              :item="currentItem"
+              :is-edit="isEdit"
+              :section="section"
+              @save-details="saveItemDetails"
+              @call-order-form="handleOrderFormCall"
+            ></products-item-detailed>
+          </div>
+        </div>
+      </div>
+    </v-dialog>
+    <v-navigation-drawer
+      app
+      temporary
+      width="40rem"
+      :right="settings.popup == 'right'"
+      v-model="dialogDetailedItem"
+      v-if="!isCenter"
+    >
+      <div class="der-popup">
+        <div class="der-popup__body">
+          <div class="der-popup__close">
+            <button
+              class="button button-icon button-close"
+              @click="dialogDetailedItem = false"
+            >
+              <span class="sr-only">Закрыть</span>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1 1L9 9M17 17L9 9M9 9L1 17M9 9L17 1"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="popup-order">
+            <products-item-detailed
+              :item="currentItem"
+              :is-edit="isEdit"
+              :section="section"
+              @save-details="saveItemDetails"
+              @call-order-form="handleOrderFormCall"
+            ></products-item-detailed>
+          </div>
+        </div>
+      </div>
+    </v-navigation-drawer>
   </div>
 </template>
 
@@ -164,7 +286,6 @@ export default {
     currentSlide: 0,
     dialogDetailedItem: false,
     dialogOrderProduct: false,
-    index: null,
     itemsToShow: 4,
     slickOptions: {
       arrows: true,
@@ -208,10 +329,14 @@ export default {
   computed: {
     ...mapGetters({
       _isEdit: "isEdit",
-      isSectionEdit: "isSectionEdit"
+      isSectionEdit: "isSectionEdit",
+      settings: "sites/settings"
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
+    },
+    isCenter() {
+      return this.settings.popup != "right" && this.settings.popup != "left";
     },
     updatedSlickOptions() {
       return Object.assign(this.slickOptions, {
@@ -307,6 +432,22 @@ export default {
         this.itemsToShow += 4;
       }
       document.activeElement.blur();
+    },
+    saveItemDetails() {
+      this.$store.dispatch("pages/savePage");
+      this.dialogDetailedItem = false;
+    },
+    handleOrderFormCall() {
+      this.dialogDetailedItem = false;
+      this.dialogOrderProduct = true;
+    },
+    handleDetailsCall(item) {
+      this.currentItem = item;
+      this.dialogDetailedItem = true;
+    },
+    handleOrderCall(item) {
+      this.currentItem = item;
+      this.dialogOrderProduct = true;
     }
   },
   beforeUpdate: function () {

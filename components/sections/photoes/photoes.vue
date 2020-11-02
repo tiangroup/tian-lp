@@ -177,7 +177,7 @@ export default {
         var pic = this.section.items[n];
         var imagesItem = {
           title: pic.title,
-          href: this.$images.src(pic.img),
+          href: this.$site_img(pic.img) + "?style=resize_xl",
           type: "image/jpeg"
         };
         imagesArray.push(imagesItem);

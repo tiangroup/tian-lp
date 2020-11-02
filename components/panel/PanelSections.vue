@@ -205,7 +205,7 @@ export default {
 };
 </script>
 <style scoped>
-.v-expansion-panel-content__wrap {
+>>> .v-expansion-panel-content__wrap {
   padding-left: 0;
   padding-right: 0;
 }

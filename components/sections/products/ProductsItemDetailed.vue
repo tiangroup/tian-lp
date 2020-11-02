@@ -201,6 +201,11 @@ export default {
     getImageField(index) {
       return "img_" + index;
     }
+  },
+  watch: {
+    item: function () {
+      this.currentBigImageIndex = 1;
+    }
   }
 };
 </script>

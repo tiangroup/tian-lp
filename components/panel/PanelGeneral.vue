@@ -3,9 +3,9 @@
     <div class="tuning-panel__title">Общие настройки</div>
     <div class="tuning-panel__blocks">
       <div class="tuning-panel__block">
-        <div class="tuning-panel__block__title mb-25px">Общий цвет фона</div>
-        <div class="cells mb-15">
-          <div class="cell cell-auto">
+        <div class="tuning-panel__block__title">Общий цвет фона</div>
+        <div class="cells">
+          <div class="cell cell-auto mb-15px">
             <div class="tuning-bg tuning-bg--pills">
               <button
                 class="tuning-bg__color tuning-bg__color1"
@@ -17,7 +17,7 @@
             </div>
             <div class="tuning-bg__label" aria-hidden="true">Светлый</div>
           </div>
-          <div class="cell cell-auto">
+          <div class="cell cell-auto mb-15px">
             <div class="tuning-bg tuning-bg--pills">
               <button
                 class="tuning-bg__color tuning-bg__color2"
@@ -90,7 +90,7 @@
         </div>
       </div>
       <div class="tuning-panel__block">
-        <div class="tuning-panel__block__title mb-25px">Вид кнопок</div>
+        <div class="tuning-panel__block__title">Вид кнопок</div>
         <div class="tuning-panel__settings tuning-panel__row">
           <div class="tuning-panel__cell tuning-setting-wrap">
             <button
@@ -127,7 +127,7 @@
         </div>
       </div>
       <div class="tuning-panel__block">
-        <div class="tuning-panel__block__title mb-25px">
+        <div class="tuning-panel__block__title">
           Расположение всплывающих форм
         </div>
         <div class="tuning-panel__settings tuning-panel__row">
@@ -183,10 +183,8 @@
         </div>
       </div>
       <div class="tuning-panel__block">
-        <div class="tuning-panel__block__title mb-25px">
-          Демо панель
-        </div>
-        <div class="cells mb-15">
+        <div class="tuning-panel__block__title mb-0">Демо панель</div>
+        <div class="cells">
           <div class="cell cell-auto">
             <v-switch v-model="demo" label="показывать на сайте"></v-switch>
           </div>
@@ -201,7 +199,7 @@ export default {
   props: {
     sections: Array
   },
-  data: function() {
+  data: function () {
     return {
       brandColors: [
         {
@@ -300,7 +298,7 @@ export default {
     },
     colorSelected() {
       const color = this.brandColors.find(
-        c =>
+        (c) =>
           c.h == this.userColor.h &&
           c.s == this.userColor.s &&
           c.l == this.userColor.l

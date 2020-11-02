@@ -2,9 +2,9 @@
   <div>
     <div class="tuning-panel__title">Мобильная версия</div>
     <div class="tuning-panel__block">
-      <div class="tuning-panel__block__title mb-25px">Цвет шапки и меню</div>
-      <div class="cells mb-15px">
-        <div class="cell cell-auto">
+      <div class="tuning-panel__block__title">Цвет шапки и меню</div>
+      <div class="cells">
+        <div class="cell cell-auto mb-15px">
           <div class="tuning-bg tuning-bg--pills">
             <button
               class="tuning-bg__color tuning-bg__color1"
@@ -19,7 +19,7 @@
             Как на&nbsp;десктопе
           </div>
         </div>
-        <div class="cell cell-auto">
+        <div class="cell cell-auto mb-15px">
           <div class="tuning-bg tuning-bg--pills">
             <button
               class="tuning-bg__color tuning-bg__color3"
@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="tuning-panel__block">
-      <div class="tuning-panel__block__title mb-25px">Варианты шапок</div>
+      <div class="tuning-panel__block__title">Варианты шапок</div>
       <div class="tuning-panel__row tuning-panel__settings">
         <div class="tuning-panel__cell tuning-setting-wrap">
           <button
@@ -72,7 +72,7 @@
       </div>
     </div>
     <div class="tuning-panel__block">
-      <div class="tuning-panel__block__title mb-25px">Варианты меню</div>
+      <div class="tuning-panel__block__title">Варианты меню</div>
       <div class="tuning-panel__row tuning-panel__settings">
         <div class="tuning-panel__cell tuning-setting-wrap">
           <button

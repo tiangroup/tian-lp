@@ -2,7 +2,7 @@
   <div class="mLight">
     <v-row class="ml-4 mr-4" v-if="sectionConfig">
       <div class="tuning-panel__block">
-        <div class="tuning-panel__row mb-25px">
+        <div class="tuning-panel__row">
           <div class="tuning-panel__cell">
             <div class="tuning-panel__block__title">
               «{{ sectionConfig.name }}»
@@ -22,9 +22,9 @@
                 :class="[
                   {
                     'tuning-bg__color--active':
-                      settings.background == background.value,
+                      settings.background == background.value
                   },
-                  background.class,
+                  background.class
                 ]"
                 @click.prevent="setBackroundSettings(background.value)"
               >
@@ -36,7 +36,10 @@
 
         <div
           class="tuning-panel__row tuning-panel__settings"
-          v-if="sectionConfig.settings.view_type == 1"
+          v-if="
+            sectionConfig.settings.view_type == 1 &&
+            sectionConfig.settings.view.length
+          "
         >
           <div
             class="tuning-panel__cell tuning-setting-wrap"
@@ -47,7 +50,7 @@
               href
               class="tuning-panel__setting tuning-setting"
               :class="{
-                'tuning-setting--active': settings.view == view.value,
+                'tuning-setting--active': settings.view == view.value
               }"
               @click.prevent="setViewSettings(view.value)"
             >
@@ -61,7 +64,10 @@
 
         <div
           class="tuning-panel__settings tuning-panel__settings--column"
-          v-if="sectionConfig.settings.view_type == 2"
+          v-if="
+            sectionConfig.settings.view_type == 2 &&
+            sectionConfig.settings.view.length
+          "
         >
           <div
             class="tuning-setting-wrap"
@@ -72,7 +78,7 @@
               href
               class="tuning-panel__setting tuning-setting"
               :class="{
-                'tuning-setting--active': settings.view == view.value,
+                'tuning-setting--active': settings.view == view.value
               }"
               @click.prevent="setViewSettings(view.value)"
             >
@@ -86,7 +92,10 @@
 
         <div
           class="tuning-panel__row tuning-panel__options"
-          v-if="sectionConfig.settings.options"
+          v-if="
+            sectionConfig.settings.options &&
+            sectionConfig.settings.options.length
+          "
         >
           <div
             class="tuning-panel__cell tuning-option-wrap"
@@ -119,33 +128,33 @@ export default {
   props: {
     component: String,
     sectionId: String,
-    settings: Object,
+    settings: Object
   },
   computed: {
     ...mapGetters({
       sections: "sections/sections",
-      isApp: "isApp",
+      isApp: "isApp"
     }),
     sectionConfig: function () {
       return this.sections.find((item) => item.component === this.component);
-    },
+    }
   },
   methods: {
     ...mapMutations({
-      setSettingsField: "pages/SET_SETTINGS_FIELD",
+      setSettingsField: "pages/SET_SETTINGS_FIELD"
     }),
     setBackroundSettings(bg) {
       this.setSettingsField({
         id: this.sectionId,
         field: "background",
-        value: bg,
+        value: bg
       });
     },
     setViewSettings(view) {
       this.setSettingsField({
         id: this.sectionId,
         field: "view",
-        value: view,
+        value: view
       });
     },
     setOptionsSettings(event) {
@@ -154,10 +163,10 @@ export default {
       this.setSettingsField({
         id: this.sectionId,
         field: name,
-        value: checked,
+        value: checked
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
