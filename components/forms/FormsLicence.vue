@@ -39,10 +39,9 @@
           </v-btn>
         </v-card-title>
         <v-card-text>
-          <div v-if="isEdit">
-            <editor v-model="editText" editContent="html" />
+          <div>
+            <editor-html v-model="editText" />
           </div>
-          <div v-else v-html="editText"></div>
         </v-card-text>
       </v-card>
     </v-dialog>

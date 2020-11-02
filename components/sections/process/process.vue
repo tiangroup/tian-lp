@@ -6,14 +6,13 @@
       :class="{ mDark: section.settings.background === 'dark' }"
     >
       <div class="landing__container">
-        <h2 v-if="isEdit">
-          <editor
+        <h2>
+          <editor-text
             :text="section.title || ''"
             :sectionId="section.id"
             field="title"
           />
         </h2>
-        <h2 v-else>{{ section.title }}</h2>
         <div class="process__list cells" v-if="section.items">
           <div
             class="process__item cell cell-12 cell-sm-6 cell-lg-3"

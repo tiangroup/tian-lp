@@ -2,16 +2,14 @@
   <div class="good scrollable__base">
     <div class="good__details scrollable__head">
       <div class="good__title">
-        <editor
+        <editor-text
           data-placeholder="Название товара"
           :text="item.title"
           :sectionId="section.id"
           field="title"
           :itemId="item.id"
-          v-if="isEdit"
           :key="'ttl' + item.id"
         />
-        <span v-else> {{ item.title }}</span>
       </div>
     </div>
     <div class="good__details scrollable__block">
