@@ -39,7 +39,7 @@
       </li>
     </ul>
     <menu-top-extra
-      v-if="menuExtra"
+      v-if="mobileLongMenu"
       :section="section"
       :is-edit="isEdit"
       @call-cb-form="$emit('call-cb-form')"
@@ -54,8 +54,7 @@ export default {
   props: {
     isEdit: Boolean,
     section: Object,
-    menu: Array,
-    menuExtra: Boolean
+    menu: Array
   },
   data: () => ({
     items: []
@@ -93,7 +92,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      page: "pages/page"
+      page: "pages/page",
+      headerSettings: "sites/settings"
     }),
     itemsHide() {
       return this.items.filter((item) => !item.show);
@@ -131,6 +131,9 @@ export default {
       set: function (value) {
         this.items = value;
       }
+    },
+    mobileLongMenu() {
+      return this.headerSettings.header.mmenu === "long" ? true : false;
     }
   }
 };

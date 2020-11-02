@@ -144,7 +144,6 @@
           :id="'nav' + section.id"
           :section="section"
           :is-edit="isEdit"
-          :menu-extra="mobileLongMenu"
           @call-cb-form="dialogCallback = true"
         ></menu-top>
         <a href="#" class="overlay" tabindex="-1" aria-hidden="true" hidden></a>
@@ -186,9 +185,6 @@ export default {
     },
     mobileHeaderWbutton() {
       return this.headerSettings.header.mheader === "button" ? true : false;
-    },
-    mobileLongMenu() {
-      return this.headerSettings.header.mmenu === "long" ? true : false;
     }
   },
   methods: {

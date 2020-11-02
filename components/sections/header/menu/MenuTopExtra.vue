@@ -22,7 +22,14 @@
           </svg>
         </div>
         <div class="connect__instances">
-          <div class="connect__instance" v-html="section.address"></div>
+          <div class="connect__instance">
+            <editor-html
+              data-placeholder="Введите адрес компании"
+              :text="section.address"
+              :sectionId="section.id"
+              field="address"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -45,7 +52,14 @@
           </svg>
         </div>
         <div class="connect__instances">
-          <div class="connect__instance" v-html="section.phone"></div>
+          <div class="connect__instance">
+            <editor-html
+              data-placeholder="+7 900 111-22-33"
+              :text="section.phone"
+              :sectionId="section.id"
+              field="phone"
+            />
+          </div>
         </div>
       </div>
     </div>
