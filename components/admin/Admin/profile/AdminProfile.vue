@@ -9,7 +9,7 @@
       <v-tab-item>
         <v-container fluid>
           <v-row>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" sm="6">
               <admin-profile-email />
             </v-col>
           </v-row>
@@ -18,7 +18,7 @@
       <v-tab-item>
         <v-container fluid>
           <v-row>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" sm="6">
               <admin-profile-change-password />
             </v-col>
           </v-row>

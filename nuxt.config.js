@@ -178,7 +178,6 @@ export default {
     "~/api/upload",
     "~/api/sites",
     "~/api/forms",
-    "~/api/robots",
     "~/api/auth"
   ],
   generate: {

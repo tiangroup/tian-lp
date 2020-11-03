@@ -79,7 +79,7 @@ app.post("/forgot", async (req, res) => {
         Введите его на сайте.
       `;
       let info = await transporter.sendMail({
-        from: '"TianLp" <noreply@tian-lp.ru>',
+        from: '"TianLP" <noreply@tian-lp.ru>',
         to: user.email,
         subject: "Сброс пароля",
         text: mailText
@@ -183,6 +183,16 @@ app.post("/password-change", checkAuth, async (req, res) => {
 app.post("/email-change", checkAuth, async (req, res) => {
   const { password, new_email } = req.body;
 
+  // проверка e-mail
+  const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (!pattern.test(new_email)) {
+    res.send({
+      status: false,
+      msg: "Неверный e-mail"
+    });
+    return;
+  }
+
   // проверка пароля
   try {
     await axios.post(`${api_backend}/auth/local`, {
@@ -236,7 +246,7 @@ app.post("/email-change", checkAuth, async (req, res) => {
       Введите его на сайте.
     `;
     let info = await transporter.sendMail({
-      from: '"TianLp" <noreply@tian-lp.ru>',
+      from: '"TianLP" <noreply@tian-lp.ru>',
       to: new_email,
       subject: "Смена электронного адреса",
       text: mailText

@@ -4,7 +4,7 @@
       <v-toolbar-title>
         <v-app-bar-nav-icon
           @click.stop="drawer = !drawer"
-          v-if="!drawer"
+          v-show="!drawer"
         ></v-app-bar-nav-icon>
 
         <span>Панель управления</span>
@@ -66,6 +66,8 @@
           </v-list-item-icon>
           <v-list-item-title>Профиль</v-list-item-title>
         </v-list-item>
+
+        <v-divider class="mb-2"></v-divider>
 
         <v-list-item selectable @click="$router.push('/')">
           <v-list-item-icon>

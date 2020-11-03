@@ -8,7 +8,11 @@
         {{ errorMsg }}
       </v-alert>
       <div v-if="state == 'change'">
-        <v-text-field label="Новый e-mail" v-model.trim="newEmail" />
+        <v-text-field
+          label="Новый e-mail"
+          v-model.trim="newEmail"
+          :rules="[rules.email]"
+        />
         <v-text-field
           label="Введите пароль"
           type="password"
@@ -69,7 +73,14 @@ export default {
     newEmail: null,
     errorMsg: null,
     error: false,
-    codeConfirm: null
+    codeConfirm: null,
+    rules: {
+      required: value => !!value || "Поле обязательно для заполнения",
+      email: value => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return value ? pattern.test(value) || "Неверный e-mail" : true;
+      }
+    }
   }),
   computed: {
     email() {
@@ -78,7 +89,11 @@ export default {
         : this.$auth.user.email;
     },
     disabled() {
-      return !this.password || !this.newEmail;
+      return (
+        !this.password ||
+        !this.newEmail ||
+        this.rules.email(this.newEmail) !== true
+      );
     },
     disabledConfirm() {
       return !this.codeConfirm;

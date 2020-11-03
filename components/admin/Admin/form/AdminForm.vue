@@ -11,7 +11,7 @@
       <v-tab-item>
         <v-container fluid>
           <v-row>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" sm="6">
               <v-card>
                 <v-list dense>
                   <v-list-item>
@@ -58,13 +58,13 @@
       <v-tab-item>
         <v-container fluid>
           <v-row>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" sm="6">
               <admin-form-mail :params="params"></admin-form-mail>
             </v-col>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" sm="6">
               <admin-form-recaptcha :params="params"></admin-form-recaptcha>
             </v-col>
-            <v-col cols="12" md="4" v-if="ym">
+            <v-col cols="12" md="4" sm="6" v-if="ym">
               <admin-form-metrika :params="params"></admin-form-metrika>
             </v-col>
           </v-row>

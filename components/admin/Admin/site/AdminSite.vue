@@ -9,7 +9,7 @@
       <v-tab-item>
         <v-container fluid>
           <v-row>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" sm="6">
               <v-card>
                 <v-list dense>
                   <v-list-item>
@@ -59,7 +59,7 @@
             <v-icon right dark>mdi-cloud-upload</v-icon>
           </v-btn>
           <v-row>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" sm="6">
               <admin-site-sites />
             </v-col>
             <!--
@@ -92,7 +92,7 @@
               </v-card>
             </v-col>
             -->
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" sm="6">
               <admin-site-archive />
             </v-col>
           </v-row>
