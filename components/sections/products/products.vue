@@ -282,6 +282,7 @@ export default {
     ProductsItem
   },
   data: () => ({
+    currentItemId: "",
     currentItem: {},
     currentSlide: 0,
     dialogDetailedItem: false,
@@ -382,6 +383,13 @@ export default {
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)");
     }
+    // currentItem() {
+    //   const chosenItm = this.section.items.find(
+    //     (itm) => itm.id === this.currentItemId
+    //   );
+    //   console.log(chosenItm);
+    //   return chosenItm ? chosenItm : this.section.items[0];
+    // }
   },
   methods: {
     handleInit(event, slick) {
@@ -441,11 +449,11 @@ export default {
       this.dialogDetailedItem = false;
       this.dialogOrderProduct = true;
     },
-    handleDetailsCall(item) {
+    handleDetailsCall: function (item) {
       this.currentItem = item;
       this.dialogDetailedItem = true;
     },
-    handleOrderCall(item) {
+    handleOrderCall: function (item) {
       this.currentItem = item;
       this.dialogOrderProduct = true;
     }

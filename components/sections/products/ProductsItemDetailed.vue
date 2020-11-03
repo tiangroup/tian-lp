@@ -8,7 +8,6 @@
           :sectionId="section.id"
           field="title"
           :itemId="item.id"
-          :key="'ttl' + item.id"
         />
       </div>
     </div>
@@ -62,7 +61,6 @@
           :sectionId="section.id"
           field="tech_chars"
           :itemId="item.id"
-          :key="'ch' + item.id"
         />
       </div>
       <div
@@ -85,7 +83,6 @@
             :sectionId="section.id"
             field="description"
             :itemId="item.id"
-            :key="'d' + item.id"
           />
         </div>
       </div>
@@ -101,7 +98,6 @@
                 :sectionId="section.id"
                 field="price"
                 :itemId="item.id"
-                :key="'price' + item.id"
               />
             </div>
 
@@ -112,7 +108,6 @@
                 :sectionId="section.id"
                 field="old_price"
                 :itemId="item.id"
-                :key="'oldprice' + item.id"
               />
             </div>
           </div>

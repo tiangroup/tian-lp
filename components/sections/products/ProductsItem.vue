@@ -60,7 +60,7 @@
               :itemId="item.id"
             />
           </div>
-          <div class="good__prices__old">
+          <div class="good__prices__old" v-if="item.old_price || isEdit">
             <editor-text
               data-placeholder="000 руб."
               :text="item.old_price"

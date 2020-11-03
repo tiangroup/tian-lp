@@ -1181,7 +1181,7 @@ nav ul li,
   height: 1.3125rem;
   width: 1.3125rem;
   position: absolute;
-  top: 45%;
+  top: 50%;
   right: 100%;
   transform: translate(75%, -50%);
   transition: all 0.4s;
@@ -4315,10 +4315,10 @@ nav ul li,
   padding-right: 1.25rem;
 }
 .der-popup .scrollable__head {
-  padding-top: 3.4375rem;
+  padding-top: 1.5rem;
 }
 .der-popup .scrollable__foot {
-  padding-bottom: 1.25rem;
+  padding-bottom: 1.5rem;
 }
 .popup-order {
   background-image: url("data:image/svg+xml,%3Csvg width='118' height='110' viewBox='0 0 118 110' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M87.5506 67.2221H41.1761L31.2109 30.5554H105.813L87.5506 67.2221ZM116.167 24.1266C113.933 20.4966 110.062 18.3333 105.813 18.3333H27.8928L24.1369 4.50388C23.4124 1.84555 21.0079 0 18.2624 0H6.08748C2.7211 0 0 2.73777 0 6.1111C0 9.48443 2.7211 12.2222 6.08748 12.2222H13.6116L30.6505 74.9405C31.3749 77.5988 33.7794 79.4444 36.5249 79.4444H91.3122C93.6193 79.4444 95.7256 78.1366 96.7605 76.0649L116.703 36.0188C118.608 32.1994 118.401 27.7566 116.167 24.1266ZM38.3273 91.6667C33.2868 91.6667 29.196 95.7673 29.196 100.833C29.196 105.899 33.2868 110 38.3273 110C43.3677 110 47.4585 105.899 47.4585 100.833C47.4585 95.7673 43.3677 91.6667 38.3273 91.6667ZM79.0723 100.833C79.0723 95.7673 83.163 91.6667 88.2035 91.6667C93.2439 91.6667 97.3347 95.7673 97.3347 100.833C97.3347 105.899 93.2439 110 88.2035 110C83.163 110 79.0723 105.899 79.0723 100.833Z' fill='%23F8F9FB'/%3E%3C/svg%3E");
@@ -4332,10 +4332,22 @@ nav ul li,
 }
 .der-popup__close {
   position: absolute;
-  top: 1rem;
-  right: 0.5rem;
+  top: 0;
+  right: 0;
+}
+@media (min-width: 768px) {
+  .der-popup .scrollable__head {
+    padding-top: 2.5rem;
+  }
 }
 @media (min-width: 1024px) {
+  .der-popup__close {
+    top: 1rem;
+    right: 0.5rem;
+  }
+  .der-popup .scrollable__head {
+    padding-top: 3.4375rem;
+  }
   .popup-reviews,
   .der-popup .form__body,
   .popup-order .good__details {
@@ -4477,9 +4489,6 @@ nav ul li,
 .chars__label::after {
   content: ": ";
 }
-.good__description {
-  margin-bottom: 3.125rem;
-}
 .good__description__title {
   font-size: 1.125rem;
   font-weight: 600;
@@ -4490,9 +4499,13 @@ nav ul li,
 .good__description__body {
   font-size: 0.9375rem;
   letter-spacing: 0.2px;
+  margin-bottom: 1.5rem;
 }
 .good__cta {
-  padding: 1.875rem 1.25rem 0.875rem;
+  padding: 1rem 1.25rem 0rem;
+}
+.der-popup .good__cta {
+  padding-bottom: 0;
 }
 @media (min-width: 1024px) {
   .good__cta {
@@ -4504,7 +4517,7 @@ nav ul li,
 .good__prices__old {
   margin-bottom: 1rem;
 }
-@media (min-width: 1024px) {
+@media (min-width: 576px) {
   .good__prices {
     display: flex;
     align-items: center;
@@ -6532,7 +6545,8 @@ body:last-child
 .landing p:first-child:last-child {
   margin-bottom: 0;
 }
-.scrollable__base {
+.scrollable__base,
+.der-popup .form {
   flex: 1 1 100%;
   max-height: 100%;
   display: flex;
@@ -6545,6 +6559,7 @@ body:last-child
 .scrollable__block {
   flex: 1 1 100%;
   overflow: auto;
+  padding-right: 1rem;
 }
 /* END fixin stuff */
 @keyframes slideDown {
