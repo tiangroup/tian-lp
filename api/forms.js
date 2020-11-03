@@ -101,7 +101,7 @@ app.post("/", async (req, res) => {
         });
       }
       let info = await transporter.sendMail({
-        from: '"Лендинг" <noreply@tian-lp.ru>',
+        from: '"TianLp" <noreply@tian-lp.ru>',
         to: form.mail.to,
         subject: form.mail.subject,
         text: mailText
