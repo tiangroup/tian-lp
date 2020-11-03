@@ -55,7 +55,9 @@ export default {
       isSectionEdit: "isSectionEdit"
     }),
     isEdit() {
-      return this._isEdit && this.isSectionEdit(this.sectionId);
+      return (
+        this._isEdit && (!this.sectionId || this.isSectionEdit(this.sectionId))
+      );
     },
     out() {
       const out = this.value === undefined ? this.text : this.value;
@@ -70,6 +72,7 @@ export default {
   },
   methods: {
     onInput(text) {
+      console.log(text);
       this.$emit("input", text);
     }
   }

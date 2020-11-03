@@ -27,7 +27,8 @@
         <v-list-item
           selectable
           @click="
-            $emit('action', { comp: 'AdminSite', params: { forms: forms } })
+            $emit('action', { comp: 'AdminSite', params: { forms: forms } });
+            onItemClick();
           "
         >
           <v-list-item-icon>
@@ -51,7 +52,10 @@
             selectable
             v-for="item in forms"
             :key="item.id"
-            @click="$emit('action', item.action)"
+            @click="
+              $emit('action', item.action);
+              onItemClick();
+            "
           >
             <v-list-item-title v-text="item.title"></v-list-item-title>
           </v-list-item>
@@ -59,7 +63,10 @@
 
         <v-list-item
           selectable
-          @click="$emit('action', { comp: 'AdminProfile' })"
+          @click="
+            $emit('action', { comp: 'AdminProfile' });
+            onItemClick();
+          "
         >
           <v-list-item-icon>
             <v-icon>mdi-account-lock</v-icon>
@@ -67,7 +74,7 @@
           <v-list-item-title>Профиль</v-list-item-title>
         </v-list-item>
 
-        <v-divider class="mb-2"></v-divider>
+        <v-divider class="mb-2 mt-2"></v-divider>
 
         <v-list-item selectable @click="$router.push('/')">
           <v-list-item-icon>
@@ -127,6 +134,11 @@ export default {
     }),
     exit() {
       this.$auth.logout();
+    },
+    onItemClick() {
+      if (this.$vuetify.breakpoint.name != "lg") {
+        this.drawer = false;
+      }
     }
   }
 };
