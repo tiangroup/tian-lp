@@ -136,7 +136,10 @@ export default {
       this.$auth.logout();
     },
     onItemClick() {
-      if (this.$vuetify.breakpoint.name != "lg") {
+      if (
+        this.$vuetify.breakpoint
+          .mobile /*this.$vuetify.breakpoint.name != "lg"*/
+      ) {
         this.drawer = false;
       }
     }

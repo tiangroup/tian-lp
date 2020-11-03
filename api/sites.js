@@ -198,6 +198,7 @@ app.put("/deploy/sites", checkAuth, async (req, res) => {
       site.deploy.sites.active = active;
       site.deploy.sites.domain = domain;
       site.deploy.sites.https = https;
+      site.deploy.sites.change = true;
       const { data: update_site } = await axios.put(
         `${api_backend}/sites/${site.id}`,
         site,
