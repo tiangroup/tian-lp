@@ -14,7 +14,7 @@
           {{ button }}
         </a>
       </template>
-      <div class="der-popup" :style="styleDiv">
+      <div class="der-popup" :style="styleDiv" :class="{ mDark: isThemeDark }">
         <form-editor-button
           v-if="isEdit && section[field]"
           :formId="section[field]"
@@ -65,7 +65,7 @@
       v-model="dialogButton"
       v-if="!isCenter"
     >
-      <div class="der-popup" :style="styleDiv">
+      <div class="der-popup" :style="styleDiv" :class="{ mDark: isThemeDark }">
         <form-editor-button
           v-if="isEdit && section[field]"
           :formId="section[field]"
@@ -126,7 +126,8 @@ export default {
     popupClass: {
       type: String
     },
-    hiddenData: String
+    hiddenData: String,
+    darkTheme: Boolean
   },
   data: () => ({
     dialogButton: false
@@ -160,6 +161,9 @@ export default {
     },
     isCenter() {
       return this.settings.popup != "right" && this.settings.popup != "left";
+    },
+    isThemeDark() {
+      return this.darkTheme || false;
     }
   },
   methods: {

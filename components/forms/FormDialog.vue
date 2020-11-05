@@ -1,7 +1,7 @@
 <template>
   <div class="over">
     <v-dialog v-if="isCenter" v-model="dialog" max-width="400" scrollable>
-      <div class="der-popup" :style="styleDiv">
+      <div class="der-popup" :style="styleDiv" :class="{ mDark: isThemeDark }">
         <form-editor-button
           v-if="isEdit && section[field]"
           :formId="section[field]"
@@ -51,7 +51,7 @@
       v-model="dialog"
       v-if="!isCenter"
     >
-      <div class="der-popup" :style="styleDiv">
+      <div class="der-popup" :style="styleDiv" :class="{ mDark: isThemeDark }">
         <form-editor-button
           v-if="isEdit && section[field]"
           :formId="section[field]"
@@ -112,7 +112,8 @@ export default {
       type: String
     },
     hiddenData: String,
-    value: false
+    value: false,
+    darkTheme: Boolean
   },
   async fetch() {
     if (this.section[this.field]) {
@@ -143,6 +144,9 @@ export default {
     },
     isCenter() {
       return this.settings.popup != "right" && this.settings.popup != "left";
+    },
+    isThemeDark() {
+      return this.darkTheme || false;
     }
   },
   methods: {

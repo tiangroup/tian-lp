@@ -8,6 +8,7 @@
           :sectionId="section.id"
           field="title"
           :itemId="item.id"
+          :key="'detitmttl' + uniqueKey"
         />
       </div>
     </div>
@@ -61,6 +62,7 @@
           :sectionId="section.id"
           field="tech_chars"
           :itemId="item.id"
+          :key="'detitmchars' + uniqueKey"
         />
       </div>
       <div
@@ -83,6 +85,7 @@
             :sectionId="section.id"
             field="description"
             :itemId="item.id"
+            :key="'detitmdesc' + uniqueKey"
           />
         </div>
       </div>
@@ -98,6 +101,7 @@
                 :sectionId="section.id"
                 field="price"
                 :itemId="item.id"
+                :key="'detitmprc' + uniqueKey"
               />
             </div>
 
@@ -108,6 +112,7 @@
                 :sectionId="section.id"
                 field="old_price"
                 :itemId="item.id"
+                :key="'detitmoprc' + uniqueKey"
               />
             </div>
           </div>
@@ -158,7 +163,8 @@ export default {
   data: function () {
     return {
       currentBigImageIndex: 1,
-      index: null
+      index: null,
+      uniqueKey: 0
     };
   },
   computed: {
@@ -200,6 +206,7 @@ export default {
   watch: {
     item: function () {
       this.currentBigImageIndex = 1;
+      this.uniqueKey += 1;
     }
   }
 };

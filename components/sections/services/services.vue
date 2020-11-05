@@ -33,11 +33,12 @@
       popupClass="popup-order"
       v-model="dialogOrderService"
       :hiddenData="currentItem.title"
+      :dark-theme="isThemeDark"
     >
       <div class="good-summary">
         <div class="good-summary__row">
           <div class="good-summary__image" v-if="currentItem.img">
-            <nuxt-img :src="$site_img(currentItem.img)" image-style="icon_sm" />
+            <img :src="$site_img(currentItem.img)" image-style="icon_sm" />
           </div>
           <div class="good-summary__body">
             <div class="good-summary__title">
@@ -90,6 +91,9 @@ export default {
     },
     view() {
       return this.section.settings.view;
+    },
+    isThemeDark() {
+      return this.section.settings.background === "dark";
     }
   },
   methods: {

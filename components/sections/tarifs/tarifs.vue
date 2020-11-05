@@ -100,6 +100,7 @@
                   field="form"
                   :hiddenData="item.title"
                   buttonClass="button-secondary"
+                  :dark-theme="isThemeDark"
                 >
                   <div class="good-summary">
                     <div class="good-summary__row">
@@ -177,6 +178,9 @@ export default {
     }),
     isEdit() {
       return this._isEdit && this.isSectionEdit(this.section);
+    },
+    isThemeDark() {
+      return this.section.settings.background === "dark";
     }
   },
   methods: {

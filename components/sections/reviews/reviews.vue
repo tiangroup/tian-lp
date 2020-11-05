@@ -189,30 +189,6 @@
               </div>
             </div>
           </div>
-
-          <!-- <v-card>
-            <v-card-title> lalalal </v-card-title>
-            <v-card-text class="der-popup__body">
-              <div class="popup-reviews">
-                <div class="reviews__body--full">
-                  <div class="reviews__person">
-                    <div class="reviews__person__name">
-                      {{ currentReview.name }}
-                    </div>
-                    <div class="reviews__person__position">
-                      {{ currentReview.position }}
-                    </div>
-                  </div>
-                  <div class="">
-                    <div class="reviews__text">{{ currentReview.text }}</div>
-                    <div class="reviews__info">
-                      <div class="reviews__date">{{ currentReview.date }}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </v-card-text>
-          </v-card> -->
         </v-dialog>
         <v-navigation-drawer
           app
@@ -247,8 +223,8 @@
             </div>
             <div class="der-popup__body">
               <div class="popup-reviews">
-                <div class="reviews__body--full">
-                  <div class="reviews__person">
+                <div class="reviews__body--full scrollable__base">
+                  <div class="reviews__person scrollable__head">
                     <div class="reviews__person__name">
                       {{ currentReview.name }}
                     </div>
@@ -256,9 +232,11 @@
                       {{ currentReview.position }}
                     </div>
                   </div>
-                  <div class="reviews__text">{{ currentReview.text }}</div>
-                  <div class="reviews__info">
-                    <div class="reviews__date">{{ currentReview.date }}</div>
+                  <div class="scrollable__block">
+                    <div class="reviews__text">{{ currentReview.text }}</div>
+                    <div class="reviews__info">
+                      <div class="reviews__date">{{ currentReview.date }}</div>
+                    </div>
                   </div>
                 </div>
               </div>

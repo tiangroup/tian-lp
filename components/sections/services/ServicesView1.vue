@@ -115,7 +115,7 @@
             >
               <div class="services__item">
                 <div class="services__image">
-                  <nuxt-img :src="$site_img(item.img)" image-style="sq_lg" />
+                  <img :src="$site_img(item.img)" image-style="sq_lg" />
                 </div>
                 <div class="services__body body-copy">
                   <div class="services__title">{{ item.title }}</div>
@@ -162,7 +162,7 @@
               class="services__navigation__image"
               :class="{ 'no-image': !item.img }"
             >
-              <nuxt-img
+              <img
                 :src="$site_img(item.img)"
                 image-style="sq_xs"
                 v-if="item.img"

@@ -158,14 +158,12 @@
       field="order_form"
       v-model="dialogOrderProduct"
       :hiddenData="currentItem.title"
+      :dark-theme="isThemeDark"
     >
       <div class="good-summary">
         <div class="good-summary__row">
           <div class="good-summary__image" v-if="currentItem.img_1">
-            <nuxt-img
-              :src="$site_img(currentItem.img_1)"
-              image-style="icon_sm"
-            />
+            <img :src="$site_img(currentItem.img_1)" image-style="icon_sm" />
           </div>
           <div class="good-summary__body">
             <div class="good-summary__title">{{ currentItem.title }}</div>
@@ -188,7 +186,10 @@
       v-if="isCenter"
       scrollable
     >
-      <div class="der-popup">
+      <div
+        class="der-popup"
+        :class="{ mDark: section.settings.background === 'dark' }"
+      >
         <div class="der-popup__body">
           <div class="der-popup__close">
             <button
@@ -232,7 +233,10 @@
       v-model="dialogDetailedItem"
       v-if="!isCenter"
     >
-      <div class="der-popup">
+      <div
+        class="der-popup"
+        :class="{ mDark: section.settings.background === 'dark' }"
+      >
         <div class="der-popup__body">
           <div class="der-popup__close">
             <button
@@ -283,7 +287,6 @@ export default {
   },
   data: () => ({
     currentItemId: "",
-    currentItem: {},
     currentSlide: 0,
     dialogDetailedItem: false,
     dialogOrderProduct: false,
@@ -382,14 +385,19 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)");
+    },
+    currentItem() {
+      const chosenItm = this.section.items.find(
+        (itm) => itm.id === this.currentItemId
+      );
+      // if (chosenItm) {
+      //   console.log(chosenItm.title);
+      // }
+      return chosenItm ? chosenItm : this.section.items[0];
+    },
+    isThemeDark() {
+      return this.section.settings.background === "dark";
     }
-    // currentItem() {
-    //   const chosenItm = this.section.items.find(
-    //     (itm) => itm.id === this.currentItemId
-    //   );
-    //   console.log(chosenItm);
-    //   return chosenItm ? chosenItm : this.section.items[0];
-    // }
   },
   methods: {
     handleInit(event, slick) {
@@ -450,11 +458,11 @@ export default {
       this.dialogOrderProduct = true;
     },
     handleDetailsCall: function (item) {
-      this.currentItem = item;
+      this.currentItemId = item.id;
       this.dialogDetailedItem = true;
     },
     handleOrderCall: function (item) {
-      this.currentItem = item;
+      this.currentItemId = item.id;
       this.dialogOrderProduct = true;
     }
   },
@@ -494,5 +502,8 @@ export default {
 }
 .products >>> a {
   color: inherit;
+}
+>>> .v-navigation-drawer--temporary {
+  z-index: 120;
 }
 </style>

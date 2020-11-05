@@ -18,7 +18,7 @@
           :class="{ 'no-image': !item.img_1 }"
           @click="$emit('call-details-dialog', item)"
         >
-          <nuxt-img
+          <img
             v-if="item.img_1"
             :src="$site_img(item.img_1)"
             image-style="sq_lg_ext"
@@ -32,6 +32,7 @@
             field="title"
             :itemId="item.id"
             v-if="isEdit"
+            :key="'itmttl' + uniqueKey"
           />
           <div
             class="clickable"
@@ -58,6 +59,7 @@
               :sectionId="section.id"
               field="price"
               :itemId="item.id"
+              :key="'itmprc' + uniqueKey"
             />
           </div>
           <div class="good__prices__old" v-if="item.old_price || isEdit">
@@ -67,6 +69,7 @@
               :sectionId="section.id"
               field="old_price"
               :itemId="item.id"
+              :key="'itmoprc' + uniqueKey"
             />
           </div>
         </div>
@@ -90,9 +93,16 @@ export default {
     section: Object,
     isEdit: Boolean
   },
-  data: () => ({}),
+  data: () => ({
+    uniqueKey: 0
+  }),
 
-  methods: {}
+  methods: {},
+  watch: {
+    item: function () {
+      this.uniqueKey += 1;
+    }
+  }
 };
 </script>
 <style scoped>
