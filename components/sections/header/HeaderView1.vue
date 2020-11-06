@@ -131,8 +131,16 @@
             popupClass="popup-callback"
           />
         </div>
-        <div class="header__menu__toggle">
-          <a :href="'#nav' + section.id" type="button" class="nav__toggle">
+        <div
+          class="header__menu__toggle"
+          v-if="$vuetify.breakpoint.width < 1024"
+        >
+          <a
+            :href="'#nav' + section.id"
+            type="button"
+            class="nav__toggle"
+            @click.stop.prevent="drawer = !drawer"
+          >
             <span class="icon-bar" role="presentation"></span>
             <span class="icon-bar" role="presentation"></span>
             <span class="icon-bar" role="presentation"></span>
@@ -141,12 +149,11 @@
         </div>
         <menu-top
           :menu="section.menu"
-          :id="'nav' + section.id"
           :section="section"
           :is-edit="isEdit"
           @call-cb-form="dialogCallback = true"
+          v-if="$vuetify.breakpoint.width > 1023"
         ></menu-top>
-        <a href="#" class="overlay" tabindex="-1" aria-hidden="true" hidden></a>
       </div>
     </div>
     <form-dialog
@@ -155,6 +162,20 @@
       field="form"
       popupClass="popup-callback"
     />
+    <v-navigation-drawer
+      v-model="drawer"
+      fixed
+      v-if="$vuetify.breakpoint.width < 1024"
+      width="25rem"
+    >
+      <menu-top
+        :menu="section.menu"
+        :id="'nav' + section.id"
+        :section="section"
+        :is-edit="isEdit"
+        @call-cb-form="dialogCallback = true"
+      ></menu-top>
+    </v-navigation-drawer>
   </div>
 </template>
 
@@ -172,6 +193,7 @@ export default {
   },
   data: () => ({
     dialogCallback: false,
+    drawer: false,
     headerHeight: 170,
     addFixedClass: false,
     bodyElm: null
@@ -234,3 +256,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.v-navigation-drawer {
+  z-index: 120;
+}
+</style>

@@ -422,8 +422,7 @@ export default {
           if (this.currentItem[imgKey]) {
             var imagesItem = {
               title: this.currentItem.title,
-              href:
-                this.$site_img(this.currentItem[imgKey]) + "?style=resize_xl",
+              href: this.$site_img(this.currentItem[imgKey], "resize_xl"),
               type: "image/jpeg"
             };
             imagesArray.push(imagesItem);

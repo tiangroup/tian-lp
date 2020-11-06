@@ -1323,23 +1323,11 @@ nav ul li,
   }
 }
 .header__menu {
-  background: #fff;
-  overflow: auto;
   padding: 4.3125rem 0 1.25rem;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  transform: translateX(100%);
-  transition: transform 0.6s;
-  z-index: 150;
 }
 @media (min-width: 768px) {
   .header__menu {
     padding-top: 2.5rem;
-    left: auto;
-    width: 55%;
   }
 }
 .header__menu__toggle {
@@ -1350,17 +1338,10 @@ nav ul li,
     display: none;
   }
   .header__menu {
-    background-color: transparent;
     flex: 0 0 100%;
     max-width: 100%;
     margin-top: 0.55rem;
-    overflow: visible;
     padding: 0 1.25rem;
-    position: relative;
-    top: 0;
-    left: 0;
-    transform: none;
-    z-index: auto;
   }
 }
 @media (min-width: 1280px) {
