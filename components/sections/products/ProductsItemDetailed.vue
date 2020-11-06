@@ -138,19 +138,6 @@
         </div>
       </div>
     </div>
-
-    <client-only>
-      <v-gallery
-        :images="currentItemImages"
-        :index="index"
-        @close="index = null"
-        v-if="!isEdit"
-        :id="'gallery' + item.id"
-        :options="{
-          closeOnSlideClick: true
-        }"
-      ></v-gallery>
-    </client-only>
   </div>
 </template>
 <script>
@@ -163,31 +150,14 @@ export default {
   data: function () {
     return {
       currentBigImageIndex: 1,
-      index: null,
       uniqueKey: 0
     };
   },
-  computed: {
-    currentItemImages() {
-      var imagesArray = [];
-      for (var i = 1; i < 5; i++) {
-        let imgKey = "img_" + i;
-        if (this.item[imgKey]) {
-          var imagesItem = {
-            title: this.item.title,
-            href: this.$site_img(this.item[imgKey]) + "?style=resize_xl",
-            type: "image/jpeg"
-          };
-          imagesArray.push(imagesItem);
-        }
-      }
-      return imagesArray;
-    }
-  },
+  computed: {},
   methods: {
     handleMainIllustrationClick() {
       if (!this.isEdit) {
-        this.index = this.currentBigImageIndex - 1;
+        this.$emit("call-gallery", this.currentBigImageIndex - 1);
       }
     },
     handleIllustrationClick: function (index) {

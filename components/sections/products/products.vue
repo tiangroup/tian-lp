@@ -163,7 +163,7 @@
       <div class="good-summary">
         <div class="good-summary__row">
           <div class="good-summary__image" v-if="currentItem.img_1">
-            <img :src="$site_img(currentItem.img_1)" image-style="icon_sm" />
+            <img :src="$site_img(currentItem.img_1, 'icon_sm')" />
           </div>
           <div class="good-summary__body">
             <div class="good-summary__title">{{ currentItem.title }}</div>
@@ -220,6 +220,7 @@
               :section="section"
               @save-details="saveItemDetails"
               @call-order-form="handleOrderFormCall"
+              @call-gallery="handleGalleryCall"
             ></products-item-detailed>
           </div>
         </div>
@@ -267,11 +268,25 @@
               :section="section"
               @save-details="saveItemDetails"
               @call-order-form="handleOrderFormCall"
+              @call-gallery="handleGalleryCall"
             ></products-item-detailed>
           </div>
         </div>
       </div>
     </v-navigation-drawer>
+
+    <client-only>
+      <v-gallery
+        :images="currentItemImages"
+        :index="index"
+        @close="index = null"
+        v-if="!isEdit"
+        :id="'gallery' + currentItem.id"
+        :options="{
+          closeOnSlideClick: true
+        }"
+      ></v-gallery>
+    </client-only>
   </div>
 </template>
 
@@ -290,6 +305,7 @@ export default {
     currentSlide: 0,
     dialogDetailedItem: false,
     dialogOrderProduct: false,
+    index: null,
     itemsToShow: 4,
     slickOptions: {
       arrows: true,
@@ -397,6 +413,24 @@ export default {
     },
     isThemeDark() {
       return this.section.settings.background === "dark";
+    },
+    currentItemImages() {
+      var imagesArray = [];
+      if (this.currentItem) {
+        for (var i = 1; i < 5; i++) {
+          let imgKey = "img_" + i;
+          if (this.currentItem[imgKey]) {
+            var imagesItem = {
+              title: this.currentItem.title,
+              href:
+                this.$site_img(this.currentItem[imgKey]) + "?style=resize_xl",
+              type: "image/jpeg"
+            };
+            imagesArray.push(imagesItem);
+          }
+        }
+      }
+      return imagesArray;
     }
   },
   methods: {
@@ -464,6 +498,9 @@ export default {
     handleOrderCall: function (item) {
       this.currentItemId = item.id;
       this.dialogOrderProduct = true;
+    },
+    handleGalleryCall(index) {
+      this.index = index;
     }
   },
   beforeUpdate: function () {
@@ -503,7 +540,8 @@ export default {
 .products >>> a {
   color: inherit;
 }
->>> .v-navigation-drawer--temporary {
+.v-navigation-drawer {
   z-index: 120;
+  background-color: transparent;
 }
 </style>

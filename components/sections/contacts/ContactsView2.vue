@@ -61,7 +61,7 @@
                     </div>
                     <a
                       :data-coords="item.coords"
-                      href
+                      href=""
                       class="department__address__link"
                       @click.prevent="showItemOnMap(getItemCoords(item.coords))"
                       v-if="view === 'view2'"
@@ -250,6 +250,7 @@ export default {
       }
     },
     handleClonedSlides(e) {
+      e.preventDefault();
       if (e.target.closest(".slick-cloned")) {
         let slideIndex = Number(
           e.target.closest(".slick-cloned").getAttribute("data-slick-index")
@@ -262,13 +263,13 @@ export default {
         }
 
         if (e.target.classList.contains("department__address__link")) {
-          this.computedRealSlides[slideId]
+          let currCoords = this.computedRealSlides[slideId]
             .querySelector(".department__address__link")
             .click();
         }
       }
     },
-    showItemOnMap(coords) {
+    showItemOnMap: function (coords) {
       if (this.myMap) {
         this.$vuetify.goTo(".contacts__map", { duration: 500 });
         this.myMap.setCenter(coords);

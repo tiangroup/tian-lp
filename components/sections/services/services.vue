@@ -38,7 +38,7 @@
       <div class="good-summary">
         <div class="good-summary__row">
           <div class="good-summary__image" v-if="currentItem.img">
-            <img :src="$site_img(currentItem.img)" image-style="icon_sm" />
+            <img :src="$site_img(currentItem.img, 'icon_sm')" />
           </div>
           <div class="good-summary__body">
             <div class="good-summary__title">
