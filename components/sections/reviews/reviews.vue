@@ -322,12 +322,14 @@ export default {
       var imagesArray = [];
       for (let n = 0; n < this.itemsCount; n++) {
         var pic = this.section.items[n];
-        var imagesItem = {
-          title: "Отзыв " + pic.name,
-          href: this.$site_img(this.pic.img, "resize_xl"),
-          type: "image/jpeg"
-        };
-        imagesArray.push(imagesItem);
+        if (pic) {
+          var imagesItem = {
+            title: "Отзыв " + pic.name,
+            href: this.$site_img(pic.img, "resize_xl"),
+            type: "image/jpeg"
+          };
+          imagesArray.push(imagesItem);
+        }
       }
       return imagesArray;
     },
@@ -464,6 +466,7 @@ export default {
   background-color: var(--separator-color);
 }
 .v-navigation-drawer {
+  background-color: transparent;
   z-index: 130;
 }
 </style>

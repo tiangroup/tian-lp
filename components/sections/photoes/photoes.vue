@@ -90,7 +90,7 @@
                     :sectionId="section.id"
                     :isEdit="false"
                   >
-                    <img :src="$site_img(item.img)" image-style="rect_lg" />
+                    <img :src="$site_img(item.img, 'rect_lg')" />
                   </div>
                 </div>
               </template>

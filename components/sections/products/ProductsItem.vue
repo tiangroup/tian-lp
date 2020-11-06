@@ -18,11 +18,7 @@
           :class="{ 'no-image': !item.img_1 }"
           @click="$emit('call-details-dialog', item)"
         >
-          <img
-            v-if="item.img_1"
-            :src="$site_img(item.img_1)"
-            image-style="sq_lg_ext"
-          />
+          <img v-if="item.img_1" :src="$site_img(item.img_1, 'sq_lg_ext')" />
         </button>
         <div class="products__title">
           <editor-text
