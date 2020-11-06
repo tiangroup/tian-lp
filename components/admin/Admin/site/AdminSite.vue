@@ -54,14 +54,17 @@
             @click="publish"
             :loading="processPublish"
             :disabled="!isPublish"
+            v-if="isPublish"
           >
             Опубликовать
             <v-icon right dark>mdi-cloud-upload</v-icon>
           </v-btn>
           <v-row>
+            <!--
             <v-col cols="12" md="4" sm="6">
               <admin-site-sites />
             </v-col>
+            -->
             <!--
             <v-col cols="12" md="4">
               <v-card>

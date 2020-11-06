@@ -47,7 +47,7 @@ export default {
     { src: "~/plugins/slick", ssr: false },
     { src: "~/plugins/vue-gallery.client.js", ssr: false },
     { src: "~/plugins/v-clipboard", ssr: false },
-    "~plugins/vue-js-modal.js"
+    { src: "~/plugins/axios.js", mode: "client" }
   ],
   /*
    ** Auto import components
@@ -150,6 +150,7 @@ export default {
       }
     },
     redirect: false,
+    resetOnError: true,
     localStorage:
       process.env.MODE_BUILD == "static"
         ? false

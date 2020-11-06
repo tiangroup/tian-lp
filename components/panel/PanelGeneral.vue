@@ -182,6 +182,7 @@
           </div>
         </div>
       </div>
+      <!--
       <div class="tuning-panel__block">
         <div class="tuning-panel__block__title mb-0">Демо панель</div>
         <div class="cells">
@@ -190,6 +191,7 @@
           </div>
         </div>
       </div>
+      -->
     </div>
   </div>
 </template>
@@ -199,7 +201,7 @@ export default {
   props: {
     sections: Array
   },
-  data: function () {
+  data: function() {
     return {
       brandColors: [
         {
@@ -298,7 +300,7 @@ export default {
     },
     colorSelected() {
       const color = this.brandColors.find(
-        (c) =>
+        c =>
           c.h == this.userColor.h &&
           c.s == this.userColor.s &&
           c.l == this.userColor.l

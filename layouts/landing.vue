@@ -1,7 +1,7 @@
 <template>
   <div id="lp" :style="colorStyle" :class="lpClass">
     <v-app v-if="$auth.loggedIn">
-      <appbar />
+      <app-bar />
       <v-main>
         <nuxt />
       </v-main>
