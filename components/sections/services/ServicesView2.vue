@@ -225,7 +225,6 @@ export default {
     },
     handleClonedSlides(e) {
       if (e.target.closest(".slick-cloned")) {
-        console.log("clone click");
         let slideIndex = Number(
           e.target.closest(".slick-cloned").getAttribute("data-slick-index")
         );
@@ -235,7 +234,6 @@ export default {
         } else if (slideIndex < 0) {
           slideId = this.computedRealSlides.length + slideIndex;
         }
-        console.log(slideId);
         if (e.target.closest(".services__action")) {
           this.computedRealSlides[slideId].querySelector(".button").click();
         }

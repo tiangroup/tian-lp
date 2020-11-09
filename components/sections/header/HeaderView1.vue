@@ -131,15 +131,12 @@
             popupClass="popup-callback"
           />
         </div>
-        <div
-          class="header__menu__toggle"
-          v-if="$vuetify.breakpoint.width < 1024"
-        >
+        <div class="header__menu__toggle">
           <a
             :href="'#nav' + section.id"
             type="button"
             class="nav__toggle"
-            @click.stop.prevent="drawer = !drawer"
+            @click.prevent="drawer = !drawer"
           >
             <span class="icon-bar" role="presentation"></span>
             <span class="icon-bar" role="presentation"></span>
@@ -147,13 +144,7 @@
             <span class="sr-only">Открыть меню</span>
           </a>
         </div>
-        <menu-top
-          :menu="section.menu"
-          :section="section"
-          :is-edit="isEdit"
-          @call-cb-form="dialogCallback = true"
-          v-if="$vuetify.breakpoint.width > 1023"
-        ></menu-top>
+        <menu-top :menu="section.menu"></menu-top>
       </div>
     </div>
     <form-dialog
@@ -162,19 +153,14 @@
       field="form"
       popupClass="popup-callback"
     />
-    <v-navigation-drawer
-      v-model="drawer"
-      fixed
-      v-if="$vuetify.breakpoint.width < 1024"
-      width="25rem"
-    >
-      <menu-top
+    <v-navigation-drawer v-model="drawer" fixed width="25rem">
+      <menu-top-mobile
         :menu="section.menu"
-        :id="'nav' + section.id"
         :section="section"
         :is-edit="isEdit"
-        @call-cb-form="dialogCallback = true"
-      ></menu-top>
+        @call-cb-form="handleFormCall"
+        @close-mobile-menu="drawer = false"
+      ></menu-top-mobile>
     </v-navigation-drawer>
   </div>
 </template>
@@ -207,6 +193,12 @@ export default {
     },
     mobileHeaderWbutton() {
       return this.headerSettings.header.mheader === "button" ? true : false;
+    },
+    isMobileNav() {
+      return this.$vuetify.breakpoint.width < 1024 || false;
+    },
+    isDesktopNav() {
+      return this.$vuetify.breakpoint.width > 1279 || false;
     }
   },
   methods: {
@@ -214,9 +206,10 @@ export default {
       const strippedString = incoming.replace(/(<([^>]+)>)/gi, "");
       return strippedString;
     },
-    toggleFixedClass() {
+    toggleFixed() {
       const top = window.pageYOffset;
-      if (top > parseInt(this.headerHeight)) {
+      console.log("desktopNav = " + this.isDesktopNav);
+      if (top > parseInt(this.headerHeight) && this.isDesktopNav) {
         this.addFixedClass = true;
         if (this.bodyElm) {
           this.bodyElm.style.paddingTop = this.headerHeight + "px";
@@ -227,6 +220,10 @@ export default {
           this.bodyElm.style.paddingTop = 0;
         }
       }
+    },
+    handleFormCall() {
+      this.drawer = false;
+      this.dialogCallback = true;
     }
   },
   mounted: function () {
@@ -235,7 +232,7 @@ export default {
     )[0].offsetHeight;
     this.bodyElm = document.getElementsByTagName("body")[0];
     if (this.fixHeader && window) {
-      window.addEventListener("scroll", this.toggleFixedClass);
+      window.addEventListener("scroll", this.toggleFixed);
     }
   },
   watch: {
@@ -243,15 +240,15 @@ export default {
       this.addFixedClass = false;
       this.bodyElm.style.paddingTop = 0;
       if (this.fixHeader && window) {
-        window.addEventListener("scroll", this.toggleFixedClass);
+        window.addEventListener("scroll", this.toggleFixed);
       } else {
-        window.removeEventListener("scroll", this.toggleFixedClass);
+        window.removeEventListener("scroll", this.toggleFixed);
       }
     }
   },
   beforeDestroy: function () {
     if (window && this.fixHeader) {
-      window.removeEventListener("scroll", this.toggleFixedClass);
+      window.removeEventListener("scroll", this.toggleFixed);
     }
   }
 };

@@ -1,11 +1,5 @@
 <template>
   <nav class="header__menu">
-    <a href="#" id="main-nav-close" class="nav__close">
-      <span class="icon-bar" role="presentation"></span>
-      <span class="icon-bar" role="presentation"></span>
-      <span class="icon-bar" role="presentation"></span>
-      <span class="sr-only">Закрыть меню</span>
-    </a>
     <ul class="primary-nav nav" ref="menu" v-resize="handleResize">
       <li
         class="primary-nav__item"
@@ -38,12 +32,6 @@
         </div>
       </li>
     </ul>
-    <menu-top-extra
-      v-if="mobileLongMenu"
-      :section="section"
-      :is-edit="isEdit"
-      @call-cb-form="$emit('call-cb-form')"
-    ></menu-top-extra>
   </nav>
 </template>
 
@@ -52,8 +40,6 @@ import { mapGetters } from "vuex";
 import _ from "lodash";
 export default {
   props: {
-    isEdit: Boolean,
-    section: Object,
     menu: Array
   },
   data: () => ({
@@ -68,7 +54,7 @@ export default {
       setTimeout(this.onResize, 100);
     }, 300),
     onResize() {
-      if (this.$refs.menu) {
+      if (this.$refs.menu && this.$vuetify.breakpoint.width > 1023) {
         const menuWidth = this.$refs.menu.clientWidth;
         const menu_items = this.$refs.menu_items;
         this.menuItems = this.items.map((item, index) => ({
@@ -86,14 +72,14 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      this.handleResize();
-    });
+    // this.$nextTick(() => {
+    //   this.handleResize();
+    // });
+    this.handleResize();
   },
   computed: {
     ...mapGetters({
-      page: "pages/page",
-      headerSettings: "sites/settings"
+      page: "pages/page"
     }),
     itemsHide() {
       return this.items.filter((item) => !item.show);
@@ -131,9 +117,6 @@ export default {
       set: function (value) {
         this.items = value;
       }
-    },
-    mobileLongMenu() {
-      return this.headerSettings.header.mmenu === "long" ? true : false;
     }
   }
 };
