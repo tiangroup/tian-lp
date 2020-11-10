@@ -89,6 +89,7 @@
                 field="form"
                 buttonClass="button-secondary"
                 popupClass="popup-callback"
+                :dark-theme="isThemeDark"
               />
             </div>
           </div>
@@ -138,7 +139,12 @@
           </div>
         </div>
         <div class="header__menu__toggle">
-          <a :href="'#nav' + section.id" type="button" class="nav__toggle">
+          <a
+            :href="'#nav' + section.id"
+            type="button"
+            class="nav__toggle"
+            @click.prevent="drawer = !drawer"
+          >
             <span class="icon-bar" role="presentation"></span>
             <span class="icon-bar" role="presentation"></span>
             <span class="icon-bar" role="presentation"></span>
@@ -147,12 +153,9 @@
         </div>
         <menu-top
           :menu="section.menu"
-          :id="'nav' + section.id"
-          :section="section"
-          :is-edit="isEdit"
-          @call-cb-form="dialogCallback = true"
+          :adjust-width="addFixedClass"
+          :dark-theme="isThemeDark"
         ></menu-top>
-        <a href="#" class="overlay" tabindex="-1" aria-hidden="true" hidden></a>
       </div>
     </div>
     <form-dialog
@@ -160,12 +163,23 @@
       :section="section"
       field="form"
       popupClass="popup-callback"
+      :dark-theme="isThemeDark"
     />
+    <v-navigation-drawer v-model="drawer" fixed width="25rem">
+      <menu-top-mobile
+        :menu="section.menu"
+        :section="section"
+        :is-edit="isEdit"
+        @call-cb-form="handleFormCall"
+        @close-mobile-menu="drawer = false"
+      ></menu-top-mobile>
+    </v-navigation-drawer>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import _ from "lodash";
 export default {
   props: {
     section: Object,
@@ -178,6 +192,7 @@ export default {
   },
   data: () => ({
     dialogCallback: false,
+    drawer: false,
     headerHeight: 170,
     addFixedClass: false,
     bodyElm: null
@@ -191,6 +206,12 @@ export default {
     },
     mobileHeaderWbutton() {
       return this.headerSettings.header.mheader === "button" ? true : false;
+    },
+    isDesktopNav() {
+      return this.$vuetify.breakpoint.width > 1279 || false;
+    },
+    isThemeDark() {
+      return this.section.settings.background === "dark";
     }
   },
   methods: {
@@ -198,9 +219,12 @@ export default {
       const strippedString = incoming.replace(/(<([^>]+)>)/gi, "");
       return strippedString;
     },
-    toggleFixedClass() {
+    toggleFixedThrottled: _.throttle(function () {
+      this.toggleFixed();
+    }, 300),
+    toggleFixed() {
       const top = window.pageYOffset;
-      if (top > parseInt(this.headerHeight)) {
+      if (top > parseInt(this.headerHeight) && this.isDesktopNav) {
         this.addFixedClass = true;
         if (this.bodyElm) {
           this.bodyElm.style.paddingTop = this.headerHeight + "px";
@@ -211,6 +235,10 @@ export default {
           this.bodyElm.style.paddingTop = 0;
         }
       }
+    },
+    handleFormCall() {
+      this.drawer = false;
+      this.dialogCallback = true;
     }
   },
   mounted: function () {
@@ -219,7 +247,7 @@ export default {
     )[0].offsetHeight;
     this.bodyElm = document.getElementsByTagName("body")[0];
     if (this.fixHeader && window) {
-      window.addEventListener("scroll", this.toggleFixedClass);
+      window.addEventListener("scroll", this.toggleFixedThrottled);
     }
   },
   watch: {
@@ -227,16 +255,21 @@ export default {
       this.addFixedClass = false;
       this.bodyElm.style.paddingTop = 0;
       if (this.fixHeader && window) {
-        window.addEventListener("scroll", this.toggleFixedClass);
+        window.addEventListener("scroll", this.toggleFixedThrottled);
       } else {
-        window.removeEventListener("scroll", this.toggleFixedClass);
+        window.removeEventListener("scroll", this.toggleFixedThrottled);
       }
     }
   },
   beforeDestroy: function () {
     if (window && this.fixHeader) {
-      window.removeEventListener("scroll", this.toggleFixedClass);
+      window.removeEventListener("scroll", this.toggleFixedThrottled);
     }
   }
 };
 </script>
+<style scoped>
+.v-navigation-drawer {
+  z-index: 120;
+}
+</style>
