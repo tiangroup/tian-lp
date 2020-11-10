@@ -82,7 +82,7 @@ export const mutations = {
 };
 
 export const actions = {
-  async nuxtServerInit({ commit }, { req }) {
+  async nuxtServerInit({ commit, dispatch }, { req }) {
     try {
       let hostname = process.env.SITE_NAME;
       if (!process.static && process.server) {
@@ -102,7 +102,11 @@ export const actions = {
           params: { name: hostname }
         });
         if (sites.length > 0) {
-          commit("sites/SET_SITE", sites[0]);
+          const site = sites[0];
+          commit("sites/SET_SITE", site);
+          if (site.demo) {
+            await dispatch("sections/loadSections");
+          }
         }
       }
     } catch (error) {

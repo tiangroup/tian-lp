@@ -15,9 +15,6 @@ export default {
       } else {
         console.log("page not found");
       }
-      if (site.demo) {
-        await store.dispatch("sections/loadSections");
-      }
     } else {
       error({
         statusCode: 404,
