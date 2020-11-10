@@ -525,6 +525,14 @@ img {
   right: 2rem;
   z-index: 1;
 }
+div:target::before {
+  display: block;
+  content: " ";
+  margin-top: -3rem;
+  height: 3rem;
+  visibility: hidden;
+  pointer-events: none;
+}
 /* grid */
 .landing__container {
   max-width: 78rem;

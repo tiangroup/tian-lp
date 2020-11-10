@@ -90,7 +90,10 @@
                     :sectionId="section.id"
                     :isEdit="false"
                   >
-                    <img :src="$site_img(item.img, 'rect_lg')" />
+                    <img
+                      :src="$site_img(item.img, 'rect_lg')"
+                      v-if="item.img"
+                    />
                   </div>
                 </div>
               </template>
@@ -172,12 +175,14 @@ export default {
       var imagesArray = [];
       for (let n = 0; n < this.itemsCount; n++) {
         var pic = this.section.items[n];
-        var imagesItem = {
-          title: pic.title,
-          href: this.$site_img(pic.img),
-          type: "image/jpeg"
-        };
-        imagesArray.push(imagesItem);
+        if (pic.img) {
+          var imagesItem = {
+            title: pic.title,
+            href: this.$site_img(pic.img, "resize_xl"),
+            type: "image/jpeg"
+          };
+          imagesArray.push(imagesItem);
+        }
       }
       return imagesArray;
     },
