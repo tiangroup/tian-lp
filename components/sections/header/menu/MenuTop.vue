@@ -1,6 +1,6 @@
 <template>
-  <nav class="header__menu">
-    <ul class="primary-nav nav" ref="menu" v-resize="handleResize">
+  <nav class="header__menu" ref="menu">
+    <ul class="primary-nav nav" v-resize="handleResize">
       <li
         class="primary-nav__item"
         v-for="item in menuItems.filter((i) => i.id)"
@@ -11,14 +11,24 @@
           item.title
         }}</a>
       </li>
-      <li class="primary-nav__reveal reveal" v-if="itemsHide.length">
-        <input class="reveal__input" type="checkbox" id="reveal-magic-3" />
-        <label class="primary-nav__reveal__toggle" for="reveal-magic-3">
-          <span class="icon-dots"></span>
-          <span class="sr-only">Показать больше</span>
-        </label>
-        <div class="reveal__content">
-          <ul class="primary-nav__extra">
+      <li class="primary-nav__item">
+        <v-menu
+          offset-y
+          content-class="overflow-auto"
+          max-height="90vh"
+          z-index="120"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <button
+              class="primary-nav__reveal__toggle"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <span class="icon-dots"></span>
+              <span class="sr-only">Показать больше</span>
+            </button>
+          </template>
+          <ul class="primary-nav__extra" :class="{ mDark: darkTheme }">
             <li
               class="primary-nav__item"
               v-for="(item, index) in itemsHide"
@@ -29,7 +39,7 @@
               }}</a>
             </li>
           </ul>
-        </div>
+        </v-menu>
       </li>
     </ul>
   </nav>
@@ -40,7 +50,9 @@ import { mapGetters } from "vuex";
 import _ from "lodash";
 export default {
   props: {
-    menu: Array
+    menu: Array,
+    adjustWidth: Boolean,
+    darkTheme: Boolean
   },
   data: () => ({
     items: []
@@ -118,6 +130,9 @@ export default {
         this.items = value;
       }
     }
+  },
+  watch: {
+    adjustWidth: "handleResize"
   }
 };
 </script>

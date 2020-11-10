@@ -806,6 +806,9 @@ img {
 .high-z {
   z-index: 120;
 }
+.visibility-hidden {
+  visibility: hidden;
+}
 .list-inline,
 .list-unstyled,
 nav ul,
@@ -1351,7 +1354,9 @@ nav ul li,
     flex: 0 0 100%;
     max-width: 100%;
     margin-top: 0.55rem;
+    overflow: hidden;
     padding: 0 1.25rem;
+    position: relative;
   }
 }
 @media (min-width: 1280px) {
@@ -1644,7 +1649,7 @@ nav ul li,
     margin-bottom: 0;
     padding-top: 0;
     padding-bottom: 0;
-    position: static;
+    position: relative;
     transform: none;
   }
   .header--fixed.header--style5 .header__menu {
@@ -1659,9 +1664,6 @@ nav ul li,
   }
   .header--fixed .primary-nav__link {
     border-bottom: 2px solid transparent;
-  }
-  .header--fixed .primary-nav {
-    margin-left: auto;
   }
   .header--fixed .primary-nav__item {
     padding-left: 0;
@@ -1852,7 +1854,9 @@ nav ul li,
   z-index: 1;
 }
 .primary-nav .primary-nav__link,
-.primary-nav .primary-nav__link:active {
+.primary-nav .primary-nav__link:active,
+.primary-nav__extra .primary-nav__link,
+.primary-nav__extra .primary-nav__link:active {
   color: inherit;
 }
 .primary-nav__link::before {
@@ -1925,10 +1929,12 @@ nav ul li,
     right: -1rem;
   }
   .primary-nav__extra {
+    list-style: none;
     padding: 1.25rem;
     text-align: left;
   }
   .primary-nav__extra .primary-nav__link {
+    margin-right: 0;
     white-space: normal;
   }
 }
@@ -4313,6 +4319,9 @@ nav ul li,
   padding-left: 1.25rem;
   padding-right: 1.25rem;
 }
+.der-popup form {
+  height: 100%;
+}
 .der-popup .scrollable__head {
   padding-top: 1.5rem;
 }
@@ -4365,11 +4374,6 @@ nav ul li,
   .popup-order .good__details {
     padding-left: 3.125rem;
     padding-right: 3.125rem;
-  }
-  .der-popup form {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
   }
   .der-popup .scrollable__foot {
     padding-bottom: 2.8125rem;
@@ -5913,7 +5917,8 @@ nav ul li,
 }
 .landing,
 .bg-primary,
-.good-summary {
+.good-summary,
+.primary-nav__extra {
   background-color: #fff;
   background-color: var(--bg-color);
   color: #303339;

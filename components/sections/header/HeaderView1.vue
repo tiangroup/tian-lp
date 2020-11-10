@@ -129,6 +129,7 @@
             field="form"
             buttonClass="button-secondary"
             popupClass="popup-callback"
+            :dark-theme="isThemeDark"
           />
         </div>
         <div class="header__menu__toggle">
@@ -144,7 +145,11 @@
             <span class="sr-only">Открыть меню</span>
           </a>
         </div>
-        <menu-top :menu="section.menu"></menu-top>
+        <menu-top
+          :menu="section.menu"
+          :adjust-width="addFixedClass"
+          :dark-theme="isThemeDark"
+        ></menu-top>
       </div>
     </div>
     <form-dialog
@@ -152,6 +157,7 @@
       :section="section"
       field="form"
       popupClass="popup-callback"
+      :dark-theme="isThemeDark"
     />
     <v-navigation-drawer v-model="drawer" fixed width="25rem">
       <menu-top-mobile
@@ -167,6 +173,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import _ from "lodash";
 export default {
   props: {
     section: Object,
@@ -194,11 +201,11 @@ export default {
     mobileHeaderWbutton() {
       return this.headerSettings.header.mheader === "button" ? true : false;
     },
-    isMobileNav() {
-      return this.$vuetify.breakpoint.width < 1024 || false;
-    },
     isDesktopNav() {
       return this.$vuetify.breakpoint.width > 1279 || false;
+    },
+    isThemeDark() {
+      return this.section.settings.background === "dark";
     }
   },
   methods: {
@@ -206,9 +213,11 @@ export default {
       const strippedString = incoming.replace(/(<([^>]+)>)/gi, "");
       return strippedString;
     },
+    toggleFixedThrottled: _.throttle(function () {
+      this.toggleFixed();
+    }, 300),
     toggleFixed() {
       const top = window.pageYOffset;
-      console.log("desktopNav = " + this.isDesktopNav);
       if (top > parseInt(this.headerHeight) && this.isDesktopNav) {
         this.addFixedClass = true;
         if (this.bodyElm) {
@@ -232,7 +241,7 @@ export default {
     )[0].offsetHeight;
     this.bodyElm = document.getElementsByTagName("body")[0];
     if (this.fixHeader && window) {
-      window.addEventListener("scroll", this.toggleFixed);
+      window.addEventListener("scroll", this.toggleFixedThrottled);
     }
   },
   watch: {
@@ -240,15 +249,15 @@ export default {
       this.addFixedClass = false;
       this.bodyElm.style.paddingTop = 0;
       if (this.fixHeader && window) {
-        window.addEventListener("scroll", this.toggleFixed);
+        window.addEventListener("scroll", this.toggleFixedThrottled);
       } else {
-        window.removeEventListener("scroll", this.toggleFixed);
+        window.removeEventListener("scroll", this.toggleFixedThrottled);
       }
     }
   },
   beforeDestroy: function () {
     if (window && this.fixHeader) {
-      window.removeEventListener("scroll", this.toggleFixed);
+      window.removeEventListener("scroll", this.toggleFixedThrottled);
     }
   }
 };

@@ -17,7 +17,7 @@
             class="ascend__link"
             title="Наверх"
             @click="goToTop"
-            v-scroll="onScroll"
+            v-scroll="onScrollThrottled"
           ></button>
         </div>
       </v-fab-transition>
@@ -170,6 +170,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import _ from "lodash";
 export default {
   props: {
     section: Object
@@ -203,6 +204,9 @@ export default {
     }
   },
   methods: {
+    onScrollThrottled: _.throttle(function (e) {
+      this.onScroll(e);
+    }, 300),
     onScroll(e) {
       if (typeof window === "undefined") return;
       const top = window.pageYOffset || e.target.scrollTop || 0;
