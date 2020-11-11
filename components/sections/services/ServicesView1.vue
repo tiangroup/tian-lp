@@ -187,7 +187,7 @@ export default {
       currentSlide: 0,
       slickOptions: {
         arrows: true,
-        dots: true,
+        dots: false,
         slidesToShow: 1,
         slidesToScroll: 1,
         draggable: false,

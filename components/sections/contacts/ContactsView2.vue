@@ -18,7 +18,7 @@
               @init="handleInit"
             >
               <div
-                class="cell"
+                class="cell department__wrap"
                 :class="{ 'position-relative': isEdit }"
                 v-for="item in section.items.filter((i) => i.id)"
                 :key="item.id"
