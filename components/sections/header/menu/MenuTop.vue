@@ -11,7 +11,7 @@
           item.title
         }}</a>
       </li>
-      <li class="primary-nav__item">
+      <li class="primary-nav__item" v-if="itemsHide.length">
         <v-menu
           offset-y
           content-class="overflow-auto"

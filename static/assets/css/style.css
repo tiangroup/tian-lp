@@ -1284,6 +1284,9 @@ nav ul li,
 .header__social {
   display: none;
 }
+.header__action {
+  min-width: 14.5rem;
+}
 @media (min-width: 1024px) {
   .header__addresses,
   .header__phones,
@@ -6625,14 +6628,6 @@ body:last-child
     box-shadow: 0 0 0 21px rgba(36, 94, 245, 0);
     box-shadow: 0 0 0 21px
       hsla(var(--hue), var(--saturation), var(--lightness), 0);
-  }
-}
-@keyframes slideDown {
-  0% {
-    transform: translateY(-150%);
-  }
-  100% {
-    transform: translateY(0%);
   }
 }
 @keyframes roundRound {

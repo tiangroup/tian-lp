@@ -174,7 +174,7 @@ export default {
         elm.scrollIntoView();
       }
     },
-    toggleSectionVisibility(section) {
+    toggleSectionVisibility: function (section) {
       this.setSectionField({
         id: section.id,
         field: "show",

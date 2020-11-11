@@ -322,7 +322,7 @@ export default {
       var imagesArray = [];
       for (let n = 0; n < this.itemsCount; n++) {
         var pic = this.section.items[n];
-        if (pic) {
+        if (pic.img) {
           var imagesItem = {
             title: "Отзыв " + pic.name,
             href: this.$site_img(pic.img, "resize_xl"),

@@ -179,7 +179,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import _ from "lodash";
 export default {
   props: {
     section: Object,
@@ -219,9 +218,6 @@ export default {
       const strippedString = incoming.replace(/(<([^>]+)>)/gi, "");
       return strippedString;
     },
-    toggleFixedThrottled: _.throttle(function () {
-      this.toggleFixed();
-    }, 300),
     toggleFixed() {
       const top = window.pageYOffset;
       if (top > parseInt(this.headerHeight) && this.isDesktopNav) {
@@ -247,7 +243,7 @@ export default {
     )[0].offsetHeight;
     this.bodyElm = document.getElementsByTagName("body")[0];
     if (this.fixHeader && window) {
-      window.addEventListener("scroll", this.toggleFixedThrottled);
+      window.addEventListener("scroll", this.toggleFixed);
     }
   },
   watch: {
@@ -255,15 +251,15 @@ export default {
       this.addFixedClass = false;
       this.bodyElm.style.paddingTop = 0;
       if (this.fixHeader && window) {
-        window.addEventListener("scroll", this.toggleFixedThrottled);
+        window.addEventListener("scroll", this.toggleFixed);
       } else {
-        window.removeEventListener("scroll", this.toggleFixedThrottled);
+        window.removeEventListener("scroll", this.toggleFixed);
       }
     }
   },
   beforeDestroy: function () {
     if (window && this.fixHeader) {
-      window.removeEventListener("scroll", this.toggleFixedThrottled);
+      window.removeEventListener("scroll", this.toggleFixed);
     }
   }
 };

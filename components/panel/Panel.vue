@@ -34,7 +34,8 @@
       v-model="showTuningPanel"
       fixed
       floating
-      overlay-opacity="0"
+      temporary
+      hide-overlay
       width="100%"
     >
       <div class="tuning" @click.self="showTuningPanel = false">
