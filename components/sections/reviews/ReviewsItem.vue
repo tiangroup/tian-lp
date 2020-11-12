@@ -43,10 +43,10 @@
           @click="$emit('change-desc', item)"
           v-if="isEdit"
         >
-          {{ truncateText(item.text, 25) || "Введите текст отзыва" }}
+          {{ truncateText(item.text, wordsNum) || "Введите текст отзыва" }}
         </div>
         <div class="reviews__text" v-else>
-          {{ truncateText(item.text, 25) }}
+          {{ truncateText(item.text, wordsNum) }}
         </div>
 
         <div class="reviews__info" v-if="isEdit">
@@ -99,6 +99,9 @@ export default {
       return this.item.date
         ? this.item.date
         : new Date().toISOString().substr(0, 10);
+    },
+    wordsNum() {
+      return this.view === "view1" ? 25 : 60;
     }
   },
   methods: {

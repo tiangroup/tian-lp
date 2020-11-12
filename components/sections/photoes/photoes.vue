@@ -39,6 +39,7 @@
                   :class="{ 'position-relative': isEdit }"
                   v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
                   :key="item.id"
+                  @click="gotoClickedSlide(itemIndex)"
                 >
                   <buttons-item
                     v-if="isEdit"
@@ -113,6 +114,7 @@ export default {
   },
   data: () => ({
     index: null,
+    itemToShow: 0,
     slickOptions: {
       arrows: true,
       dots: true,
@@ -210,7 +212,7 @@ export default {
   },
   methods: {
     showGallery: function (itemIndex) {
-      if (this.isEdit) {
+      if (this.isEdit || !this.isActiveItem(itemIndex)) {
         return;
       }
       this.index = itemIndex;
@@ -237,6 +239,21 @@ export default {
           slideId = this.computedRealSlides + slideIndex;
         }
         this.showGallery(slideId);
+      }
+    },
+
+    changeActiveItem: function (index) {
+      this.itemToShow = index;
+      this.$refs[this.slickRef].goTo(index);
+    },
+    isActiveItem(itemIndex) {
+      if (itemIndex === this.itemToShow || itemIndex === this.itemToShow + 1)
+        return true;
+      return false;
+    },
+    gotoClickedSlide: function (itemIndex) {
+      if (!this.isActiveItem(itemIndex)) {
+        this.changeActiveItem(itemIndex);
       }
     }
   },

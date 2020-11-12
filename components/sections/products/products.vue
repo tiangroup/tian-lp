@@ -72,7 +72,7 @@
             <div
               class="cells align-items-center justify-content-center justify-content-sm-between"
             >
-              <div class="cell cell-auto products__count">
+              <div class="cell products__count">
                 Товаров {{ itemsShown }} из {{ itemsCount }}
               </div>
               <div
@@ -87,9 +87,7 @@
                   <div class="button__body">{{ loadmoreText }}</div>
                 </button>
               </div>
-              <div
-                class="cell cell-auto display-none display-sm-block grow-sm-1"
-              ></div>
+              <div class="cell display-none display-sm-block grow-sm-1"></div>
             </div>
           </div>
         </div>
