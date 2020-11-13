@@ -48,7 +48,7 @@
           />
         </div>
         <div class="products__prices">
-          <div class="good__prices__current">
+          <div class="products__prices__current">
             <editor-text
               data-placeholder="000 руб."
               :text="item.price"
@@ -58,7 +58,7 @@
               :key="'itmprc' + uniqueKey"
             />
           </div>
-          <div class="good__prices__old" v-if="item.old_price || isEdit">
+          <div class="products__prices__old" v-if="item.old_price || isEdit">
             <editor-text
               data-placeholder="000 руб."
               :text="item.old_price"

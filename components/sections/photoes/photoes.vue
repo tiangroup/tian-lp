@@ -240,21 +240,6 @@ export default {
         }
         this.showGallery(slideId);
       }
-    },
-
-    changeActiveItem: function (index) {
-      this.itemToShow = index;
-      this.$refs[this.slickRef].goTo(index);
-    },
-    isActiveItem(itemIndex) {
-      if (itemIndex === this.itemToShow || itemIndex === this.itemToShow + 1)
-        return true;
-      return false;
-    },
-    gotoClickedSlide: function (itemIndex) {
-      if (!this.isActiveItem(itemIndex)) {
-        this.changeActiveItem(itemIndex);
-      }
     }
   },
   beforeUpdate: function () {

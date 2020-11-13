@@ -45,6 +45,7 @@
                   @change-date="updateReviewDate"
                   @show-review="showReview"
                   @show-gallery="showGallery(itemIndex)"
+                  @click="gotoClickedSlide(itemIndex)"
                   :key="item.id"
                   :item="item"
                   :sectionId="section.id"
@@ -265,6 +266,7 @@ export default {
     dialogReviewDate: false,
     dialogReviewDesc: false,
     index: null,
+    itemToShow: 0,
     modalReviewDate: false,
     slickOptions: {
       arrows: true,
@@ -285,7 +287,7 @@ export default {
           }
         },
         {
-          breakpoint: 576,
+          breakpoint: 1024,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -404,7 +406,7 @@ export default {
       this.dialogShowReview = true;
     },
     showGallery: function (itemIndex) {
-      if (!this.isEdit) {
+      if (!this.isEdit && this.isActiveItem(itemIndex)) {
         this.index = itemIndex;
       }
     },
@@ -441,6 +443,20 @@ export default {
             .querySelector(".reviews__readmore")
             .click();
         }
+      }
+    },
+
+    changeActiveItem: function (index) {
+      this.itemToShow = index;
+      this.$refs[this.slickRef].goTo(index);
+    },
+    isActiveItem(itemIndex) {
+      if (itemIndex === this.itemToShow) return true;
+      return false;
+    },
+    gotoClickedSlide: function (itemIndex) {
+      if (!this.isActiveItem(itemIndex) && this.view === "view2") {
+        this.changeActiveItem(itemIndex);
       }
     }
   },

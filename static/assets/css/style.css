@@ -2063,7 +2063,7 @@ nav ul li,
     width: 0.6875rem;
   }
   .header--mStyle2 .header__phones .connect__instance {
-    min-width: 7rem;
+    min-width: 7.25rem;
   }
 }
 .addresses {
@@ -2843,11 +2843,22 @@ nav ul li,
     padding-left: calc((100vw - 78rem) / 2);
     padding-right: calc((100vw - 78rem) / 2);
   }
-  .gallery .slick-slide {
+  .gallery .slick-slide,
+  .reviews__list--style2 .slick-slide {
     opacity: 0.5;
   }
-  .gallery .slick-active {
+  .gallery .slick-active,
+  .reviews__list--style2 .slick-active {
     opacity: 1;
+  }
+  .reviews__list--style2 .slick-slide {
+    opacity: 0.25;
+  }
+  .reviews__list--style2 .slick-active {
+    opacity: 1;
+  }
+  .reviews__list--style2 .slick-slide .reviews__image-wrap:hover::after {
+    content: none;
   }
 }
 .services__list {
@@ -2897,17 +2908,6 @@ nav ul li,
   flex: 1 0 0%;
   padding-top: 1.875rem;
 }
-.services--style1 .services__body {
-  display: flex;
-  flex-direction: column;
-}
-.services--style2 .services__body {
-  padding: 0;
-  width: 100%;
-}
-.services--style1 .services__item-wrap {
-  min-height: 15rem;
-}
 .services__item {
   padding-bottom: 1.875rem;
 }
@@ -2942,8 +2942,9 @@ nav ul li,
 .services__navigation {
   display: flex;
   justify-content: center;
-  margin-left: -5px;
-  margin-right: -5px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 201px;
 }
 .services__navigation__item {
   padding: 0 5px;
@@ -2981,6 +2982,24 @@ nav ul li,
 .services__navigation__item:focus .services__navigation__image::after,
 .slick-current .services__navigation__image::after {
   content: none;
+}
+.services--style1 .services__item-wrap {
+  min-height: 15rem;
+}
+.services--style1 .services__item {
+  flex-direction: column;
+}
+.services--style1 .services__image {
+  flex: 0 0 auto;
+}
+.services--style1 .services__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0%;
+}
+.services--style2 .services__body {
+  padding: 0;
+  width: 100%;
 }
 @media (min-width: 576px) {
   .services__item {
@@ -3020,7 +3039,7 @@ nav ul li,
   }
   .services__navigation {
     max-width: 469px;
-    margin-left: auto;
+    margin-right: -5px;
   }
   .services__navigation .slick-list {
     width: 100%;
@@ -3462,6 +3481,9 @@ nav ul li,
   font-size: 0.8125rem;
   letter-spacing: 0.1px;
   opacity: 0.7;
+}
+.reviews__person__position {
+  min-height: 1.21875rem;
 }
 .reviews__text,
 .reviews__readmore {
@@ -4725,17 +4747,15 @@ nav ul li,
   line-height: 1.5;
 }
 .contacts .connect__icon {
+  align-self: flex-start;
   flex-basis: 1rem;
   height: 1.125rem;
   width: 1rem;
+  margin-top: 0.4rem;
   margin-right: 0.875rem;
 }
 .contacts__phones {
   margin-bottom: 1.875rem;
-}
-.contacts__phones .connect__icon {
-  align-self: flex-start;
-  margin-top: 0.25rem;
 }
 .messenger__list {
   margin-bottom: -1rem;
@@ -4888,10 +4908,6 @@ nav ul li,
   }
   .contacts__phones {
     margin-bottom: 2.4rem;
-  }
-  .contacts__phones .connect__icon {
-    align-self: center;
-    margin-top: 0;
   }
   .contacts__phones .connect__instances {
     display: flex;
