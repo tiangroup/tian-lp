@@ -45,7 +45,7 @@
                   @change-date="updateReviewDate"
                   @show-review="showReview"
                   @show-gallery="showGallery(itemIndex)"
-                  @click="gotoClickedSlide(itemIndex)"
+                  @slide-change="gotoClickedSlide(itemIndex)"
                   :key="item.id"
                   :item="item"
                   :sectionId="section.id"
@@ -432,6 +432,8 @@ export default {
           slideId = this.computedRealSlides.length + slideIndex;
         }
 
+        this.gotoClickedSlide(slideId);
+
         if (e.target.closest(".reviews__image-wrap")) {
           this.computedRealSlides[slideId]
             .querySelector(".reviews__image-wrap")
@@ -457,6 +459,7 @@ export default {
     gotoClickedSlide: function (itemIndex) {
       if (!this.isActiveItem(itemIndex) && this.view === "view2") {
         this.changeActiveItem(itemIndex);
+        return;
       }
     }
   },

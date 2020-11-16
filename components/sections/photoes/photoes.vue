@@ -212,7 +212,7 @@ export default {
   },
   methods: {
     showGallery: function (itemIndex) {
-      if (this.isEdit || !this.isActiveItem(itemIndex)) {
+      if (this.isEdit && !this.isActiveItem(itemIndex)) {
         return;
       }
       this.index = itemIndex;
@@ -232,6 +232,11 @@ export default {
         let slideIndex = Number(
           e.target.closest(".slick-cloned").getAttribute("data-slick-index")
         );
+
+        if (this.$vuetify.breakpoint.width > 1279) {
+          this.gotoClickedSlide(slideIndex);
+          return;
+        }
         let slideId = 0;
         if (slideIndex > 0) {
           slideId = slideIndex % this.computedRealSlides;
@@ -239,6 +244,22 @@ export default {
           slideId = this.computedRealSlides + slideIndex;
         }
         this.showGallery(slideId);
+      }
+    },
+
+    changeActiveItem: function (index) {
+      this.itemToShow = index;
+      this.$refs[this.slickRef].goTo(index);
+    },
+    isActiveItem(itemIndex) {
+      if (itemIndex === this.itemToShow || itemIndex === this.itemToShow + 1)
+        return true;
+      return false;
+    },
+    gotoClickedSlide: function (itemIndex) {
+      if (!this.isActiveItem(itemIndex)) {
+        this.changeActiveItem(itemIndex);
+        return;
       }
     }
   },

@@ -1,5 +1,9 @@
 <template>
-  <div class="reviews__item-wrap cell" :class="{ 'position-relative': isEdit }">
+  <div
+    class="reviews__item-wrap cell"
+    :class="{ 'position-relative': isEdit }"
+    @click="$emit('slide-change')"
+  >
     <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="sectionId" />
     <div class="reviews__item h-100">
       <div

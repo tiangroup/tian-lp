@@ -2852,7 +2852,7 @@ nav ul li,
     opacity: 1;
   }
   .reviews__list--style2 .slick-slide {
-    opacity: 0.25;
+    opacity: 0.75;
   }
   .reviews__list--style2 .slick-active {
     opacity: 1;
