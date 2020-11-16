@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title>Архив сайта</v-card-title>
     <v-card-text>
-      Создать и скачать сайт в архиве
+      Скачать сайт в архиве
       <v-select :items="['tar.gz', 'zip']" v-model="archive_type"></v-select>
     </v-card-text>
     <v-card-actions>

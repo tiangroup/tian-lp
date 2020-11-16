@@ -4,11 +4,12 @@
       <v-toolbar-title>Сайт</v-toolbar-title>
     </v-toolbar>
     <v-tabs>
-      <v-tab>Информация</v-tab>
-      <v-tab>Публикации</v-tab>
-      <v-tab-item>
+      <v-tab v-if="isPublish">Публикация</v-tab>
+      <v-tab>Архив</v-tab>
+      <v-tab-item v-if="isPublish">
         <v-container fluid>
           <v-row>
+            <!--
             <v-col cols="12" md="4" sm="6">
               <v-card>
                 <v-list dense>
@@ -44,11 +45,16 @@
                 </v-list>
               </v-card>
             </v-col>
+            -->
+            <v-col cols="12" md="4" sm="6" v-if="isPublish">
+              <admin-site-hosting />
+            </v-col>
           </v-row>
         </v-container>
       </v-tab-item>
       <v-tab-item>
         <v-container fluid>
+          <!--
           <v-btn
             color="primary"
             @click="publish"
@@ -59,12 +65,14 @@
             Опубликовать
             <v-icon right dark>mdi-cloud-upload</v-icon>
           </v-btn>
+          -->
           <v-row>
             <!--
             <v-col cols="12" md="4" sm="6">
               <admin-site-sites />
             </v-col>
             -->
+
             <!--
             <v-col cols="12" md="4">
               <v-card>
