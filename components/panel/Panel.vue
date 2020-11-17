@@ -215,4 +215,9 @@ export default {
 .v-application .tuning >>> a {
   color: inherit;
 }
+@media (max-width: 575px) {
+  .v-tabs {
+    display: block;
+  }
+}
 </style>

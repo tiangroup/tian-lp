@@ -1,15 +1,10 @@
 <template>
-  <div
-    class="reviews__item-wrap cell"
-    :class="{ 'position-relative': isEdit }"
-    @click="$emit('slide-change')"
-  >
+  <div class="reviews__item-wrap cell" :class="{ 'position-relative': isEdit }">
     <buttons-item v-if="isEdit" :itemId="item.id" :sectionId="sectionId" />
     <div class="reviews__item h-100">
       <div
         class="reviews__image-wrap"
         :class="{ 'pic-enlarge': !isEdit }"
-        @click="$emit('show-gallery')"
         v-if="view === 'view2'"
       >
         <image-item
@@ -42,11 +37,7 @@
           </div>
         </div>
 
-        <div
-          class="reviews__text"
-          @click="$emit('change-desc', item)"
-          v-if="isEdit"
-        >
+        <div class="reviews__text" v-if="isEdit">
           {{ truncateText(item.text, wordsNum) || "Введите текст отзыва" }}
         </div>
         <div class="reviews__text" v-else>
@@ -58,15 +49,10 @@
             :value="formatDate(computedReviewDate)"
             label="Дата отзыва"
             readonly
-            @click="$emit('change-date', item)"
           ></v-text-field>
         </div>
         <div class="reviews__info align-items-center" v-else>
-          <button
-            class="reviews__readmore"
-            v-if="isCropped"
-            @click="$emit('show-review', item)"
-          >
+          <button class="reviews__readmore" v-if="isCropped">
             Читать полностью
             <svg
               width="5"
@@ -119,7 +105,7 @@ export default {
         return textToTruncate;
       }
       this.isCropped = true;
-      return currentWords.slice(0, words + 1).join(" ");
+      return currentWords.slice(0, words + 1).join(" ") + "...";
     },
     formatDate(dateToFormat) {
       const [year, month, day] = dateToFormat.split("-");

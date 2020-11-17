@@ -37,9 +37,8 @@
                 <div
                   class="gallery__item"
                   :class="{ 'position-relative': isEdit }"
-                  v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
+                  v-for="item in section.items.filter((i) => i.id)"
                   :key="item.id"
-                  @click="gotoClickedSlide(itemIndex)"
                 >
                   <buttons-item
                     v-if="isEdit"
@@ -49,7 +48,6 @@
                   <div
                     class="gallery__link"
                     :class="{ 'pic-enlarge': !isEdit }"
-                    @click="showGallery(itemIndex)"
                   >
                     <image-item
                       divClass="gallery__image"
@@ -211,10 +209,7 @@ export default {
     }
   },
   methods: {
-    showGallery: function (itemIndex) {
-      if (this.isEdit && !this.isActiveItem(itemIndex)) {
-        return;
-      }
+    showGallery(itemIndex) {
       this.index = itemIndex;
     },
     handleInit(event, slick) {
@@ -224,43 +219,33 @@ export default {
       if (!this.isEdit) {
         document
           .getElementById(this.section.id)
-          .addEventListener("click", this.handleClonedSlides);
+          .addEventListener("click", this.handleSlideClick);
       }
     },
-    handleClonedSlides(e) {
-      if (e.target.closest(".slick-cloned")) {
-        let slideIndex = Number(
-          e.target.closest(".slick-cloned").getAttribute("data-slick-index")
-        );
-
-        if (this.$vuetify.breakpoint.width > 1279) {
-          this.gotoClickedSlide(slideIndex);
-          return;
+    handleSlideClick(e) {
+      let slideItm = e.target.closest(".slick-slide");
+      if (slideItm) {
+        let slideIndex = this.getRealIndex(slideItm);
+        if (slideItm.classList.contains("slick-active")) {
+          this.showGallery(slideIndex);
+        } else if (this.$refs[this.slickRef]) {
+          let slideNum = slideItm.getAttribute("data-slick-index");
+          this.$refs[this.slickRef].goTo(slideNum);
         }
+      }
+    },
+    getRealIndex(elm) {
+      let slideIndex = Number(elm.getAttribute("data-slick-index"));
+      if (elm.classList.contains("slick-cloned")) {
         let slideId = 0;
         if (slideIndex > 0) {
           slideId = slideIndex % this.computedRealSlides;
         } else if (slideIndex < 0) {
           slideId = this.computedRealSlides + slideIndex;
         }
-        this.showGallery(slideId);
+        return slideId;
       }
-    },
-
-    changeActiveItem: function (index) {
-      this.itemToShow = index;
-      this.$refs[this.slickRef].goTo(index);
-    },
-    isActiveItem(itemIndex) {
-      if (itemIndex === this.itemToShow || itemIndex === this.itemToShow + 1)
-        return true;
-      return false;
-    },
-    gotoClickedSlide: function (itemIndex) {
-      if (!this.isActiveItem(itemIndex)) {
-        this.changeActiveItem(itemIndex);
-        return;
-      }
+      return slideIndex;
     }
   },
   beforeUpdate: function () {
@@ -273,7 +258,7 @@ export default {
       if (document.getElementById(this.section.id) && !this.isEdit) {
         document
           .getElementById(this.section.id)
-          .removeEventListener("click", this.handleClonedSlides);
+          .removeEventListener("click", this.handleSlideClick);
       }
     }
   }

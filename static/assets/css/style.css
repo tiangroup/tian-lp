@@ -3492,12 +3492,12 @@ nav ul li,
 .reviews__text {
   line-height: 1.55;
   margin-bottom: 0.625rem;
-  max-height: 16rem;
+  /* max-height: 16rem;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 11;
   -webkit-box-orient: vertical;
-  line-clamp: 11;
+  line-clamp: 11; */
 }
 .reviews__readmore {
   display: block;
@@ -3625,9 +3625,9 @@ nav ul li,
     letter-spacing: 0.1px;
     line-height: 1.4;
     margin-bottom: 1.25rem;
-    max-height: 6.25rem;
+    /* max-height: 6.25rem;
     -webkit-line-clamp: 4;
-    line-clamp: 4;
+    line-clamp: 4; */
   }
   .reviews__date {
     order: 1;
@@ -3646,18 +3646,18 @@ nav ul li,
   .reviews__list--style2 .reviews__body {
     padding-left: 2.1875rem;
   }
-  .reviews__list--style2 .reviews__text {
+  /* .reviews__list--style2 .reviews__text {
     max-height: 11.025rem;
     -webkit-line-clamp: 7;
     line-clamp: 7;
-  }
+  } */
 }
 @media (min-width: 1024px) {
-  .reviews__text {
+  /* .reviews__text {
     max-height: 9.375rem;
     -webkit-line-clamp: 6;
     line-clamp: 6;
-  }
+  } */
   .reviews__list--style2 .reviews__item {
     padding: 2.5rem;
   }
@@ -3681,7 +3681,7 @@ nav ul li,
   .reviews__list--style2 .reviews__text {
     font-size: 1.25rem;
     font-weight: 300;
-    max-height: 12.25rem;
+    /* max-height: 12.25rem; */
     letter-spacing: 0.2px;
   }
 }
@@ -3694,11 +3694,11 @@ nav ul li,
     padding-top: 2.9375rem;
     padding-bottom: 2.6875rem;
   }
-  .reviews__text {
+  /* .reviews__text {
     max-height: 6.25rem;
     -webkit-line-clamp: 4;
     line-clamp: 4;
-  }
+  } */
 }
 .about__wrap::after {
   content: "";

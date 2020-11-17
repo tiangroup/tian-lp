@@ -40,12 +40,7 @@
                 :key="slickKey"
               >
                 <reviews-item
-                  v-for="(item, itemIndex) in section.items.filter((i) => i.id)"
-                  @change-desc="updateReviewDesc"
-                  @change-date="updateReviewDate"
-                  @show-review="showReview"
-                  @show-gallery="showGallery(itemIndex)"
-                  @slide-change="gotoClickedSlide(itemIndex)"
+                  v-for="item in section.items.filter((i) => i.id)"
                   :key="item.id"
                   :item="item"
                   :sectionId="section.id"
@@ -355,11 +350,6 @@ export default {
     },
     itemsCount() {
       return this.section.items.length;
-    },
-    computedRealSlides() {
-      return document
-        .getElementById(this.section.id)
-        .querySelectorAll(".slick-slide:not(.slick-cloned)");
     }
   },
   methods: {
@@ -405,10 +395,8 @@ export default {
       this.currentReview.text = item.text;
       this.dialogShowReview = true;
     },
-    showGallery: function (itemIndex) {
-      if (!this.isEdit && this.isActiveItem(itemIndex)) {
-        this.index = itemIndex;
-      }
+    showGallery(itemIndex) {
+      this.index = itemIndex;
     },
     handleInit(event, slick) {
       if (this.currentSlide) {
@@ -417,50 +405,48 @@ export default {
       if (!this.isEdit) {
         document
           .getElementById(this.section.id)
-          .addEventListener("click", this.handleClonedSlides);
+          .addEventListener("click", this.handleSlideClick);
       }
     },
-    handleClonedSlides(e) {
-      if (e.target.closest(".slick-cloned")) {
-        let slideIndex = Number(
-          e.target.closest(".slick-cloned").getAttribute("data-slick-index")
-        );
+    handleSlideClick(e) {
+      let slideItm = e.target.closest(".slick-slide");
+      if (slideItm) {
+        let slideIndex = this.getRealIndex(slideItm);
+        if (slideItm.classList.contains("slick-active")) {
+          if (e.target.closest(".pic-enlarge")) {
+            this.showGallery(slideIndex);
+            return;
+          }
+          if (e.target.closest(".reviews__text") && this.isEdit) {
+            this.updateReviewDesc(this.section.items[slideIndex]);
+            return;
+          }
+          if (e.target.closest(".reviews__info") && this.isEdit) {
+            this.updateReviewDate(this.section.items[slideIndex]);
+            return;
+          }
+          if (e.target.closest(".reviews__info")) {
+            this.showReview(this.section.items[slideIndex]);
+            return;
+          }
+        } else if (this.$refs[this.slickRef]) {
+          let slideNum = slideItm.getAttribute("data-slick-index");
+          this.$refs[this.slickRef].goTo(slideNum);
+        }
+      }
+    },
+    getRealIndex(elm) {
+      let slideIndex = Number(elm.getAttribute("data-slick-index"));
+      if (elm.classList.contains("slick-cloned")) {
         let slideId = 0;
         if (slideIndex > 0) {
-          slideId = slideIndex % this.computedRealSlides.length;
+          slideId = slideIndex % this.itemsCount;
         } else if (slideIndex < 0) {
-          slideId = this.computedRealSlides.length + slideIndex;
+          slideId = this.itemsCount + slideIndex;
         }
-
-        this.gotoClickedSlide(slideId);
-
-        if (e.target.closest(".reviews__image-wrap")) {
-          this.computedRealSlides[slideId]
-            .querySelector(".reviews__image-wrap")
-            .click();
-        }
-
-        if (e.target.classList.contains("reviews__readmore")) {
-          this.computedRealSlides[slideId]
-            .querySelector(".reviews__readmore")
-            .click();
-        }
+        return slideId;
       }
-    },
-
-    changeActiveItem: function (index) {
-      this.itemToShow = index;
-      this.$refs[this.slickRef].goTo(index);
-    },
-    isActiveItem(itemIndex) {
-      if (itemIndex === this.itemToShow) return true;
-      return false;
-    },
-    gotoClickedSlide: function (itemIndex) {
-      if (!this.isActiveItem(itemIndex) && this.view === "view2") {
-        this.changeActiveItem(itemIndex);
-        return;
-      }
+      return slideIndex;
     }
   },
   beforeUpdate: function () {
@@ -473,7 +459,7 @@ export default {
       if (document.getElementById(this.section.id) && !this.isEdit) {
         document
           .getElementById(this.section.id)
-          .removeEventListener("click", this.handleClonedSlides);
+          .removeEventListener("click", this.handleSlideClick);
       }
     }
   }

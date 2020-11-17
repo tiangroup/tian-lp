@@ -1,7 +1,7 @@
 <template>
   <div class="landing" :class="landingClass">
     <sections
-      v-for="section in page.sections.filter(s => s.id)"
+      v-for="section in page.sections.filter((s) => s.id)"
       :key="section.id"
       :section="section"
     />
@@ -10,6 +10,8 @@
     </div>
 
     <panel v-if="site.demo || isEdit" :sections="page.sections"></panel>
+
+    <notes></notes>
 
     <overlay v-if="isEdit" />
 
