@@ -10,11 +10,8 @@ module.exports = async (req, res, next) => {
       }
     });
     req.userData = data;
-    res.set("Access-Control-Allow-Origin", "*");
-    /*res.set(
-      "Access-Control-Allow-Headers",
-      "origin, content-type, accept"
-    );*/
+    // res.set("Access-Control-Allow-Origin", "*");
+
     next();
   } catch (error) {
     return res.status(401).json({

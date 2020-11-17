@@ -25,6 +25,7 @@ app.use(
   })
 );
 
+// получение заполненной формы формы и отправка увеломления
 app.post("/", async (req, res) => {
   try {
     // получение формы
@@ -140,6 +141,7 @@ app.post("/", async (req, res) => {
   }
 });
 
+//  получение форм сайта по id сайта
 app.get("/:id", checkAuth, async (req, res) => {
   try {
     const { id: user_id } = req.userData;
@@ -158,6 +160,7 @@ app.get("/:id", checkAuth, async (req, res) => {
   }
 });
 
+// получение списка заявок формы ?form=id
 app.get("/items/list", checkAuth, async (req, res) => {
   try {
     const { id: user_id } = req.userData;
@@ -177,6 +180,7 @@ app.get("/items/list", checkAuth, async (req, res) => {
   }
 });
 
+// получение количества заявок формы ?form=id
 app.get("/items/count", checkAuth, async (req, res) => {
   try {
     const { id: user_id } = req.userData;

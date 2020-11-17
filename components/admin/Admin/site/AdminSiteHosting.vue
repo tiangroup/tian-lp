@@ -72,6 +72,7 @@ export default {
       if (this.sites.domain) {
         hrefs = this.sites.domain
           .split(" ")
+          .filter(d => d != "")
           .map(d => (this.sites.https ? `https://${d}` : `http://${d}`));
       }
       return hrefs;

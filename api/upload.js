@@ -2,7 +2,6 @@ const express = require("express");
 const axios = require("axios");
 const fileUpload = require("express-fileupload");
 const path = require("path");
-//const uuid = require("node-uuid");
 const fs = require("fs");
 const bodyParser = require("body-parser");
 const checkAuth = require("./middleware/check-auth");
@@ -39,21 +38,9 @@ app.post("/image", checkAuth, async (req, res) => {
       const image = req.files.image;
 
       if (image.mimetype.indexOf("image/") === 0) {
-        //Use the mv() method to place the file in upload directory (i.e. "uploads")
-        /*const filename =
-        Math.floor(Math.random() * 1000) +
-        "/" +
-        Math.floor(Math.random() * 1000) +
-        "/" +
-        uuid.v4() +
-        path.extname(image.name).toLowerCase();
-        image.mv("./static/uploads/" + filename);*/
-
-        //const catalog = req.body.catalog;
         const catalog = await getCatalog(req);
 
-        let filename =
-          /*uuid.v4()*/ random_gen(7) + path.extname(image.name).toLowerCase();
+        let filename = random_gen(7) + path.extname(image.name).toLowerCase();
         if (req.body.path) {
           filename = req.body.path + "/" + filename;
         }
@@ -93,37 +80,12 @@ app.post("/image", checkAuth, async (req, res) => {
   }
 });
 
-async function downloadImage(url, file) {
-  var dir = path.dirname(file);
-  fs.mkdirSync(dir, { recursive: true });
-  const writer = fs.createWriteStream(file);
-
-  const response = await axios({
-    url,
-    method: "GET",
-    responseType: "stream"
-  });
-
-  response.data.pipe(writer);
-
-  return new Promise((resolve, reject) => {
-    response.data.on("end", () => {
-      resolve();
-    });
-
-    response.data.on("error", () => {
-      reject();
-    });
-  });
-}
-
 // загрузка изображения по ссылке
 app.post("/image-link", checkAuth, async (req, res) => {
   try {
     const image_link = req.body.image_link;
 
-    let filename =
-      /*uuid.v4()*/ random_gen(7) + path.extname(image_link).toLowerCase();
+    let filename = random_gen(7) + path.extname(image_link).toLowerCase();
 
     if (req.body.path) {
       filename = req.body.path + "/" + filename;
@@ -164,7 +126,6 @@ app.post("/image-link", checkAuth, async (req, res) => {
 // удаление картинки
 app.post("/image-remove", checkAuth, async (req, res) => {
   const image = req.body.image;
-  //const catalog = req.body.catalog;
   const catalog = await getCatalog(req);
   let upload_dir = "content";
   if (req.body.upload === "static") {
@@ -234,6 +195,31 @@ module.exports = {
   path: "/api/upload",
   handler: app
 };
+
+// загрузка изображения по ссылке
+async function downloadImage(url, file) {
+  var dir = path.dirname(file);
+  fs.mkdirSync(dir, { recursive: true });
+  const writer = fs.createWriteStream(file);
+
+  const response = await axios({
+    url,
+    method: "GET",
+    responseType: "stream"
+  });
+
+  response.data.pipe(writer);
+
+  return new Promise((resolve, reject) => {
+    response.data.on("end", () => {
+      resolve();
+    });
+
+    response.data.on("error", () => {
+      reject();
+    });
+  });
+}
 
 // получение папки сайта для загрузок
 async function getCatalog(req) {
