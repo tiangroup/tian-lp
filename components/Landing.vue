@@ -11,8 +11,6 @@
 
     <panel v-if="site.demo || isEdit" :sections="page.sections"></panel>
 
-    <notes></notes>
-
     <overlay v-if="isEdit" />
 
     <dialog-editor-source v-if="isEdit" />
