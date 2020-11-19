@@ -10,8 +10,10 @@
     <div class="lnotice__item">
       <div class="lnotice__text">
         Просматривая этот сайт, вы соглашаетесь с
-        <a href="">политикой конфиденциальности</a> и соглашаетесь на
-        использование файлов cookie
+        <a @click.prevent="$forms.licence(true)"
+          >политикой конфиденциальности</a
+        >
+        и соглашаетесь на использование файлов cookie
       </div>
 
       <div class="lnotice__action">
@@ -51,6 +53,9 @@ export default {
 };
 </script>
 <style>
+.v-snack {
+  z-index: 200 !important;
+}
 .v-snack__content {
   padding: 0;
 }
