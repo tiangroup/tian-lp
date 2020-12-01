@@ -4513,6 +4513,9 @@ nav ul li,
   position: relative;
   width: 100%;
 }
+.illustrations__image:hover {
+  cursor: pointer;
+}
 .good__images,
 .good__chars,
 .illustrations__item--main {
