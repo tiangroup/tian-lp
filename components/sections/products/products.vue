@@ -231,6 +231,7 @@
       :right="settings.popup == 'right'"
       v-model="dialogDetailedItem"
       v-if="!isCenter"
+      :stateless="keepOpen"
     >
       <div
         class="der-popup"
@@ -277,7 +278,7 @@
       <v-gallery
         :images="currentItemImages"
         :index="index"
-        @close="index = null"
+        @close="closeGallery"
         v-if="!isEdit"
         :id="'gallery' + currentItem.id"
         :options="{
@@ -305,6 +306,7 @@ export default {
     dialogOrderProduct: false,
     index: null,
     itemsToShow: 4,
+    keepOpen: false,
     slickOptions: {
       arrows: true,
       dots: true,
@@ -498,6 +500,11 @@ export default {
     },
     handleGalleryCall(index) {
       this.index = index;
+    },
+    closeGallery() {
+      this.index = null;
+      this.keepOpen = true;
+      setTimeout(() => (this.keepOpen = false), 300);
     }
   },
   beforeUpdate: function () {
