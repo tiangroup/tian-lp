@@ -499,6 +499,7 @@ export default {
       this.dialogOrderProduct = true;
     },
     handleGalleryCall(index) {
+      this.keepOpen = true;
       this.index = index;
     },
     closeGallery() {
