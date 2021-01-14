@@ -1304,7 +1304,7 @@ nav ul li,
     padding-right: 1rem;
   }
   .header__logo {
-    flex: 0 0 25%;
+    flex: 1 0 25%;
     flex-wrap: wrap;
     max-width: 25%;
   }
@@ -1336,7 +1336,7 @@ nav ul li,
   }
   .header__logo {
     flex-basis: 35%;
-    max-width: 35%;
+    max-width: 45%;
     margin-bottom: 0; /* compensate for mb on elements to properly center align in row */
   }
 }
@@ -1729,7 +1729,7 @@ nav ul li,
   height: 2.5rem;
   width: 2.5rem;
   overflow: hidden;
-  margin-right: 0.25rem;
+  margin-right: 0.5rem;
 }
 .logo__image:first-child:last-child {
   width: auto;
@@ -1758,7 +1758,6 @@ nav ul li,
   font-weight: 800;
   letter-spacing: 0.1px;
   line-height: 1.15;
-  text-transform: uppercase;
 }
 .header--editable .logo__text {
   min-width: 10rem;
@@ -1768,10 +1767,11 @@ nav ul li,
     flex-basis: 3.125rem;
     height: 3.125rem;
     width: 3.125rem;
+    margin-right: 0.6875rem;
   }
   .logo__text {
     font-size: 1.125rem;
-    max-width: 12rem;
+    max-width: 10rem;
   }
 }
 @media (min-width: 1024px) {
@@ -1779,7 +1779,7 @@ nav ul li,
     flex-basis: 3.9375rem;
     height: 3.9375rem;
     width: 3.9375rem;
-    margin-right: 4%;
+    margin-right: 0.9375rem;
   }
   .logo__text {
     font-size: 1.5rem;
@@ -1787,8 +1787,7 @@ nav ul li,
 }
 @media (min-width: 1280px) {
   .logo__link {
-    max-width: 55%;
-    margin-right: 5%;
+    margin-right: 1.875rem;
   }
   .logo__link:first-child:last-child {
     max-width: none;
