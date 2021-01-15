@@ -161,7 +161,7 @@
       <div class="good-summary">
         <div class="good-summary__row">
           <div class="good-summary__image" v-if="currentItem.img_1">
-            <img :src="$site_img(currentItem.img_1, 'icon_sm')" />
+            <img :src="$site_img(currentItem.img_1, 'sq_lg_ext')" />
           </div>
           <div class="good-summary__body">
             <div class="good-summary__title">{{ currentItem.title }}</div>
@@ -301,6 +301,7 @@ export default {
   },
   data: () => ({
     currentItemId: "",
+    currentItemImg: "",
     currentSlide: 0,
     dialogDetailedItem: false,
     dialogOrderProduct: false,
@@ -488,6 +489,7 @@ export default {
     },
     handleOrderFormCall() {
       this.dialogDetailedItem = false;
+      this.currentItemImg = this.currentItem.img_1;
       this.dialogOrderProduct = true;
     },
     handleDetailsCall: function (item) {
@@ -496,6 +498,7 @@ export default {
     },
     handleOrderCall: function (item) {
       this.currentItemId = item.id;
+      this.currentItemImg = item.img_1;
       this.dialogOrderProduct = true;
     },
     handleGalleryCall(index) {
