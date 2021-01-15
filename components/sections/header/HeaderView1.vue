@@ -29,7 +29,7 @@
               imageStyle="logo"
             />
             <div v-if="isEdit" class="logo__text">
-              <editor-text
+              <editor-html
                 data-placeholder="Название"
                 :text="section.logo_text"
                 :sectionId="section.id"
