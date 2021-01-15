@@ -33,4 +33,4 @@ RUN npm run buildstatic
 ENV HOST 0.0.0.0
 EXPOSE 3000
 
-CMD ["npm", "run", "export"]
+CMD ["npm", "run", "generate"]
