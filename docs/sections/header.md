@@ -59,7 +59,7 @@ Svg картинки задются в компоненте `SocialList.vue` в 
             ...
           />
         </svg>`,
-      ok: `<svg viewBox="0 0 32 32">
+      ok: `<svg viewBox="0 0 32 32" width="32" height="32">
           <path
             ...
           ></path>
