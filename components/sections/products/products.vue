@@ -81,7 +81,9 @@
               >
                 <button
                   class="button button-primary button-more"
-                  :class="{ 'button-more--opened': itemsShown >= itemsCount }"
+                  :class="{
+                    'button-more--opened display-none': itemsShown >= itemsCount
+                  }"
                   @click="showMoreItems"
                 >
                   <div class="button__body">{{ loadmoreText }}</div>
@@ -474,10 +476,7 @@ export default {
     },
     showMoreItems() {
       if (this.itemsShown >= this.itemsCount) {
-        this.itemsToShow -= 4;
-        let lastElem = document.getElementById(
-          this.section.items[this.itemsToShow - 1].id
-        );
+        this.itemsToShow = 4;
       } else {
         this.itemsToShow += 4;
       }

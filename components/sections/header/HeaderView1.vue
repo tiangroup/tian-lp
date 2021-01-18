@@ -36,9 +36,11 @@
                 field="logo_text"
               />
             </div>
-            <div v-else-if="section.logo_text" class="logo__text">
-              {{ section.logo_text }}
-            </div>
+            <div
+              v-else-if="section.logo_text"
+              class="logo__text"
+              v-html="section.logo_text"
+            ></div>
           </div>
           <div v-if="isEdit" class="logo__slogan">
             <editor-text
