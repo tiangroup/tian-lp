@@ -19,7 +19,6 @@
               :images="images"
               :index="index"
               @close="index = null"
-              v-if="!isEdit"
               :id="'gallery' + section.id"
               :options="{
                 closeOnSlideClick: true
@@ -210,7 +209,9 @@ export default {
   },
   methods: {
     showGallery(itemIndex) {
-      this.index = itemIndex;
+      if (!this.isEdit) {
+        this.index = itemIndex;
+      }
     },
     handleInit(event, slick) {
       if (this.currentSlide) {

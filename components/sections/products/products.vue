@@ -123,14 +123,14 @@
                     <div class="products__title">
                       <v-skeleton-loader
                         boilerplate
-                        type="article"
+                        type="paragraph"
                       ></v-skeleton-loader>
                     </div>
                   </div>
                   <div class="products__action">
                     <v-skeleton-loader
                       boilerplate
-                      type="card-heading"
+                      type="button"
                     ></v-skeleton-loader>
                   </div>
                 </div>
@@ -154,6 +154,7 @@
     </div>
 
     <form-dialog
+      v-if="currentItem"
       :section="section"
       field="order_form"
       v-model="dialogOrderProduct"
@@ -183,7 +184,7 @@
     <v-dialog
       v-model="dialogDetailedItem"
       max-width="40rem"
-      v-if="isCenter"
+      v-if="isCenter && currentItem"
       scrollable
     >
       <div
@@ -232,7 +233,7 @@
       width="40rem"
       :right="settings.popup == 'right'"
       v-model="dialogDetailedItem"
-      v-if="!isCenter"
+      v-if="!isCenter && currentItem"
       :stateless="keepOpen"
     >
       <div
@@ -281,8 +282,9 @@
         :images="currentItemImages"
         :index="index"
         @close="closeGallery"
-        v-if="!isEdit"
+        v-if="currentItem"
         :id="'gallery' + currentItem.id"
+        :key="'gallery' + currentItem.id"
         :options="{
           closeOnSlideClick: true
         }"
@@ -424,7 +426,7 @@ export default {
           let imgKey = "img_" + i;
           if (this.currentItem[imgKey]) {
             var imagesItem = {
-              title: this.currentItem.title,
+              title: this.currentItem.title || "",
               href: this.$site_img(this.currentItem[imgKey], "resize_xl"),
               type: "image/jpeg"
             };
@@ -470,7 +472,7 @@ export default {
       }
     },
     showLimited(item, itemIndex) {
-      if (item.id && itemIndex < this.itemsToShow) {
+      if (item && item.id && itemIndex < this.itemsToShow) {
         return true;
       }
     },
@@ -501,8 +503,10 @@ export default {
       this.dialogOrderProduct = true;
     },
     handleGalleryCall(index) {
-      this.keepOpen = true;
-      this.index = index;
+      if (!this.isEdit) {
+        this.keepOpen = true;
+        this.index = index;
+      }
     },
     closeGallery() {
       this.index = null;

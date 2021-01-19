@@ -123,7 +123,7 @@
               />
             </div>
             <div
-              v-else-if="section.logo_text"
+              v-else-if="isCompanyName"
               class="logo__text"
               v-html="section.logo_text"
             ></div>
@@ -213,6 +213,9 @@ export default {
     },
     isThemeDark() {
       return this.section.settings.background === "dark";
+    },
+    isCompanyName() {
+      return this.getCleanString(this.section.logo_text).length || false;
     }
   },
   methods: {

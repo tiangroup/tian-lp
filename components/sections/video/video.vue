@@ -23,7 +23,6 @@
         <div v-if="section.items">
           <client-only>
             <v-gallery
-              v-if="!isEdit"
               :images="videos"
               :index="index"
               :options="{

@@ -19,7 +19,7 @@
             :images="reviewImages"
             :index="index"
             @close="index = null"
-            v-if="!isEdit && section.items && view === 'view2'"
+            v-if="section.items && view === 'view2'"
             :id="'gallery' + section.id"
             :options="{
               closeOnSlideClick: true
@@ -396,7 +396,9 @@ export default {
       this.dialogShowReview = true;
     },
     showGallery(itemIndex) {
-      this.index = itemIndex;
+      if (!this.isEdit) {
+        this.index = itemIndex;
+      }
     },
     handleInit(event, slick) {
       if (this.currentSlide) {
