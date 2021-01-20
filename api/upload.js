@@ -45,9 +45,9 @@ app.post("/image", checkAuth, async (req, res) => {
           filename = req.body.path + "/" + filename;
         }
         let upload_dir = "content";
-        if (req.body.upload === "static") {
-          upload_dir = "static";
-        }
+        // if (req.body.upload === "static") {
+        //   upload_dir = "static";
+        // }
         image.mv(`./${upload_dir}/${catalog}/${filename}`);
 
         const old_image = req.body.old_image;
@@ -94,9 +94,9 @@ app.post("/image-link", checkAuth, async (req, res) => {
     const catalog = await getCatalog(req);
 
     let upload_dir = "content";
-    if (req.body.upload === "static") {
-      upload_dir = "static";
-    }
+    // if (req.body.upload === "static") {
+    //   upload_dir = "static";
+    // }
 
     const data = await downloadImage(
       image_link,
@@ -128,9 +128,9 @@ app.post("/image-remove", checkAuth, async (req, res) => {
   const image = req.body.image;
   const catalog = await getCatalog(req);
   let upload_dir = "content";
-  if (req.body.upload === "static") {
-    upload_dir = "static";
-  }
+  // if (req.body.upload === "static") {
+  //   upload_dir = "static";
+  // }
   if (image) {
     try {
       fs.unlinkSync(`./${upload_dir}/${catalog}/${image}`);
@@ -147,9 +147,9 @@ app.post("/dir-remove", checkAuth, async (req, res) => {
   const dir = req.body.dir;
   const catalog = await getCatalog(req);
   let upload_dir = "content";
-  if (req.body.upload === "static") {
-    upload_dir = "static";
-  }
+  // if (req.body.upload === "static") {
+  //   upload_dir = "static";
+  // }
   if (dir) {
     try {
       rimraf(`./${upload_dir}/${catalog}/${dir}`, function() {});
@@ -167,7 +167,8 @@ app.post("/dir-remove", checkAuth, async (req, res) => {
 app.get("/section/:id", checkAuth, async (req, res) => {
   const sectionId = req.params.id;
   const catalog = await getCatalog(req);
-  const upload_dir = "static";
+  // const upload_dir = "static";
+  let upload_dir = "content";
   const path = `./${upload_dir}/${catalog}/${sectionId}/upload`;
   let files = [];
   try {
