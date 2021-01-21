@@ -167,7 +167,10 @@ app.post("/dir-remove", checkAuth, async (req, res) => {
 app.get("/section/:id", checkAuth, async (req, res) => {
   const sectionId = req.params.id;
   const catalog = await getCatalog(req);
-  const upload_dir = "static";
+  let upload_dir = "content";
+  if (req.body.upload === "static") {
+    upload_dir = "static";
+  }
   const path = `./${upload_dir}/${catalog}/${sectionId}/upload`;
   let files = [];
   try {
