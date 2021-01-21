@@ -284,7 +284,6 @@
         @close="closeGallery"
         v-if="currentItem"
         :id="'gallery' + currentItem.id"
-        :key="'gallery' + currentItem.id"
         :options="{
           closeOnSlideClick: true
         }"

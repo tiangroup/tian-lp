@@ -124,7 +124,7 @@
               @click="$emit('call-order-form')"
               v-if="!isEdit"
             >
-              Купить
+              Заказать
             </button>
             <v-btn
               depressed
