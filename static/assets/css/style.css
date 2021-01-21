@@ -5075,7 +5075,7 @@ nav ul li,
 .ascend {
   position: fixed;
   top: auto;
-  bottom: 20px;
+  bottom: 60px;
   right: 20px;
   z-index: 5;
 }

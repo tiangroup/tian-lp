@@ -199,7 +199,7 @@ export default {
       for (let n = 0; n < this.section.items.length; n++) {
         let vid = this.section.items[n];
         let videoItem = {
-          title: vid.title,
+          title: vid.title || "",
           href: vid.link,
           type: "text/html",
           youtube: this.videoId(vid.link)
