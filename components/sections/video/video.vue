@@ -27,7 +27,9 @@
               :index="index"
               :options="{
                 youTubeVideoIdProperty: 'youtube',
-                youTubePlayerVars: undefined,
+                youTubePlayerVars: {
+                  autoplay: 1
+                },
                 youTubeClickToPlay: false
               }"
               @close="index = null"
@@ -70,6 +72,9 @@
                       type="sentences"
                       width="100%"
                     ></v-skeleton-loader>
+                  </div>
+                  <div class="item__add-button">
+                    <buttons-item-add :sectionId="section.id" />
                   </div>
                 </div>
               </slick>

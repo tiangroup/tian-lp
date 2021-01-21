@@ -38,14 +38,14 @@
                   <div class="products__title">
                     <v-skeleton-loader
                       boilerplate
-                      type="article"
+                      type="paragraph"
                     ></v-skeleton-loader>
                   </div>
                 </div>
                 <div class="products__action">
                   <v-skeleton-loader
                     boilerplate
-                    type="card-heading"
+                    type="button"
                   ></v-skeleton-loader>
                 </div>
               </div>

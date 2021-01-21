@@ -1648,6 +1648,7 @@ nav ul li,
     justify-content: flex-start;
   }
   .header--fixed .logo__link {
+    cursor: pointer;
     margin-bottom: 0;
     margin-right: 0;
   }
@@ -6615,6 +6616,7 @@ body:last-child
   font-size: 0;
   height: 44px;
   width: 44px;
+  display: block;
 }
 .landing .blueimp-gallery-controls > .description,
 .der-popup .blueimp-gallery-controls > .description {

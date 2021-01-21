@@ -102,7 +102,7 @@
     <div class="landing__container">
       <div class="header__wrap header__wrap--vs2">
         <div class="logo header__logo">
-          <a class="logo__link">
+          <a class="logo__link" @click="goToTop">
             <image-item
               divClass="logo__image"
               :img="section.logo_img"
@@ -240,6 +240,18 @@ export default {
     handleFormCall() {
       this.drawer = false;
       this.dialogCallback = true;
+    },
+    goToTop() {
+      const top = window.pageYOffset || 0;
+      if (top > 200) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        setTimeout(function () {
+          window.location.hash = "";
+          history.replaceState("", document.title, window.location.pathname);
+          document.activeElement.blur();
+        }, 500);
+      }
+      return false;
     }
   },
   mounted: function () {

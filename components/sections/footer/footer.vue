@@ -215,7 +215,11 @@ export default {
     goToTop() {
       //this.$vuetify.goTo("#app", { duration: 500 });
       window.scrollTo({ top: 0, behavior: "smooth" });
-      document.activeElement.blur();
+      setTimeout(function () {
+        window.location.hash = "";
+        history.replaceState("", document.title, window.location.pathname);
+        document.activeElement.blur();
+      }, 500);
     },
     cleanString(str) {
       if (!str) {
