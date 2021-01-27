@@ -1346,6 +1346,7 @@ nav ul li,
   overflow-y: auto;
   overflow-x: hidden;
   padding: 4.3125rem 0 1.25rem;
+  position: relative;
 }
 @media (min-width: 768px) {
   .header__menu--mobile {
@@ -1449,7 +1450,7 @@ nav ul li,
     padding-left: 0.78125rem;
     padding-right: 0.78125rem;
   }
-  .header--style2 .header__action .button {
+  .header--style2 .header__action .button:not(.form__submit) {
     border: 0;
     padding: 0;
   }
@@ -2170,18 +2171,16 @@ nav ul li,
   }
   .hero__image {
     height: 600px;
+    max-height: 100%;
     width: 696px;
     position: absolute;
-    left: 41.6667%;
-    bottom: 0;
+    bottom: -1px;
     z-index: 0;
   }
   .hero__image img {
-    max-width: none;
+    max-height: 100%;
+    text-align: right;
     vertical-align: middle;
-    position: absolute;
-    bottom: -1px;
-    right: 0;
   }
 }
 @media (min-width: 1280px) {
@@ -5867,13 +5866,21 @@ nav ul li,
   flex-wrap: wrap;
 }
 .tuning-sort__cell {
-  padding: 0.9375rem 1rem;
+  font-size: 0.825rem;
+  padding: 0.5rem;
 }
 .tuning-sort__name {
   flex: 1 0 0%;
   max-width: 50%;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
+}
+@media (min-width: 576px) {
+  .tuning-sort__cell {
+    padding: 0.9375rem 1rem;
+  }
+  .tuning-sort__name {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
 }
 .tuning-sort__move,
 .tuning-sort__action {
@@ -6561,6 +6568,7 @@ body:last-child
   content: "";
   height: 44px;
   width: 44px;
+  margin-top: -22px;
 }
 .landing .blueimp-gallery > .slides > .slide > .video-content > a::after,
 .der-popup .blueimp-gallery > .slides > .slide > .video-content > a::after {
@@ -6606,6 +6614,14 @@ body:last-child
   background-image: url("data:image/svg+xml,%3Csvg width='17' height='28' viewBox='0 0 17 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L15 13.9706L1.03398 27' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
   background-size: 1.0625rem 1.75rem;
   right: 2.5rem;
+}
+@media (max-width: 1023px) {
+  .landing .blueimp-gallery > .next,
+  .landing .blueimp-gallery > .prev,
+  .der-popup .blueimp-gallery > .next,
+  .der-popup .blueimp-gallery > .prev {
+    display: none;
+  }
 }
 .landing .blueimp-gallery > .close,
 .der-popup .blueimp-gallery > .close {
@@ -6657,7 +6673,7 @@ body:last-child
 .scrollable__block {
   flex: 1 1 100%;
   overflow: auto;
-  padding-right: 1rem;
+  /* padding-right: 1rem; // why is this here? */
 }
 /* END fixin stuff */
 @keyframes slideDown {

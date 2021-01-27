@@ -85,6 +85,7 @@
             </div>
             <div class="header__action">
               <form-popup
+                :class="{ mLight: section.settings.background !== 'dark' }"
                 :section="section"
                 field="form"
                 buttonClass="button-secondary"

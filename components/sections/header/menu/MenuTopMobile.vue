@@ -43,7 +43,7 @@ export default {
       page: "pages/page"
     }),
     mobileLongMenu() {
-      return this.headerSettings.header.mmenu === "long" ? true : false;
+      return this.headerSettings.header.mmenu === "short" ? false : true;
     },
     _menu() {
       if (this.menu && this.menu.length > 0) {
