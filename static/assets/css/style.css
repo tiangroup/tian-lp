@@ -2667,6 +2667,12 @@ nav ul li,
     position: relative;
   }
 }
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .products__list {
+    padding-left: 16.667%;
+    padding-right: 16.667%;
+  }
+}
 @media (min-width: 1280px) {
   .products {
     padding-top: 5.625rem;

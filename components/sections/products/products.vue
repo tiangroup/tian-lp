@@ -58,7 +58,7 @@
               class="products__list cells"
             >
               <products-item
-                class="cell-12 cell-sm-6 cell-lg-4 cell-xl-3"
+                class="cell-12 cell-sm-6 cell-xl-3"
                 :id="item.id"
                 v-for="item in section.items.filter(showLimited)"
                 :key="item.id"
@@ -511,6 +511,11 @@ export default {
       this.index = null;
       this.keepOpen = true;
       setTimeout(() => (this.keepOpen = false), 300);
+    }
+  },
+  mounted: function () {
+    if (this.$vuetify.breakpoint.width > 1279) {
+      this.itemsToShow = 8;
     }
   },
   beforeUpdate: function () {
