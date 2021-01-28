@@ -2172,14 +2172,15 @@ nav ul li,
   .hero__image {
     height: 600px;
     max-height: 100%;
+    text-align: right;
     width: 696px;
     position: absolute;
+    right: 0;
     bottom: -1px;
     z-index: 0;
   }
   .hero__image img {
     max-height: 100%;
-    text-align: right;
     vertical-align: middle;
   }
 }
