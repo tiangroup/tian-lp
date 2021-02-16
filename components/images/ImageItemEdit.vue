@@ -37,7 +37,8 @@ export default {
     items: { type: String, default: "items" },
     fieldSvg: String,
     svg: String,
-    imageStyle: { type: String, default: null }
+    imageStyle: { type: String, default: null },
+    imageLoader: { type: String, default: null }
   },
   data: () => ({
     deleteDialog: false
@@ -68,7 +69,17 @@ export default {
         field: this.field,
         items: this.items,
         value: this.img,
-        imageStyle: this.imageStyle
+        imageStyle: this.imageStyle,
+        imageLoader: this.imageLoader,
+        callback: item => {
+          if (this.imageLoader) {
+            let styles = this.imageLoader.split(",");
+            for (let style of styles) {
+              let src = this.$site_img(item.value, style);
+              this.$axios.get(src);
+            }
+          }
+        }
       });
     },
     svgSelect() {

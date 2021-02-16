@@ -10,6 +10,7 @@
     :fieldSvg="fieldSvg"
     :svg="svg"
     :imageStyle="imageStyle"
+    :imageLoader="imageLoader"
   />
 </template>
 
@@ -29,7 +30,8 @@ export default {
     items: { type: String, default: "items" },
     fieldSvg: { type: String, default: null },
     svg: { type: String, default: null },
-    imageStyle: { type: String, default: null }
+    imageStyle: { type: String, default: null },
+    imageLoader: { type: String, default: null }
   },
   components: {
     out,

@@ -54,6 +54,9 @@ app.post("/image", checkAuth, async (req, res) => {
         if (old_image) {
           try {
             fs.unlinkSync(`./${upload_dir}/${catalog}/${old_image}`);
+            if (upload_dir == "content") {
+              unlinkImageStyles(`./static/image-styles/${catalog}${old_image}`);
+            }
           } catch (error) {}
         }
 
@@ -107,6 +110,9 @@ app.post("/image-link", checkAuth, async (req, res) => {
     if (old_image) {
       try {
         fs.unlinkSync(`./${upload_dir}/${catalog}/${old_image}`);
+        if (upload_dir == "content") {
+          unlinkImageStyles(`./static/image-styles/${catalog}${old_image}`);
+        }
       } catch (error) {}
     }
 
@@ -134,6 +140,9 @@ app.post("/image-remove", checkAuth, async (req, res) => {
   if (image) {
     try {
       fs.unlinkSync(`./${upload_dir}/${catalog}/${image}`);
+      if (upload_dir == "content") {
+        unlinkImageStyles(`./static/image-styles/${catalog}${image}`);
+      }
     } catch (error) {}
   }
   res.send({
@@ -247,4 +256,17 @@ function random_gen(len) {
     str += chrs.substring(pos, pos + 1);
   }
   return str;
+}
+
+// очистка нарезаных картинок
+function unlinkImageStyles(image) {
+  let imageParse = path.parse(image);
+  if (fs.existsSync(imageParse.dir)) {
+    let files = fs
+      .readdirSync(imageParse.dir)
+      .filter(file => file.indexOf(imageParse.name) === 0);
+    for (let file of files) {
+      fs.unlinkSync(`${imageParse.dir}/${file}`);
+    }
+  }
 }
