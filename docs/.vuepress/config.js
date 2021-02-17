@@ -9,7 +9,11 @@ module.exports = {
     //   //{ text: "Компоненты", link: "/components/" }
     // ],
     sidebar: [
-      "/",
+      // "/",
+      {
+        title: "Проект",
+        children: ["/project/start", "/project/structure", "/project/concept"]
+      },
       {
         title: "Блоки страницы",
         path: "/sections/",
@@ -52,6 +56,10 @@ module.exports = {
           "/plugins/vue-gallery",
           "/plugins/vue-yandex-maps"
         ]
+      },
+      {
+        title: "Документация (VuePress)",
+        path: "/docs/"
       }
     ],
     lastUpdated: "Изменено"
