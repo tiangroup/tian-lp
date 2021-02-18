@@ -12,81 +12,83 @@
         />
       </div>
     </div>
-    <div class="good__details scrollable__block">
-      <div class="good__images illustrations" v-if="isEdit || item.img_1">
-        <div
-          class="illustrations__item illustrations__item--main"
-          @click="handleMainIllustrationClick"
-        >
-          <image-item
-            divClass="illustrations__image"
-            :field="getImageField(currentBigImageIndex)"
-            :img="getImage(currentBigImageIndex)"
-            :itemId="item.id"
-            :sectionId="section.id"
-            imageStyle="sq_lg_ext"
-          />
-        </div>
-        <div class="illustrations__row" v-if="isEdit || item.img_2">
+    <div class="scrollable__block">
+      <div class="good__details">
+        <div class="good__images illustrations" v-if="isEdit || item.img_1">
           <div
-            class="illustrations__item"
-            v-for="n in 4"
-            :key="n"
-            :id="'index' + n"
+            class="illustrations__item illustrations__item--main"
+            @click="handleMainIllustrationClick"
           >
+            <image-item
+              divClass="illustrations__image"
+              :field="getImageField(currentBigImageIndex)"
+              :img="getImage(currentBigImageIndex)"
+              :itemId="item.id"
+              :sectionId="section.id"
+              imageStyle="sq_lg_ext"
+            />
+          </div>
+          <div class="illustrations__row" v-if="isEdit || item.img_2">
             <div
-              class="illustrations__switch"
-              :class="{
-                'illustrations__switch--active': n === currentBigImageIndex
-              }"
-              @click="handleIllustrationClick(n)"
-              v-if="item['img_' + n] || isEdit"
+              class="illustrations__item"
+              v-for="n in 4"
+              :key="n"
+              :id="'index' + n"
             >
-              <image-item
-                divClass="illustrations__image"
-                :field="getImageField(n)"
-                :img="getImage(n)"
-                :itemId="item.id"
-                :sectionId="section.id"
-                :key="'imgS' + item['img_' + n] + n"
-                imageStyle="sq_lg_ext"
-              />
+              <div
+                class="illustrations__switch"
+                :class="{
+                  'illustrations__switch--active': n === currentBigImageIndex
+                }"
+                @click="handleIllustrationClick(n)"
+                v-if="item['img_' + n] || isEdit"
+              >
+                <image-item
+                  divClass="illustrations__image"
+                  :field="getImageField(n)"
+                  :img="getImage(n)"
+                  :itemId="item.id"
+                  :sectionId="section.id"
+                  :key="'imgS' + item['img_' + n] + n"
+                  imageStyle="sq_lg_ext"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="good__chars body-copy" v-if="isEdit">
-        <editor-html
-          data-placeholder="Габариты: 220 х 100 х 35 мм"
-          :text="item.tech_chars"
-          :sectionId="section.id"
-          field="tech_chars"
-          :itemId="item.id"
-          :key="'detitmchars' + uniqueKey"
-        />
-      </div>
-      <div
-        class="good__chars body-copy"
-        v-html="item.tech_chars"
-        v-else-if="item.tech_chars"
-      ></div>
-      <div class="good__description" v-if="item.description || isEdit">
-        <div class="good__description__title">
-          <editor-text
-            :text="section.description_label || 'Описание'"
+        <div class="good__chars body-copy" v-if="isEdit">
+          <editor-html
+            data-placeholder="Габариты: 220 х 100 х 35 мм"
+            :text="item.tech_chars"
             :sectionId="section.id"
-            field="description_label"
+            field="tech_chars"
+            :itemId="item.id"
+            :key="'detitmchars' + uniqueKey"
           />
         </div>
-        <div class="good__description__body">
-          <editor-html
-            data-placeholder="Полное описание товара"
-            :text="item.description"
-            :sectionId="section.id"
-            field="description"
-            :itemId="item.id"
-            :key="'detitmdesc' + uniqueKey"
-          />
+        <div
+          class="good__chars body-copy"
+          v-html="item.tech_chars"
+          v-else-if="item.tech_chars"
+        ></div>
+        <div class="good__description" v-if="item.description || isEdit">
+          <div class="good__description__title">
+            <editor-text
+              :text="section.description_label || 'Описание'"
+              :sectionId="section.id"
+              field="description_label"
+            />
+          </div>
+          <div class="good__description__body">
+            <editor-html
+              data-placeholder="Полное описание товара"
+              :text="item.description"
+              :sectionId="section.id"
+              field="description"
+              :itemId="item.id"
+              :key="'detitmdesc' + uniqueKey"
+            />
+          </div>
         </div>
       </div>
     </div>

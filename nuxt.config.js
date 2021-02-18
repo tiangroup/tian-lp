@@ -86,17 +86,18 @@ export default {
           sq_lg: { macros: ["scaleAndCrop|520|520"] },
           rect_sm: { macros: ["scaleAndCrop|158|82"] },
           rect_md: { macros: ["scaleAndCrop|397|262"] },
-          rect_lg: { macros: ["scaleAndCrop|592|391"] },
+          rect_lg: { actions: ["gravity|Center", "resize|592|391", "quality|85%"] },
           resize_sm: { actions: ["resize|158|82>"] },
           resize_md: { actions: ["resize|400|200>"] },
-          resize_xl: { actions: ["resize|1400|1400>"] },
+          resize_xl: { actions: ["resize|1400|1400>", "quality|90%"] },
           resize_v_md: { actions: ["resize|280|404"] },
           resize_sq_sm: { actions: ["resize|176|176"] },
           promo1: { actions: ["resize|696|600"] },
           questions: { actions: ["resize|645|456"] },
-          cover: { macros: ["scaleAndCrop|1920|700"] },
+          cover: { actions: ["gravity|Center", "resize|1920|700>", "quality|90%"] },
           sq_lg_ext: { actions: ["trim", "gravity|Center", "resize|520|520>"] },
-          logo: { actions: ["resize|250|100>"] }
+          logo: { actions: ["resize|250|100>", "quality|90%"] },
+          rect_benefits: { macros: ["scaleAndCrop|552|438"] }
         }
       }
     ],

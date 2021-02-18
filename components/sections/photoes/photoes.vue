@@ -54,6 +54,7 @@
                       :itemId="item.id"
                       :sectionId="section.id"
                       imageStyle="rect_lg"
+                      imageLoader="rect_lg,resize_xl"
                     />
                     <div class="gallery__text" v-if="isEdit">
                       <editor-text
