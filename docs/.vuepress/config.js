@@ -12,7 +12,12 @@ module.exports = {
       // "/",
       {
         title: "Проект",
-        children: ["/project/start", "/project/structure", "/project/concept"]
+        children: [
+          "/project/start",
+          "/project/structure",
+          "/project/concept",
+          "/project/docker"
+        ]
       },
       {
         title: "Блоки страницы",
