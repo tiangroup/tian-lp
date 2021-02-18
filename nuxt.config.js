@@ -97,7 +97,7 @@ export default {
           cover: { actions: ["gravity|Center", "resize|1920|700>", "quality|90%"] },
           sq_lg_ext: { actions: ["trim", "gravity|Center", "resize|520|520>"] },
           logo: { actions: ["resize|250|100>", "quality|90%"] },
-          rect_benefits: { macros: ["scaleAndCrop|552|438"] }
+          rect_benefits: { macros: ["scaleAndCrop|560|400"] }
         }
       }
     ],
