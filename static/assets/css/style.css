@@ -6127,7 +6127,8 @@ a:active,
 .social .social__link:active,
 .footer .tian a,
 .header .nav__toggle,
-.header .nav__close .body-copy a {
+.header .nav__close,
+.landing .body-copy a {
   color: #245ef5;
   color: var(--theme-color);
 }
@@ -6194,7 +6195,7 @@ a:focus,
 .partners__link:hover ~ .partners__text,
 .partners__link:focus ~ .partners__text,
 .reviews .reviews__readmore:hover,
-.body-copy a:hover {
+.landing .body-copy a:hover {
   color: #093dc3;
   color: var(--theme-hover-color);
 }

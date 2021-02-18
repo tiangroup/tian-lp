@@ -26,6 +26,7 @@
               :itemId="item.id"
               :sectionId="section.id"
               imageStyle="sq_lg_ext"
+              imageLoader="sq_lg_ext,resize_xl"
             />
           </div>
           <div class="illustrations__row" v-if="isEdit || item.img_2">
@@ -51,6 +52,7 @@
                   :sectionId="section.id"
                   :key="'imgS' + item['img_' + n] + n"
                   imageStyle="sq_lg_ext"
+                  imageLoader="sq_lg_ext,resize_xl"
                 />
               </div>
             </div>

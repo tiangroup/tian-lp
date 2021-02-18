@@ -13,6 +13,7 @@
           :itemId="item.id"
           :sectionId="sectionId"
           imageStyle="resize_v_md"
+          imageLoader="resize_v_md,resize_xl"
         />
       </div>
       <div class="reviews__body">
