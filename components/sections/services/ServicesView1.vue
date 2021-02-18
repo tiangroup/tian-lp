@@ -52,7 +52,7 @@
 
                 <div class="services__cta">
                   <div class="cells align-items-center">
-                    <div class="cell cell-auto">
+                    <div class="cell cell-auto" v-if="item.price">
                       <div class="services__price">
                         <editor-text
                           data-placeholder="от 000 руб."
@@ -126,7 +126,7 @@
 
                   <div class="services__cta">
                     <div class="cells align-items-center">
-                      <div class="cell cell-auto">
+                      <div class="cell cell-auto" v-if="item.price">
                         <div class="services__price">{{ item.price }}</div>
                       </div>
                       <div class="cell cell-auto">

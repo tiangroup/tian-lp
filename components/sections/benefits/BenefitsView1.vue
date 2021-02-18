@@ -22,7 +22,7 @@
       <div class="benefits__list cells benefits__list--style1">
         <div
           class="cell cell-12 cell-sm-6 cell-lg-3"
-          v-for="item in section.items.filter(i => i.id)"
+          v-for="item in section.items.filter((i) => i.id)"
           :key="item.id"
           :style="styleDiv"
         >
@@ -37,7 +37,7 @@
               :img="item.img"
               :itemId="item.id"
               :sectionId="section.id"
-              imageStyle="rect_lg"
+              imageStyle="rect_benefits"
             />
 
             <div class="benefits__body">
