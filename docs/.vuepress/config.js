@@ -63,6 +63,17 @@ module.exports = {
         ]
       },
       {
+        title: "Store",
+        path: "/store/",
+        children: [
+          "/store/_index",
+          "/store/pages",
+          "/store/sites",
+          "/store/sections",
+          "/store/forms"
+        ]
+      },
+      {
         title: "Документация (VuePress)",
         path: "/docs/"
       }
