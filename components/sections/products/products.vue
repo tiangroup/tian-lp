@@ -186,6 +186,7 @@
       max-width="40rem"
       v-if="isCenter && currentItem"
       scrollable
+      :retain-focus="!isEdit"
     >
       <div
         class="der-popup"
