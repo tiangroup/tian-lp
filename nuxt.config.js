@@ -94,7 +94,7 @@ export default {
           resize_sq_sm: { actions: ["resize|176|176"] },
           promo1: { actions: ["resize|696|600", "quality|95%"] },
           questions: { actions: ["resize|645|456", "quality|95%"] },
-          cover: { actions: ["gravity|Center", "resize|1920|700>", "quality|95%"] },
+          cover: { actions: ["gravity|Center", "resize|1920|700>", "quality|100%"] },
           sq_lg_ext: { actions: ["trim", "gravity|Center", "resize|520|520>"] },
           logo: { actions: ["resize|250|100>", "quality|95%"] },
           rect_benefits: { macros: ["scaleAndCrop|560|400"] }

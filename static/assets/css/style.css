@@ -2184,7 +2184,7 @@ nav ul li,
   .hero__image img {
     max-height: 100%;
     position: absolute;
-    top: 0;
+    bottom: 0;
     right: 0;
   }
 }

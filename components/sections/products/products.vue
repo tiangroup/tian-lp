@@ -71,6 +71,9 @@
             </transition-group>
             <div
               class="cells align-items-center justify-content-center justify-content-sm-between"
+              :class="{
+                'display-none': itemsShown >= itemsCount
+              }"
             >
               <div class="cell products__count">
                 Товаров {{ itemsShown }} из {{ itemsCount }}
