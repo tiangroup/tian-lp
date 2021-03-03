@@ -81,11 +81,11 @@ export default {
           icon_sm: { actions: ["resize|46|46"] },
           icon_md: { actions: ["resize|63|63"] },
           sq_xs: { macros: ["scaleAndCrop|63|63"] },
-          sq_sm: { macros: ["scaleAndCrop|176|176", "quality|85%"] },
-          sq_md: { macros: ["scaleAndCrop|244|244", "quality|85%"] },
-          sq_lg: { macros: ["scaleAndCrop|520|520", "quality|85%"] },
-          rect_sm: { macros: ["scaleAndCrop|158|82", "quality|85%"] },
-          rect_md: { macros: ["scaleAndCrop|397|262", "quality|85%"] },
+          sq_sm: { actions: ["resize|176|176>", "quality|85%"]},
+          sq_md: { actions: ["resize|244|244>", "quality|85%"]},
+          sq_lg: { actions: ["resize|520|520>", "quality|85%"]},
+          rect_sm: { macros: ["scaleAndCrop|158|82"] },
+          rect_md: { macros: ["scaleAndCrop|397|262"] },
           rect_lg: { actions: ["gravity|Center", "resize|592|391", "quality|95%"] },
           resize_sm: { actions: ["resize|158|82>", "quality|85%"] },
           resize_md: { actions: ["resize|400|200>", "quality|85%"] },
@@ -97,7 +97,7 @@ export default {
           cover: { actions: ["gravity|Center", "resize|1920|700>", "quality|100%"] },
           sq_lg_ext: { actions: ["trim", "gravity|Center", "resize|520|520>", "quality|85%"] },
           logo: { actions: ["resize|250|100>", "quality|95%"] },
-          rect_benefits: { macros: ["scaleAndCrop|560|400", "quality|85%"] }
+          rect_benefits: { macros: ["scaleAndCrop|560|400"] }
         }
       }
     ],
