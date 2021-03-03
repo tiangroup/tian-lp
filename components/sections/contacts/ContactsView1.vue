@@ -1,5 +1,5 @@
 <template>
-  <div class="contacts--style1">
+  <div class="contacts--style1" v-intersect="onContactsIntersect">
     <div class="landing__container">
       <div class="contacts__row">
         <div class="contacts__body custom-v-spacing-2">
@@ -153,6 +153,7 @@
         <contacts-map
           :items="getMainOffice()"
           :map-key="section.map_key"
+          v-if="showMap"
         ></contacts-map>
       </div>
     </div>
@@ -172,7 +173,8 @@ export default {
   },
   data() {
     return {
-      myMap: {}
+      myMap: {},
+      showMap: false
     };
   },
   computed: {},
@@ -188,6 +190,9 @@ export default {
       if (item.id && itemIndex === 0) {
         return true;
       }
+    },
+    onContactsIntersect(entries, observer) {
+      this.showMap = entries[0].isIntersecting;
     }
   }
 };

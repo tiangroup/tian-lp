@@ -1,5 +1,8 @@
 <template>
-  <div class="custom-h-spacing contacts--style2">
+  <div
+    class="custom-h-spacing contacts--style2"
+    v-intersect="onContactsIntersect"
+  >
     <div class="landing__container">
       <div class="contacts__body">
         <h2>
@@ -154,7 +157,7 @@
     </div>
     <contacts-map
       :items="section.items"
-      v-if="view === 'view2'"
+      v-if="showMap"
       @map-ready="defineMyMap"
       :map-key="section.map_key"
     ></contacts-map>
@@ -179,6 +182,7 @@ export default {
     return {
       currentSlide: 0,
       myMap: {},
+      isContactsIntersecting: false,
       slickOptions: {
         arrows: true,
         dots: true,
@@ -236,6 +240,9 @@ export default {
       return document
         .getElementById(this.section.id)
         .querySelectorAll(".slick-slide:not(.slick-cloned)");
+    },
+    showMap() {
+      return this.view === "view2" && this.isContactsIntersecting;
     }
   },
   methods: {
@@ -283,6 +290,9 @@ export default {
     },
     getItemCoords(str) {
       return str.replace(/\s+/g, "").split(",");
+    },
+    onContactsIntersect(entries, observer) {
+      this.isContactsIntersecting = entries[0].isIntersecting;
     }
   },
   beforeUpdate: function () {
