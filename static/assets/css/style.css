@@ -4538,6 +4538,7 @@ nav ul li,
 }
 .good__chars {
   flex: 0 0 245px;
+  min-width: 245px;
   max-width: 50%;
 }
 .illustrations__image img {
@@ -5690,7 +5691,6 @@ nav ul li,
 }
 .tuning-panel__block {
   border-bottom: 1px solid #e8ecf0;
-  color: var(--text-color);
   padding: 1.875rem 0 0.9375rem;
   width: 100%;
 }
