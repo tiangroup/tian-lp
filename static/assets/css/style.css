@@ -314,19 +314,23 @@ img {
   text-decoration: underline;
 }
 .body-copy p,
-.body-copy ul {
+.body-copy ul,
+.der-popup__body ul {
   margin: 0 0 1em;
 }
 .body-copy ul,
-.v-application .body-copy ul {
+.v-application .body-copy ul,
+.der-popup__body ul {
   list-style: none;
   padding: 0;
 }
-.body-copy ul li {
+.body-copy ul li,
+.der-popup__body ul li {
   padding-left: 0.9375rem;
   position: relative;
 }
-.body-copy ul li::before {
+.body-copy ul li::before,
+.der-popup__body ul li::before {
   content: "";
   border-radius: 50%;
   height: 0.3125rem;
@@ -335,7 +339,8 @@ img {
   top: 0.65em;
   left: 0;
 }
-.body-copy ul li + li {
+.body-copy ul li + li,
+.der-popup__body ul li + li {
   margin-top: 0.625rem;
 }
 .body-copy table {
