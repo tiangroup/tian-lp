@@ -24,7 +24,7 @@ export default {
     mask
   },
   data: () => ({
-    mask: "+7 ### ###-##-##"
+    mask: "+# ### ###-##-##"
   }),
   props: {
     item: Object,
