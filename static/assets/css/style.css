@@ -3270,6 +3270,7 @@ nav ul li,
   }
 }
 .process__list {
+  justify-content: center;
   margin-bottom: -1.675rem; /* compensate for .process__item:mb */
 }
 .process__item {
