@@ -65,6 +65,7 @@
               field="img"
               :sectionId="section.id"
               imageStyle="resize_md"
+              v-if="section.img"
             />
           </div>
 

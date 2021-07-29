@@ -51,7 +51,7 @@
                 />
               </div>
 
-              <div class="benefits__description">
+              <div class="benefits__description" v-if="item.description">
                 <editor-html
                   data-placeholder="Краткое описание преимущества"
                   :text="item.description"
