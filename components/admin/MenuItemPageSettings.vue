@@ -84,7 +84,7 @@ export default {
     async save() {
       const slug = "/" + this.settings.slug.trim().replace("/", "");
       const page = this.site.pages.find(p => p.page == this.page.id);
-      const data = await this.$axios.$put("/api/sites/pages", {
+      const data = await this.$axios.$put(`${this.$site_app}/api/sites/pages`, {
         site_id: this.site.id,
         page_id: page.id,
         slug: slug

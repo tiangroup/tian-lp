@@ -59,7 +59,7 @@ export default {
     },
     async submitAddPage() {
       const slug = "/" + this.newPage.slug.trim().replace("/", "");
-      const data = await this.$axios.$post("/api/sites/pages", {
+      const data = await this.$axios.$post(`${this.$site_app}/api/sites/pages`, {
         site_id: this.site.id,
         slug: slug
       });
