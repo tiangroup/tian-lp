@@ -145,7 +145,7 @@
               </div>
             </div>
           </div>
-          <div class="social contacts__social">
+          <div class="social contacts__social" v-if="section.socials.length">
             <div class="social__title">Мы в соцсетях:</div>
             <social-list :section="section" :isEdit="isEdit"></social-list>
           </div>

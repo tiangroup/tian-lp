@@ -68,7 +68,7 @@
         Заказать звонок
       </button>
     </div>
-    <div class="social header__menu__social">
+    <div class="social header__menu__social" v-if="section.socials.length">
       <social-list :section="section" :isEdit="isEdit"></social-list>
     </div>
   </div>

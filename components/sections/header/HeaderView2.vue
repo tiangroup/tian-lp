@@ -94,7 +94,7 @@
               />
             </div>
           </div>
-          <div class="social header__social">
+          <div class="social header__social" v-if="section.socials.length">
             <social-list :section="section" :isEdit="isEdit"></social-list>
           </div>
         </div>
@@ -256,9 +256,8 @@ export default {
     }
   },
   mounted: function () {
-    this.headerHeight = document.getElementsByClassName(
-      "header"
-    )[0].offsetHeight;
+    this.headerHeight =
+      document.getElementsByClassName("header")[0].offsetHeight;
     this.bodyElm = document.getElementsByTagName("body")[0];
     if (this.fixHeader && window) {
       window.addEventListener("scroll", this.toggleFixed);
