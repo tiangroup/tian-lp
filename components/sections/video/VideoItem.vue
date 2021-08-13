@@ -17,7 +17,7 @@
       <div v-else class="video__cover">
         <img v-if="item.link" :src="videoCover" />
       </div>
-      <div class="video__title">
+      <div class="video__title" v-if="item.title">
         <editor-text
           data-placeholder="Название видео"
           :text="item.title"
@@ -44,7 +44,8 @@ export default {
       if (!this.item.link) {
         return;
       }
-      const youtubeRegex = /^.*(youtu\.be\/|vi?\/|u\/\w\/|embed\/|\?vi?=|\&vi?=)([^#\&\?]*).*/;
+      const youtubeRegex =
+        /^.*(youtu\.be\/|vi?\/|u\/\w\/|embed\/|\?vi?=|\&vi?=)([^#\&\?]*).*/;
       const youtubeId = this.item.link.match(youtubeRegex);
       return youtubeId[2];
     },
@@ -52,9 +53,7 @@ export default {
       if (!this.item.link) {
         return "";
       }
-      return (
-        "https://img.youtube.com/vi/" + this.videoId + "/maxresdefault.jpg"
-      );
+      return "https://img.youtube.com/vi/" + this.videoId + "/0.jpg";
     }
   },
   methods: {}
